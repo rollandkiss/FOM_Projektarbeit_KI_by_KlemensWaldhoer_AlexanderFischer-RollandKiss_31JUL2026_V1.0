@@ -1,0 +1,66 @@
+%  =============================================================================
+%  -> Abschnitt "titelblatt/titelblatt.tex"
+%  =============================================================================
+
+\begin{titlepage}
+\thispagestyle{empty}
+
+% --- Kopfzeile: Logo links, Hochschultext rechts ---------------------------
+\noindent
+\begin{minipage}[c]{0.27\textwidth}
+    \includesvg[height=2.2cm]{fom-logo}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.7\textwidth}
+    \raggedleft
+    {\large\sffamily FOM Hochschule für Oekonomie \& Management}\\[0.15cm]
+    {\large\sffamily Hochschulzentrum \arbeitHochschulzentrum}
+\end{minipage}
+
+\vspace{0.4cm}
+{\color{FOMakzent}\rule{\textwidth}{0.8pt}}
+
+\begin{center}
+\vspace{1cm}
+
+% --- Art der Arbeit ---------------------------------------------------------
+{\Large\sffamily\bfseries \arbeitArt}\\[0.25cm]
+{\large\sffamily im Studiengang \arbeitStudiengang}\\[0.9cm]
+
+zur Erlangung des Grades eines\\[0.25cm]
+{\Large\sffamily\bfseries \arbeitGrad}\\[0.9cm]
+
+über das Thema\\[0.5cm]
+
+% --- Titel der Arbeit -------------------------------------------------------
+{\huge\sffamily\bfseries \arbeitTitel}\\[0.3cm]
+\ifx\arbeitUntertitel\empty\else
+    {\Large\sffamily \arbeitUntertitel}\\[0.8cm]
+\fi
+\vspace{0.7cm}
+
+von\\[0.3cm]
+{\LARGE\sffamily \autorVorname{} \autorNachname}\\[1cm]
+
+\vfill
+
+% --- Akzentlinie + Pruefungsangaben ----------------------------------------
+{\color{FOMakzent}\rule{\textwidth}{0.8pt}}\\[0.4cm]
+\begin{flushleft}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}p{4.5cm}p{9cm}@{}}
+Erstgutachter      & \erstgutachter \\
+\ifx\zweitgutachter\empty\else
+Zweitgutachter     & \zweitgutachter \\
+\fi
+Matrikelnummer     & \autorMatrikel \\
+Abgabedatum        & \abgabedatum \\
+\end{tabular}
+\end{flushleft}
+
+\end{center}
+\end{titlepage}
+\cleardoublepage
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

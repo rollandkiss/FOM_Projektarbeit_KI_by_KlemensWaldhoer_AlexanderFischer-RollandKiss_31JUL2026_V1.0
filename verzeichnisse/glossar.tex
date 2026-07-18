@@ -1,0 +1,20 @@
+% =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "verzeichnisse/glossar.tex"
+% =============================================================================
+
+\glsaddall[types={main}]
+\printnoidxglossary[%
+    type=main,%
+    title={Glossar},%
+    style=fomgloss,%
+    sort=word%
+]
+
+%  Kopfzeilen-Marke unter \manualmark explizit setzen (einseitiges Verzeichnis;
+%  Kapitelwechsel-Logik siehe main.tex / config.md).
+\markboth{Glossar}{Glossar}
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

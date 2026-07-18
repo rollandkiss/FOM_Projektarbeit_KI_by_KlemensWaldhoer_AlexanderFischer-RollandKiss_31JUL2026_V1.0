@@ -1,0 +1,804 @@
+% =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "main.tex"
+%
+%  WICHTIG: Vektorgrafiken werden via Paket "svg" (\includesvg) eingebunden.
+%  Das erfordert --shell-escape und ein installiertes Inkscape. Lokaler Aufruf:
+%      latexmk -pdf -shell-escape main.tex
+%  Gesetzt sind: \usepackage{svg}, \svgpath{{abbildungen/}} und
+%  \svgsetup{inkscapelatex=false} (bettet SVG-Text fest ins PDF ein und
+%  vermeidet ueberlagerte Text-Artefakte in den BPMN-Modellen).
+% =============================================================================
+
+\documentclass[
+    paper=a4,           % DIN A4 (Leitfaden Kap. 5.2.1)
+    fontsize=11pt,      % Open Sans 11 pt analog zu Arial 11 pt
+                        % (Leitfaden Kap. 5.2.2: ~37 Zeilen / ~60 Zeichen /
+                        % ~2.200 Zeichen je Seite einzuhalten)
+    twoside=false,      % einseitiger Druck (Leitfaden Kap. 5.2.1: nur
+                        % bei beidseitigem Druck "twoside=true" zusammen
+                        % mit BCOR setzen, Kap. 5.10.1)
+    open=any,           % Kapitel beginnen auf der naechsten freien Seite,
+                        % nicht zwingend auf einer rechten -- vermeidet
+                        % unerwuenschte Leerseiten im Oneside-Druck
+    BCOR=0mm,           % Bindekorrektur, z. B. 5 mm bei Leimbindung
+                        % (Leitfaden Kap. 5.10.1)
+    headings=normal,    % normale Ueberschriftsgroessen
+                        % (Leitfaden Kap. 5.2.3)
+    parskip=half-,      % Absatz: 0 pt vor, 6 pt nach (Leitfaden Kap. 5.3)
+    listof=totoc,       % Verzeichnisse im Inhaltsverzeichnis aufgefuehrt
+                        % (Leitfaden Kap. 5.1)
+    bibliography=totoc, % Quellenverzeichnis im Inhaltsverzeichnis
+                        % (Leitfaden Kap. 6.3)
+    numbers=noenddot    % keine Schlusspunkte hinter Kapitelnummern
+                        % (Leitfaden Kap. 5.2.3)
+]{scrreprt}
+
+% ----------------------------- Sprache & Encoding ---------------------------
+% Deutsche Hauptsprache mit englischer Zusatzsprache (Leitfaden Kap. 2.2:
+% "Anfuehrungszeichen der Dokumentensprache anpassen: Deutsch „...",
+% Englisch ''..''."). \foreignlanguage{english}{...} bzw.
+% \begin{otherlanguage}{english}...\end{otherlanguage} aktivieren englische
+% Trennregeln und Anfuehrungszeichen (sinnvoll fuer in der Informatik
+% haeufige englische Fachbegriffe).
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[main=ngerman,english]{babel}
+\usepackage[autostyle=true,german=quotes]{csquotes} % „..." per \enquote{}
+
+% ----------------------------- Schrift --------------------------------------
+% FOM-Leitfaden Kap. 5.2.2: "Fuer den Text der Arbeit muss eine Schriftart
+% gewaehlt werden, die durchgaengig verwendet wird." Beispiele: Times 12 pt,
+% Arial 11 pt; entscheidend ist, dass ca. 37 Zeilen / 60 Zeichen / 2.200
+% Zeichen je Seite erreicht werden.
+% Open Sans (humanistische Sans-Serif, Apache-2.0-Lizenz) erfuellt diese
+% Vorgabe bei 11 pt analog zu Arial und ist daher leitfadenkonform.
+\usepackage[default,scale=0.97]{opensans}   % Open Sans als Hauptschrift (auf ~2.200 Zeichen/Seite kalibriert, Leitfaden Kap. 5.2.2)
+\usepackage[scaled=0.95]{inconsolata}        % Inconsolata als Monospace-
+                                             % schrift fuer Code-Listings
+                                             % (FOM Kap. 5.9.2 verlangt eine
+                                             % "Fixtype" fuer Quelltexte)
+\usepackage{microtype}                       % bessere Mikrotypografie
+
+% ----------------------------- Seitenraender --------------------------------
+% Vorgabe Leitfaden Kap. 5.2.1: oben 4 cm, unten 2 cm, links 4 cm, rechts 2 cm,
+% Kopfzeile 2 cm, Fusszeile 2 cm Abstand vom Seitenrand.
+\usepackage[
+    a4paper,
+    top=4cm,
+    bottom=2cm,
+    left=4cm,
+    right=2cm,
+    headsep=1cm,
+    footskip=1cm,
+    includeheadfoot=false
+]{geometry}
+
+% ----------------------------- Zeilenabstand --------------------------------
+% Zeilenabstand 1,5-zeilig im Fliesstext (Leitfaden Kap. 5.2.2:
+% "Zeilenabstand im Text: 1,5-zeilig").
+\usepackage{setspace}
+\onehalfspacing
+
+% ----------------------------- Kopf- und Fusszeile --------------------------
+% Kopfzeile mit Abschnittsueberschrift und Seitennummer gemaess
+% Leitfaden Kap. 5.2.1 ("Kopfbereich: hier koennen Abschnittsueberschriften
+% und Seitennummern erscheinen").
+\usepackage{scrlayer-scrpage}
+\setlength{\headheight}{28pt}     % Platz fuer zweizeiligen Kopf (Text + Akzent)
+\pagestyle{scrheadings}
+\clearpairofpagestyles
+\automark[chapter]{chapter}       % Hauptabschnitt = Kapitel im Kopf
+% Auch Kapitel-Startseiten erhalten das volle Header-Layout (statt
+% \pagestyle{plain}), damit der Hauptabschnitts-Titel ausnahmslos sichtbar ist.
+\renewcommand*{\chapterpagestyle}{scrheadings}
+
+% Hinweis: Die Kopfzeilen-Marke der Kapitel wird ueber \automark (oben)
+% gesetzt. Das mehrseitige Symbolverzeichnis (langer longtable mit vielen
+% Beleg-Fussnoten) erhielt darueber zuverlaessig die falsche Marke des
+% Vorkapitels. Es verwendet deshalb einen markenUNABHAENGIGEN, festen
+% Seitenstil \symbolkopf (siehe unten, nach der Kopfzeilen-Definition).
+
+% Akzentlinien-Breiten entlang einer gemeinsamen Goldener-Schnitt-Familie
+% (Hervorhebungen sparsam und einheitlich – Leitfaden Kap. 5.2.2):
+%   - rechts (Seitenzahl):    1,5 cm
+%   - links  (Kapiteltitel):  1,5 cm * phi^3 + 3 cm = 9,35 cm
+%     Hinweis: ursprueglich 1,5 cm * phi^3 + 2 cm = 8,35 cm (die 2 cm
+%     Verlaengerung war ebenfalls eine phi-Groesse, da aus phi^2 = phi + 1
+%     die Identitaet 1/phi^2 = 2 - phi folgt, d. h. phi + 1/phi^2 = 2 cm
+%     exakt). Die Linie wurde nachtraeglich um weitere 1 cm nach rechts
+%     verlaengert, um eine bessere visuelle Ausgewogenheit zwischen
+%     Kapiteltitel und Akzent zu erreichen.
+% Die Einrueckung der Seitenzahl betraegt 1/phi cm = 0,618 cm.
+\newlength{\seitenzahlEinrueckung}\setlength{\seitenzahlEinrueckung}{0.618cm}
+\newlength{\akzentlinienBreite}\setlength{\akzentlinienBreite}{1.5cm}
+\newlength{\akzentlinienBreiteHaupt}\setlength{\akzentlinienBreiteHaupt}{9.35cm}
+
+% Linker Kopf: Kapiteltitel buendig am linken Seitenrand (keine Einrueckung)
+% und linksbuendige Akzentlinie (9,35 cm) darunter.
+% Vgl. Leitfaden Kap. 5.2.1: Im Kopfbereich koennen Abschnittsueberschriften
+% und Seitennummern erscheinen.
+\ihead{%
+    \begin{tabular}[b]{@{}l@{}}%
+        \headmark \\[-2pt]%
+        \textcolor{FOMakzent}{\rule{\akzentlinienBreiteHaupt}{0.8pt}} \\
+    \end{tabular}%
+}
+
+% Rechter Kopf: Seitenzahl (eingerueckt um 1/phi cm) + rechtsbuendige
+% Akzentlinie (1,5 cm) buendig am Seitenrand.
+% Kap. 5.2.2: einheitliche Hervorhebungen.
+\ohead*{%
+    \begin{tabular}[b]{@{}r@{}}%
+        \pagemark\hspace*{\seitenzahlEinrueckung} \\[-2pt]%
+        \textcolor{FOMakzent}{\rule{\akzentlinienBreite}{0.8pt}} \\
+    \end{tabular}%
+}
+\setkomafont{pagehead}{\normalfont\small}
+\setkomafont{pagenumber}{\normalfont\small}
+
+% ----------------------------- Fester Seitenstil: Symbolverzeichnis ---------
+% Markenunabhaengige Kopfzeile fuer das mehrseitige Symbolverzeichnis. Der
+% Kopf zeigt fest "Symbolverzeichnis" (kein \headmark), sodass weder
+% longtable noch der Beleg-/Glossar-Apparat die Marke verfaelschen koennen.
+% Layout identisch zu den uebrigen Kopfzeilen (Akzentlinie/Seitenzahl).
+\newpairofpagestyles{symbolkopf}{%
+    \ihead{%
+        \begin{tabular}[b]{@{}l@{}}%
+            Symbolverzeichnis \\[-2pt]%
+            \textcolor{FOMakzent}{\rule{\akzentlinienBreiteHaupt}{0.8pt}} \\
+        \end{tabular}%
+    }%
+    \ohead*{%
+        \begin{tabular}[b]{@{}r@{}}%
+            \pagemark\hspace*{\seitenzahlEinrueckung} \\[-2pt]%
+            \textcolor{FOMakzent}{\rule{\akzentlinienBreite}{0.8pt}} \\
+        \end{tabular}%
+    }%
+    \setkomafont{pagehead}{\normalfont\small}%
+    \setkomafont{pagenumber}{\normalfont\small}%
+}
+
+% ----------------------------- Ueberschriften -------------------------------
+% Leitfaden Kap. 5.2.3: "Jedes Kapitel, jeder Abschnitt und jeder
+% Unterabschnitt erhalten eine Ueberschrift. In der Regel werden sie fett
+% und in einem groesseren Schriftgrad als der Haupttext gesetzt. Dabei
+% nimmt der Schriftgrad mit zunehmender Gliederungstiefe ab."
+\setkomafont{disposition}{\sffamily\bfseries}
+\setkomafont{chapter}{\sffamily\bfseries\Large}
+\setkomafont{section}{\sffamily\bfseries\large}
+\setkomafont{subsection}{\sffamily\bfseries\normalsize}
+\setkomafont{subsubsection}{\sffamily\bfseries\normalsize}
+% Abstand vor Ueberschriften 12 pt, dahinter 6 pt (Leitfaden Kap. 5.2.2:
+% "Der Abstand bei Ueberschriften ... soll vor einem Absatz 12 pt und
+% nach einem Absatz 6 pt betragen").
+\RedeclareSectionCommand[
+    beforeskip=12pt,
+    afterskip=6pt
+]{chapter}
+\RedeclareSectionCommand[
+    beforeskip=12pt,
+    afterskip=6pt
+]{section}
+\RedeclareSectionCommand[
+    beforeskip=12pt,
+    afterskip=6pt
+]{subsection}
+\RedeclareSectionCommand[
+    beforeskip=12pt,
+    afterskip=6pt
+]{subsubsection}
+
+% Dekadische Gliederung bis Tiefe 4 (Leitfaden Kap. 5.2.3: "Auf
+% Nummerierung kann ab einer Gliederungstiefe groesser vier verzichtet
+% werden.").
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{3}
+
+% ----------------------------- Blocksatz & Trennung -------------------------
+% Leitfaden Kap. 5.3: "Absaetze werden durchgaengig im Blocksatz gesetzt.
+% Dabei ist die Silbentrennung zu verwenden, damit die Wortzwischenraeume
+% nicht unverhaeltnismaessig gross werden."
+\sloppy
+\hyphenpenalty=300
+\tolerance=2000
+\emergencystretch=10pt
+
+% ----------------------------- Fussnoten ------------------------------------
+% Leitfaden Kap. 5.2.2: "Zeilenabstand in Fussnoten ist einzeilig, der
+% Schriftgrad 10 pt (Times New Roman) oder 9,5 pt (Arial)." Bei Open Sans
+% (sans-serif analog Arial) ist 10 pt eine zulaessige Wahl.
+% Vgl. auch Leitfaden Kap. 5.4 zur Verwendung von Fussnoten.
+% \deffootnote ist in KOMA-Script direkt verfuegbar (kein zusaetzliches Paket).
+\deffootnote[1em]{1.5em}{1em}{\textsuperscript{\thefootnotemark}\ }
+\setkomafont{footnote}{\fontsize{10pt}{12pt}\selectfont}
+\setkomafont{footnotereference}{\textsuperscript}
+
+% Trennlinie zwischen Fließtext und Fußnoten als Akzentlinie in FOMakzent
+% (gleiche Farbe wie die Akzentlinien in Kopfzeile/Titelblatt).
+% Laenge 6,354 cm = 1,5 cm · φ³ -- naechste Goldener-Schnitt-Stufe der
+% Akzentlinien-Familie nach der 1,5-cm-Linie der Seitenzahl und vor der
+% 9,354 cm = 1,5·φ³ + 3 cm langen Kapitellinie. Damit liegt der Wert
+% innerhalb des vom Schreibstil geforderten 5--7-cm-Intervalls und ist
+% nicht arbiträr, sondern an die uebrigen Linien anschlussfaehig.
+% Strichstaerke 0,8 pt (konsistent mit den Header-Linien); Mindestabstand
+% von 0,2 cm zwischen Trennlinie und Fußnoten-Fließtext (entspricht der
+% kerning-Vorgabe der nachfolgenden Zeile).
+\renewcommand*{\footnoterule}{%
+    \kern-3pt%
+    \hbox{\color{FOMakzent}\vrule width 6.354cm height 0.8pt depth 0pt}%
+    \kern 0.2cm%
+}
+
+% Durchgaengige Fußnoten-Nummerierung ueber das gesamte Dokument hinweg.
+% scrreprt setzt den Fußnoten-Counter standardmaessig zu Beginn jedes
+% Kapitels zurueck. Durch das Entkoppeln von "chapter" laeuft der Zaehler
+% kontinuierlich von der ersten bis zur letzten Fußnote der Arbeit weiter,
+% was Querverweise nachvollziehbar haelt (vgl. Leitfaden Kap. 5.4).
+\counterwithout{footnote}{chapter}
+
+% --- Trenner zwischen aufeinanderfolgenden Fußnoten-Markierungen -----------
+% Bei aufeinanderfolgenden Fußnoten-Citationen -- etwa
+% "...{a}\footcite{b}\footcite{c}" -- kollidieren die Hochziffern im
+% Fließtext optisch (Ergebnis "¹²³" statt "¹ ² ³"). Das Paket footmisc
+% loest dies mit der Option `multiple`: per kerngesteuerter
+% Folge-Erkennung wird zwischen direkt aufeinanderfolgenden
+% Hochziffern automatisch ein Trenner gesetzt -- nicht jedoch vor
+% Satzzeichen oder vor regulaer mit Leerzeichen abgesetzten Folgewoertern.
+% Der Trenner wird ueber \multfootsep konfiguriert; Default ist ein
+% Komma, hier auf \space (Leerzeichen) umgestellt.
+% Hinweis: Die fuer die biblatex-Kombination noetige Neudefinition von
+% \mkbibfootnote (Entfernen des Kern-zerstoerenden \unspace) erfolgt
+% weiter unten im Bibliografie-Abschnitt, nachdem biblatex-chicago
+% \mkbibfootnote definiert hat.
+\usepackage[multiple]{footmisc}
+\renewcommand{\multfootsep}{\space}
+
+% ----------------------------- Grafik & Tabellen ----------------------------
+% Abbildungen: Leitfaden Kap. 2.3 / 5.7 (Bildunterschrift UNTER der Abbildung,
+% fortlaufende Nummerierung, ungerahmt, im Text referenziert).
+% Tabellen:    Leitfaden Kap. 2.4 / 5.6 (Titel UEBER der Tabelle, sparsame
+% Linienverwendung, fortlaufende Nummerierung).
+\usepackage{graphicx}
+\graphicspath{{abbildungen/}}
+\usepackage{svg}            % Vektor-Einbindung der Modelle/Logo/Unterschrift (benoetigt --shell-escape + Inkscape)
+\svgpath{{abbildungen/}}
+\svgsetup{inkscapelatex=false}   % Text von Inkscape direkt ins PDF einbetten (verhindert ueberlagerte Text-Artefakte in den BPMN-Modellen)
+% pdflscape rotiert einzelne Seiten im PDF (anstatt nur den Satzspiegel).
+% Damit lassen sich breite Diagramme (AR >= 2) lesbar darstellen, ohne den
+% Lesefluss der uebrigen Seiten zu beeintraechtigen (FOM-Leitfaden Kap. 5.7:
+% Lesbarkeit der Abbildung).
+\usepackage{pdflscape}
+% TikZ fuer das Symbolverzeichnis (BPMN-2.0-Notationselemente).
+% Die Symbole werden direkt im LaTeX-Quelltext gezeichnet, damit sie
+% ohne externe Bilddateien aufloesungsunabhaengig im PDF/A-Build
+% (pdfx, a-2b) verfuegbar bleiben. Geladene Bibliotheken:
+%   - arrows.meta   : moderne Pfeilspitzen (Latex/Stealth) fuer Sequenz-
+%                     und Nachrichtenflusssymbole
+%   - shapes.geometric : Diamant-Form fuer Gateways
+%   - positioning   : einheitliche relative Positionierung kleiner Marker
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,shapes.geometric,positioning}
+\usepackage{booktabs}                          % schlanke Tabellenlinien
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{varwidth}
+\captionsetup{
+    font={small},
+    labelfont={bf,sf},
+    labelsep=colon,
+    justification=centering,
+    skip=6pt                                    % 6 pt Abstand (Kap. 5.2.2)
+}
+\captionsetup[figure]{position=below}           % Kap. 2.3 / 5.7
+\captionsetup[table]{position=above}            % Kap. 2.4 / 5.6
+
+% Einheitliches Makro fuer Quellenangaben unter Abbildungen, das die
+% Zweizeiligkeit (Bildunterschrift + Quellenangabe) typografisch stabil und
+% projektweit konsistent abbildet (FOM-Leitfaden Kap. 5.7).
+% Verwendung in jeder figure-Caption am Ende:
+%   \caption[Kurztitel]{Langtitel.\quelleeigen}     % rein eigene Darstellung
+%   \caption[Kurztitel]{Langtitel.\quelleeigenki}   % KI-unterstuetzt
+%                                                    % erstellte Darstellung
+%                                                    % (FOM-Leitfaden Kap. 6.2.4)
+%   \caption[Kurztitel]{Langtitel.\quellefremd{Autor (Jahr, S.~X)}}
+% Caption-Format: gesamter Beschriftungsblock (Abbildungskennung + Titel +
+% Quellenangabe) wird als Box in natuerlicher Breite zentriert unter dem Bild
+% gesetzt. Innerhalb der Box ist der Titel zentriert, die Quellenangabe jedoch
+% linksbuendig zur Abbildungskennung ausgerichtet (vgl. Anforderung Kap. 5.7).
+\DeclareCaptionFormat{quellecentered}{%
+  {\centering\begin{varwidth}{\linewidth}\centering #1#2#3\end{varwidth}\par}%
+}
+\captionsetup[figure]{format=quellecentered}
+
+% Quellenangabe beginnt eine neue, linksbuendige Zeile innerhalb der Box.
+\newcommand{\quelleeigen}{\par\vspace{2pt}\raggedright\small Quelle: Eigene Darstellung.}
+\newcommand{\quelleeigenki}{\par\vspace{2pt}\raggedright\small Quelle: Eigene Darstellung (KI-generiert).}
+\newcommand{\quellefremd}[1]{\par\vspace{2pt}\raggedright\small Quelle: #1.}
+
+% Abbildungs- und Tabellenverzeichnis bündig am linken Seitenrand setzen
+% (entspricht der eigenen Darstellung im FOM-Leitfaden, Vorspann S. vi/vii:
+% "Abbildung 1: Laufzeitmessung Systemvergleich ........ 22").
+\DeclareTOCStyleEntry[indent=0pt,numwidth=3em]{tocline}{figure}
+\DeclareTOCStyleEntry[indent=0pt,numwidth=3em]{tocline}{table}
+
+% ----------------------------- Mathematik & Formeln -------------------------
+% Leitfaden Kap. 5.8: "Bezeichner von Variablen werden kursiv gesetzt.
+% Bezeichner von Konstanten und Operatorsymbole werden aufrecht gesetzt
+% ... Eine Gleichung ist eine Aussage und wird mit einem Satzzeichen
+% abgeschlossen, sofern der Satzbau dies erfordert. ... Formeln werden
+% laufend durchnummeriert."
+\usepackage{amsmath,amssymb,amsthm}
+\numberwithin{equation}{chapter}                % Gleichungsnummern je Kapitel
+% mathastext rendert Math-Buchstaben in der aktuellen Textschrift (Open Sans),
+% damit Math und Fliesstext visuell zusammenpassen. Griechische Buchstaben
+% bleiben Computer Modern (kein dedizierter Open-Sans-Math-Font verfuegbar).
+\usepackage[italic,defaultmathsizes]{mathastext}
+
+% ----------------------------- Algorithmen / Quelltexte ---------------------
+% Leitfaden Kap. 5.9.1 (Algorithmen / Pseudocode): Titel, fortlaufende
+% Nummerierung sowie nummerierte Zeilen sind verbindlich.
+\usepackage[ruled,linesnumbered,vlined]{algorithm2e}
+\SetAlgorithmName{Algorithmus}{Algorithmus}{Algorithmenverzeichnis}
+\SetAlgoCaptionSeparator{:}
+% algorithm2e platziert die Zeilennummern bei aktivem `linesnumbered`-Modus
+% am linken Innenrand der Algorithmus-Box. In der Standardkonfiguration
+% reicht der voreingestellte `algomargin` (~2 em) nicht aus, sodass die
+% Zeilennummern links aus den horizontalen Begrenzungslinien austreten und
+% in den linken Seitenrand ragen. Mit \IncMargin wird der Innenrand
+% vergroessert, sodass die Zeilennummern bündig innerhalb der Box stehen
+% und der Satzspiegel nicht verletzt wird.
+\IncMargin{2em}
+% algorithm2e setzt den Page-Mark fuer das Algorithmenverzeichnis intern via
+% \MakeUppercase, wodurch der Kopf "ALGORITHMENVERZEICHNIS" zeigt. Wir
+% ueberschreiben \listofalgorithms, damit der Mark in normaler Gross-Klein-
+% Schreibung gesetzt wird (Vereinheitlichung mit den anderen Verzeichnissen).
+\makeatletter
+\renewcommand{\listofalgorithms}{%
+    \chapter*{\listalgorithmcfname}%
+    \markboth{\listalgorithmcfname}{\listalgorithmcfname}%
+    \@starttoc{loa}%
+}
+% Eintraege im Algorithmenverzeichnis flush-left setzen (analog zu
+% Abbildungs- und Tabellenverzeichnis -- konsistent mit dem
+% FOM-Leitfaden-Layout).
+\renewcommand*{\l@algocf}[2]{\@dottedtocline{1}{0pt}{2.5em}{#1}{#2}}
+\makeatother
+
+% Leitfaden Kap. 5.9.2 (Quelltexte): "um die Einrueckung zur Geltung zu
+% bringen, wird eine Fixtype verwendet ... die Zeilen koennen nummeriert
+% werden ... Quelltexte sollten hinreichend durch Kommentare dokumentiert
+% sein ... die Quelltexte erhalten Titel".
+\usepackage{listings}
+\lstset{
+    basicstyle=\ttfamily\small,                 % Fixtype (Inconsolata)
+    breaklines=true,
+    breakatwhitespace=true,
+    numbers=left,                                % Zeilennummerierung
+    numberstyle=\tiny\color{gray},
+    numbersep=8pt,                               % Abstand Nummer-zu-Code
+    xleftmargin=2.5em,                           % Listing einruecken: ohne
+                                                 % diese Einrueckung wuerden
+                                                 % die Zeilennummern in den
+                                                 % linken Seitenrand ragen
+                                                 % (= negative Position
+                                                 % relativ zum Textsatz).
+    framesep=4pt,
+    frame=single,
+    captionpos=t,                                % Titel ueber Listing
+    showstringspaces=false,
+    tabsize=2
+}
+\renewcommand{\lstlistingname}{Quelltext}
+\renewcommand{\lstlistlistingname}{Quelltextverzeichnis}
+
+% ----------------------------- Listen ---------------------------------------
+% Leitfaden Kap. 5.5: Gliederungs-, Beschreibungs- und Aufzaehlungslisten
+% mit einheitlicher Symbolverwendung; bei laengeren Listenpunkten
+% Blocksatz; geschachtelte Listen erhalten je Stufe ein eigenes Symbol.
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt}
+
+% ----------------------------- PDF/A & Hyperlinks ---------------------------
+% Leitfaden Kap. 5.10.2: "es muss die verwendeten Zeichensaetze eingebettet
+% mitbringen ... ein Format gewaehlt werden, das sich moeglichst nah am
+% Standard PDF/A orientiert." Das pdfx-Paket erzeugt PDF/A-2b-konforme
+% PDFs (Zeichensaetze eingebettet, keine Verschluesselung, kein Schutz
+% gegen Drucken/Extraktion). pdfx LAEDT hyperref intern; es darf daher
+% kein separates \usepackage{hyperref} davor oder danach erfolgen.
+% Erforderlich: Datei main.xmpdata mit Title, Author, Subject, Keywords,
+% Publisher, Language.
+\usepackage[a-2b]{pdfx}
+
+% Leitfaden Kap. 2.3 / 2.4: "Referenzen sollten mithilfe von Textmarken
+% erzeugt werden (bei LATEX: \autoref{label}). ... Die Referenz nennt die
+% vollstaendige Bezeichnung: 'Abbildung 3' / 'Tabelle 4'. Referenzen
+% werden nicht abgekuerzt." cleveref liefert dies automatisch.
+\hypersetup{
+    hidelinks,
+    bookmarksnumbered=true
+}
+\usepackage[ngerman]{cleveref}
+\crefname{figure}{Abbildung}{Abbildungen}
+\crefname{table}{Tabelle}{Tabellen}
+\crefname{equation}{Gleichung}{Gleichungen}
+\crefname{section}{Abschnitt}{Abschnitte}
+\crefname{chapter}{Kapitel}{Kapitel}
+% Eigener Float-Typ `mathformel` (siehe \DeclareNewTOC weiter unten):
+% Ohne diese Registrierung liefert \Cref{mformel:...} im PDF "??".
+\crefname{mathformel}{Formel}{Formeln}
+\Crefname{mathformel}{Formel}{Formeln}
+\crefname{lstlisting}{Quelltext}{Quelltexte}
+\Crefname{lstlisting}{Quelltext}{Quelltexte}
+\crefname{algocf}{Algorithmus}{Algorithmen}
+\Crefname{algocf}{Algorithmus}{Algorithmen}
+
+% ----------------------------- Bibliografie (Chicago Notes) -----------------
+% Zitierstil: Chicago Manual of Style (17. Aufl.), Notes & Bibliography.
+% Belege erscheinen als Fußnoten -- Vollbeleg bei der Erstnennung,
+% Kurzbeleg bei Folgenennungen. Das Quellenverzeichnis bleibt
+% alphabetisch nach Erstautor sortiert.
+% Hinweis zum FOM-Leitfaden: Kap. 6.2 schreibt keinen einzelnen Stil
+% verbindlich vor, verlangt aber konsistente Anwendung mit Autor, Jahr und
+% Seitenzahl (Kap. 6.2.3). Beide Vorgaben werden durch den Chicago-Notes-
+% Stil erfüllt, da jede Fußnote Autor, Werktitel, Jahr und Seitenzahl
+% enthält. Kap. 6.3: Quellenverzeichnis alphabetisch nach Autor sortiert.
+% Kap. 6.2.4: KI-generierte Inhalte werden separat im KI-Verzeichnis
+% nach dem Literaturverzeichnis gefuehrt.
+\usepackage[
+    notes,                         % Chicago Notes-Bibliography (Fußnoten)
+    backend=biber,
+    natbib=true,
+    sorting=nyt,                   % alphabetisch nach Name/Jahr/Titel
+    sortcites=true,
+    maxcitenames=2,
+    mincitenames=1,
+    maxbibnames=99,
+    giveninits=true,
+    uniquename=init,
+    isbn=true,
+    doi=true,
+    url=true,
+    backref=false,
+    autocite=footnote              % \autocite -> Fußnote (Chicago-Notes)
+]{biblatex-chicago}
+
+% Deutsche Lokalisierung gaengiger Bezeichner (vgl. Leitfaden-Beispiele in
+% Kap. 6.2.3); Trennzeichen werden vom Chicago-Stil selbst gesetzt und
+% nicht ueberschrieben.
+\DefineBibliographyStrings{ngerman}{%
+    andothers   = {{et\,al\adddot}},                  % "et al."
+    backrefpage = {{vgl\adddotspace S\adddotspace}}
+}
+
+% Bibliografie-Datei einbinden
+% verzeichnisse/references.bib -- einzige Quelle des Literaturverzeichnisses;
+%                   wird ueber Mendeley Reference Manager synchronisiert. Die
+%                   globale biblatex-Konfiguration oben (Chicago Notes,
+%                   sorting=nyt, ...) gilt dafür.
+\addbibresource{verzeichnisse/references.bib}
+
+% --- Mehrfache-Fußnoten-Patch fuer biblatex --------------------------------
+% biblatex setzt \mkbibfootnote standardmaessig in der Form
+%   \unspace\xspace\bibsentence\footnote{\bibsentence#1\addperiod}
+% ein. Das fuehrende \unspace entfernt vorhandene Trailing-Spaces und
+% damit auch den Kern-Marker, den footmisc[multiple] hinter jeder
+% Fußnoten-Markierung platziert, um aufeinanderfolgende Marken zu
+% erkennen. Folge: bei \footcite\footcite-Sequenzen schlaegt die
+% Trennererkennung fehl ("¹²" statt "¹ ²").
+% Die Neudefinition entfernt das stoerende \unspace und behaelt das
+% darauf folgende \bibsentence bei. Da biblatex-chicago Fußnoten-
+% Citationen ausschliesslich ueber \mkbibfootnote abwickelt, wirkt
+% der Patch zugleich fuer \footcite, \autocite und die Wrapper \zit
+% und \zitw.
+\renewcommand*{\mkbibfootnote}[1]{%
+    \iftoggle{blx@footnote}%
+        {#1}%
+        {\bibsentence\footnote{\bibsentence#1\addperiod}}%
+}
+
+% Filter: Eintraege mit Schluesselwort "ki" -> KI-Verzeichnis (Kap. 6.2.4),
+% alle uebrigen -> Hauptliteraturverzeichnis (Kap. 6.3).
+\defbibfilter{nichtKI}{not keyword=ki}
+\defbibfilter{nurKI}{keyword=ki}
+
+% Hilfsmakros für Fußnoten-Belege (Chicago Notes):
+%   \zit[S.~24]{key}  -> Fußnote mit voranstehendem "Vgl. ..."
+%   \zitw[S.~24]{key} -> Fußnote ohne "vgl." (wörtliches Zitat)
+% Äquivalent zu \footcite (siehe biblatex-chicago); die Kurznamen werden
+% aus Lesbarkeitsgründen beibehalten.
+\newcommand{\zit}[2][]{\footcite[vgl.][#1]{#2}}
+\newcommand{\zitw}[2][]{\footcite[#1]{#2}}
+
+% ----------------------------- Glossar / Abkuerzungen / Symbole ------------
+% Leitfaden Kap. 2.5: "Abkuerzungen werden vor der ersten Verwendung formal
+% eingefuehrt. Der Begriff wird ausgeschrieben und die abkuerzende
+% Schreibweise wird dahinter in Klammern gesetzt." -- glossaries-extra
+% automatisiert dies: \gls{api} liefert beim ersten Auftreten "Application
+% Programming Interface (API)", danach nur noch "API".
+% Leitfaden Kap. 5.1 nennt zusaetzlich "Glossar" und "Verzeichnis von
+% Formelzeichen und Indizes" als optionale Verzeichnisse. Beide werden
+% hier ueber dieselbe glossaries-extra-Infrastruktur verwaltet:
+%   - main           -> Glossar (Fachbegriffe)        (Kap. 5.1)
+%   - abbreviations  -> Abkuerzungsverzeichnis        (Kap. 2.5 / 5.1)
+%   - symbols        -> Formelzeichenverzeichnis      (Kap. 5.1 / 5.8)
+% MUSS NACH hyperref/biblatex geladen werden.
+% \makenoidxglossaries (statt \makeglossaries) verzichtet auf externes
+% makeglossaries/bib2gls-Tool und erlaubt damit reines pdflatex-Compilieren
+% (Overleaf-Default). Sortierung erfolgt beim Drucken via TeX.
+% Wichtig: glossaries-extra laedt die Style-Files (altlist, longtable, ...)
+% nicht automatisch. Ohne `stylemods=...` wuerde \printnoidxglossary[
+% style=altlist] mit "Undefined control sequence" bzw. "Illegal parameter
+% number in definition of \csname\endcsname" abbrechen. Der custom Style
+% `fomabbr` (Abkuerzungsverzeichnis) ist davon nicht betroffen, weil er
+% direkt per \newglossarystyle definiert ist.
+\usepackage[%
+    abbreviations,%             Abkuerzungs-Liste aktiv
+    nonumberlist,%              keine Seitenzahlen im Verzeichnis
+    nopostdot,%                 kein Punkt am Eintrags-Ende
+    toc,%                       Eintrag im Inhaltsverzeichnis
+    stylemods=list%             altlist/list-Styles fuer das Glossar laden
+]{glossaries-extra}
+\setabbreviationstyle[abbreviation]{long-short}
+\makenoidxglossaries
+
+% Custom-Style "fomabbr" fuer das Abkuerzungsverzeichnis:
+%   - longtable startet bei 0pt (flush-left zum Seitenrand)
+%   - linke Spalte 2,5 cm breit, Eintraege fett gesetzt
+%   - 0,7 cm Spaltenabstand
+%   - rechte Spalte raggedright, restliche Textbreite
+% Dadurch werden Eintraege wie "API" / "REST" linksbuendig zum Seitenrand
+% gesetzt; die Erlaeuterung beginnt einheitlich 0,7 cm hinter der
+% Kurzform-Spalte.
+\newglossarystyle{fomabbr}{%
+    \renewenvironment{theglossary}{%
+        \setlength{\LTleft}{0pt}%
+        \setlength{\LTright}{\fill}%
+        \begin{longtable}{%
+            @{}>{\bfseries}p{2.5cm}@{\hspace{0.7cm}}%
+            >{\raggedright\arraybackslash}p{\dimexpr\textwidth-3.2cm\relax}@{}%
+        }%
+    }{%
+        \end{longtable}%
+    }%
+    \renewcommand*{\glossaryheader}{}%
+    \renewcommand*{\glsgroupheading}[1]{}%
+    \renewcommand*{\glossentry}[2]{%
+        \glsentryitem{##1}\glstarget{##1}{\glossentryname{##1}}%
+        & \glossentrydesc{##1}\glspostdescription \tabularnewline
+    }%
+    \renewcommand*{\subglossentry}[3]{%
+        & \glossentrydesc{##2}\glspostdescription \tabularnewline
+    }%
+    \renewcommand*{\glsgroupskip}{}%
+}
+
+% Custom-Style "fomgloss" fuer das Glossar (Fachbegriffe). Analog zu
+% `fomabbr` ohne Abhaengigkeit von glossary-list/longtable -- damit ist
+% das Glossar auch dann darstellbar, wenn `stylemods` keine Wirkung
+% entfaltet. Aufbau:
+%   Begriff (fett, eigener Absatz)
+%   Beschreibung (eingerueckt, Blocksatz)
+\newglossarystyle{fomgloss}{%
+    \renewenvironment{theglossary}{%
+        \setlength{\parindent}{0pt}%
+        \setlength{\parskip}{6pt plus 1pt}%
+    }{}%
+    \renewcommand*{\glossaryheader}{}%
+    \renewcommand*{\glsgroupheading}[1]{}%
+    \renewcommand*{\glossentry}[2]{%
+        \glsentryitem{##1}\glstarget{##1}{%
+            \textbf{\glossentryname{##1}}}\par
+        \nopagebreak\noindent\hangindent=1.5em\hangafter=0
+        \glossentrydesc{##1}\glspostdescription\par
+    }%
+    \renewcommand*{\subglossentry}[3]{%
+        \glsentryitem{##2}\glstarget{##2}{%
+            \textbf{\glossentryname{##2}}}\par
+        \nopagebreak\noindent\hangindent=1.5em\hangafter=0
+        \glossentrydesc{##2}\glspostdescription\par
+    }%
+    \renewcommand*{\glsgroupskip}{}%
+}
+
+\loadglsentries{verzeichnisse/abkuerzungen-defs}
+\loadglsentries{verzeichnisse/glossar-defs}
+
+% ----------------------------- Mathematisches Formelverzeichnis ------------
+% Eigenes Float-Verzeichnis fuer mathematische Formeln (separates
+% Verzeichnis neben dem von Kap. 5.1 angesprochenen "Verzeichnis von
+% Formelzeichen und Indizes"). Verwendung im Kapitel:
+%
+%   \begin{mathformel}
+%       \caption{Anlagenverfuegbarkeit}\label{eq:verfuegbarkeit}
+%       \[ a = \frac{t_B}{t_{\text{ges}}} \]
+%   \end{mathformel}
+%
+% Numerierung pro Kapitel (Formel 2.1, 2.2, ...). Eintrag im Inhalts-
+% verzeichnis ueber listof=totoc bereits aktiv.
+\usepackage{float}
+\DeclareNewTOC[%
+    type=mathformel,%
+    types=mathformeln,%
+    float,%
+    floatpos=H,%
+    name=Formel,%
+    listname={Mathematisches Formelverzeichnis}%
+]{lomf}
+\numberwithin{mathformel}{chapter}
+\DeclareTOCStyleEntry[indent=0pt,numwidth=3em]{tocline}{mathformel}
+
+% ----------------------------- Sonstiges ------------------------------------
+% Farben: Leitfaden Kap. 5.2.2 verlangt Hervorhebungen "sparsam und
+% einheitlich". Die Akzentfarbe ist deshalb auf Titelblatt + Header-
+% Akzentlinie beschraenkt; Fliesstext bleibt schwarz/weiss.
+\usepackage{xcolor}
+\definecolor{FOMakzent}{HTML}{239F91}        % FOM-Petrolgruen (Logo)
+\definecolor{FOMakzentDunkel}{HTML}{1B7A6F}  % dunklere Variante
+
+% Lokalisierung: Komma als Dezimaltrenner ist im deutschen Schriftsatz
+% Standard (vgl. Leitfaden Kap. 5.6 Tabelle 1, "Wechselkurs ... 1,13").
+\usepackage{lmodern}
+\usepackage{eurosym}
+\usepackage{siunitx}
+\sisetup{
+    locale = DE,
+    output-decimal-marker = {,},
+    group-separator = {\,},
+    detect-weight = true,
+    detect-family = true
+}
+
+% Leitfaden Kap. 7.4: "Hurenkinder und Schusterjungen (... einzelne Zeilen
+% eines Absatzes am Anfang oder am Ende einer Seite)" sollen vermieden
+% werden. Hohe Penalties unterdruecken solche Brueche.
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+
+% ============================================================================
+%                              METADATEN
+% Pflichtangaben des Titelblatts (Leitfaden Kap. 5.1, Anhang I):
+% Identifikation (Name, Matrikelnummer), Titel, Art der Arbeit, Hochschule
+% und Studiengang, Erstgutachter, Datum/Ort der Fertigstellung.
+% ============================================================================
+\newcommand{\arbeitTitel}{OpenClaw als Trading Agent}
+\newcommand{\arbeitUntertitel}{AI Agent zur Nutzung einer SMA Strategie im Derivate-Handel}
+\newcommand{\arbeitArt}{Projektarbeit} % Bachelor-Thesis oder Master-Thesis / Seminararbeit
+\newcommand{\arbeitGrad}{Bachelor of Science (B.Sc.)}
+\newcommand{\arbeitStudiengang}{Informatik}
+\newcommand{\arbeitHochschulzentrum}{Digitales Live-Studium (DLS)}
+\newcommand{\autorVorname}{Rolland}
+\newcommand{\autorNachname}{Kiss}
+\newcommand{\autorMatrikel}{799553}
+\newcommand{\erstgutachter}{Prof. Dr. Klemens Waldhör}
+\newcommand{\zweitgutachter}{-} % optional
+% Vor der finalen Abgabe das tatsaechliche Datum festsetzen, damit das
+% Datum nicht bei spaeteren Re-Compiles unbeabsichtigt mitwandert (z. B.
+% \newcommand{\abgabedatum}{15.\,Juni 2026}).
+\newcommand{\abgabedatum}{\today}
+\newcommand{\arbeitOrt}{Köln}        % Ort fuer Unterschriften (Kap. 7.2)
+
+% PDF-Metadaten: Title/Author/Subject/Keywords werden bei PDF/A primaer
+% aus main.xmpdata gelesen (vom pdfx-Paket). Die folgenden Werte spiegeln
+% sie fuer Nicht-PDF/A-Builds wider.
+\hypersetup{
+    pdftitle={\arbeitTitel},
+    pdfauthor={\autorVorname{} \autorNachname},
+    pdfsubject={\arbeitArt{} - FOM Hochschule},
+    pdfkeywords={FOM, \arbeitStudiengang, \arbeitArt}
+}
+
+% ============================================================================
+%                              DOKUMENT
+% ============================================================================
+\begin{document}
+
+% --- Vorspann (roemische Seitenzaehlung) ------------------------------------
+% Leitfaden Kap. 5.2.1: "Die Seiten des Vorspanns werden im Allgemeinen
+% roemisch nummeriert. Danach wird auf arabische Seitennummerierung
+% beginnend mit Eins umgestellt." Im Beispiel des Leitfadens werden
+% kleinroemische Ziffern (i, ii, iii) verwendet.
+% Titelblatt = Seite i, Inhaltsverzeichnis = Seite ii (Sperrvermerk wird
+% gemaess Leitfaden Kap. 7.2 NICHT mitgezaehlt).
+\pagenumbering{roman}
+\pagestyle{plain}
+
+\include{titelblatt/titelblatt}
+
+% Sperrvermerk (Leitfaden Kap. 7.2). Bei NICHT vertraulichen Arbeiten
+% folgende Zeile auskommentieren:
+\input{sperrvermerk/sperrvermerk}
+
+% Inhaltsverzeichnis
+\pagestyle{scrheadings}
+\tableofcontents
+\cleardoublepage
+
+% Verzeichnisse (Leitfaden Kap. 5.1: "Die aufgefuehrten Verzeichnisse
+% erhalten keine Gliederungsnummern, werden aber im Inhaltsverzeichnis
+% aufgefuehrt."). Reihenfolge alphabetisch nach Verzeichnis-Bezeichnung:
+%   Abbildungs- -> Abkuerzungs- -> Glossar -> Symbolverzeichnis.
+% Hinweis: KEIN explizites \clearpage zwischen den Verzeichnissen, da
+% jedes Verzeichnis intern \chapter*{...} aufruft und damit selbst eine
+% neue Seite startet. Ein zusaetzliches \clearpage erzeugt eine leere
+% Zwischenseite mit der Kopfmarke des Vorgaenger-Verzeichnisses.
+% Hinweis zu entfernten/ausgeblendeten Verzeichnissen:
+%   - Algorithmenverzeichnis: vollstaendig entfernt.
+%   - Mathematisches Formelverzeichnis: vollstaendig entfernt
+%     (die \begin{mathformel}-Floats im Hauptteil bleiben gueltig
+%     nummeriert, werden aber nicht mehr in einem Verzeichnis gelistet).
+%   - Tabellenverzeichnis: ausgeblendet (nur auskommentiert, s. u.).
+\listoffigures
+\input{verzeichnisse/abkuerzungen}                  % Kap. 2.5 / 5.1
+\input{verzeichnisse/glossar}                       % Kap. 5.1
+\input{verzeichnisse/symbolverzeichnis}             % BPMN-2.0-Notationssymbole
+%\listoftables                                      % Tabellenverzeichnis ausgeblendet
+\clearpage
+
+% Quelltextverzeichnis bewusst nicht aktiviert. Begruendung:
+%   - Leitfaden Kap. 5.1 stuft das Verzeichnis als optional ein
+%     ("kann sinnvoll sein, wenn ...").
+%   - Saemtliche Quelltexte sind in einem einzigen Anhangskapitel gebuendelt
+%     und durch dessen Abschnittsstruktur (I.I, I.II, I.III) bereits navigierbar.
+%   - Die zusaetzliche Verzeichnisseite waere in dieser Konstellation eine
+%     redundante Wiederholung des Anhang-TOC.
+%   - Querverweise via \cref{lst:...} ermoeglichen die direkte Navigation.
+% Bei Bedarf — etwa wenn Listings ueber den Hauptteil verteilt eingesetzt
+% werden — die folgenden Zeilen aktivieren (KOMA fuegt mit listof=totoc
+% automatisch einen TOC-Eintrag hinzu, daher KEIN \addcontentsline noetig):
+%\lstlistoflistings
+%\cleardoublepage
+
+% --- Hauptteil (arabische Seitenzaehlung ab Kapitel 1) ----------------------
+% Leitfaden Kap. 5.2.1: arabische Seitennummerierung beginnt mit "1" am
+% ersten Kapitel des Hauptteils.
+% Aufbau gemaess Kap. 5.1: Einleitung -> Grundlagen -> Umsetzung -> Schluss.
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\include{kapitel/01_einleitung}
+\include{kapitel/02_grundlagen}
+\include{kapitel/03_umsetzung}
+\include{kapitel/04_schluss}
+
+% --- Nachspann --------------------------------------------------------------
+% Leitfaden Kap. 5.1 / 6.3: Quellenverzeichnis nach dem Hauptteil,
+% alphabetisch nach Erstautor. Kap. 6.2.4: KI-Verzeichnis folgt direkt
+% nach dem Literaturverzeichnis.
+\cleardoublepage
+\printbibliography[
+    filter=nichtKI,
+    title={Literaturverzeichnis},
+    heading=bibintoc
+]
+
+% KI-Verzeichnis (Kap. 6.2.4) -- ausgelagert in eigene Verzeichnis-Datei,
+% direkt hinter dem Literaturverzeichnis eingebunden.
+\cleardoublepage
+\input{verzeichnisse/ki-verzeichnis}
+
+% Anhang mit grossen roemischen Ziffern auf ALLEN Gliederungsebenen
+% (Kap. 5.1: "Die Nummerierung im Anhang erfolgt mit grossen roemischen
+% Ziffern.")
+\appendix
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\thechapter.\Roman{section}}
+\renewcommand{\thesubsection}{\thesection.\Roman{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\Roman{subsubsection}}
+\include{anhang/anhang}
+
+% Eigenstaendigkeitserklaerung (Leitfaden Kap. 7.2): "als letztes Blatt
+% der Arbeit ... erhaelt jedoch keine Seitennummer und sie bleibt im
+% Inhaltsverzeichnis unerwaehnt". Als formales Beidokument im
+% anhang/-Ordner abgelegt.
+\include{anhang/eigenstaendigkeitserklaerung}
+
+\end{document}
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

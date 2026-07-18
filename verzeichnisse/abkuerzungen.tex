@@ -1,0 +1,19 @@
+% =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "verzeichnisse/abkuerzungen.tex"
+% =============================================================================
+
+\glsaddall[types=abbreviations]
+\printnoidxglossary[%
+    type=abbreviations,%
+    title={Abkürzungsverzeichnis},%
+    style=fomabbr%
+]
+
+%  Kopfzeilen-Marke unter \manualmark explizit setzen (einseitiges Verzeichnis;
+%  Kapitelwechsel-Logik siehe main.tex / config.md).
+\markboth{Abkürzungsverzeichnis}{Abkürzungsverzeichnis}
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

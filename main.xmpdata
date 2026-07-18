@@ -1,0 +1,12 @@
+% =============================================================================
+%  XMP-Metadaten fuer PDF/A-Konformitaet (gelesen vom pdfx-Paket).
+% Leitfaden Kap. 5.10.2: "es muss die verwendeten Zeichensaetze eingebettet mitbringen ... 
+% ein Format gewaehlt werden, das sich moeglichst nah am Standard PDF/A orientiert").
+% =============================================================================
+
+\Title{OpenClaw als Trading Agent}
+\Author{Alexander Fischer & Rolland Kiss}
+\Subject{Projektarbeit - FOM Hochschule für Oekonomie und Management}
+\Keywords{FOM\sep Projektarbeit\sep Informatik\sep KI}
+\Publisher{FOM Hochschule für Oekonomie und Management}
+\Language{de-DE}

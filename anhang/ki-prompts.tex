@@ -1,0 +1,31 @@
+% =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "anhang/ki-prompts.tex"
+% =============================================================================
+
+\chapter{Anhang: Verwendete KI-Prompts}
+\label{cha:anhang-prompts}
+
+Im Verlauf der Erstellung dieser Arbeit wurden generative KI-Werkzeuge für folgende Zwecke herangezogen: zur Rechtschreib- und Interpunktionsprüfung, zur Syntaxprüfung und Lauffähigkeitsermittlung der Modelle, zur Erstellung des Glossars und Abkürzungsverzeichnisses, zur Erstellung der Abbildungen der Projektstruktur sowie zur Literaturrecherche.
+
+Gemäß FOM-Leitfaden Kap.~6.2.4 sind die genutzten Prompts in Kurzform — ohne die jeweils generierten Antworten — zu dokumentieren. Sämtliche Antworten wurden inhaltlich geprüft, eigenständig verifiziert und nicht wörtlich in die Arbeit übernommen.
+
+% \kiwerkzeug{Tool}{Version/Stand}{Zugriffs-URL} -- einheitliche Darstellung
+% eines KI-Werkzeugs; das zugehoerige \nocite{<bibkey>} steht in der
+% jeweiligen Tool-Datei (Eintrag im KI-Verzeichnis, Kap. 6.2.4).
+\newcommand{\kiwerkzeug}[3]{%
+    \paragraph*{Verwendetes Tool}
+    \begin{description}[leftmargin=2.5cm,style=nextline,labelwidth=2cm]
+        \item[Tool] #1
+        \item[Version] #2
+        \item[Zugriff] \url{#3}
+    \end{description}%
+}
+
+% --- Eingesetzte KI-Werkzeuge (je Werkzeug eine modulare Datei) -------------
+\input{anhang/ki-prompts/tool-claude}
+\input{anhang/ki-prompts/tool-gemini}
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

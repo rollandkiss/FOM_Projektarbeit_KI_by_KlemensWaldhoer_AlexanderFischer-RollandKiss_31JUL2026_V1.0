@@ -1,0 +1,41 @@
+%  =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "anhang/ki-prompts/tool-gemini.tex"
+%  =============================================================================
+
+\section{Google Gemini (Flash~3.5)}
+\label{sec:prompts-gemini}
+
+\kiwerkzeug{Google Gemini, Modell Flash 3.5}{Stand: Mai 2026}{https://gemini.google.com}
+% Eintrag im KI-Verzeichnis (Leitfaden Kap. 6.2.4) erzwingen mittels \nocite.
+\nocite{geminiFlash2026}
+
+\subsection{Literaturrecherche}
+\label{sec:prompts-gemini-literatur}
+\begin{enumerate}
+    \item \enquote{Nenne einschlägige, zitierfähige Quellen (Monografien,
+            Normen, begutachtete Fachartikel) zur BPMN-2.0-Prozessmodellierung
+            und gib jeweils vollständige bibliografische Angaben an: [\dots]}
+            \par\hfill\textit{Kontext: \Cref{cha:grundlagen}}
+
+    \item \enquote{Fasse den aktuellen Forschungsstand zur
+            Geschäftsprozessmodellierung im ERP-Umfeld zusammen und benenne
+            die zentralen Referenzwerke: [\dots]}
+            \par\hfill\textit{Kontext: \Cref{cha:grundlagen}}
+\end{enumerate}
+
+\subsection{Erstellung des Abkürzungsverzeichnisses}
+\label{sec:prompts-gemini-abkuerzungen}
+\begin{enumerate}
+    \item \enquote{Extrahiere alle Abkürzungen aus dem folgenden Text und
+            erstelle ein alphabetisch sortiertes Abkürzungsverzeichnis mit
+            jeweiliger Langform: [\dots]}
+            \par\hfill\textit{Kontext: gesamte Arbeit}
+    \item \enquote{Überprüfe das vorhandene Abkürzungsverzeichnis auf
+            Vollständigkeit und Konsistenz und ergänze fehlende Einträge: [\dots]}
+            \par\hfill\textit{Kontext: gesamte Arbeit}
+\end{enumerate}
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

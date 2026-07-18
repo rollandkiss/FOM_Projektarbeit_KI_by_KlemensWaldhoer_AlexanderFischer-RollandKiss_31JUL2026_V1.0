@@ -27,13 +27,13 @@ echo "=========================================================="
 # 1) Existieren alle Pflichtdateien?
 echo ""
 echo "[1] Projektstruktur"
-for f in main.tex config.md verzeichnisse/references.bib main.xmpdata \
-         titelblatt/titelblatt.tex sperrvermerk/sperrvermerk.tex \
+for f in main.tex verzeichnisse/references.bib main.xmpdata \
+         titelblatt/titelblatt.tex \
          verzeichnisse/abkuerzungen.tex verzeichnisse/abkuerzungen-defs.tex \
          verzeichnisse/glossar.tex verzeichnisse/glossar-defs.tex \
-         verzeichnisse/symbolverzeichnis.tex verzeichnisse/ki-verzeichnis.tex \
+         verzeichnisse/ki-verzeichnis.tex \
          anhang/anhang.tex anhang/ki-prompts.tex \
-         anhang/ki-prompts/tool-chatgpt.tex anhang/ki-prompts/tool-claude.tex \
+         anhang/ki-prompts/tool-claude.tex anhang/ki-prompts/tool-gemini.tex \
          anhang/eigenstaendigkeitserklaerung.tex; do
     if [[ -f "$f" ]]; then ok "$f vorhanden"
     else fail "$f fehlt"
@@ -126,8 +126,8 @@ fi
 # 8) Akzentlinien / Goldener-Schnitt-Werte
 echo ""
 echo "[8] Goldener-Schnitt-Konsistenz"
-if grep -q "0.618cm" main.tex && grep -q "8.35cm" main.tex; then
-    ok "Einrueckung 0,618 cm und Akzentlinie 8,35 cm gesetzt"
+if grep -q "0.618cm" main.tex && grep -q "9.35cm" main.tex; then
+    ok "Einrueckung 0,618 cm und Akzentlinie 9,35 cm gesetzt"
 else
     warn "Akzentlinien-Werte wurden manuell veraendert"
 fi

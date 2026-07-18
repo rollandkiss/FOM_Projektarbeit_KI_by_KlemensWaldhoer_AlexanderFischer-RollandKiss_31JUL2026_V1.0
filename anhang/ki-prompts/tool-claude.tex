@@ -6,7 +6,7 @@
 \section{Anthropic Claude (Opus~4.8)}
 \label{sec:prompts-claude}
 
-\kiwerkzeug{Anthropic Claude, Modell Opus 4.8}{Stand: Mai 2026}{https://claude.ai}
+\kiwerkzeug{Anthropic Claude, Modell Opus 4.8}{Stand: Juli 2026}{https://claude.ai}
 % Eintrag im KI-Verzeichnis (Leitfaden Kap. 6.2.4) erzwingen mittels \nocite.
 \nocite{claudeOpus2026}
 
@@ -25,25 +25,6 @@
             \par\hfill\textit{Kontext: gesamter Hauptteil}
 \end{enumerate}
 
-\subsection{BPMN-Syntaxprüfung und Lauffähigkeitstest in Camunda~8.9}
-\label{sec:prompts-claude-bpmn}
-\begin{enumerate}
-    \item \enquote{Prüfe das folgende BPMN-Modell auf
-            Konformität zur OMG-Spezifikation in Version 2.0.2 und benenne fehlende oder
-            fehlerhaft verschachtelte Elemente: [\dots]}
-            \par\hfill\textit{Kontext: \Cref{cha:umsetzung}}
-
-    \item \enquote{Bewerte, ob das folgende BPMN-Modell in Camunda~8.9
-            (Zeebe-Engine) ausführbar ist; prüfe Start- und End-Ereignisse,
-            Gateway-Typen sowie erforderliche Ausführungsattribute und nenne
-            notwendige Anpassungen: [\dots]}
-            \par\hfill\textit{Kontext: \Cref{cha:umsetzung}}
-
-    \item \enquote{Identifiziere im folgenden BPMN-Prozessmodell mögliche
-            Deadlocks oder nicht abschließbare Token-Pfade: [\dots]}
-            \par\hfill\textit{Kontext: \Cref{cha:umsetzung}}
-\end{enumerate}
-
 \subsection{Erstellung des Glossars}
 \label{sec:prompts-claude-glossar}
 \begin{enumerate}
@@ -58,21 +39,6 @@
             \par\hfill\textit{Kontext: Glossar (Vorspann)}
 \end{enumerate}
 
-\subsection{Erstellung der Symbole des Symbolverzeichnisses}
-\label{sec:prompts-claude-symbole}
-\begin{enumerate}
-    \item \enquote{Erzeuge auflösungsunabhängigen TikZ-Code für die folgenden
-            BPMN-2.0-Notationselemente (u.\,a. Start- und End-Ereignis,
-            Aufgabe, Gateway, Sequenz- und Nachrichtenfluss), damit sie im
-            PDF/A-Build ohne externe Bilddateien darstellbar sind: [\dots]}
-            \par\hfill\textit{Kontext: Symbolverzeichnis (Vorspann)}
-
-    \item \enquote{Optimiere den folgenden TikZ-Code eines BPMN-Gateways
-            hinsichtlich Strichstärke (auf 1.2pt) der inneren Marker und Zentrierung
-            innerhalb der Raute: [\dots]}
-            \par\hfill\textit{Kontext: Symbolverzeichnis (Vorspann)}
-\end{enumerate}
-
 \subsection{Erstellung von Abbildungen der Projektstruktur}
 \label{sec:prompts-claude-strukturabbildungen}
 \begin{enumerate}
@@ -82,7 +48,7 @@
             Boxen rendert; jede Box enthält ein Ebenen-Präfix und den
             Prozessnamen, die Verbindungen folgen der Aufrufrichtung von oben
             nach unten: [\dots]}
-            \par\hfill\textit{Kontext: \Cref{fig:modellhierarchie}}
+            \par\hfill\textit{Kontext: \Cref{cha:umsetzung}}
 
     \item \enquote{Erzeuge aus der nachfolgenden ASCII-Repräsentation
             der Verzeichnis- und Dateistruktur ein
@@ -90,7 +56,7 @@
             monospaced Schriftart schwarz auf weiß rendert und die
             Ebenen-Header (L0--L4, LX) durch Fettsatz hervorhebt:
             [\dots]}
-            \par\hfill\textit{Kontext: \Cref{fig:bpmn-repository-struktur}}
+            \par\hfill\textit{Kontext: \Cref{cha:umsetzung}}
 \end{enumerate}
 
 %  =============================================================================

@@ -93,12 +93,6 @@
 % \pagestyle{plain}), damit der Hauptabschnitts-Titel ausnahmslos sichtbar ist.
 \renewcommand*{\chapterpagestyle}{scrheadings}
 
-% Hinweis: Die Kopfzeilen-Marke der Kapitel wird ueber \automark (oben)
-% gesetzt. Das mehrseitige Symbolverzeichnis (langer longtable mit vielen
-% Beleg-Fussnoten) erhielt darueber zuverlaessig die falsche Marke des
-% Vorkapitels. Es verwendet deshalb einen markenUNABHAENGIGEN, festen
-% Seitenstil \symbolkopf (siehe unten, nach der Kopfzeilen-Definition).
-
 % Akzentlinien-Breiten entlang einer gemeinsamen Goldener-Schnitt-Familie
 % (Hervorhebungen sparsam und einheitlich – Leitfaden Kap. 5.2.2):
 %   - rechts (Seitenzahl):    1,5 cm
@@ -136,28 +130,6 @@
 }
 \setkomafont{pagehead}{\normalfont\small}
 \setkomafont{pagenumber}{\normalfont\small}
-
-% ----------------------------- Fester Seitenstil: Symbolverzeichnis ---------
-% Markenunabhaengige Kopfzeile fuer das mehrseitige Symbolverzeichnis. Der
-% Kopf zeigt fest "Symbolverzeichnis" (kein \headmark), sodass weder
-% longtable noch der Beleg-/Glossar-Apparat die Marke verfaelschen koennen.
-% Layout identisch zu den uebrigen Kopfzeilen (Akzentlinie/Seitenzahl).
-\newpairofpagestyles{symbolkopf}{%
-    \ihead{%
-        \begin{tabular}[b]{@{}l@{}}%
-            Symbolverzeichnis \\[-2pt]%
-            \textcolor{FOMakzent}{\rule{\akzentlinienBreiteHaupt}{0.8pt}} \\
-        \end{tabular}%
-    }%
-    \ohead*{%
-        \begin{tabular}[b]{@{}r@{}}%
-            \pagemark\hspace*{\seitenzahlEinrueckung} \\[-2pt]%
-            \textcolor{FOMakzent}{\rule{\akzentlinienBreite}{0.8pt}} \\
-        \end{tabular}%
-    }%
-    \setkomafont{pagehead}{\normalfont\small}%
-    \setkomafont{pagenumber}{\normalfont\small}%
-}
 
 % ----------------------------- Ueberschriften -------------------------------
 % Leitfaden Kap. 5.2.3: "Jedes Kapitel, jeder Abschnitt und jeder
@@ -264,26 +236,9 @@
 \usepackage{svg}            % Vektor-Einbindung der Modelle/Logo/Unterschrift (benoetigt --shell-escape + Inkscape)
 \svgpath{{abbildungen/}}
 \svgsetup{inkscapelatex=false}   % Text von Inkscape direkt ins PDF einbetten (verhindert ueberlagerte Text-Artefakte in den BPMN-Modellen)
-% pdflscape rotiert einzelne Seiten im PDF (anstatt nur den Satzspiegel).
-% Damit lassen sich breite Diagramme (AR >= 2) lesbar darstellen, ohne den
-% Lesefluss der uebrigen Seiten zu beeintraechtigen (FOM-Leitfaden Kap. 5.7:
-% Lesbarkeit der Abbildung).
-\usepackage{pdflscape}
-% TikZ fuer das Symbolverzeichnis (BPMN-2.0-Notationselemente).
-% Die Symbole werden direkt im LaTeX-Quelltext gezeichnet, damit sie
-% ohne externe Bilddateien aufloesungsunabhaengig im PDF/A-Build
-% (pdfx, a-2b) verfuegbar bleiben. Geladene Bibliotheken:
-%   - arrows.meta   : moderne Pfeilspitzen (Latex/Stealth) fuer Sequenz-
-%                     und Nachrichtenflusssymbole
-%   - shapes.geometric : Diamant-Form fuer Gateways
-%   - positioning   : einheitliche relative Positionierung kleiner Marker
-\usepackage{tikz}
-\usetikzlibrary{arrows.meta,shapes.geometric,positioning}
 \usepackage{booktabs}                          % schlanke Tabellenlinien
 \usepackage{array}
-\usepackage{tabularx}
 \usepackage{longtable}
-\usepackage{multirow}
 \usepackage{caption}
 \usepackage{varwidth}
 \captionsetup{
@@ -338,36 +293,7 @@
 % bleiben Computer Modern (kein dedizierter Open-Sans-Math-Font verfuegbar).
 \usepackage[italic,defaultmathsizes]{mathastext}
 
-% ----------------------------- Algorithmen / Quelltexte ---------------------
-% Leitfaden Kap. 5.9.1 (Algorithmen / Pseudocode): Titel, fortlaufende
-% Nummerierung sowie nummerierte Zeilen sind verbindlich.
-\usepackage[ruled,linesnumbered,vlined]{algorithm2e}
-\SetAlgorithmName{Algorithmus}{Algorithmus}{Algorithmenverzeichnis}
-\SetAlgoCaptionSeparator{:}
-% algorithm2e platziert die Zeilennummern bei aktivem `linesnumbered`-Modus
-% am linken Innenrand der Algorithmus-Box. In der Standardkonfiguration
-% reicht der voreingestellte `algomargin` (~2 em) nicht aus, sodass die
-% Zeilennummern links aus den horizontalen Begrenzungslinien austreten und
-% in den linken Seitenrand ragen. Mit \IncMargin wird der Innenrand
-% vergroessert, sodass die Zeilennummern bündig innerhalb der Box stehen
-% und der Satzspiegel nicht verletzt wird.
-\IncMargin{2em}
-% algorithm2e setzt den Page-Mark fuer das Algorithmenverzeichnis intern via
-% \MakeUppercase, wodurch der Kopf "ALGORITHMENVERZEICHNIS" zeigt. Wir
-% ueberschreiben \listofalgorithms, damit der Mark in normaler Gross-Klein-
-% Schreibung gesetzt wird (Vereinheitlichung mit den anderen Verzeichnissen).
-\makeatletter
-\renewcommand{\listofalgorithms}{%
-    \chapter*{\listalgorithmcfname}%
-    \markboth{\listalgorithmcfname}{\listalgorithmcfname}%
-    \@starttoc{loa}%
-}
-% Eintraege im Algorithmenverzeichnis flush-left setzen (analog zu
-% Abbildungs- und Tabellenverzeichnis -- konsistent mit dem
-% FOM-Leitfaden-Layout).
-\renewcommand*{\l@algocf}[2]{\@dottedtocline{1}{0pt}{2.5em}{#1}{#2}}
-\makeatother
-
+% ----------------------------- Quelltexte -----------------------------------
 % Leitfaden Kap. 5.9.2 (Quelltexte): "um die Einrueckung zur Geltung zu
 % bringen, wird eine Fixtype verwendet ... die Zeilen koennen nummeriert
 % werden ... Quelltexte sollten hinreichend durch Kommentare dokumentiert
@@ -427,14 +353,8 @@
 \crefname{equation}{Gleichung}{Gleichungen}
 \crefname{section}{Abschnitt}{Abschnitte}
 \crefname{chapter}{Kapitel}{Kapitel}
-% Eigener Float-Typ `mathformel` (siehe \DeclareNewTOC weiter unten):
-% Ohne diese Registrierung liefert \Cref{mformel:...} im PDF "??".
-\crefname{mathformel}{Formel}{Formeln}
-\Crefname{mathformel}{Formel}{Formeln}
 \crefname{lstlisting}{Quelltext}{Quelltexte}
 \Crefname{lstlisting}{Quelltext}{Quelltexte}
-\crefname{algocf}{Algorithmus}{Algorithmen}
-\Crefname{algocf}{Algorithmus}{Algorithmen}
 
 % ----------------------------- Bibliografie (Chicago Notes) -----------------
 % Zitierstil: Chicago Manual of Style (17. Aufl.), Notes & Bibliography.
@@ -607,30 +527,6 @@
 \loadglsentries{verzeichnisse/abkuerzungen-defs}
 \loadglsentries{verzeichnisse/glossar-defs}
 
-% ----------------------------- Mathematisches Formelverzeichnis ------------
-% Eigenes Float-Verzeichnis fuer mathematische Formeln (separates
-% Verzeichnis neben dem von Kap. 5.1 angesprochenen "Verzeichnis von
-% Formelzeichen und Indizes"). Verwendung im Kapitel:
-%
-%   \begin{mathformel}
-%       \caption{Anlagenverfuegbarkeit}\label{eq:verfuegbarkeit}
-%       \[ a = \frac{t_B}{t_{\text{ges}}} \]
-%   \end{mathformel}
-%
-% Numerierung pro Kapitel (Formel 2.1, 2.2, ...). Eintrag im Inhalts-
-% verzeichnis ueber listof=totoc bereits aktiv.
-\usepackage{float}
-\DeclareNewTOC[%
-    type=mathformel,%
-    types=mathformeln,%
-    float,%
-    floatpos=H,%
-    name=Formel,%
-    listname={Mathematisches Formelverzeichnis}%
-]{lomf}
-\numberwithin{mathformel}{chapter}
-\DeclareTOCStyleEntry[indent=0pt,numwidth=3em]{tocline}{mathformel}
-
 % ----------------------------- Sonstiges ------------------------------------
 % Farben: Leitfaden Kap. 5.2.2 verlangt Hervorhebungen "sparsam und
 % einheitlich". Die Akzentfarbe ist deshalb auf Titelblatt + Header-
@@ -641,7 +537,6 @@
 
 % Lokalisierung: Komma als Dezimaltrenner ist im deutschen Schriftsatz
 % Standard (vgl. Leitfaden Kap. 5.6 Tabelle 1, "Wechselkurs ... 1,13").
-\usepackage{lmodern}
 \usepackage{eurosym}
 \usepackage{siunitx}
 \sisetup{
@@ -671,9 +566,13 @@
 \newcommand{\arbeitGrad}{Bachelor of Science (B.Sc.)}
 \newcommand{\arbeitStudiengang}{Informatik}
 \newcommand{\arbeitHochschulzentrum}{Digitales Live-Studium (DLS)}
-\newcommand{\autorVorname}{Rolland}
-\newcommand{\autorNachname}{Kiss}
-\newcommand{\autorMatrikel}{799553}
+% Autoren alphabetisch nach Nachname (Gruppenarbeit)
+\newcommand{\autorVorname}{Alexander}
+\newcommand{\autorNachname}{Fischer}
+\newcommand{\autorMatrikel}{825091}
+\newcommand{\autorZweiVorname}{Rolland}
+\newcommand{\autorZweiNachname}{Kiss}
+\newcommand{\autorZweiMatrikel}{799553}
 \newcommand{\erstgutachter}{Prof. Dr. Klemens Waldhör}
 \newcommand{\zweitgutachter}{-} % optional
 % Vor der finalen Abgabe das tatsaechliche Datum festsetzen, damit das
@@ -687,7 +586,7 @@
 % sie fuer Nicht-PDF/A-Builds wider.
 \hypersetup{
     pdftitle={\arbeitTitel},
-    pdfauthor={\autorVorname{} \autorNachname},
+    pdfauthor={\autorVorname{} \autorNachname{}, \autorZweiVorname{} \autorZweiNachname},
     pdfsubject={\arbeitArt{} - FOM Hochschule},
     pdfkeywords={FOM, \arbeitStudiengang, \arbeitArt}
 }
@@ -709,9 +608,10 @@
 
 \include{titelblatt/titelblatt}
 
-% Sperrvermerk (Leitfaden Kap. 7.2). Bei NICHT vertraulichen Arbeiten
-% folgende Zeile auskommentieren:
-\input{sperrvermerk/sperrvermerk}
+% Sperrvermerk (Leitfaden Kap. 7.2). Nur bei vertraulichen Arbeiten aktivieren;
+% die Datei sperrvermerk/sperrvermerk.tex ist im Projekt derzeit nicht
+% vorhanden und muesste zuvor angelegt werden:
+%\input{sperrvermerk/sperrvermerk}
 
 % Inhaltsverzeichnis
 \pagestyle{scrheadings}
@@ -721,21 +621,19 @@
 % Verzeichnisse (Leitfaden Kap. 5.1: "Die aufgefuehrten Verzeichnisse
 % erhalten keine Gliederungsnummern, werden aber im Inhaltsverzeichnis
 % aufgefuehrt."). Reihenfolge alphabetisch nach Verzeichnis-Bezeichnung:
-%   Abbildungs- -> Abkuerzungs- -> Glossar -> Symbolverzeichnis.
+%   Abbildungs- -> Abkuerzungs- -> Glossar.
 % Hinweis: KEIN explizites \clearpage zwischen den Verzeichnissen, da
 % jedes Verzeichnis intern \chapter*{...} aufruft und damit selbst eine
 % neue Seite startet. Ein zusaetzliches \clearpage erzeugt eine leere
 % Zwischenseite mit der Kopfmarke des Vorgaenger-Verzeichnisses.
 % Hinweis zu entfernten/ausgeblendeten Verzeichnissen:
 %   - Algorithmenverzeichnis: vollstaendig entfernt.
-%   - Mathematisches Formelverzeichnis: vollstaendig entfernt
-%     (die \begin{mathformel}-Floats im Hauptteil bleiben gueltig
-%     nummeriert, werden aber nicht mehr in einem Verzeichnis gelistet).
+%   - Mathematisches Formelverzeichnis: vollstaendig entfernt.
+%   - Symbolverzeichnis: vollstaendig entfernt (Quelldatei nicht vorhanden).
 %   - Tabellenverzeichnis: ausgeblendet (nur auskommentiert, s. u.).
 \listoffigures
 \input{verzeichnisse/abkuerzungen}                  % Kap. 2.5 / 5.1
 \input{verzeichnisse/glossar}                       % Kap. 5.1
-\input{verzeichnisse/symbolverzeichnis}             % BPMN-2.0-Notationssymbole
 %\listoftables                                      % Tabellenverzeichnis ausgeblendet
 \clearpage
 

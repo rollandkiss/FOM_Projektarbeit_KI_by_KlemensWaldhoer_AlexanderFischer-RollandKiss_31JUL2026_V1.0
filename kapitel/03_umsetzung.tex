@@ -1,52 +1,109 @@
 %  =============================================================================
 %  -> Abschnitt "kapitel/03_umsetzung.tex"
+%
+%  Gliederung an der KI-Fallstudie ausgerichtet:
+%  Architektur -> Strategie -> Implementierung -> Evaluation -> Wuerdigung.
 %  =============================================================================
 
 \chapter{Fallstudie: OpenClaw als Trading Agent}
 \label{cha:umsetzung}
 
-% Einleitung und Skizze des Kapitels
+Nachdem das vorangegangene Kapitel mit dem Periodensystem der Künstlichen Intelligenz
+einen Ordnungsrahmen bereitgestellt hat, überträgt das folgende Kapitel diesen Rahmen
+auf den konkreten Gegenstand der Arbeit. Der untersuchte Agent verfolgt eine auf
+gleitenden Durchschnitten beruhende Handelsstrategie und löst die daraus abgeleiteten
+Entscheidungen eigenständig als Ordervorgänge über eine Bankschnittstelle aus. Damit
+schließt er den eingangs beschriebenen Kreis aus Wahrnehmung, Schlussfolgerung und
+Handlung vollständig und lässt sich als Verbindung mehrerer KI-Elemente im Sinne des
+Periodensystems auffassen.
+
+Auf der Ebene der Wahrnehmung stützt sich der Agent auf die Erfassung und Aufbereitung
+von Marktdaten sowie auf die Erkennung von Trendmustern in der Kurszeitreihe. Auf der
+Ebene der Schlussfolgerung tritt das lokal betriebene Sprachmodell als bewertende
+Instanz hinzu, die die regelbasiert vorbereitete Entscheidung prüft und mit einer
+nachvollziehbaren Begründung versieht. Auf der Ebene der Reaktion schließlich ordnet
+sich das Vorhaben unmittelbar dem Element der prozesssteuernden Kontrolle zu, das der
+zugrunde gelegte Rahmen ausdrücklich mit dem Börsenhandel als Anwendung
+verbindet.\zit[S. 18]{waldhoerKI2025} Ergänzend sorgt eine Kommunikationskomponente für
+die Rückbindung an den Menschen, etwa zur Freigabe sicherheitsrelevanter Schritte.
+
+Kennzeichnend für die gewählte Gestaltung ist weniger die Breite der eingesetzten
+Fähigkeiten als vielmehr deren bewusste Begrenzung. Das Sprachmodell wird nicht zur
+Prognose künftiger Kurse und nicht zur erfahrungsbasierten Selbstveränderung eingesetzt;
+die entsprechenden Elemente des Periodensystems bleiben bewusst unbesetzt, um die
+Nachvollziehbarkeit und Reproduzierbarkeit des Systemverhaltens zu wahren. Die
+eigentliche gestalterische Aussage der Arbeit liegt somit in der sicherheitsorientierten
+Einschränkung des KI-Einsatzes, deren Ausprägung im weiteren Verlauf des Kapitels
+dargelegt wird.
+
+Der Aufbau des Kapitels folgt dem Weg von der Struktur zur Bewertung. Zunächst wird die
+Systemarchitektur des Agenten mit ihren Komponenten und Datenflüssen beschrieben. Darauf
+aufbauend wird die Handelsstrategie formal gefasst und ihre Umsetzung in Quelltext
+dargestellt. Die anschließende Evaluation ordnet die Ergebnisse anhand geeigneter
+Kennzahlen ein und benennt die methodischen Grenzen der Untersuchung. Eine kritische
+Würdigung der mit dem autonomen Handel verbundenen Risiken und der vorgesehenen
+Absicherungsmechanismen beschließt das Kapitel.
+
+\section{Systemarchitektur des Agenten}
+\label{sec:umsetzung-architektur}
+
+% Komponenten, Datenfluesse und Schnittstellen des Agenten
+% (Abbildung der Architektur empfohlen; \caption mit \quelleeigen bzw.
+% \quelleeigenki, vgl. Makros in main.tex).
 
 xxx
 
-\section{Organisatorische Einordnung}
-\label{sec:umsetzung-organisation}
+\section{SMA-Handelsstrategie}
+\label{sec:umsetzung-strategie}
 
-% xxx
-
-xxx
-
-\newpage
-\section{Vorstellung}
-\label{sec:umsetzung-prozessbeschreibung}
-
-% Kurze Verortung und Vorstellung des Prozesses
+% Formale Beschreibung der Signalregeln als nummerierte Gleichungen
+% (amsmath ist geladen; Gleichungsnummern laufen je Kapitel).
 
 xxx
 
-\newpage
-\section{Prozessdetails \enquote{Trading Strategie}}
-\label{sec:umsetzung-prozessdetails}
+\section{Implementierung}
+\label{sec:umsetzung-implementierung}
+
+% Zentrale Quelltexte als Listings (lstlisting, Titel ueber dem Listing,
+% Referenzierung via \cref{lst:...}); Details ggf. in den Anhang.
 
 xxx
 
-\section{Prozessevaluation und Optimierungspotenziale}
-\label{sec:umsetzung-prozesseval}
+\section{Evaluation}
+\label{sec:umsetzung-evaluation}
+
+xxx
+
+\subsection{Untersuchungsdesign und Datenbasis}
+\label{sec:umsetzung-evaluation-design}
+
+% Untersuchungszeitraum, Datenbasis und Benchmark (z. B. Buy-and-Hold)
+% definieren; Backtesting-Aufbau beschreiben.
 
 xxx
 
 \subsection{Ergebnisbetrachtung}
-\label{sec:umsetzung-prozesseval-results}
+\label{sec:umsetzung-evaluation-ergebnisse}
+
+% Kennzahlen: Gesamtrendite, maximaler Drawdown, Sharpe-Ratio,
+% Trefferquote -- jeweils gegen den Benchmark.
 
 xxx
 
-\subsection{Optimierungspotenziale}
-\label{sec:umsetzung-prozesseval-optimierungspotenziale}
+\subsection{Limitationen}
+\label{sec:umsetzung-evaluation-limitationen}
+
+% Methodische Verzerrungen: Look-Ahead-Bias, Overfitting an historische
+% Daten, Transaktionskosten, Slippage.
 
 xxx
 
 \section{Kritische Würdigung}
 \label{sec:umsetzung-wuerdigung}
+
+% Risiken des autonomen Handelns (Derivate!), Absicherungsmechanismen
+% (Positionslimits, Stop-Loss, Human-in-the-Loop), Abgrenzung zur
+% Anlageberatung.
 
 xxx
 

@@ -5,22 +5,108 @@
 \chapter{Theoretische Grundlagen zu KI-Agenten}
 \label{cha:grundlagen}
 
-xxx
+Das vorliegende Kapitel legt die begrifflichen und konzeptionellen Grundlagen,
+auf denen die spätere Fallstudie aufbaut. Zunächst werden der Agentenbegriff und
+die mit autonomen Systemen verbundenen Zielsetzungen geklärt. Anschließend wird
+mit dem Periodensystem der Künstlichen Intelligenz ein Ordnungsrahmen eingeführt,
+der es erlaubt, die im Projekt eingesetzten KI-Funktionalitäten systematisch zu
+verorten. Abschließend erfolgt eine Abgrenzung unterschiedlicher Agentenauffassungen,
+die zugleich die gestalterischen Entscheidungen der Arbeit vorbereitet.
 
 \section{Begriffe und Ziele}
 \label{sec:grundlagen-ziele}
 
-xxx
+Unter einem KI-Agenten wird im Rahmen dieser Arbeit ein softwarebasiertes System
+verstanden, das seine Umgebung über definierte Schnittstellen wahrnimmt, aus den
+gewonnenen Informationen Handlungsoptionen ableitet und eigenständig Maßnahmen
+ergreift, um ein vorgegebenes Ziel zu verfolgen. Kennzeichnend ist der geschlossene
+Kreis aus Wahrnehmung, Schlussfolgerung und Handlung, der ohne kontinuierliche
+menschliche Steuerung durchlaufen wird. Der Grad an Autonomie ist dabei nicht binär,
+sondern erstreckt sich über ein Kontinuum, das von rein assistierenden Systemen bis
+zu weitgehend selbstständig agierenden Lösungen reicht. Für die vorliegende Arbeit
+ist insbesondere die Frage bedeutsam, wie weit diese Autonomie in einem sicherheits\-
+kritischen Anwendungsfeld verantwortbar ausgedehnt werden kann und an welchen Stellen
+eine menschliche Rückbindung erforderlich bleibt.
+
+Eine besondere Ausprägung erfahren KI-Agenten seit der breiten Verfügbarkeit großer
+Sprachmodelle. Diese ermöglichen es, unstrukturierte Situationsbeschreibungen zu
+verarbeiten und in natürlicher Sprache begründete Ausgaben zu erzeugen, wodurch sich
+Sprachmodelle als orchestrierende Komponente innerhalb eines Agenten anbieten. Von
+einem lokal betriebenen Sprachmodell wird gesprochen, wenn die Modellinferenz nicht
+über einen externen Dienst, sondern auf eigener oder selbst kontrollierter Infrastruktur
+erfolgt. Für Anwendungsfelder mit erhöhten Anforderungen an Datenhoheit und
+Nachvollziehbarkeit ist diese Betriebsform von besonderem Interesse, da sensible
+Eingaben die kontrollierte Umgebung nicht verlassen und die eingesetzte Modellversion
+reproduzierbar festgelegt werden kann.
+
+Das Ziel eines autonomen Agenten besteht nicht allein in der technischen
+Funktionsfähigkeit, sondern ebenso in der Beherrschbarkeit seines Verhaltens. Gerade
+wenn ein Agent Handlungen mit realen Konsequenzen auslöst, treten neben die
+Leistungsfähigkeit die Anforderungen an Transparenz, Überprüfbarkeit und Absicherung.
+Diese Spannung zwischen Autonomie und Kontrolle bildet den Bezugsrahmen, vor dem die
+weiteren Ausführungen zu lesen sind.
 
 \section{Einordnung}
 \label{sec:grundlagen-einordnung}
 
-xxx
+Zur systematischen Beschreibung der Bausteine, aus denen sich KI-Anwendungen
+zusammensetzen, greift die Arbeit auf das Periodensystem der Künstlichen Intelligenz
+zurück.\zit[S. 8]{waldhoerKI2025} Das Konzept überträgt die aus dem Chemieunterricht
+vertraute Systematik des Periodensystems der Elemente auf den Bereich der Künstlichen
+Intelligenz. So wie sich in der Chemie eine überschaubare Zahl von Elementen zu einer
+Vielzahl von Molekülen verbindet, werden KI-Funktionalitäten als abgegrenzte
+Grundbausteine aufgefasst, die sich zu konkreten Anwendungen zusammenfügen lassen. Die
+zugrunde liegende Idee geht auf Hammond zurück, der Künstliche Intelligenz als
+Kombination gekapselter Teilfunktionen nach dem Bild ineinandergreifender
+Bausteine beschreibt.\zit[S. 15]{waldhoerBitkom2025}
+
+Das Periodensystem umfasst achtundzwanzig KI-Elemente, die jeweils eine spezifische,
+historisch als eigenständige Fähigkeit etablierte Funktionalität repräsentieren.\zit[S. 7]{waldhoerKI2025}
+Die Anordnung folgt dem typischen Verarbeitungsablauf einer KI-gestützten Anwendung,
+der sich in ein Tripel aus Wahrnehmung, Schlussfolgerung und Reaktion gliedert. Die
+Gruppe \enquote{Assess} umfasst jene Elemente, die Daten erfassen und Muster erkennen,
+von der Verarbeitung von Sprache, Bildern und Sensorsignalen bis zur Auswertung
+strukturierter Datenquellen. Die Gruppe \enquote{Infer} bündelt die Fähigkeiten des
+Schlussfolgerns und Entscheidens, worunter etwa die Prognose künftiger Zustände, das
+Planen von Handlungsfolgen, das Treffen von Entscheidungen sowie das Erklären der
+gezogenen Schlüsse fallen. Die Gruppe \enquote{Respond} schließlich fasst die Elemente
+zusammen, die eine Wirkung in der Umwelt entfalten, sei es durch physische Bewegung,
+durch Kommunikation oder durch die Steuerung von Prozessen.\zit[S. 6]{waldhoerKI2025}
+
+Der Nutzen dieses Ordnungsrahmens liegt darin, dass er komplexe KI-Anwendungen einer
+strukturierten Beschreibung zugänglich macht. Anwendungen lassen sich als Verbindung
+mehrerer Elemente auffassen und auf diese Weise vergleichen, hinsichtlich ihres
+Reifegrades einordnen und in ihren organisatorischen Wirkungen kommunizieren.\zit[S. 7]{waldhoerKI2025}
+Für die vorliegende Arbeit dient das Periodensystem als Bezugssystem, um die im
+Handelsagenten eingesetzten Funktionalitäten nicht nur zu benennen, sondern in ihrem
+Zusammenspiel nachvollziehbar zu verorten. Die entsprechende Zuordnung wird in
+Kapitel~\ref{cha:umsetzung} vorgenommen.
 
 \section{Abgrenzung}
 \label{sec:grundlagen-abgrenzung}
 
-xxx
+Für das Verständnis der späteren Gestaltungsentscheidungen ist eine Abgrenzung
+unterschiedlicher Agentenauffassungen erforderlich. Ein regelbasierter Agent leitet
+sein Verhalten aus fest definierten, deterministischen Vorschriften ab, sodass gleiche
+Eingaben stets zu gleichen Ausgaben führen und das Verhalten vollständig nachvollziehbar
+bleibt. Ein lernender Agent hingegen verändert sein Verhalten fortlaufend auf Grundlage
+neuer Erfahrungen; er gewinnt dadurch an Anpassungsfähigkeit, büßt jedoch an
+Reproduzierbarkeit ein, da sich seine Reaktionen über die Zeit verschieben können.
+Zwischen diesen Polen ist die im Projekt gewählte Architektur zu verorten, die einen
+deterministischen Kern mit einer sprachmodellbasierten, jedoch eng geführten
+Bewertungsinstanz verbindet.
+
+Aus dem Periodensystem folgt für diese Abgrenzung eine wichtige Konsequenz. Nicht jedes
+der achtundzwanzig Elemente ist für einen gegebenen Anwendungsfall gleichermaßen
+einschlägig, und der bewusste Verzicht auf einzelne Elemente stellt selbst eine
+gestalterische Aussage dar. Insbesondere die Elemente, die eine Prognose künftiger
+Ereignisse sowie eine erfahrungsbasierte Fortschreibung des eigenen Wissens
+beschreiben, sind in datengetriebenen Finanzanwendungen zwar naheliegend, stehen
+jedoch in einem Spannungsverhältnis zu den Anforderungen an Auditierbarkeit und
+Reproduzierbarkeit.\zit[S. 13]{waldhoerKI2025} Die vorliegende Arbeit nimmt diese
+Spannung zum Ausgangspunkt und begründet in Kapitel~\ref{cha:umsetzung}, weshalb der
+Agent auf die genannten Fähigkeiten bewusst verzichtet und die Rolle des Sprachmodells
+auf eine begrenzte, überprüfbare Bewertungsfunktion einschränkt.
 
 %  =============================================================================
 %  Ende

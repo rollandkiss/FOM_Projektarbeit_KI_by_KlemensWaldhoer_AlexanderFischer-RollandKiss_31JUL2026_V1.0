@@ -1,5 +1,4 @@
 % =============================================================================
-%  Datei-Hinweise & Konfiguration: siehe config.md
 %  -> Abschnitt "anhang/eigenstaendigkeitserklaerung.tex"
 % =============================================================================
 
@@ -46,7 +45,14 @@ Plagiatsprüfung stellt keine Zurverfügungstellung für die Öffentlichkeit dar
 % Zwei Unterschriftsbloecke (Gruppenarbeit): je Autor Ort/Datum + Unterschrift.
 \noindent
 \begin{tabular}{@{}p{6cm}@{\hspace{1cm}}p{6cm}@{}}
-\arbeitOrt, \abgabedatum & \\[0.9cm]
+\arbeitOrt, \abgabedatum &
+    % Unsichtbarer Platzhalter mit den Massen der Unterschriften-Grafik
+    % (Hoehe 1,1 cm, um 0,1 cm abgesenkt): das Datum sitzt dadurch -- wie im
+    % Block von R. Kiss -- direkt auf der Linie. Sobald
+    % abbildungen/unterschrift_alexander.svg vorliegt, den \rule-Platzhalter
+    % durch die auskommentierte \includesvg-Zeile ersetzen:
+    %\raisebox{-0.1cm}{\includesvg[height=1.1cm]{unterschrift_alexander}}%
+    \raisebox{-0.1cm}{\rule{0pt}{1.1cm}}\\[-0.2cm]
 \hrulefill & \hrulefill \\
 Ort, Datum & Unterschrift (\autorVorname{} \autorNachname) \\
 \end{tabular}

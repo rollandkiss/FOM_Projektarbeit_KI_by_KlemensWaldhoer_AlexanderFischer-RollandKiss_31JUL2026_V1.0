@@ -29,15 +29,29 @@ kritischen Anwendungsfeld verantwortbar ausgedehnt werden kann und an welchen St
 eine menschliche Rückbindung erforderlich bleibt.
 
 Eine besondere Ausprägung erfahren KI-Agenten seit der breiten Verfügbarkeit großer
-Sprachmodelle. Diese ermöglichen es, unstrukturierte Situationsbeschreibungen zu
+Sprachmodelle (\glsxtrlong{llm}, \glsxtrshort{llm}). Diese ermöglichen es,
+unstrukturierte Situationsbeschreibungen zu
 verarbeiten und in natürlicher Sprache begründete Ausgaben zu erzeugen, wodurch sich
-Sprachmodelle als orchestrierende Komponente innerhalb eines Agenten anbieten. Von
-einem lokal betriebenen Sprachmodell wird gesprochen, wenn die Modellinferenz nicht
-über einen externen Dienst, sondern auf eigener oder selbst kontrollierter Infrastruktur
-erfolgt. Für Anwendungsfelder mit erhöhten Anforderungen an Datenhoheit und
-Nachvollziehbarkeit ist diese Betriebsform von besonderem Interesse, da sensible
-Eingaben die kontrollierte Umgebung nicht verlassen und die eingesetzte Modellversion
-reproduzierbar festgelegt werden kann.
+Sprachmodelle als bewertende oder orchestrierende Komponente innerhalb eines Agenten
+anbieten. Zugleich bringen sie Eigenschaften mit, die in sicherheitskritischen
+Anwendungen ausdrücklich zu behandeln sind: Ihre Ausgaben entstehen probabilistisch
+und sind selbst bei identischer Eingabe nicht vollständig reproduzierbar; sie können
+inhaltlich plausible, aber sachlich falsche Aussagen erzeugen; und sie folgen
+Formatvorgaben nicht zwingend, sofern diese nicht technisch erzwungen werden. Für den
+Einsatz als Prüfinstanz folgt daraus, dass Sprachmodellantworten grundsätzlich als
+unzuverlässige Eingaben zu behandeln sind, die ein deterministischer Validator gegen
+ein festes Schema und feste Regeln prüft, bevor ihnen Wirkung zukommt.
+Hinsichtlich der Betriebsform erstreckt sich das Spektrum von cloud-gehosteter
+Inferenz über einen externen Dienst bis zum lokalen Betrieb, bei dem die Modellinferenz
+auf eigener oder selbst kontrollierter Infrastruktur erfolgt. Für Anwendungsfelder mit
+erhöhten Anforderungen an Datenhoheit und Nachvollziehbarkeit ist die lokale Betriebsform
+von besonderem Interesse, da sensible Eingaben die kontrollierte Umgebung nicht verlassen
+und die eingesetzte Modellversion reproduzierbar festgelegt werden kann. Architektonisch
+folgt daraus die Anforderung, die Modellanbindung hinter einer einheitlichen Schnittstelle
+zu kapseln, sodass der Wechsel zwischen den Betriebsformen eine Konfigurations- und keine
+Umbauentscheidung darstellt; die Fallstudie dieser Arbeit setzt dieses Prinzip um, indem
+derselbe Codestand cloud-gehostete Modelle nutzt und für die Migration auf lokale
+Infrastruktur vorbereitet ist.
 
 Das Ziel eines autonomen Agenten besteht nicht allein in der technischen
 Funktionsfähigkeit, sondern ebenso in der Beherrschbarkeit seines Verhaltens. Gerade
@@ -93,8 +107,28 @@ bleibt. Ein lernender Agent hingegen verändert sein Verhalten fortlaufend auf G
 neuer Erfahrungen; er gewinnt dadurch an Anpassungsfähigkeit, büßt jedoch an
 Reproduzierbarkeit ein, da sich seine Reaktionen über die Zeit verschieben können.
 Zwischen diesen Polen ist die im Projekt gewählte Architektur zu verorten, die einen
-deterministischen Kern mit einer sprachmodellbasierten, jedoch eng geführten
-Bewertungsinstanz verbindet.
+deterministischen Kern mit einer eng geführten, sprachmodellbasierten Bewertungsinstanz
+verbindet. Diese Instanz ist als Gremium mehrerer unabhängiger Sprachmodelle ausgeführt,
+deren Einzelvoten nach einer strikten Mehrheitsregel aggregiert werden: Ein Handel kommt
+nur zustande, wenn die Mehrheit der Modelle zustimmt, während jedes nicht erreichbare
+oder regelwidrig antwortende Modell konservativ als Veto gewertet wird. Der
+Mehrheitsentscheid begrenzt so den Einfluss einzelner Modellfehler, ersetzt jedoch keine
+deterministische Prüfung: Harte Ausschlusskriterien, etwa veraltete Daten oder ein
+fehlendes Handelsinstrument, werden vor jedem Modellaufruf regelbasiert entschieden,
+sodass die Sprachmodelle nur dort befragt werden, wo ihre Bewertung das Ergebnis noch
+beeinflussen kann.
+
+Dem Gremiumsgedanken liegt eine einfache Ensembleüberlegung zugrunde: Treffen mehrere
+Bewerter ihre Urteile unabhängig voneinander und sind ihre Fehler nicht vollständig
+korreliert, so ist ein Mehrheitsurteil zuverlässiger als das Urteil eines einzelnen
+Bewerters. Die Anbieterdiversität der eingesetzten Modelle soll diese Unabhängigkeit
+befördern, kann sie jedoch nicht garantieren, da alle Modelle denselben
+Entscheidungskontext erhalten -- ein Umstand, der in der kritischen Würdigung wieder
+aufgegriffen wird. Ergänzend bleibt der Mensch in einer doppelten Rolle eingebunden:
+als täglicher Freigabepunkt der Banksitzung und als jederzeit handlungsfähige
+Aufsicht mit Not-Aus. Diese Kombination aus deterministischem Kern, redundanter
+probabilistischer Prüfung und menschlicher Letztverantwortung kennzeichnet die
+Architektur der Fallstudie.
 
 Aus dem Periodensystem folgt für diese Abgrenzung eine wichtige Konsequenz. Nicht jedes
 der achtundzwanzig Elemente ist für einen gegebenen Anwendungsfall gleichermaßen

@@ -1,21 +1,84 @@
 %  =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
 %  -> Abschnitt "kapitel/04_schluss.tex"
 %  =============================================================================
 
 \chapter{Schluss}
 \label{cha:schluss}
 
-xxx
+Nachdem der Handelsagent entworfen, implementiert und evaluiert wurde, fasst dieses
+Kapitel die zentralen Erkenntnisse mit Blick auf die Zielsetzung zusammen und gibt
+einen Ausblick auf weiterführende Arbeiten.
 
 \section{Fazit}
 \label{sec:fazit}
 
-xxx
+Ziel dieser Arbeit war der Aufbau eines Live-Trading-Agenten auf Basis des
+Agenten-Frameworks OpenClaw, dessen deterministische \glsxtrshort{sma}-Strategie
+durch ein Gremium großer Sprachmodelle geprüft wird, bevor ein Mehrheitsentscheid
+die Orderausführung freigibt (\cref{sec:zielsetzung}). Dieses Ziel wurde erreicht:
+Der vollständige Handelszyklus -- von der kontinuierlichen, gegen eine offizielle
+Zweitquelle abgesicherten Marktdatenerfassung über die regelbasierte
+Regimeentscheidung und das Multi-Modell-Voting bis zur Orderaufgabe über die
+Schnittstelle einer regulierten Bank -- ist umgesetzt, im Trockenlauf erprobt und
+in \cref{cha:umsetzung} vollständig dokumentiert. Die theoretischen Grundlagen aus
+\cref{cha:grundlagen} bildeten dafür den methodischen Rahmen: Das Periodensystem
+der Künstlichen Intelligenz erlaubte es, die bewusste Begrenzung des
+\glsxtrshort{ki}-Einsatzes nicht als Verzicht, sondern als gestalterische Aussage
+zu formulieren -- die Elemente der Kursprognose und der selbstlernenden
+Fortschreibung bleiben unbesetzt, das Element der prozesssteuernden Kontrolle
+bildet das Zentrum.
+
+Mit Blick auf die erste Leitfrage zeigt die Fallstudie, dass der autonome,
+nachvollziehbare Betrieb mit vertretbarem Aufwand möglich ist -- der wesentliche
+Aufwand liegt dabei nicht im Handelsweg, sondern in seiner Absicherung: im
+zweiphasigen Ausführungsjournal gegen Doppelorders, im Orderbuchabgleich nach
+Kommunikationsfehlern, in den Kapitalobergrenzen sowie im jederzeit wirksamen
+Not-Aus (\cref{sec:umsetzung-implementierung}). Die zweite Leitfrage nach dem
+messbaren Beitrag des Mehrheitsvotums bleibt zum Abgabezeitpunkt bewusst offen;
+die dafür geschaffene Kalibrierung misst den Veto-Beitrag der Modelle fortlaufend
+gegen die tatsächliche Marktentwicklung und benötigt eine längere Betriebsdauer,
+bevor valide Aussagen möglich sind (\cref{sec:umsetzung-evaluation-design}).
+Ökonomisch fällt die Antwort dagegen eindeutig aus: Die täglich handelnde
+Demonstrationsstrategie ist nach realen Kosten strukturell defizitär
+(\cref{sec:umsetzung-evaluation-ergebnisse}); der Agent ist ein Erkenntnis-, kein
+Renditeinstrument, und die Differenz zum reinen Regimefolgen beziffert den Preis
+der täglich demonstrierten Autonomie. Methodisch hat sich dabei das iterative
+Vorgehen bewährt, jede Ausbaustufe unmittelbar gegen reale Betriebsdaten zu
+prüfen: Mehrere der wirksamsten Absicherungen -- von der Unterscheidung legitimer
+Datenstille von echten Verbindungsverlusten bis zur datumskorrekten
+Zweitquellenprüfung -- entstanden nicht am Reißbrett, sondern aus Befunden des
+laufenden Betriebs und wurden anschließend durch Regressionstests dauerhaft
+abgesichert.
 
 \section{Ausblick}
 \label{sec:ausblick}
 
-xxx
+Aus der Bearbeitung haben sich die folgenden weiterführenden Ansatzpunkte ergeben,
+die Gegenstand künftiger Arbeiten sein können. Als Erstes zu nennen ist der
+unmittelbar bevorstehende Übergang vom Trockenlauf in den Echtgeldbetrieb, der die
+bislang bis zur Ordervalidierung demonstrierte Ausführungsseite unter realen
+Bedingungen prüft und die Datenbasis der Voting-Kalibrierung kontinuierlich
+erweitert. Als weiterer Punkt kann der Soll-Positions-Abgleich umgesetzt werden,
+der den Ausstiegspfad bei Regimewechseln vollständig deterministisch macht und
+damit die letzte bewusst manuell gehaltene Zwischenlösung ablöst; darauf aufbauend
+erlaubt der Parallelbetrieb eines zweiten Depots den direkten Vergleich der täglich
+handelnden Kreuzungsstrategie mit der haltenden Regimestrategie unter identischen
+Bedingungen. Des Weiteren bietet sich die Weiterentwicklung des Modellgremiums hin
+zu komplementären Prüfrollen an, um der Gefahr korrelierter Fehlurteile zu
+begegnen; die laufende Kalibrierung liefert hierfür die datenbasierte
+Entscheidungsgrundlage, welche Modelle das Gremium tatsächlich stärken.
+Abschließend wäre die Migration auf einen Mac~mini mit lokal betriebenen Modellen
+anzustreben, die die laufenden Kosten weitgehend eliminiert und die Datenhoheit
+vervollständigt -- die Architektur ist darauf vorbereitet, der Wechsel bleibt eine
+Konfigurationsentscheidung.
+
+Damit liegt mit dieser Arbeit eine nachvollziehbar dokumentierte, übertragbare
+Referenzarchitektur für sicherheitsorientiert begrenzten \glsxtrshort{ki}-Einsatz
+im autonomen Handel vor, die als Grundlage für die weiterführende Untersuchung der
+Frage dient, unter welchen Bedingungen probabilistische Sprachmodelle als
+kontrollierte Prüfinstanzen deterministischer Systeme einen messbaren
+Sicherheitsgewinn stiften.
 
 %  =============================================================================
 %  Ende

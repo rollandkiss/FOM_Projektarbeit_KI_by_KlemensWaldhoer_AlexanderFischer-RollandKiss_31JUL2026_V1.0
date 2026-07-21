@@ -1,0 +1,22 @@
+%  =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "verzeichnisse/formelzeichen.tex"
+%     (Definitionen: verzeichnisse/formelverzeichnis-defs.tex)
+%
+%  Formelzeichenverzeichnis (Leitfaden Kap. 5.1 / 5.8): alle in den
+%  nummerierten Gleichungen des Hauptteils verwendeten Formelzeichen mit
+%  Kurzerklaerung. \glsaddall nimmt saemtliche Symbol-Eintraege auf
+%  (unabhaengig von \gls-Verwendung im Fliesstext, da Formelzeichen in
+%  Gleichungen als reine Mathematik gesetzt werden).
+%  =============================================================================
+
+\glsaddall[types={symbols}]
+\printnoidxglossary[
+    type=symbols,
+    style=fomabbr,
+    title={Formelzeichenverzeichnis}
+]
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

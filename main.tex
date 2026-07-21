@@ -457,6 +457,7 @@
 % direkt per \newglossarystyle definiert ist.
 \usepackage[%
     abbreviations,%             Abkuerzungs-Liste aktiv
+    symbols,%                   Formelzeichen-Liste aktiv (Kap. 5.1 / 5.8)
     nonumberlist,%              keine Seitenzahlen im Verzeichnis
     nopostdot,%                 kein Punkt am Eintrags-Ende
     toc,%                       Eintrag im Inhaltsverzeichnis
@@ -526,6 +527,7 @@
 
 \loadglsentries{verzeichnisse/abkuerzungen-defs}
 \loadglsentries{verzeichnisse/glossar-defs}
+\loadglsentries{verzeichnisse/formelverzeichnis-defs}
 
 % ----------------------------- Sonstiges ------------------------------------
 % Farben: Leitfaden Kap. 5.2.2 verlangt Hervorhebungen "sparsam und
@@ -578,7 +580,7 @@
 % Vor der finalen Abgabe das tatsaechliche Datum festsetzen, damit das
 % Datum nicht bei spaeteren Re-Compiles unbeabsichtigt mitwandert (z. B.
 % \newcommand{\abgabedatum}{15.\,Juni 2026}).
-\newcommand{\abgabedatum}{\today}
+\newcommand{\abgabedatum}{31.\,Juli 2026}
 \newcommand{\arbeitOrt}{Köln}        % Ort fuer Unterschriften (Kap. 7.2)
 
 % PDF-Metadaten: Title/Author/Subject/Keywords werden bei PDF/A primaer
@@ -633,6 +635,7 @@
 %   - Tabellenverzeichnis: ausgeblendet (nur auskommentiert, s. u.).
 \listoffigures
 \input{verzeichnisse/abkuerzungen}                  % Kap. 2.5 / 5.1
+\input{verzeichnisse/formelzeichen}                 % Kap. 5.1 / 5.8
 \input{verzeichnisse/glossar}                       % Kap. 5.1
 %\listoftables                                      % Tabellenverzeichnis ausgeblendet
 \clearpage

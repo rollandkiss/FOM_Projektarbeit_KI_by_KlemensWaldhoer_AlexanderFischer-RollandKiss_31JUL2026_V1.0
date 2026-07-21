@@ -1,0 +1,40 @@
+% =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "verzeichnisse/formelverzeichnis-defs.tex"
+%
+%  Formelzeichen des Formelverzeichnisses (Leitfaden Kap. 5.1 / 5.8). Eingebunden via
+%  \loadglsentries in main.tex; gedruckt in verzeichnisse/formelzeichen.tex.
+%  Der sort-Schluessel ist bewusst als Klartext gesetzt, da die Namen
+%  Mathematik enthalten (noidx-Sortierung).
+% =============================================================================
+
+\glsxtrnewsymbol[sort={C(S)}, description={Round-Trip-Transaktionskosten bei
+    Kapitaleinsatz $S$ (Fixgebühren zuzüglich Spread-Anteil)}]{symCS}{\ensuremath{C(S)}}
+\glsxtrnewsymbol[sort={K}, description={Basiskapital der Strategie
+    (2.000\,\euro{}); zugleich harte Obergrenze des Kapitaleinsatzes}]{symK}{\ensuremath{K}}
+\glsxtrnewsymbol[sort={n}, description={Fensterlänge des gleitenden
+    Durchschnitts in Handelstagen}]{symN}{\ensuremath{n}}
+\glsxtrnewsymbol[sort={p*(S)}, description={Break-even-Trefferquote: für einen
+    positiven Erwartungswert erforderliche Trefferquote bei Kapitaleinsatz
+    $S$}]{symPstar}{\ensuremath{p^{*}(S)}}
+\glsxtrnewsymbol[sort={P(t)}, description={Tagesschlusskurs des S\&P~500 am
+    Handelstag $t$}]{symPt}{\ensuremath{P(t)}}
+\glsxtrnewsymbol[sort={R(t)}, description={Handelsregime der
+    Kreuzungsstrategie am Handelstag $t$ (LONG oder SHORT)}]{symRt}{\ensuremath{R(t)}}
+\glsxtrnewsymbol[sort={R'(t)}, description={Handelsregime der
+    Trendfolge-Alternative \emph{smatrend} (LONG oder CASH)}]{symRpt}{\ensuremath{R'(t)}}
+\glsxtrnewsymbol[sort={S(t)}, description={volatilitätsabhängig skalierter
+    Kapitaleinsatz am Handelstag $t$}]{symSt}{\ensuremath{S(t)}}
+\glsxtrnewsymbol[sort={Smin}, description={Mindestpositionsgröße
+    (1.000\,\euro{})}]{symSmin}{\ensuremath{S_{\min}}}
+\glsxtrnewsymbol[sort={SMAn(t)}, description={einfacher gleitender Durchschnitt
+    der Tagesschlusskurse über $n$ Handelstage}]{symSMA}{\ensuremath{\mathrm{SMA}_n(t)}}
+\glsxtrnewsymbol[sort={sigma*}, description={Zielvolatilität der
+    Positionsgrößensteuerung (1{,}0\,\% pro Tag)}]{symSigStar}{\ensuremath{\sigma^{*}}}
+\glsxtrnewsymbol[sort={sigma20}, description={realisierte 20-Tage-Volatilität
+    der Index-Tagesrenditen}]{symSig20}{\ensuremath{\sigma_{20}(t)}}
+\glsxtrnewsymbol[sort={t}, description={Index des Handelstags}]{symT}{\ensuremath{t}}
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

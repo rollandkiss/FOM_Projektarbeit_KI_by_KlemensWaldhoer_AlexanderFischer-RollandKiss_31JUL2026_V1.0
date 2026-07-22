@@ -1,0 +1,122 @@
+# =============================================================================
+# agentconfig.yaml -- Betriebskonfiguration des Handelsagenten
+# (Orchestrierung; Produktzuordnung liegt getrennt in wknassign.yaml)
+#
+# strategies.active : Liste der aktiven Strategien (= plstrategy_<name>.py).
+#   Nur aktive Strategien: bestimmen den Datenbedarf (strategy.py datareq),
+#   dürfen handeln (inaktiv -> Hard-Flag STRATEGY_INACTIVE -> NO_TRADE).
+#   Backtest/Analyse inaktiver Strategien bleibt mit Warnung möglich.
+# strategies.params : optionale Parameter-Overrides je Strategie
+#   (Rang: CLI --params > diese Datei > Plugin-Defaults).
+# =============================================================================
+
+version: 1
+
+strategies:
+  active:
+    - "sma"                 # Default-Strategie (STRATEGIE.md)
+    # - "smatrend"          # aktivieren für das Zweitdepot-A/B (siehe deployments)
+    # - "smacross"
+    # - "momentum"
+  params:
+    sma: {}                 # z. B. {fast: 50, slow: 200}
+
+# -----------------------------------------------------------------------------
+# deployments -- Strategie->Konto->Depot-Zuordnung (Multi-Depot, strategyloader.load_deployments).
+# Jede Einheit läuft mit eigenem Konto (credstore/Session), eigenem Depot und eigenem
+# Entscheidungsjournal. 'depot' leer -> orchestrate nutzt COMDIRECT_DEPOT bzw.
+# COMDIRECT_DEPOT_<ACCOUNT> aus agent.env; 'journal' leer -> decisions[_<account>].sqlite.
+# Für Handel muss die Strategie zusätzlich in strategies.active stehen (sonst NO_TRADE).
+# Fehlt der ganze Block, wird je aktiver Strategie eine haupt-Einheit abgeleitet.
+# -----------------------------------------------------------------------------
+deployments:
+  - strategy: sma
+    account: haupt
+    journal: decisions.sqlite
+  # - strategy: smatrend       # erst aktivieren, wenn Zweit-Zugang (credstore 'zweit'),
+  #   account: zweit           # Kapital + LONG-Seed im Zweitdepot stehen
+  #   journal: decisions_zweit.sqlite
+  #   depot:                   # leer -> COMDIRECT_DEPOT_ZWEIT aus agent.env
+
+# -----------------------------------------------------------------------------
+# auditor -- Multi-LLM-Voting. Modell-Trio bewusst diversifiziert (Google/Alibaba/
+# OpenAI) und so gewählt, dass es SOWOHL über Ollama Cloud (agent-vm) ALS AUCH
+# lokal auf einem Mac mini lauffähig ist -- Umgebungswechsel = nur Tags tauschen,
+# kein Code (config-getrieben).
+#   models : abstimmende Modelle. Regel (combine_verdicts): TRADE nur bei strikter
+#            Mehrheit der TRADE-Voten; Gleichstand/Veto-Mehrheit -> NO_TRADE. Bei ZWEI
+#            Modellen = Einstimmigkeit. Nicht erreichbares Modell = NO_TRADE-Votum.
+#   base_url: Ollama-Endpoint (leer -> CLI-/Default des Auditors).
+#   Neues Modell erst aktivieren, wenn sein Tag verifiziert erreichbar ist -- sonst
+#   vetot es jeden Zyklus (im Trockenlauf unkritisch, aber es kommt kein TRADE).
+#
+#   Cloud-Tags (agent-vm)        | Lokale Tags (Mac mini, ~Größe)
+#   ---------------------------- | -------------------------------
+#   gemma4:cloud                 | gemma4:12b   (Google)
+#   qwen3.5:cloud                | qwen3.5:9b   (Alibaba)
+#   gpt-oss:20b-cloud            | gpt-oss:20b  (OpenAI, ~14 GB)
+# -----------------------------------------------------------------------------
+auditor:
+  base_url: "http://127.0.0.1:11434"
+  # M1 -- Zeitbudget je Modell-Aufruf in Sekunden (EINE Quelle der Wahrheit:
+  # run_cycle leitet sein Gesamtbudget hieraus ab: n_models*timeout_s + 90).
+  # Cloud: 90 reicht komfortabel (real 1-2 s). Mac mini LOKAL: auf 180 erhöhen --
+  # 9-20B-Modelle auf Apple Silicon brauchen 60-180 s, Kaltstart (Modell-Load)
+  # zusätzlich; der run_cycle-Preflight (M3) prüft den Endpoint vorab.
+  timeout_s: 90
+  models:
+    # Reihenfolge LATENZ-AUFSTEIGEND (B1): der Early-Stop bricht ab, sobald die
+    # NO_TRADE-Mehrheit feststeht -- schnellste Modelle zuerst spart dann maximal.
+    - "qwen3.5:cloud"             # Erstvotum (Alibaba) -- schnellstes Modell (0,66 s)
+    - "gemma4:cloud"              # Zweitvotum (Google) -- ~0,7 s warm
+    - "deepseek-v4-pro:cloud"     # Drittvotum (DeepSeek, Reasoning-MoE) -- verifiziert (1,6 s)
+    # gpt-oss bewusst NICHT aktiv: zu langsame Antwortzeit + viel Rauschen (siehe §7).
+    #
+    # Dreier-Voting -> einfache Mehrheit 2/3, damit real auch TRADEs zustande kommen
+    # (die strenge 3/4-Regel eines Vierer-Votings wäre zu restriktiv).
+    #
+    # Mac-mini-LOKAL (Cloud->lokal; deepseek hat KEIN lokales Pendant):
+    #   gemma4:12b / qwen3.5:9b / gpt-oss:20b  -- dort ERSETZT gpt-oss:20b das
+    #   cloud-only deepseek als Drittvotum. Aufgrund fehlender lokaler Hardware wurde
+    #   für die Projektarbeit deepseek über die Ollama Cloud genutzt, um das
+    #   Dreier-Voting (2:1) zu demonstrieren.
+    # (qwen3.6 ist NICHT cloud-gehostet; cloud-Familie = qwen3.5)
+
+# -----------------------------------------------------------------------------
+# ml -- scikit-Prüfinstanz (mlforecast.py; Design-Entscheide 22.07.).
+# Kalibrierte Wahrscheinlichkeit p_direction = p(Folgetag in Regimerichtung) aus
+# bars_1d-Features (Datenbasis: collector-vm -> minütlicher rsync marketdata.sqlite).
+# Im Modus live: Einbau als ml_context im DecisionRequest; p < threshold_disagree
+# => SOFT-Flag ML_DISAGREE (Risiko-Input für die LLM-Voter wie vol20/last5 --
+# bewusst KEIN Hard-Flag und KEIN Votum: die Prüfinstanz kann Trades nur
+# verhindern/schwächen, nie erzeugen; Ausbaustufe >>viertes Votum mit Veto-Recht<<
+# erst nach Kalibrierungsnachweis via evaluate_votes --ml).
+#
+# mode (Sidecar-Schalter, je Strategie übersteuerbar):
+#   sidecar -- Prognose läuft jeden Zyklus + ml_predictions-Journal (Kalibrierung
+#             sammelt), aber NICHTS erreicht Request/LLMs/Entscheidung.
+#   live    -- ml_context + ML_DISAGREE gehen an die LLM-Voter.
+#   off     -- keine Inferenz, kein Journal.
+# Laufzeit-Umschaltung per Signal: 'mlNy' (live) / 'mlNn' (sidecar) -> schreibt
+# ML_MODES.json (Rang: Signal-Override > ml.modes.<strategie> > ml.mode).
+# Die ML-Nummern kommen aus ML_STRATEGIES in agent.env (Default "sma";
+# nummernstabil: nur anhängen -- ml1=sma, später ml2=smatrend).
+#
+# Hinweis Mehrstrategie: das aktuelle Modell ist an das sma-Regime (SMA50/200,
+# ^GSPC) gebunden. Für smatrend (eigene Regimedefinition) braucht es ein eigenes
+# Modell/model_path je Strategie -- vorgesehen als Ausbaustufe mit dem Zweitdepot.
+#
+# Alles best-effort: fehlt sklearn/Modelldatei, läuft der Zyklus ohne ml_context.
+# Training (Vollretraining auf der GESAMTEN bars_1d-Historie, versioniert --
+# bewusst KEIN Online-Lernen, Lt bleibt unbesetzt) wöchentlich per Cron
+# (So. 15:00 UTC, vor evaluate_votes 16:30):
+#   0 15 * * 0  cd /home/me/fom-ki-project && python3 mlforecast.py train >> logs/mlforecast.log 2>&1
+# -----------------------------------------------------------------------------
+ml:
+  enabled: true
+  mode: "sidecar"           # Start im Sidecar (Rollands Vorgabe 22.07.); live per 'ml1y'
+  # modes:                  # optionaler Fest-Override je Strategie (vor ml.mode)
+  #   sma: live
+  model_path: "ml_model.pkl"
+  threshold_disagree: 0.45
+  algo: "logreg"            # logreg (Default, kalibrierbar) | gb (GradientBoosting)

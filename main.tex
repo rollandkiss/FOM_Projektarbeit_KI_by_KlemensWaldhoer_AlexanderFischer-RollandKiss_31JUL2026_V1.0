@@ -633,7 +633,10 @@
 %   - Mathematisches Formelverzeichnis: vollstaendig entfernt.
 %   - Symbolverzeichnis: vollstaendig entfernt (Quelldatei nicht vorhanden).
 %   - Tabellenverzeichnis: ausgeblendet (nur auskommentiert, s. u.).
-\listoffigures
+% Alle Verzeichnisse liegen einheitlich unter verzeichnisse/ und werden
+% gleichartig per \input eingebunden (das Abbildungsverzeichnis kapselt
+% \listoffigures in verzeichnisse/abbildungsverzeichnis.tex).
+\input{verzeichnisse/abbildungsverzeichnis}         % Kap. 2.3 / 5.1 / 5.7
 \input{verzeichnisse/abkuerzungen}                  % Kap. 2.5 / 5.1
 \input{verzeichnisse/formelzeichen}                 % Kap. 5.1 / 5.8
 \input{verzeichnisse/glossar}                       % Kap. 5.1

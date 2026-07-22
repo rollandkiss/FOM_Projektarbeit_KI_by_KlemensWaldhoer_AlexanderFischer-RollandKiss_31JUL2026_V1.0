@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1180" viewBox="0 0 1000 1180" font-family="Helvetica,Arial,sans-serif">
+  <!-- Projektstruktur des Handelsagenten (ein Codestand, zwei Ziel-VMs).
+       Attributbasiert gestylt (kein style-Block) fuer die Inkscape-
+       Konvertierung von Overleaf. -->
+
+  <text x="30" y="34" font-size="19" font-weight="bold" fill="#1a2027">fom-ki-project/ — Projektstruktur (ein Codestand für beide virtuellen Maschinen)</text>
+  <text x="30" y="54" fill="#5c6773" font-size="11px">Stand 22.07.2026 · Zuordnung: C = collector-vm · A = agent-vm · im Anhang abgedruckte Dateien sind fett gesetzt</text>
+
+  <!-- Konfiguration -->
+  <rect x="30" y="72" width="940" height="150" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="46" y="94" fill="#334155" font-size="13px" font-weight="bold">Konfiguration und Geheimnisse</text>
+  <text x="60" y="116" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">agentconfig.yaml</tspan> <tspan fill="#5c6773">— Betriebskonfiguration: Strategien, Deployments, LLM-Modelle, timeout_s, ml.* (A)</tspan></text>
+  <text x="60" y="136" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">wknassign.yaml</tspan> <tspan fill="#5c6773">— zentrale Produktzuordnung Strategie → Instrument (Präferenzlisten, ISINs) (A)</tspan></text>
+  <text x="60" y="156" font-size="12px" fill="#1a2027"><tspan font-family="monospace">agent.env</tspan> <tspan fill="#5c6773">— Umgebungsvariablen inkl. EXECUTION_MODE je Konto (A; enthält Kontobezüge, nicht abgedruckt)</tspan></text>
+  <text x="60" y="176" font-size="12px" fill="#1a2027"><tspan font-family="monospace">~/.fom-agent/</tspan> <tspan fill="#5c6773">— verschlüsselter Geheimnisspeicher (credstore) und Sitzungszustand (A; nicht abgedruckt)</tspan></text>
+  <text x="60" y="196" font-size="12px" fill="#1a2027"><tspan font-family="monospace">ML_MODES.json, TRADING_PAUSED*</tspan> <tspan fill="#5c6773">— Laufzeit-Schalter: ML-Modus je Strategie, Not-Aus-Flags (A)</tspan></text>
+
+  <!-- Datenerfassung -->
+  <rect x="30" y="236" width="940" height="108" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="46" y="258" fill="#334155" font-size="13px" font-weight="bold">Datenerfassung</text>
+  <text x="60" y="280" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">datacollect.py</tspan> <tspan fill="#5c6773">— Rohtick-Erfassung (WebSocket + Futures-Poll), Sanitätsfilter, Bars, FRED-Crosscheck (C)</tspan></text>
+  <text x="60" y="300" font-size="12px" fill="#1a2027"><tspan font-family="monospace">marketdata.sqlite</tspan> <tspan fill="#5c6773">— Rohticks und Bars; Litestream-Replikation in Cloud-Speicher (C; Replik minütlich → A)</tspan></text>
+  <text x="60" y="320" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">market_calendar.py</tspan> <tspan fill="#5c6773">— Börsenkalender: Handelstage, Feiertage, Sitzungsfenster (C/A)</tspan></text>
+
+  <!-- Strategieschicht -->
+  <rect x="30" y="358" width="940" height="128" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="46" y="380" fill="#334155" font-size="13px" font-weight="bold">Strategieschicht (Plugin-System)</text>
+  <text x="60" y="402" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">strategy.py</tspan> <tspan fill="#5c6773">— Strategie-Handler: Signale, DecisionRequest, Audit-Flags, Kostenkontext, Instrumentenkatalog (A)</tspan></text>
+  <text x="60" y="422" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">strategyloader.py</tspan> <tspan fill="#5c6773">— Plugin-Lader: aktive Strategien, Deployments, Parameter, ML-Konfiguration (A)</tspan></text>
+  <text x="60" y="442" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">plstrategy_sma.py, plstrategy_smacross.py, plstrategy_smatrend.py</tspan> <tspan fill="#5c6773">— Regimestrategien (A)</tspan></text>
+  <text x="60" y="462" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">plstrategy_buyhold.py, plstrategy_momentum.py</tspan> <tspan fill="#5c6773">— Vergleichsmaßstäbe für den Backtest (A)</tspan></text>
+
+  <!-- Pruefinstanzen -->
+  <rect x="30" y="500" width="940" height="108" rx="8" fill="#eaf1fe" stroke="#2f6fd6" stroke-width="1.2"/>
+  <text x="46" y="522" fill="#334155" font-size="13px" font-weight="bold">Prüfinstanzen</text>
+  <text x="60" y="544" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">auditor.py</tspan> <tspan fill="#5c6773">— Multi-LLM-Voting: Pre-Gate, unabhängige Voten, strikte Mehrheit, fail-safe Validator (A)</tspan></text>
+  <text x="60" y="564" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">mlforecast.py</tspan> <tspan fill="#5c6773">— statistische Prüfinstanz: logistische Regression, Walk-Forward, Sidecar-/Wirkmodus (A)</tspan></text>
+  <text x="60" y="584" font-size="12px" fill="#1a2027"><tspan font-family="monospace">ml_model.pkl</tspan> <tspan fill="#5c6773">— versionierter Modellstand (Algorithmus-Datum-Hash); wöchentliches Offline-Training (A)</tspan></text>
+
+  <!-- Orderausfuehrung -->
+  <rect x="30" y="622" width="940" height="128" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="46" y="644" fill="#334155" font-size="13px" font-weight="bold">Orderausführung und Bankanbindung</text>
+  <text x="60" y="666" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">orchestrate.py</tspan> <tspan fill="#5c6773">— abgesicherte Ausführung: Frische-/Kursfrische-/Orderbuch-Gate, Intent-Journal, Reconciliation (A)</tspan></text>
+  <text x="60" y="686" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">broker.py</tspan> <tspan fill="#5c6773">— comdirect-Adapter: OAuth2, Session-TAN, Depot/Orderbuch, tagesgültige Limit-Orders (A)</tspan></text>
+  <text x="60" y="706" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">credstore.py</tspan> <tspan fill="#5c6773">— verschlüsselte Ablage der Zugangsdaten, getrennt je Konto (A)</tspan></text>
+  <text x="60" y="726" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">config.py</tspan> <tspan fill="#5c6773">— Lader der Umgebungskonfiguration (agent.env) (A)</tspan></text>
+
+  <!-- Betrieb und Steuerung -->
+  <rect x="30" y="764" width="940" height="148" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="46" y="786" fill="#334155" font-size="13px" font-weight="bold">Betrieb und Steuerung</text>
+  <text x="60" y="808" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">run_cycle.sh</tspan> <tspan fill="#5c6773">— täglicher Entscheidungszyklus: Preflight, Strategie → Audit → Ausführung, Report (A; Cron)</tspan></text>
+  <text x="60" y="828" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">signal_dispatcher.py</tspan> <tspan fill="#5c6773">— Empfangsschleife des Messaging-Kanals, startet die Befehlsbehandlung (A; systemd)</tspan></text>
+  <text x="60" y="848" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">control.py</tspan> <tspan fill="#5c6773">— Befehlsprotokoll: Not-Aus P/R/S/F, Broker-Login L/K, ML-Umschaltung ml/mlNy/mlNn, Status (A)</tspan></text>
+  <text x="60" y="868" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">notify.py</tspan> <tspan fill="#5c6773">— Berichts- und Alarmversand mit Stale-Guard (A)</tspan></text>
+  <text x="60" y="888" font-size="12px" fill="#1a2027"><tspan font-family="monospace">healthcheck.sh, loadprobe.sh, cycle_watch.sh</tspan> <tspan fill="#5c6773">— Betriebsprüfungen, Lastmessung (A), Zyklus-Wächter (C)</tspan></text>
+
+  <!-- Auswertung -->
+  <rect x="30" y="926" width="940" height="88" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="46" y="948" fill="#334155" font-size="13px" font-weight="bold">Auswertung und Journal</text>
+  <text x="60" y="970" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">evaluate_votes.py</tspan> <tspan fill="#5c6773">— wöchentliche Voting-Kalibrierung und ML-Auswertung gegen den Folgetags-Return (A)</tspan></text>
+  <text x="60" y="990" font-size="12px" fill="#1a2027"><tspan font-family="monospace">decisions.sqlite</tspan> <tspan fill="#5c6773">— Entscheidungsjournal: Voten, Orders (Intent/Ausführung), ml_predictions (A; Backup → C)</tspan></text>
+
+  <!-- Dashboard und Tests -->
+  <rect x="30" y="1028" width="940" height="128" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
+  <text x="46" y="1050" fill="#334155" font-size="13px" font-weight="bold">Öffentliches Dashboard (webfeed/) und Qualitätssicherung — im Anhang nur ausgewiesen</text>
+  <text x="60" y="1072" font-size="12px" fill="#1a2027"><tspan font-family="monospace">webfeed/export_journal.py</tspan> <tspan fill="#5c6773">— redigierter Feed-Export ohne Konto-/Zugangsdaten (C; minütlich bei Änderung)</tspan></text>
+  <text x="60" y="1092" font-size="12px" fill="#1a2027"><tspan font-family="monospace">webfeed/app/</tspan> <tspan fill="#5c6773">— zustandslose Weboberfläche: main.py (Flask), templates/index.html, static/ (Cloud Run)</tspan></text>
+  <text x="60" y="1112" font-size="12px" fill="#1a2027"><tspan font-family="monospace">test_*.py</tspan> <tspan fill="#5c6773">— zwölf Offline-Testsuiten mit gemockten Schnittstellen, von der Datensammlung über Voting und</tspan></text>
+  <text x="60" y="1130" font-size="12px" fill="#5c6773">Steuerkanal bis zu den Schutzpfaden der Orderausführung (u. a. auditor, brokersession, control, dispatcher, evaluate, mlforecast, orchestrate, notify, export, app)</text>
+</svg>

@@ -1,0 +1,181 @@
+%  =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "anhang/quelltexte.tex"
+%
+%  Anhang "Projektstruktur und Quelltexte" (Leitfaden Kap. 5.9.2):
+%  dokumentiert die Volltexte der Module des Handelsagenten (vgl. Verweis in
+%  Kapitel 3, Abschnitt Implementierung) sowie die Projektstruktur als
+%  Abbildung. Die Quelldateien liegen unverändert lauffähig unter
+%  anhang/quelltexte/ und werden per \lstinputlisting eingebunden.
+%
+%  Druckaufbereitung (Transparenzhinweis, im Text ausgewiesen):
+%    * Rufnummern des Messaging-Kanals sind redigiert (+49XXXXXXXXXXX).
+%    * Typografische Sonderzeichen und Emoji-Symbole der Kommentar- und
+%      Berichtstexte wurden fuer den Druck durch ASCII-Aequivalente ersetzt
+%      (z. B. Pfeile -> , Warnsymbol [!]); die Programmlogik ist unveraendert.
+%    * Umlaute/Eszett/Euro/Paragraf bleiben erhalten und werden ueber die
+%      nachfolgende literate-Tabelle gesetzt.
+%  =============================================================================
+
+\chapter{Anhang: Projektstruktur und Quelltexte}
+\label{cha:anhang-quelltexte}
+
+% Literate-Tabelle: deutsche Sonderzeichen in Listings (pdflatex + listings
+% verarbeiten UTF-8-Mehrbytezeichen nur ueber diese Zuordnung).
+% Schriftgrad im Anhang: \footnotesize statt \small (ca. 7.000 Zeilen
+% Quelltext; der Hauptteil behaelt die Vorgabe aus main.tex).
+\lstset{%
+    basicstyle=\ttfamily\footnotesize,
+    literate={ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+             {Ä}{{\"A}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+             {ß}{{\ss{}}}1 {€}{{\euro{}}}1 {§}{{\S{}}}1
+}
+
+Dieser Anhang dokumentiert den Quelltextstand des in \cref{cha:umsetzung}
+beschriebenen Handelsagenten zum 22.07.2026, unmittelbar vor der Aufnahme des
+Echtgeldbetriebs. Abgedruckt sind die Volltexte sämtlicher Module des
+Entscheidungs-, Order- und Betriebspfads sowie die zentralen
+Konfigurationsdateien; damit ist jede in \cref{sec:umsetzung-implementierung}
+beschriebene Absicherung im Quelltext nachvollziehbar. Die zwölf
+Offline-Testsuiten und das bewusst vom Handelspfad entkoppelte öffentliche
+Dashboard werden aus Platzgründen nicht im Volltext wiedergegeben, sondern in
+der Projektstruktur ausgewiesen.
+
+Für den Druck gelten drei redaktionelle Anpassungen, die die Programmlogik
+unberührt lassen: Die Rufnummer des Messaging-Kanals ist redigiert
+(\texttt{+49XXXXXXXXXXX}); Emoji-Symbole und typografische Sonderzeichen der
+Kommentar- und Berichtstexte sind durch ASCII-Äquivalente ersetzt (etwa
+\texttt{->} für Pfeile und \texttt{[!]} für das Warnsymbol); Zugangsdaten
+erscheinen an keiner Stelle, da sie ausschließlich im verschlüsselten
+Geheimnisspeicher liegen -- die Datei \texttt{agent.env} und der Inhalt von
+\texttt{\textasciitilde/.fom-agent/} sind deshalb nicht Bestandteil des
+Anhangs.
+
+\section{Projektstruktur}
+\label{sec:anhang-projektstruktur}
+
+\Cref{fig:projektstruktur} zeigt die Struktur des Projekts. Es handelt sich um
+einen einzigen Codestand, der auf beiden virtuellen Maschinen ausgerollt wird;
+die Zuordnung der Module zu collector-vm und agent-vm ist je Datei vermerkt.
+Fett gesetzte Dateien sind in den nachfolgenden Abschnitten im Volltext
+abgedruckt.
+
+\begin{figure}[htbp]
+    \centering
+    \includesvg[width=0.92\textwidth,height=0.88\textheight,keepaspectratio]{projektstruktur}
+    \caption[Projektstruktur des Handelsagenten]{Projektstruktur des
+        Handelsagenten: ein Codestand für beide virtuellen Maschinen
+        (C = collector-vm, A = agent-vm).\quelleeigenki}
+    \label{fig:projektstruktur}
+\end{figure}
+
+\section{Konfiguration}
+\label{sec:anhang-konfiguration}
+
+\lstinputlisting[language={},caption={\texttt{agentconfig.yaml} --
+    Betriebskonfiguration: Strategien, Deployments, Sprachmodelle,
+    Zeitbudgets, ML-Prüfinstanz},label={lst:agentconfig}]{anhang/quelltexte/agentconfig.yaml}
+
+\lstinputlisting[language={},caption={\texttt{wknassign.yaml} -- zentrale
+    Produktzuordnung Strategie zu Handelsinstrument},label={lst:wknassign}]{anhang/quelltexte/wknassign.yaml}
+
+\section{Datenerfassung}
+\label{sec:anhang-datenerfassung}
+
+\lstinputlisting[language=Python,caption={\texttt{datacollect.py} --
+    kontinuierliche Marktdatenerfassung mit Sanitätsfilter, Bar-Verdichtung
+    und FRED-Crosscheck (collector-vm)},label={lst:datacollect}]{anhang/quelltexte/datacollect.py}
+
+\lstinputlisting[language=Python,caption={\texttt{market\_calendar.py} --
+    Börsenkalender: Handelstage, Feiertage,
+    Sitzungsfenster},label={lst:marketcalendar}]{anhang/quelltexte/market_calendar.py}
+
+\section{Strategieschicht}
+\label{sec:anhang-strategieschicht}
+
+\lstinputlisting[language=Python,caption={\texttt{strategy.py} --
+    Strategie-Handler: Signalberechnung, DecisionRequest, Audit-Flags,
+    Kostenkontext, Instrumentenkatalog},label={lst:strategy}]{anhang/quelltexte/strategy.py}
+
+\lstinputlisting[language=Python,caption={\texttt{strategyloader.py} --
+    Plugin-Lader: aktive Strategien, Deployments,
+    ML-Konfiguration},label={lst:strategyloader}]{anhang/quelltexte/strategyloader.py}
+
+\lstinputlisting[language=Python,caption={\texttt{plstrategy\_sma.py} --
+    Plugin der SMA-Regimestrategie
+    (Kreuzungssignal)},label={lst:plsma}]{anhang/quelltexte/plstrategy_sma.py}
+
+\lstinputlisting[language=Python,caption={\texttt{plstrategy\_smacross.py} --
+    Plugin-Variante des
+    Kreuzungssignals},label={lst:plsmacross}]{anhang/quelltexte/plstrategy_smacross.py}
+
+\lstinputlisting[language=Python,caption={\texttt{plstrategy\_smatrend.py} --
+    Trendfolge-Alternative für den geplanten
+    A/B-Vergleich},label={lst:plsmatrend}]{anhang/quelltexte/plstrategy_smatrend.py}
+
+\lstinputlisting[language=Python,caption={\texttt{plstrategy\_buyhold.py} --
+    Vergleichsmaßstab passives
+    Halten},label={lst:plbuyhold}]{anhang/quelltexte/plstrategy_buyhold.py}
+
+\lstinputlisting[language=Python,caption={\texttt{plstrategy\_momentum.py} --
+    Vergleichsmaßstab
+    Momentum},label={lst:plmomentum}]{anhang/quelltexte/plstrategy_momentum.py}
+
+\section{Prüfinstanzen}
+\label{sec:anhang-pruefinstanzen}
+
+\lstinputlisting[language=Python,caption={\texttt{auditor.py} --
+    Multi-LLM-Voting: Pre-Gate, unabhängige Voten, strikte Mehrheit,
+    fail-safe Validator},label={lst:auditor}]{anhang/quelltexte/auditor.py}
+
+\lstinputlisting[language=Python,caption={\texttt{mlforecast.py} --
+    statistische Prüfinstanz: logistische Regression, Walk-Forward-Prüfung,
+    Schatten- und Wirkmodus},label={lst:mlforecast}]{anhang/quelltexte/mlforecast.py}
+
+\section{Orderausführung und Bankanbindung}
+\label{sec:anhang-orderausfuehrung}
+
+\lstinputlisting[language=Python,caption={\texttt{orchestrate.py} --
+    abgesicherte Orderausführung: Frische-Gates, Intent-Journal,
+    Orderbuch-Reconciliation,
+    Circuit-Breaker},label={lst:orchestrate}]{anhang/quelltexte/orchestrate.py}
+
+\lstinputlisting[language=Python,caption={\texttt{broker.py} --
+    comdirect-Adapter: OAuth2, Session-TAN, Depot- und Orderbuchzugriff,
+    tagesgültige Limit-Orders},label={lst:broker}]{anhang/quelltexte/broker.py}
+
+\lstinputlisting[language=Python,caption={\texttt{credstore.py} --
+    verschlüsselte Ablage der Zugangsdaten, getrennt je
+    Konto},label={lst:credstore}]{anhang/quelltexte/credstore.py}
+
+\lstinputlisting[language=Python,caption={\texttt{config.py} -- Lader der
+    Umgebungskonfiguration},label={lst:config}]{anhang/quelltexte/config.py}
+
+\section{Betrieb und Steuerung}
+\label{sec:anhang-betrieb}
+
+\lstinputlisting[language=bash,caption={\texttt{run\_cycle.sh} -- täglicher
+    Entscheidungszyklus: Preflight, Strategie, Audit, Ausführung,
+    Bericht},label={lst:runcycle}]{anhang/quelltexte/run_cycle.sh}
+
+\lstinputlisting[language=Python,caption={\texttt{signal\_dispatcher.py} --
+    Empfangsschleife des
+    Messaging-Kanals},label={lst:dispatcher}]{anhang/quelltexte/signal_dispatcher.py}
+
+\lstinputlisting[language=Python,caption={\texttt{control.py} --
+    Befehlsprotokoll des Steuerkanals: Not-Aus, Broker-Login,
+    ML-Umschaltung, Status},label={lst:control}]{anhang/quelltexte/control.py}
+
+\lstinputlisting[language=Python,caption={\texttt{notify.py} -- Berichts- und
+    Alarmversand mit Stale-Guard},label={lst:notify}]{anhang/quelltexte/notify.py}
+
+\section{Auswertung}
+\label{sec:anhang-auswertung}
+
+\lstinputlisting[language=Python,caption={\texttt{evaluate\_votes.py} --
+    wöchentliche Voting-Kalibrierung und ML-Auswertung gegen den
+    Folgetags-Return},label={lst:evaluate}]{anhang/quelltexte/evaluate_votes.py}
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

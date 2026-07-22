@@ -3,19 +3,270 @@
 %  -> Abschnitt "verzeichnisse/glossar-defs.tex"
 %
 %  Eintraege alphabetisch nach Anzeigename geordnet. Die tatsaechliche
-%  Sortierung im Glossar steuert das Feld sort={...}.
+%  Sortierung im Glossar steuert das Feld sort={...} (ASCII, klein,
+%  ohne Umlaute/Sonderzeichen).
 %
-%  Hinweis: Die 30 Glossareintraege der Vorlagen-Version (BPMN-/
-%  Kunstsammlungs-Themen eines anderen Projekts) wurden entfernt.
-%  Neue, zum Thema "OpenClaw als Trading Agent" passende Eintraege nach
-%  folgendem Muster ergaenzen:
-%
-%  \newglossaryentry{schluessel}{%
-%      name={Anzeigename},%
-%      description={Praegnante Definition in ein bis zwei Saetzen},%
-%      sort=schluessel%
-%  }
+%  Aufgenommen sind Fachbegriffe aus Boersenhandel, KI-Betrieb und
+%  Systemarchitektur, die im Fliesstext oder in der Architektur-Abbildung
+%  verwendet und dort nicht selbst definiert werden (Leitfaden Kap. 5.1).
 % =============================================================================
+
+\newglossaryentry{backtest}{%
+    name={Backtest},%
+    description={Simulation einer Handelsstrategie auf historischen Kursdaten,
+        um ihr Verhalten und Ergebnis vor dem Echtbetrieb zu bewerten.},%
+    sort={backtest}%
+}
+\newglossaryentry{basisrate}{%
+    name={Basisrate},%
+    description={Relative Häufigkeit des vorherzusagenden Ereignisses in den
+        Daten -- hier der Anteil der Handelstage mit Folgetagsrendite in
+        Signalrichtung. Eine Prognose besitzt erst dann Aussagekraft, wenn sie
+        diese triviale Referenz übertrifft.},%
+    sort={basisrate}%
+}
+\newglossaryentry{boundeddiscretion}{%
+    name={Begrenzte Diskretion (bounded discretion)},%
+    description={Tragendes Gestaltungsprinzip der Arbeit: Probabilistische
+        Komponenten (Sprachmodell-Gremium, statistische Prüfinstanz) dürfen
+        vorbereitete Handelsentscheidungen verhindern, verkleinern oder
+        zeitlich einordnen, niemals aber erzeugen oder in ihrer Richtung
+        umkehren.},%
+    sort={begrenzte diskretion}%
+}
+\newglossaryentry{circuitbreaker}{%
+    name={Circuit-Breaker},%
+    description={Automatische Sicherung, die den Handel bei Überschreiten
+        definierter Grenzen unterbricht -- hier als Einzelorder- und
+        Portfolio-Obergrenze im Orderpfad implementiert.},%
+    sort={circuit-breaker}%
+}
+\newglossaryentry{cloudrun}{%
+    name={Cloud Run},%
+    description={Verwalteter Dienst der Google Cloud Platform zur Ausführung
+        zustandsloser Container; rendert in dieser Arbeit die öffentliche
+        Dashboard-Oberfläche aus den redigierten JSON-Feeds.},%
+    sort={cloud run}%
+}
+\newglossaryentry{decisionrequest}{%
+    name={DecisionRequest},%
+    description={Strukturiertes Entscheidungsdokument, das die
+        Strategieauswertung je Zyklus erzeugt: Regime, Indikatorwerte,
+        Datenqualitätsmetriken, Kostenkontext und Prüfmarken. Es bildet die
+        einheitliche Eingabe für Vorprüfung, Sprachmodell-Gremium und
+        Journalisierung.},%
+    sort={decisionrequest}%
+}
+\newglossaryentry{direkthandel}{%
+    name={Direkthandel},%
+    description={Außerbörslicher Handel unmittelbar mit dem Emittenten eines
+        Wertpapiers. Gegenüber dem Börsenplatz entfallen Handelsplatzentgelte;
+        der Geld-Brief-Spread wird jedoch nicht im Ex-Ante-Kostenausweis
+        ausgewiesen.},%
+    sort={direkthandel}%
+}
+\newglossaryentry{earlystop}{%
+    name={Early-Stop},%
+    description={Vorzeitiger Abbruch der sequenziellen Modellbefragung, sobald
+        eine ablehnende Mehrheit feststeht. Eine bereits erreichte
+        Zustimmungsmehrheit bricht bewusst nicht ab, da weitere Voten die
+        Positionsgröße nur verkleinern können.},%
+    sort={early-stop}%
+}
+\newglossaryentry{faktorzertifikat}{%
+    name={Faktor-Zertifikat},%
+    description={Gehebeltes Derivat, das die Tagesrendite eines Basiswerts mit
+        konstantem Faktor (hier zweifach) abbildet; das gehandelte Instrument
+        der Kreuzungsstrategie in Long- und Short-Richtung.},%
+    sort={faktor-zertifikat}%
+}
+\newglossaryentry{geldbriefspanne}{%
+    name={Geld-Brief-Spanne (Spread)},%
+    description={Differenz zwischen An- und Verkaufskurs eines Wertpapiers;
+        wirkt als impliziter Kostenbestandteil jedes Round-Trips und setzt der
+        täglichen Handelsfrequenz eine kapitalunabhängige Rentabilitätsgrenze.},%
+    sort={geld-brief-spanne}%
+}
+\newglossaryentry{intentjournal}{%
+    name={Intent-Journal},%
+    description={Zweiphasiges Ausführungsjournal: Vor jeder realen Order wird
+        eine Intent-Zeile persistiert, die als eindeutiger Ausführungsmarker
+        die Doppelausführung desselben Entscheids verhindert und Abstürze
+        zwischen Orderaufgabe und Journalisierung nachvollziehbar hält.},%
+    sort={intent-journal}%
+}
+\newglossaryentry{kalibrierung}{%
+    name={Kalibrierung},%
+    description={Übereinstimmung prognostizierter Wahrscheinlichkeiten mit den
+        tatsächlich beobachteten Häufigkeiten. In der Arbeit doppelt verwendet:
+        als Gütemaß der statistischen Prüfinstanz und als laufende Messung des
+        Veto-Verhaltens der Sprachmodelle im Betrieb.},%
+    sort={kalibrierung}%
+}
+\newglossaryentry{klimatologie}{%
+    name={Klimatologie},%
+    description={Referenzprognose, die konstant die Basisrate vorhersagt. Ein
+        Prognosemodell stiftet nur dann Mehrwert, wenn sein Brier-Score die
+        Klimatologie unterschreitet.},%
+    sort={klimatologie}%
+}
+\newglossaryentry{limitorder}{%
+    name={Limit-Order},%
+    description={Order mit festgelegter Preisgrenze, zu der sie höchstens
+        (Kauf) bzw. mindestens (Verkauf) ausgeführt werden darf. Der Agent
+        nutzt ausschließlich tagesgültige Limit-Orders zur Slippage-Kontrolle
+        im verteilten Aufbau.},%
+    sort={limit-order}%
+}
+\newglossaryentry{lookahead}{%
+    name={Look-Ahead-Bias},%
+    description={Methodischer Fehler, bei dem eine Simulation oder Prognose
+        Informationen nutzt, die zum Entscheidungszeitpunkt noch nicht
+        vorlagen; wird durch die Walk-Forward-Prüfung und die ausschließliche
+        Verwendung abgeschlossener Tagesschlusskurse ausgeschlossen.},%
+    sort={look-ahead-bias}%
+}
+\newglossaryentry{mlx}{%
+    name={MLX},%
+    description={Für Apple-Silicon-Prozessoren optimiertes
+        Machine-Learning-Framework; bezeichnet in der Zielarchitektur die für
+        den lokalen Betrieb auf dem Mac mini optimierte Modellvariante.},%
+    sort={mlx}%
+}
+\newglossaryentry{ollama}{%
+    name={Ollama},%
+    description={Laufzeitumgebung und einheitliche Schnittstelle für die
+        Inferenz großer Sprachmodelle, verfügbar als gehosteter Cloud-Dienst
+        und als lokale Installation. Kapselt in der Architektur den Wechsel
+        zwischen beiden Betriebsformen als reine Konfigurationsentscheidung.},%
+    sort={ollama}%
+}
+\newglossaryentry{openclaw}{%
+    name={OpenClaw},%
+    description={Quelloffenes Agenten-Framework, auf dem der untersuchte
+        Handelsagent aufbaut; stellt insbesondere das Messaging-Gateway für
+        die Rückbindung an den Menschen bereit.},%
+    sort={openclaw}%
+}
+\newglossaryentry{orderbuchreconciliation}{%
+    name={Orderbuch-Reconciliation},%
+    description={Abgleich des tatsächlichen Orderzustands über das Orderbuch
+        der Bank, wenn die Kommunikation nach dem Absenden einer Order
+        scheitert. Jeder unklare Ausgang endet in einem alarmierten
+        Handelsstopp statt in einem automatischen Wiederholungsversuch.},%
+    sort={orderbuch-reconciliation}%
+}
+\newglossaryentry{phototan}{%
+    name={photoTAN},%
+    description={Freigabeverfahren der comdirect, bei dem eine Transaktion
+        durch das Scannen einer Farbmatrix in einer registrierten App
+        bestätigt wird; dient dem Agenten als tägliche
+        Zwei-Faktor-Freigabe der Banksitzung.},%
+    sort={phototan}%
+}
+\newglossaryentry{regime}{%
+    name={Regime},%
+    description={Deterministisch aus dem Verhältnis der gleitenden
+        Durchschnitte abgeleiteter Marktzustand (LONG oder SHORT), der die
+        Handelsrichtung der Strategie festlegt.},%
+    sort={regime}%
+}
+\newglossaryentry{roundtrip}{%
+    name={Round-Trip},%
+    description={Zusammengehöriges Paar aus Kauf und Verkauf derselben
+        Position, hier innerhalb eines Handelstags; Bezugsgröße der
+        Kosten- und Rentabilitätsanalyse.},%
+    sort={round-trip}%
+}
+\newglossaryentry{schattenmodus}{%
+    name={Schattenmodus (Sidecar)},%
+    description={Betriebsmodus der statistischen Prüfinstanz, in dem sie
+        rechnet und journalisiert, ohne den Entscheidungspfad zu berühren;
+        Gegenstück ist der Wirkmodus, in dem ihre Einschätzung dem
+        Prüfgremium als Risikohinweis vorliegt.},%
+    sort={schattenmodus}%
+}
+\newglossaryentry{sessiontan}{%
+    name={Session-TAN},%
+    description={Verfahren der comdirect-Schnittstelle, bei dem eine einmalige
+        TAN-Freigabe die gesamte Sitzung autorisiert; nachfolgende Orders
+        erfolgen ohne Einzelfreigabe, aber stets innerhalb der freigegebenen
+        Sitzung.},%
+    sort={session-tan}%
+}
+\newglossaryentry{slippage}{%
+    name={Slippage},%
+    description={Abweichung zwischen dem Kurs zum Entscheidungszeitpunkt und
+        dem tatsächlichen Ausführungskurs einer Order; wird im verteilten
+        Aufbau durch die ausschließliche Verwendung von Limit-Orders begrenzt.},%
+    sort={slippage}%
+}
+\newglossaryentry{sp500}{%
+    name={S\&P~500},%
+    description={Aktienindex der 500 größten börsennotierten US-Unternehmen;
+        Basiswert der untersuchten Handelsstrategien und Grundlage der
+        erfassten Marktdaten.},%
+    sort={s and p 500}%
+}
+\newglossaryentry{sqlite}{%
+    name={SQLite},%
+    description={Dateibasiertes relationales Datenbanksystem ohne
+        Serverprozess; dient dem Agenten als persistenter, gemeinsamer
+        Zustand für Marktdaten und Entscheidungsjournal.},%
+    sort={sqlite}%
+}
+\newglossaryentry{temperatur}{%
+    name={Temperatur},%
+    description={Parameter der Sprachmodell-Inferenz, der die Zufälligkeit
+        der Ausgabe steuert. Der Wert null minimiert die Streuung und wird
+        im Agenten durchgängig verwendet, beseitigt Nichtdeterminismus
+        jedoch nicht vollständig.},%
+    sort={temperatur}%
+}
+\newglossaryentry{totmannschalter}{%
+    name={Totmannschalter (Dead-Man-Switch)},%
+    description={Überwachungsmechanismus, der Alarm auslöst, sobald ein
+        erwartetes Lebenszeichen ausbleibt; die collector-vm meldet so den
+        Ausfall der agent-vm über den Messaging-Kanal.},%
+    sort={totmannschalter}%
+}
+\newglossaryentry{trockenlauf}{%
+    name={Trockenlauf (Dry-Run)},%
+    description={Betriebsmodus, in dem der vollständige Entscheidungszyklus
+        durchlaufen und journalisiert wird, die Orderausführung jedoch vor
+        der realen Orderaufgabe endet; Vorstufe des Echtgeldbetriebs.},%
+    sort={trockenlauf}%
+}
+\newglossaryentry{validator}{%
+    name={Validator},%
+    description={Deterministische, fail-safe ausgelegte Prüfschicht, die jede
+        Sprachmodellantwort gegen ein festes Schema und feste Regeln prüft,
+        bevor ihr Wirkung zukommt; Verstöße werten das betreffende Votum als
+        Veto.},%
+    sort={validator}%
+}
+\newglossaryentry{volatilitaet}{%
+    name={Volatilität},%
+    description={Maß für die Schwankungsintensität von Renditen. Die
+        realisierte 20-Tage-Volatilität steuert im Agenten die
+        volatilitätsabhängige Skalierung des Kapitaleinsatzes.},%
+    sort={volatilitaet}%
+}
+\newglossaryentry{walkforward}{%
+    name={Walk-Forward-Prüfung},%
+    description={Rollierende Out-of-Sample-Validierung, bei der die Prognose
+        für jeden Handelstag ausschließlich ein Modell nutzt, das auf den
+        Daten vor diesem Tag trainiert wurde; schließt Look-Ahead-Bias
+        methodisch aus.},%
+    sort={walk-forward-pruefung}%
+}
+\newglossaryentry{websocket}{%
+    name={WebSocket},%
+    description={Netzwerkprotokoll für dauerhafte, bidirektionale
+        Verbindungen zwischen Client und Server; Bezugskanal der
+        Rohticks in der kontinuierlichen Marktdatenerfassung.},%
+    sort={websocket}%
+}
 
 %  =============================================================================
 %  Ende

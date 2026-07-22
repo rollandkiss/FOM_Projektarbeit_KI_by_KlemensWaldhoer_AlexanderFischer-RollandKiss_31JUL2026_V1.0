@@ -1,0 +1,20 @@
+% =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "verzeichnisse/abbildungsverzeichnis.tex"
+%
+%  Abbildungsverzeichnis (Leitfaden Kap. 2.3 / 5.1 / 5.7). Ausgelagert in eine
+%  eigene Verzeichnis-Datei, damit alle Verzeichnisse des Vorspanns einheitlich
+%  unter verzeichnisse/ liegen und in main.tex gleichartig per \input
+%  eingebunden werden. \listoffigures erzeugt das Verzeichnis aus den
+%  \caption-Kurztiteln; der TOC-Eintrag folgt aus der KOMA-Option listof=totoc.
+% =============================================================================
+
+\listoffigures
+
+%  Kopfzeilen-Marke explizit setzen (einseitiges Verzeichnis; gleiche
+%  Konvention wie in den uebrigen Verzeichnis-Dateien).
+\markboth{Abbildungsverzeichnis}{Abbildungsverzeichnis}
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

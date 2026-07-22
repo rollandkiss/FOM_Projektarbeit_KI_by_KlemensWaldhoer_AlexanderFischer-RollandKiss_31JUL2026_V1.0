@@ -21,7 +21,8 @@ verstanden, das seine Umgebung über definierte Schnittstellen wahrnimmt, aus de
 gewonnenen Informationen Handlungsoptionen ableitet und eigenständig Maßnahmen
 ergreift, um ein vorgegebenes Ziel zu verfolgen. Kennzeichnend ist der geschlossene
 Kreis aus Wahrnehmung, Schlussfolgerung und Handlung, der ohne kontinuierliche
-menschliche Steuerung durchlaufen wird. Der Grad an Autonomie ist dabei nicht binär,
+menschliche Steuerung durchlaufen wird.\zit[S.~302]{gollnick2025} Der Grad an
+Autonomie ist dabei nicht binär,
 sondern erstreckt sich über ein Kontinuum, das von rein assistierenden Systemen bis
 zu weitgehend selbstständig agierenden Lösungen reicht. Für die vorliegende Arbeit
 ist insbesondere die Frage bedeutsam, wie weit diese Autonomie in einem sicherheits\-
@@ -36,11 +37,16 @@ Sprachmodelle als bewertende oder orchestrierende Komponente innerhalb eines Age
 anbieten. Zugleich bringen sie Eigenschaften mit, die in sicherheitskritischen
 Anwendungen ausdrücklich zu behandeln sind: Ihre Ausgaben entstehen probabilistisch
 und sind selbst bei identischer Eingabe nicht vollständig reproduzierbar; sie können
-inhaltlich plausible, aber sachlich falsche Aussagen erzeugen; und sie folgen
+inhaltlich plausible, aber sachlich falsche Aussagen erzeugen, was ihre Verlässlichkeit
+gerade bei Aufgaben mit hohen Genauigkeitsanforderungen
+begrenzt;\zit[S.~59]{gollnick2025} und sie folgen
 Formatvorgaben nicht zwingend, sofern diese nicht technisch erzwungen werden. Für den
 Einsatz als Prüfinstanz folgt daraus, dass Sprachmodellantworten grundsätzlich als
 unzuverlässige Eingaben zu behandeln sind, die ein deterministischer Validator gegen
-ein festes Schema und feste Regeln prüft, bevor ihnen Wirkung zukommt.
+ein festes Schema und feste Regeln prüft, bevor ihnen Wirkung zukommt. Dieses Vorgehen
+entspricht dem in der Literatur beschriebenen Muster einer nachgelagerten Prüfschicht,
+die jede Modellantwort kontrolliert, bevor sie an nachgelagerte Systeme
+gelangt.\zit[S.~135]{gollnick2025}
 Hinsichtlich der Betriebsform erstreckt sich das Spektrum von cloud-gehosteter
 Inferenz über einen externen Dienst bis zum lokalen Betrieb, bei dem die Modellinferenz
 auf eigener oder selbst kontrollierter Infrastruktur erfolgt. Für Anwendungsfelder mit
@@ -57,7 +63,13 @@ Das Ziel eines autonomen Agenten besteht nicht allein in der technischen
 Funktionsfähigkeit, sondern ebenso in der Beherrschbarkeit seines Verhaltens. Gerade
 wenn ein Agent Handlungen mit realen Konsequenzen auslöst, treten neben die
 Leistungsfähigkeit die Anforderungen an Transparenz, Überprüfbarkeit und Absicherung.
-Diese Spannung zwischen Autonomie und Kontrolle bildet den Bezugsrahmen, vor dem die
+Die Literatur zu Agentensystemen beschreibt diesen Zusammenhang als grundlegende
+Abwägung: Mit wachsender Autonomie steigt die Flexibilität eines Agenten, während
+seine Zuverlässigkeit -- die Fähigkeit, konsistent und vorhersagbar zu arbeiten --
+tendenziell abnimmt.\zit[S.~303\,f.]{gollnick2025} Die in dieser Arbeit verfolgte
+Architektur entscheidet diese Abwägung bewusst zugunsten der Zuverlässigkeit:
+Autonomie wird nur dort gewährt, wo deterministische Prüfungen sie einhegen. Diese
+Spannung zwischen Autonomie und Kontrolle bildet den Bezugsrahmen, vor dem die
 weiteren Ausführungen zu lesen sind.
 
 \section{Einordnung}
@@ -138,9 +150,14 @@ Ereignisse sowie eine erfahrungsbasierte Fortschreibung des eigenen Wissens
 beschreiben, sind in datengetriebenen Finanzanwendungen zwar naheliegend, stehen
 jedoch in einem Spannungsverhältnis zu den Anforderungen an Auditierbarkeit und
 Reproduzierbarkeit.\zit[S. 13]{waldhoerKI2025} Die vorliegende Arbeit nimmt diese
-Spannung zum Ausgangspunkt und begründet in Kapitel~\ref{cha:umsetzung}, weshalb der
-Agent auf die genannten Fähigkeiten bewusst verzichtet und die Rolle des Sprachmodells
-auf eine begrenzte, überprüfbare Bewertungsfunktion einschränkt.
+Spannung zum Ausgangspunkt und löst sie in Kapitel~\ref{cha:umsetzung} differenziert
+auf: Auf eine erfahrungsbasierte Fortschreibung des eigenen Wissens verzichtet der
+Agent vollständig, während die Prognose künftiger Ereignisse nicht ausgespart, sondern
+in ihrer Rolle umgekehrt wird -- ein einfaches, kalibriertes statistisches Modell
+wirkt ausschließlich als zusätzliche Prüfinstanz, die vorbereitete Entscheidungen
+abschwächen oder verhindern, jedoch niemals auslösen kann. Die Rolle des
+Sprachmodells bleibt unverändert auf eine begrenzte, überprüfbare
+Bewertungsfunktion eingeschränkt.
 
 %  =============================================================================
 %  Ende

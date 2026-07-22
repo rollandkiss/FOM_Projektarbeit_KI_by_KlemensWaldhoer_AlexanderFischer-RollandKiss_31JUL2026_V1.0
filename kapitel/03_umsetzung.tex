@@ -38,9 +38,16 @@ zusätzlich transparent.
 
 Kennzeichnend für die gewählte Gestaltung ist weniger die Breite der eingesetzten
 Fähigkeiten als vielmehr deren bewusste Begrenzung. Die Sprachmodelle werden nicht zur
-Prognose künftiger Kurse und nicht zur erfahrungsbasierten Selbstveränderung eingesetzt;
-die entsprechenden Elemente des Periodensystems bleiben bewusst unbesetzt, um die
-Nachvollziehbarkeit und Reproduzierbarkeit des Systemverhaltens zu wahren. Das Gremium
+Prognose künftiger Kurse und nicht zur erfahrungsbasierten Selbstveränderung
+eingesetzt. Das Element der prognostischen Inferenz, das in Finanzanwendungen
+üblicherweise die Signalquelle stellt, ist stattdessen in umgekehrter Rolle besetzt:
+Ein einfaches statistisches Prognosemodell schätzt die Wahrscheinlichkeit, dass sich
+der Folgetag in Richtung des regelbasierten Signals entwickelt, und wirkt
+ausschließlich als zusätzlicher Risikohinweis für das Prüfgremium -- es kann eine
+vorbereitete Entscheidung abschwächen oder zu ihrer Ablehnung beitragen, niemals
+einen Handel erzeugen. Das Element der erfahrungsbasierten Fortschreibung des
+eigenen Wissens bleibt dagegen bewusst unbesetzt, um die Nachvollziehbarkeit und
+Reproduzierbarkeit des Systemverhaltens zu wahren. Das Gremium
 kann Handelsvorschläge ausschließlich verhindern, verkleinern oder zeitlich einordnen,
 niemals erzeugen oder in ihrer Richtung umkehren. Flankiert wird diese begrenzte
 Diskretion durch einen mehrstufig abgesicherten Orderpfad: Ein zweiphasiges
@@ -252,6 +259,25 @@ Zustimmungsmehrheit führt hingegen bewusst nicht zum Abbruch, da weitere Voten 
 Größe nur verkleinern können. Sämtliche Voten samt Begründungen und Antwortzeiten
 werden im Entscheidungsjournal persistiert.
 
+Ergänzend zum Sprachmodell-Gremium ist die im Kapiteleinstieg eingeführte
+statistische Prüfinstanz implementiert. Ein logistisches Regressionsmodell
+(scikit-learn) schätzt aus den Tagesbar-Merkmalen -- den regimegerichteten Renditen
+der letzten fünf Handelstage, der 20-Tage-Volatilität, den Abständen des Kurses zu
+den Durchschnittslinien und dem Alter des Regimes -- die Wahrscheinlichkeit, dass
+der Folgetag in Signalrichtung schließt. Das Ergebnis wird dem DecisionRequest als
+zusätzliches Feld beigegeben; unterschreitet die Wahrscheinlichkeit eine
+konfigurierte Schwelle, wird ein weiches Warn-Flag gesetzt, das die Sprachmodelle
+wie die übrigen Risikokennzahlen in ihre Abwägung einbeziehen. Bewusst ist die
+Prognose weder ein hartes Ausschlusskriterium noch ein eigenes Votum im Gremium --
+andernfalls würde sie faktisch zur Signalquelle und verletzte die begrenzte
+Diskretion. Betrieblich kennt die Prüfinstanz einen Schattenmodus, in dem sie
+rechnet und journalisiert, ohne den Entscheidungspfad zu berühren, sowie einen
+Wirkmodus; die Umschaltung erfolgt je Strategie über den Messaging-Kanal, und ein
+Ausfall der Komponente blockiert den Zyklus nicht. Das Modell wird wöchentlich
+offline auf der vollständigen Kurshistorie nachtrainiert und versioniert, sodass
+jede Entscheidung einem reproduzierbaren Modellstand zuordenbar bleibt -- eine
+bewusste Abgrenzung zum fortlaufenden Lernen im Betrieb.
+
 Die Orderausführung ist mehrstufig gegen die typischen Fehlerbilder verteilter
 Systeme abgesichert. Ein Frische-Gate verwirft Entscheide, die nicht vom aktuellen
 Handelstag stammen. Vor jeder realen Order wird eine \emph{Intent}-Zeile in das
@@ -314,9 +340,10 @@ durchspielen; die Volltexte der zentralen Module sind im Anhang dokumentiert.
 \section{Evaluation}
 \label{sec:umsetzung-evaluation}
 
-Die Bewertung des Agenten erfolgt auf drei Ebenen: einem historischen Backtest der
-Strategie, einer Analyse der realen Transaktionskosten sowie einer laufenden
-Kalibrierung des Sprachmodell-Votings im Betrieb.
+Die Bewertung des Agenten erfolgt auf vier Ebenen: einem historischen Backtest der
+Strategie, einer Analyse der realen Transaktionskosten, einer Walk-Forward-Prüfung
+des statistischen Prognosemodells sowie einer laufenden Kalibrierung des
+Sprachmodell-Votings im Betrieb.
 
 \subsection{Untersuchungsdesign und Datenbasis}
 \label{sec:umsetzung-evaluation-design}
@@ -334,6 +361,20 @@ Modell die Zustimmungsquote, die Schemafehlerrate, die Antwortlatenz sowie die
 Veto-Trefferquote gegen den Folgetags-Return, also den Anteil der Ablehnungen, die
 tatsächlich einen Verlusttag in Signalrichtung vermieden hätten, einschließlich des
 kontrafaktischen Gewinn- und Verlustbeitrags der Vetos.
+
+Die statistische Prüfinstanz wird gesondert einer Walk-Forward-Prüfung ohne Blick
+in die Zukunft unterzogen: Die Vorhersage für einen Handelstag nutzt ausschließlich
+ein Modell, das auf den Daten vor diesem Tag trainiert wurde, und wird alle
+21~Handelstage nachtrainiert. Als Gütemaß dient neben der Trefferquote gegenüber
+der Basisrate der Brier-Score
+\begin{equation}
+  B \;=\; \frac{1}{N}\sum_{t=1}^{N}\bigl(p_t - o_t\bigr)^{2},
+  \label{eq:brier}
+\end{equation}
+der die mittlere quadratische Abweichung der prognostizierten Wahrscheinlichkeit
+$p_t$ vom eingetretenen Ergebnis $o_t \in \{0,1\}$ über die $N$ bewerteten
+Prognosetage misst; verglichen wird gegen die Klimatologie, also die konstante
+Prognose der Basisrate.
 
 Zur Einordnung der Handelsfrequenz dient zusätzlich ein einfaches
 Rentabilitätsmodell. Bezeichnet $C(S)$ die Round-Trip-Kosten bei Kapitaleinsatz $S$
@@ -372,6 +413,21 @@ Autonomie. Die Voting-Kalibrierung aus dem Live-Betrieb -- Trockenlauf seit dem
 fortlaufend um die Frage, ob die Vetos der Modelle systematisch Verlusttage treffen
 oder lediglich Rauschen darstellen.
 
+Die Walk-Forward-Prüfung des Prognosemodells über 23.803 Handelstage der
+vollständigen Indexhistorie fällt ernüchternd und zugleich aufschlussreich aus:
+Einer Basisrate von 52,1\,\% aufwärts gerichteter Folgetage steht eine Trefferquote
+von 52,0\,\% gegenüber, und der Brier-Score von 0,2498 unterschreitet die
+Klimatologie (0,2496) nicht -- das Modell besitzt keine Prognosekraft über die
+Basisrate hinaus. Bemerkenswert ist, dass es dabei gut kalibriert bleibt: Im
+dominierenden Wahrscheinlichkeitsbereich um 0,5 stimmen prognostizierte
+(52,4\,\%) und beobachtete Häufigkeit (52,5\,\%) nahezu überein, und selbst an den
+Tagen, an denen das Modell skeptisch war, stieg der Markt in 50,4\,\% der Fälle.
+Dieser ehrliche Negativbefund trägt die zentrale Architekturentscheidung empirisch:
+Die Tagesrichtung des Index ist auch mit einem sauber validierten Modell praktisch
+nicht prognostizierbar, weshalb die Prognose im System keine Signalgewalt erhält
+und die Prüfinstanz bis zu einem gegenteiligen Kalibrierungsnachweis aus dem
+laufenden Betrieb im Schattenmodus verbleibt.
+
 Die Kostenmessung gegen das Produktivsystem der Bank lieferte darüber hinaus
 eigenständige Befunde. Die Kaufprovision erwies sich über alle getesteten
 Ordergrößen als fixer Betrag von 3{,}90\,€, womit sich die Round-Trip-Fixkosten von
@@ -406,7 +462,9 @@ Kursdatenquelle bietet keine Verfügbarkeitsgarantie. Trotz Temperatur null und
 erzwungenem Antwortschema bleibt ein Restmaß an Nichtdeterminismus der
 Sprachmodelle bestehen, und die Stichprobe der Voting-Kalibrierung ist zu Beginn
 des Betriebs klein, weshalb die Auswertung bewusst deskriptiv bleibt und keine
-automatische Modellabschaltung auslöst.
+automatische Modellabschaltung auslöst. Gleiches gilt für die statistische
+Prüfinstanz, die zu Betriebsbeginn im Schattenmodus läuft und deren Beitrag daher
+zunächst nur beobachtend gemessen werden kann.
 
 \section{Kritische Würdigung}
 \label{sec:umsetzung-wuerdigung}
@@ -418,7 +476,9 @@ Die Architektur begegnet dem mit einer gestaffelten Sicherungskette, deren
 tragendes Prinzip die begrenzte Diskretion ist: Das Sprachmodell-Gremium kann
 Handelsvorschläge verhindern, verkleinern oder zeitlich einordnen, niemals aber
 erzeugen oder in ihrer Richtung umkehren, und deterministische Ausschlusskriterien
-werden grundsätzlich vor jedem Modellaufruf entschieden. Auf der Ausführungsseite
+werden grundsätzlich vor jedem Modellaufruf entschieden. Dieselbe Grenze gilt für
+die statistische Prognoseinstanz, deren Einschätzung ausschließlich als
+zusätzlicher Risikohinweis in die Bewertung einfließt. Auf der Ausführungsseite
 verhindern das zweiphasige Intent-Journal die Doppelausführung, die
 Orderbuch-Reconciliation unbemerkte Zustandslücken nach Kommunikationsfehlern und
 die Einzel- sowie Portfolio-Obergrenzen ein unkontrolliertes Anwachsen der

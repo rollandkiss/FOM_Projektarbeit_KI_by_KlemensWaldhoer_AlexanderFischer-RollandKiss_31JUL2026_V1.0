@@ -7,8 +7,9 @@
 \label{cha:schluss}
 
 Nachdem der Handelsagent entworfen, implementiert und evaluiert wurde, fasst dieses
-Kapitel die zentralen Erkenntnisse mit Blick auf die Zielsetzung zusammen und gibt
-einen Ausblick auf weiterführende Arbeiten.
+Kapitel die zentralen Erkenntnisse mit Blick auf die Zielsetzung zusammen, diskutiert
+Stärken und Schwächen der gewählten Lösung und gibt einen Ausblick auf
+weiterführende Arbeiten.
 
 \section{Fazit}
 \label{sec:fazit}
@@ -39,9 +40,19 @@ messbaren Beitrag des Mehrheitsvotums bleibt zum Abgabezeitpunkt bewusst offen;
 die dafür geschaffene Kalibrierung misst den Veto-Beitrag der Modelle fortlaufend
 gegen die tatsächliche Marktentwicklung und benötigt eine längere Betriebsdauer,
 bevor valide Aussagen möglich sind (\cref{sec:umsetzung-evaluation-design}).
-Ökonomisch fällt die Antwort dagegen eindeutig aus: Die täglich handelnde
-Demonstrationsstrategie ist nach realen Kosten strukturell defizitär
-(\cref{sec:umsetzung-evaluation-ergebnisse}); der Agent ist ein Erkenntnis-, kein
+
+In Kennzahlen verdichtet stellt sich das Ergebnis wie folgt dar: Der Backtest
+über zehn Jahre stellt dem täglichen Round-Trip der Demonstrationsstrategie
+(rund $-29.600$\,€, davon etwa 98\,\% Transaktionskosten) das reine Regimefolgen
+(rund $+100\,\%$ bei neun Positionswechseln) und das passive Halten (rund
+$+250\,\%$) gegenüber; die Walk-Forward-Prüfung des Prognosemodells über
+23.803 Handelstage ergibt keine Prognosekraft über die Basisrate hinaus bei
+zugleich guter Kalibrierung; die real gemessenen Fixkosten betragen 7,80\,€ je
+Round-Trip, und die Antwortlatenzen des Modellgremiums liegen im eingeschwungenen
+Betrieb unter einer Sekunde je Votum
+(\cref{sec:umsetzung-evaluation-ergebnisse}). Ökonomisch fällt die Antwort damit
+eindeutig aus: Die täglich handelnde Demonstrationsstrategie ist nach realen
+Kosten strukturell defizitär; der Agent ist ein Erkenntnis-, kein
 Renditeinstrument, und die Differenz zum reinen Regimefolgen beziffert den Preis
 der täglich demonstrierten Autonomie. Methodisch hat sich dabei das iterative
 Vorgehen bewährt, jede Ausbaustufe unmittelbar gegen reale Betriebsdaten zu
@@ -50,6 +61,39 @@ Datenstille von echten Verbindungsverlusten bis zur datumskorrekten
 Zweitquellenprüfung -- entstanden nicht am Reißbrett, sondern aus Befunden des
 laufenden Betriebs und wurden anschließend durch Regressionstests dauerhaft
 abgesichert.
+
+\section{Diskussion}
+\label{sec:diskussion}
+
+Den Stärken der gewählten Lösung stehen benennbare Schwächen gegenüber; beide
+werden hier bewusst gebündelt, um die Zielerreichung ehrlich einzuordnen. Als
+tragfähig erwiesen hat sich erstens das Prinzip der begrenzten Diskretion: Kein
+beobachteter Fehlerfall -- weder Schemaverletzungen einzelner Modelle noch
+Zeitüberschreitungen oder Datenlücken -- konnte eine unbeabsichtigte Order
+auslösen, weil jede Unklarheit konservativ als Veto oder Handelsstopp endet.
+Zweitens hat sich die Entscheidung ausgezahlt, die Evaluation auf gemessene statt
+angenommene Größen zu stützen: Reale Kostenausweise, eine unabhängige Zweitquelle
+und die Walk-Forward-Prüfung machen die Ergebnisse belastbar, und der ehrliche
+Negativbefund zur Prognosekraft trägt die zentrale Architekturentscheidung
+empirisch, statt sie zu beschädigen. Drittens schafft die durchgängige
+Journalisierung zusammen mit dem öffentlichen Dashboard eine Transparenz, die
+jede einzelne Entscheidung samt Modellvoten nachvollziehbar und den laufenden
+Betrieb öffentlich prüfbar macht.
+
+Dem stehen Schwächen gegenüber. Der erhoffte Sicherheitsgewinn des
+Modellgremiums ist zu Betriebsbeginn empirisch unbelegt, und korrelierte
+Fehlurteile bleiben trotz Anbieterdiversität möglich, da alle Modelle denselben
+Entscheidungskontext erhalten; die Kalibrierung kann dies erst nach längerer
+Betriebsdauer klären. Die tägliche Handelsfrequenz ist nach Kosten strukturell
+defizitär und nur als Demonstrationsvehikel zu rechtfertigen. Die Autonomie
+bleibt an regulatorische und betriebliche Grenzen gebunden -- die tägliche
+photoTAN-Freigabe, den bewusst manuell gehaltenen Ausstiegspfad bei
+Regimewechseln und eine Datenfrische von 60 bis 90 Sekunden am
+Entscheidungspunkt. Schließlich stützt sich die Kursdatenerfassung auf eine
+inoffizielle Quelle ohne Verfügbarkeitsgarantie, deren Ausfall der Betrieb zwar
+erkennen, aber nicht kompensieren kann. Aus dieser Gegenüberstellung folgt das
+Verbesserungspotenzial, das der nachstehende Ausblick in konkrete
+Weiterentwicklungen übersetzt.
 
 \section{Ausblick}
 \label{sec:ausblick}

@@ -118,8 +118,24 @@ Eingaben stets zu gleichen Ausgaben führen und das Verhalten vollständig nachv
 bleibt. Ein lernender Agent hingegen verändert sein Verhalten fortlaufend auf Grundlage
 neuer Erfahrungen; er gewinnt dadurch an Anpassungsfähigkeit, büßt jedoch an
 Reproduzierbarkeit ein, da sich seine Reaktionen über die Zeit verschieben können.
-Zwischen diesen Polen ist die im Projekt gewählte Architektur zu verorten, die einen
-deterministischen Kern mit einer eng geführten, sprachmodellbasierten Bewertungsinstanz
+
+Aus dieser Gegenüberstellung folgt die Wahl des KI-Ansatzes, die angesichts der in
+\cref{sec:problemstellung} benannten Merkmale des Anwendungsfelds explizit
+abzuwägen ist. Ein bestärkend lernender Agent (Reinforcement Learning), der seine
+Handelspolitik aus Belohnungssignalen fortschreibt, scheidet für den
+Echtgeldbetrieb aus: Sein Erfahrungslernen müsste an irreversiblen realen
+Verlusten stattfinden, die fehlende Stationarität der Märkte entwertet Gelerntes
+fortlaufend, und ein sich verschiebendes Verhalten widerspräche der geforderten
+Auditierbarkeit -- dieselbe Erwägung führte bei der Wahl des Agenten-Frameworks
+zum Ausschluss einer Alternative mit fest verdrahteter Lernschleife. Ein rein
+sprachmodellgetriebener Agent, der Entscheidungen unmittelbar dem Modell
+entnimmt, scheitert an dessen probabilistischer Natur und
+Halluzinationsneigung.\zit[S.~59]{gollnick2025} Ein klassisches Prognosemodell
+als Signalquelle schließlich wird in dieser Arbeit nicht vorab verworfen, sondern
+empirisch geprüft; das Ergebnis dieser Prüfung begründet die in \cref{sec:zielsetzung}
+eingeführte Rollenumkehr zur bloßen Prüfinstanz (\cref{cha:umsetzung}). Gewählt
+wird daher ein hybrider Ansatz, der zwischen den eingangs benannten Polen einen
+deterministischen Kern mit eng geführten probabilistischen Prüfinstanzen
 verbindet. Diese Instanz ist als Gremium mehrerer unabhängiger Sprachmodelle ausgeführt,
 deren Einzelvoten nach einer strikten Mehrheitsregel aggregiert werden: Ein Handel kommt
 nur zustande, wenn die Mehrheit der Modelle zustimmt, während jedes nicht erreichbare
@@ -133,7 +149,12 @@ beeinflussen kann.
 Dem Gremiumsgedanken liegt eine einfache Ensembleüberlegung zugrunde: Treffen mehrere
 Bewerter ihre Urteile unabhängig voneinander und sind ihre Fehler nicht vollständig
 korreliert, so ist ein Mehrheitsurteil zuverlässiger als das Urteil eines einzelnen
-Bewerters. Die Anbieterdiversität der eingesetzten Modelle soll diese Unabhängigkeit
+Bewerters. Der naheliegenden Alternative, dasselbe Modell mehrfach zu befragen und
+die Antworten zu aggregieren (Self-Consistency), wurde dabei bewusst die Befragung
+verschiedener Modelle vorgezogen: Wiederholte Stichproben aus derselben Verteilung
+können systematische Fehler des einzelnen Modells nicht
+ausgleichen.\zit[S.~167]{gollnick2025}
+Die Anbieterdiversität der eingesetzten Modelle soll diese Unabhängigkeit
 befördern, kann sie jedoch nicht garantieren, da alle Modelle denselben
 Entscheidungskontext erhalten -- ein Umstand, der in der kritischen Würdigung wieder
 aufgegriffen wird. Ergänzend bleibt der Mensch in einer doppelten Rolle eingebunden:

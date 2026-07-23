@@ -17,47 +17,33 @@ schließt er den eingangs beschriebenen Kreis aus Wahrnehmung, Schlussfolgerung 
 Handlung vollständig und lässt sich als Verbindung mehrerer KI-Elemente im Sinne des
 Periodensystems auffassen.
 
-Auf der Ebene der Wahrnehmung stützt sich der Agent auf die kontinuierliche Erfassung
-und Aufbereitung von Marktdaten, deren Qualität über eine unabhängige Zweitquelle
-gegengeprüft wird, sowie auf die Erkennung von Trendmustern in der Kurszeitreihe. Auf
-der Ebene der Schlussfolgerung tritt ein Gremium aus drei großen Sprachmodellen als
-bewertende Instanz hinzu, das die regelbasiert vorbereitete Entscheidung jeweils
-unabhängig prüft, mit einer nachvollziehbaren Begründung versieht und dessen Voten nach
-einer strikten Mehrheitsregel aggregiert werden; deterministische Vorprüfungen
-entscheiden harte Ausschlusskriterien bereits vor dem ersten Modellaufruf. Die
-Modellinferenz erfolgt über eine einheitliche Schnittstelle, die den Wechsel zwischen
-cloud-gehosteter Ausführung und dem lokalen Betrieb auf eigener Hardware als reine
-Konfigurationsentscheidung belässt. Auf der Ebene der Reaktion schließlich ordnet
-sich das Vorhaben unmittelbar dem Element der prozesssteuernden Kontrolle zu, das der
-zugrunde gelegte Rahmen ausdrücklich mit dem Börsenhandel als Anwendung
-verbindet.\zit[S. 18]{waldhoerKI2025} Ergänzend sorgt eine Kommunikationskomponente für
-die Rückbindung an den Menschen: Sie übermittelt die tägliche Freigabe der Banksitzung,
-berichtet jeden Entscheidungslauf und stellt einen jederzeit wirksamen Not-Aus bereit;
-ein öffentliches, redigiertes Dashboard macht die Entscheidungs- und Wertentwicklung
-zusätzlich transparent.
+Auf der Ebene der Wahrnehmung stützt sich der Agent auf die kontinuierliche,
+gegen eine unabhängige Zweitquelle geprüfte Erfassung von Marktdaten und die
+Erkennung von Trendmustern in der Kurszeitreihe. Auf der Ebene der
+Schlussfolgerung prüft ein Gremium aus drei großen Sprachmodellen die
+regelbasiert vorbereitete Entscheidung jeweils unabhängig und begründet; harte
+Ausschlusskriterien entscheiden deterministische Vorprüfungen bereits vor dem
+ersten Modellaufruf. Auf der Ebene der Reaktion ordnet sich das Vorhaben
+unmittelbar dem Element der prozesssteuernden Kontrolle zu, das der zugrunde
+gelegte Rahmen ausdrücklich mit dem Börsenhandel als Anwendung
+verbindet.\zit[S. 18]{waldhoerKI2025} Ergänzend sichern eine
+Kommunikationskomponente die Rückbindung an den Menschen -- tägliche Freigabe der
+Banksitzung, Berichte, jederzeit wirksamer Not-Aus -- und ein öffentliches,
+redigiertes Dashboard die Transparenz der Entscheidungs- und Wertentwicklung.
 
 Kennzeichnend für die gewählte Gestaltung ist weniger die Breite der eingesetzten
 Fähigkeiten als vielmehr deren bewusste Begrenzung. Die Sprachmodelle werden nicht zur
 Prognose künftiger Kurse und nicht zur erfahrungsbasierten Selbstveränderung
 eingesetzt. Das Element der prognostischen Inferenz, das in Finanzanwendungen
 üblicherweise die Signalquelle stellt, ist stattdessen in umgekehrter Rolle besetzt:
-Ein einfaches statistisches Prognosemodell schätzt die Wahrscheinlichkeit, dass sich
-der Folgetag in Richtung des regelbasierten Signals entwickelt, und wirkt
-ausschließlich als zusätzlicher Risikohinweis für das Prüfgremium -- es kann eine
-vorbereitete Entscheidung abschwächen oder zu ihrer Ablehnung beitragen, niemals
-einen Handel erzeugen. Das Element der erfahrungsbasierten Fortschreibung des
-eigenen Wissens bleibt dagegen bewusst unbesetzt, um die Nachvollziehbarkeit und
-Reproduzierbarkeit des Systemverhaltens zu wahren. Das Gremium
+Ein einfaches statistisches Prognosemodell wirkt ausschließlich als zusätzlicher
+Risikohinweis für das Prüfgremium; das Element der erfahrungsbasierten
+Fortschreibung des eigenen Wissens bleibt bewusst unbesetzt. Das Gremium
 kann Handelsvorschläge ausschließlich verhindern, verkleinern oder zeitlich einordnen,
-niemals erzeugen oder in ihrer Richtung umkehren. Flankiert wird diese begrenzte
-Diskretion durch einen mehrstufig abgesicherten Orderpfad: Ein zweiphasiges
-Ausführungsjournal verhindert die Doppelausführung desselben Entscheids, ein
-Orderbuchabgleich klärt unklare Ausführungszustände, die Scharfschaltung auf reale
-Orders erfolgt ausschließlich kontospezifisch, und jeder unklare Zustand endet in einem
-alarmierten Handelsstopp statt in einem automatischen Wiederholungsversuch. Die
+niemals erzeugen oder in ihrer Richtung umkehren. Die
 eigentliche gestalterische Aussage der Arbeit liegt somit in der sicherheitsorientierten
-Einschränkung des KI-Einsatzes, deren Ausprägung im weiteren Verlauf des Kapitels
-dargelegt wird.
+Einschränkung des KI-Einsatzes, deren Ausprägung -- einschließlich des mehrstufig
+abgesicherten Orderpfads -- im weiteren Verlauf des Kapitels dargelegt wird.
 
 Der Aufbau des Kapitels folgt dem Weg von der Struktur zur Bewertung. Zunächst wird die
 Systemarchitektur des Agenten mit ihren Komponenten und Datenflüssen beschrieben. Darauf
@@ -105,28 +91,22 @@ Anbindung an die Bankschnittstelle. Beide Maschinen sind wechselseitig überwach
 ein Totmannschalter auf der collector-vm alarmiert den Betreiber über den
 Messaging-Kanal, sobald der Lebenszeichen-Stempel der agent-vm veraltet.
 
-Für den Dauerbetrieb ist die Datensammlung gezielt gehärtet. Bricht der
-WebSocket-Datenstrom still ab, erkennt ein Wächter die ausbleibenden Ticks und
-erzwingt eine Neuverbindung mit ansteigenden Wartezeiten; der Polling-Prozess für
-die Futures-Randzeiten startet sich nach Ausnahmen selbst neu, und ein geordneter
-Shutdown stellt sicher, dass keine halb geschriebenen Datensätze zurückbleiben.
-Ein Plattenplatz-Wächter, eine wöchentliche Integritätsprüfung der Datenbank und
-eine kontinuierliche Replikation des Datenbestands in einen Cloud-Speicher ergänzen
-die Vorsorge; Alarme beider Maschinen laufen über eine gemeinsame Brücke im
-Messaging-Kanal zusammen. Diese Betriebsdetails sind für die Fragestellung der
-Arbeit nicht nebensächlich: Ein Agent, der täglich unbeaufsichtigt Geld bewegen
-soll, ist nur so vertrauenswürdig wie die Infrastruktur, die seine Datenbasis und
-seine Erreichbarkeit garantiert.
+Für den Dauerbetrieb ist die Datensammlung gezielt gehärtet: Wächterprozesse
+erkennen stille Verbindungsabbrüche und erzwingen Neuverbindungen, ein geordneter
+Shutdown verhindert halb geschriebene Datensätze, und Integritätsprüfung,
+Plattenplatzüberwachung sowie die kontinuierliche Replikation in einen
+Cloud-Speicher ergänzen die Vorsorge. Diese Betriebsdetails sind für die
+Fragestellung der Arbeit nicht nebensächlich: Ein Agent, der täglich
+unbeaufsichtigt Geld bewegen soll, ist nur so vertrauenswürdig wie die
+Infrastruktur, die seine Datenbasis und seine Erreichbarkeit garantiert.
 
 Die Sprachmodellinferenz ist bewusst hinter einer einheitlichen Schnittstelle
-(Ollama) gekapselt. Im gegenwärtigen Betrieb werden drei cloud-gehostete Modelle
-unterschiedlicher Anbieter befragt; die Migration auf lokal betriebene Modellvarianten
-eines Mac~mini ist als reiner Konfigurationswechsel angelegt, da Modellbezeichner,
-Endpunkt und Zeitbudgets in der zentralen Konfigurationsdatei liegen und kein
-Quelltext angepasst werden muss. Damit bleibt das in \cref{sec:zielsetzung}
-formulierte Ziel der lokalen, weitgehend kostenfreien Betreibbarkeit strukturell
-gesichert, während der laufende Betrieb von der Verfügbarkeit leistungsfähiger
-gehosteter Modelle profitiert.
+(Ollama) gekapselt: Im gegenwärtigen Betrieb werden drei cloud-gehostete Modelle
+unterschiedlicher Anbieter befragt; die Migration auf lokal betriebene
+Modellvarianten eines Mac~mini bleibt ein reiner Konfigurationswechsel, da
+Modellbezeichner, Endpunkt und Zeitbudgets zentral konfiguriert sind. Das in
+\cref{sec:zielsetzung} formulierte Ziel der lokalen, weitgehend kostenfreien
+Betreibbarkeit bleibt damit strukturell gesichert.
 
 Eine dritte, strikt entkoppelte Zone bildet das öffentliche Dashboard. Die
 collector-vm exportiert minütlich redigierte JSON-Feeds des Entscheidungsjournals
@@ -273,10 +253,16 @@ andernfalls würde sie faktisch zur Signalquelle und verletzte die begrenzte
 Diskretion. Betrieblich kennt die Prüfinstanz einen Schattenmodus, in dem sie
 rechnet und journalisiert, ohne den Entscheidungspfad zu berühren, sowie einen
 Wirkmodus; die Umschaltung erfolgt je Strategie über den Messaging-Kanal, und ein
-Ausfall der Komponente blockiert den Zyklus nicht. Das Modell wird wöchentlich
-offline auf der vollständigen Kurshistorie nachtrainiert und versioniert, sodass
-jede Entscheidung einem reproduzierbaren Modellstand zuordenbar bleibt -- eine
-bewusste Abgrenzung zum fortlaufenden Lernen im Betrieb.
+Ausfall der Komponente blockiert den Zyklus nicht. Der Trainingsprozess ist
+vollständig dokumentiert und reproduzierbar: Ein wöchentlicher, zeitgesteuerter
+Trainingslauf lernt das Modell offline auf der vollständigen, gegen die
+Zweitquelle geprüften Tageshistorie neu; jeder Modellstand trägt Trainingsdatum
+und Prüfsumme im Bezeichner und wird samt Merkmalsdefinition abgelegt, sodass
+jede Entscheidung im Journal einem eindeutigen, wiederherstellbaren Modellstand
+zuordenbar bleibt -- eine bewusste Abgrenzung zum fortlaufenden Lernen im
+Betrieb. Die Güte des jeweils aktiven Modellstands wird dabei nicht im
+Trainingslauf selbst, sondern ausschließlich in der zeitlich strikt getrennten
+Walk-Forward-Prüfung bewertet, deren Aufbau die Evaluation beschreibt.
 
 Die Orderausführung ist mehrstufig gegen die typischen Fehlerbilder verteilter
 Systeme abgesichert. Ein Frische-Gate verwirft Entscheide, die nicht vom aktuellen
@@ -296,41 +282,32 @@ der Mensch bleibt über einen Signal-Messenger-Kanal eingebunden, der Tagesrepor
 liefert und einen jederzeit wirksamen Not-Aus (Pausieren, Fortsetzen, Statusabfrage,
 Glattstellen) bereitstellt.
 
-Die Banksitzung selbst folgt einem täglichen Ritual, das die regulatorische
-Zwei-Faktor-Anforderung in den autonomen Ablauf integriert: Der morgendliche
-Anmeldevorgang fordert genau eine photoTAN-Freigabe an, die der Betreiber
-fernbedient über den Messaging-Kanal bestätigt; anschließend hält ein
-Erneuerungsdienst die Sitzung über den Handelstag, sodass Orders ohne weitere
-Einzelfreigaben, aber stets innerhalb der freigegebenen Sitzung erfolgen. Die
-gesamte Broker-Schicht ist zudem kontofähig ausgelegt: Zugangsdaten, Sitzungen,
-Journale und der Ausführungsmodus sind je Konto getrennt, sodass der geplante
-Parallelbetrieb zweier Depots mit unterschiedlichen Strategien keine strukturelle
-Änderung erfordert. Zugangsdaten liegen verschlüsselt in einem dedizierten
-Geheimnisspeicher und erscheinen zu keinem Zeitpunkt im Kontext der Sprachmodelle.
+Die Banksitzung integriert die regulatorische Zwei-Faktor-Anforderung in den
+autonomen Ablauf: Der Anmeldevorgang fordert genau eine photoTAN-Freigabe an, die
+der Betreiber fernbedient über den Messaging-Kanal bestätigt; anschließend hält
+ein Erneuerungsdienst die Sitzung, sodass Orders ohne weitere Einzelfreigaben,
+aber stets innerhalb der freigegebenen Sitzung erfolgen. Die Broker-Schicht ist
+kontofähig ausgelegt -- Zugangsdaten, Sitzungen, Journale und Ausführungsmodus
+sind je Konto getrennt, sodass der geplante Parallelbetrieb zweier Depots keine
+strukturelle Änderung erfordert. Zugangsdaten liegen verschlüsselt in einem
+dedizierten Geheimnisspeicher und erscheinen zu keinem Zeitpunkt im Kontext der
+Sprachmodelle.
 
 Das öffentliche Dashboard schließlich ist als eigenständiges, bewusst kleines
 Teilsystem implementiert. Ein Exportprozess redigiert das Entscheidungsjournal auf
-die veröffentlichungsfähigen Inhalte, lädt sie nur bei inhaltlicher Änderung hoch
-und trennt so den öffentlichen Lesezugriff vollständig vom Handelspfad. Die
-Oberfläche stellt den Indexverlauf mit den gleitenden Durchschnitten und den
-Regimewechsel-Signalen dar, zeigt je Entscheidung das aggregierte Votum mit
-aufklappbaren Einzelbegründungen der Modelle und ist durchgängig responsiv
-umgesetzt -- auf Mobilgeräten werden Ordertabellen in vertikale
-Beschriftungs-Wert-Karten umgebrochen, sodass die Darstellung ohne horizontales
-Scrollen barrierearm lesbar bleibt.
+die veröffentlichungsfähigen Inhalte und trennt so den öffentlichen Lesezugriff
+vollständig vom Handelspfad; die Oberfläche stellt den Indexverlauf mit den
+Durchschnittslinien und Regimewechseln dar und zeigt je Entscheidung das
+aggregierte Votum mit den aufklappbaren Einzelbegründungen der Modelle -- sie
+dient damit zugleich als öffentlich prüfbarer Lauffähigkeitsnachweis des Agenten.
 
 Die Betriebsführung rundet die Implementierung ab. Ein Zeitplandienst startet den
 Entscheidungszyklus an Handelstagen kurz vor der US-Markteröffnung; ein
 Börsenkalender überspringt Feiertage, und eine Prozesssperre je Konto verhindert,
-dass sich zwei Läufe überlappen. Der Not-Aus des Messaging-Kanals ist als
-Ein-Buchstaben-Protokoll ausgeführt: Pausieren stoppt jede neue Order vor dem
-nächsten Zyklus, Fortsetzen hebt die Sperre wieder auf, die Statusabfrage meldet
-den Betriebszustand samt wirksamem Ausführungsmodus, und das Glattstellen schließt
-offene Positionen aktiv -- wobei die Pause bewusst erhalten bleibt, bis der Mensch
-sie aufhebt. Jeder Zyklus schließt mit einem Bericht an die private
-Messaging-Gruppe, der Entscheidung, Voten, Auffälligkeiten und den effektiven
-Modus je Konto ausweist; die Scharfschaltung auf reale Orders ist damit täglich
-sichtbar dokumentiert.
+dass sich zwei Läufe überlappen. Jeder Zyklus schließt mit einem Bericht an die
+private Messaging-Gruppe, der Entscheidung, Voten, Auffälligkeiten und den
+effektiven Modus je Konto ausweist; die Scharfschaltung auf reale Orders ist damit
+täglich sichtbar dokumentiert.
 
 Die Qualitätssicherung stützt sich auf zwölf Offline-Testsuiten, die von der
 Datensammlung über den Voting-Mechanismus bis zu den Schutzpfaden der

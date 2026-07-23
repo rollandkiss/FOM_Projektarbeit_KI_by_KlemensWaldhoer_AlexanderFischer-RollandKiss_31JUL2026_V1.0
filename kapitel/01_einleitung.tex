@@ -30,6 +30,24 @@ Vor diesem Hintergrund widmet sich die vorliegende Projektarbeit dem Aufbau und 
 Live-Betrieb eines autonomen Handelsagenten, der diese Spannung durch eine bewusst
 begrenzte, überprüfbare Rolle der eingesetzten Sprachmodelle auflöst.
 
+Als Erprobungsumgebung für autonome Agenten ist der Börsenhandel dabei in
+besonderem Maße anspruchsvoll; die Schwierigkeiten lassen sich in fünf Merkmalen
+bündeln, die zugleich die Anforderungen an die spätere Architektur begründen.
+Erstens ist die Umgebung nicht stationär: Kursverläufe folgen keiner festen
+Verteilung, sodass einmal beobachtete Zusammenhänge fortlaufend an Gültigkeit
+verlieren können. Zweitens sind Handlungen irreversibel -- anders als in
+simulierten Umgebungen existiert kein folgenloser Neustart, jeder Fehler
+materialisiert sich unmittelbar als realer Vermögensverlust. Drittens erfolgt jede
+Handlung über die regulierte Schnittstelle einer Bank, die eine tägliche
+Zwei-Faktor-Freigabe erzwingt und keine Testumgebung bereitstellt, sodass bereits
+die Erprobung gegen das Produktivsystem erfolgen muss. Viertens setzen fixe
+Ordergebühren und Geld-Brief-Spannen jeder Entscheidungsfrequenz enge ökonomische
+Grenzen, die ein autonomes System kennen und ausweisen muss. Fünftens schließlich
+trifft die probabilistische Natur der Sprachmodelle auf ein Anwendungsfeld, das
+Reproduzierbarkeit und lückenlose Nachvollziehbarkeit verlangt. Diese fünf
+Merkmale bilden den Prüfstein, an dem sich die in dieser Arbeit entwickelte
+Architektur messen lassen muss.
+
 \section{Zielsetzung und Relevanz der Arbeit}
 \label{sec:zielsetzung}
 
@@ -43,7 +61,11 @@ gefasst und in Quelltext umgesetzt wird. Lokal betreibbare große Sprachmodelle
 regelbasiert vorbereitete Entscheidung eigenständig und stimmt ihr zu oder gegen sie;
 erst ein Mehrheitsentscheid des Modellgremiums gibt die Orderausführung über die
 Bankschnittstelle frei, während jede Ablehnung, Unerreichbarkeit oder regelwidrige
-Antwort konservativ als Veto wirkt. Die Sprachmodelle können Handelsvorschläge somit
+Antwort konservativ als Veto wirkt. Ergänzt wird das Gremium um eine statistische
+Prüfinstanz: Ein kleines, klassisches Prognosemodell schätzt die
+Wahrscheinlichkeit, dass sich der Folgetag in Signalrichtung entwickelt, und
+reichert mit diesem Risikohinweis ausschließlich den Entscheidungskontext der
+Sprachmodelle an. Sämtliche Prüfinstanzen können Handelsvorschläge somit
 verhindern oder verkleinern, jedoch niemals erzeugen oder umkehren. Ein weiteres Ziel
 betrifft die Betriebsform: Die Agentenstruktur ist modular aufgebaut und darauf
 ausgelegt, lokal für den Privatgebrauch betrieben zu werden -- als Zielkonfiguration

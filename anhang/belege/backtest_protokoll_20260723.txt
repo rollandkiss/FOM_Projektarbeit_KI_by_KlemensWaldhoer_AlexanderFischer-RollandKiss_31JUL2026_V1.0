@@ -1,0 +1,90 @@
+{
+  "strategie": {
+    "name": "sma",
+    "params": {
+      "fast": 50,
+      "slow": 200
+    },
+    "underlying": "^GSPC",
+    "instrument": "DE000SB295Z1"
+  },
+  "zeitraum": "2016-07-13 - 2026-07-22 (2520 Handelstage)",
+  "kapital_eur": 2000.0,
+  "annahmen": {
+    "spread_bp": 20,
+    "fee_eur": 3.9,
+    "leverage": 2.0,
+    "stop_pct": 3.0,
+    "tp_pct": 2.0,
+    "steuer_auf_gewinn_pct": 18.47
+  },
+  "B0_taeglicher_roundtrip": {
+    "pnl_vor_steuer_eur": -29675.14,
+    "steuer_eur": 4078.0,
+    "pnl_netto_eur": -33753.13,
+    "pnl_netto_pct": -1687.7,
+    "kosten_eur": 28940.15,
+    "handelstage": 2520,
+    "trefferquote_pct": 31.7,
+    "kostendeckung_pct": 31.7,
+    "max_drawdown_pct": 1483.8
+  },
+  "B1_buy_hold_index": {
+    "rendite_vor_steuer_pct": 248.4,
+    "steuer_eur": 917.37,
+    "rendite_netto_pct": 202.5
+  },
+  "B2_wechsel_only": {
+    "pnl_vor_steuer_eur": 1919.39,
+    "steuer_eur": 719.98,
+    "pnl_netto_eur": 1199.4,
+    "pnl_netto_pct": 60.0,
+    "kosten_eur": 106.2,
+    "wechsel": 9
+  }
+}
+{
+  "strategie": {
+    "name": "sma",
+    "params": {
+      "fast": 50,
+      "slow": 200
+    },
+    "underlying": "^GSPC",
+    "instrument": "DE000SB295Z1"
+  },
+  "zeitraum": "2016-07-13 - 2026-07-22 (2520 Handelstage)",
+  "kapital_eur": 1000.0,
+  "annahmen": {
+    "spread_bp": 20,
+    "fee_eur": 3.9,
+    "leverage": 2.0,
+    "stop_pct": 3.0,
+    "tp_pct": 2.0,
+    "steuer_auf_gewinn_pct": 18.47
+  },
+  "B0_taeglicher_roundtrip": {
+    "pnl_vor_steuer_eur": -25388.56,
+    "steuer_eur": 2286.86,
+    "pnl_netto_eur": -27675.42,
+    "pnl_netto_pct": -2767.5,
+    "kosten_eur": 24696.0,
+    "handelstage": 2520,
+    "trefferquote_pct": 22.4,
+    "kostendeckung_pct": 22.4,
+    "max_drawdown_pct": 2538.9
+  },
+  "B1_buy_hold_index": {
+    "rendite_vor_steuer_pct": 248.4,
+    "steuer_eur": 458.69,
+    "rendite_netto_pct": 202.5
+  },
+  "B2_wechsel_only": {
+    "pnl_vor_steuer_eur": 924.59,
+    "steuer_eur": 359.99,
+    "pnl_netto_eur": 564.6,
+    "pnl_netto_pct": 56.5,
+    "kosten_eur": 88.2,
+    "wechsel": 9
+  }
+}

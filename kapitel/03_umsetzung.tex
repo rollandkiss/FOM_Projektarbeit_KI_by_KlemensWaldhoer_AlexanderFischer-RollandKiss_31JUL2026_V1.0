@@ -26,7 +26,7 @@ Ausschlusskriterien entscheiden deterministische Vorprüfungen bereits vor dem
 ersten Modellaufruf. Auf der Ebene der Reaktion ordnet sich das Vorhaben
 unmittelbar dem Element der prozesssteuernden Kontrolle zu, das der zugrunde
 gelegte Rahmen ausdrücklich mit dem Börsenhandel als Anwendung
-verbindet.\zit[S. 18]{waldhoerKI2025} Ergänzend sichern eine
+verbindet.\zit[S. 19]{waldhoerKI2025} Ergänzend sichern eine
 Kommunikationskomponente die Rückbindung an den Menschen -- tägliche Freigabe der
 Banksitzung, Berichte, jederzeit wirksamer Not-Aus -- und ein öffentliches,
 redigiertes Dashboard die Transparenz der Entscheidungs- und Wertentwicklung.
@@ -82,7 +82,7 @@ Platform. Die \emph{collector-vm} sammelt rund um die Uhr Marktdaten des S\&P~50
 Rohticks werden über einen WebSocket-Datenstrom sowie ein ergänzendes Polling für
 Futures-Randzeiten erfasst, durch einen Sanitätsfilter geprüft und zu Minuten- und
 Tagesbars verdichtet. Der jeweils jüngste Tagesschluss wird gegen die offizielle
-Zweitquelle der Federal Reserve Bank of St.\ Louis (FRED) abgeglichen; Divergenzen
+Zweitquelle der Federal Reserve Bank of St.\ Louis (\glsxtrshort{fred}) abgeglichen; Divergenzen
 oberhalb einer Schwelle lösen einen Alarm aus. Die \emph{agent-vm} erhält die
 Datenbasis als minütlich synchronisierte, atomar ersetzte Replik und beherbergt den
 eigentlichen Entscheidungs- und Orderpfad: die deterministische Strategieauswertung,
@@ -109,7 +109,7 @@ Modellbezeichner, Endpunkt und Zeitbudgets zentral konfiguriert sind. Das in
 Betreibbarkeit bleibt damit strukturell gesichert.
 
 Eine dritte, strikt entkoppelte Zone bildet das öffentliche Dashboard. Die
-collector-vm exportiert minütlich redigierte JSON-Feeds des Entscheidungsjournals
+collector-vm exportiert minütlich redigierte \glsxtrshort{json}-Feeds des Entscheidungsjournals
 -- Signale, Voten, Orders und Depotwertverlauf, jedoch keinerlei Konto- oder
 Zugangsdaten -- in einen privaten Cloud-Storage-Bucket; ein zustandsloser
 Cloud-Run-Dienst rendert daraus die Weboberfläche. Die handelnden Maschinen selbst
@@ -117,7 +117,7 @@ bleiben ohne offenen eingehenden Port. Im Ordnungsrahmen des Periodensystems der
 Künstlichen Intelligenz verbindet die Architektur damit Elemente der Wahrnehmung
 (Daten- und Mustererfassung), der Schlussfolgerung (Entscheiden und Erklären) und
 der Reaktion, deren Zentrum das Element der prozesssteuernden Kontrolle
-bildet.\zit[S.~18]{waldhoerKI2025}
+bildet.\zit[S.~19]{waldhoerKI2025}
 
 \section{SMA-Handelsstrategie}
 \label{sec:umsetzung-strategie}
@@ -226,7 +226,7 @@ befragt, wenn ihre Bewertung das Ergebnis noch verändern kann.
 
 Im Auditschritt erhält jedes der drei konfigurierten Sprachmodelle denselben
 DecisionRequest mit einem Systemauftrag als kritischer Risikoprüfer. Die Antwort ist
-über ein erzwungenes JSON-Schema strukturiert und wird bei Temperatur null erzeugt;
+über ein erzwungenes \glsxtrshort{json}-Schema strukturiert und wird bei Temperatur null erzeugt;
 jedes Modell muss neben der Zustimmung oder Ablehnung eine eigene, unabhängige
 Regimeeinschätzung abgeben. Ein fail-safe ausgelegter Validator prüft jede Antwort:
 Schemaverletzungen, Zeitüberschreitungen, Widersprüche zwischen eigener Einschätzung
@@ -276,8 +276,8 @@ Reconciliation den tatsächlichen Zustand über das Orderbuch der Bank ab; jeder
 unklare Ausgang endet in einem alarmierten Handelsstopp statt in einem automatischen
 Wiederholungsversuch. Einzelorder- und Portfolio-Obergrenzen wirken als
 Circuit-Breaker, und die Scharfschaltung auf reale Orders ist ausschließlich
-kontospezifisch möglich. Die Bankanbindung selbst nutzt den OAuth-Flow der
-comdirect-Schnittstelle mit einer täglich per photoTAN freigegebenen Session-TAN;
+kontospezifisch möglich. Die Bankanbindung selbst nutzt den \glsxtrshort{oauth}-Flow der
+comdirect-Schnittstelle mit einer täglich per photoTAN freigegebenen Session-\glsxtrshort{tan};
 der Mensch bleibt über einen Signal-Messenger-Kanal eingebunden, der Tagesreports
 liefert und einen jederzeit wirksamen Not-Aus (Pausieren, Fortsetzen, Statusabfrage,
 Glattstellen) bereitstellt.
@@ -325,9 +325,11 @@ Sprachmodell-Votings im Betrieb.
 \subsection{Untersuchungsdesign und Datenbasis}
 \label{sec:umsetzung-evaluation-design}
 
-Datenbasis des Backtests sind zehn Jahre echter Tagesschlusskurse des S\&P~500, die
-über die Datensammlung des Agenten bezogen und gegen die FRED-Zweitquelle
-gegengeprüft wurden. Der Strategie werden drei Vergleichsmaßstäbe gegenübergestellt:
+Datenbasis des Backtests sind zehn Jahre echter Tagesschlusskurse des S\&P~500
+(2.520 Handelstage, Datenstand 22.07.2026), die über die Datensammlung des
+Agenten bezogen und gegen die \glsxtrshort{fred}-Zweitquelle gegengeprüft
+wurden; das vollständige Backtest-Protokoll ist in
+\cref{sec:anhang-evaluationsbelege} dokumentiert. Der Strategie werden drei Vergleichsmaßstäbe gegenübergestellt:
 der tägliche Round-Trip der Regel selbst (B0), das passive Halten des Index (B1)
 sowie eine Variante, die nur bei einem Regimewechsel handelt (B2). Das Kostenmodell
 verwendet keine Annahmen, sondern die real gemessenen Ex-Ante-Kostenausweise der
@@ -374,10 +376,12 @@ verstehen ist.
 \label{sec:umsetzung-evaluation-ergebnisse}
 
 Das zentrale Backtest-Ergebnis fällt eindeutig aus: Der tägliche Round-Trip (B0)
-verliert über zehn Jahre 29.598,79\,€, wovon 28.937,94\,€ auf Transaktionskosten
+verliert über zehn Jahre 29.675,14\,€, wovon 28.940,15\,€ auf Transaktionskosten
 entfallen, bei einer Trefferquote von 31,7\,\%. Die nur bei Regimewechseln handelnde
-Variante (B2) erzielt mit neun Positionswechseln in zehn Jahren rund $+100\,\%$ bei
-lediglich 106\,€ Kosten; das passive Halten des Index (B1) rund $+250\,\%$. Die
+Variante (B2) erzielt mit neun Positionswechseln in zehn Jahren rund $+96\,\%$
+vor beziehungsweise $+60\,\%$ nach Steuern bei lediglich 106\,€ Kosten; das
+passive Halten des Index (B1) rund $+248\,\%$ vor beziehungsweise $+203\,\%$
+nach Steuern. Die
 tägliche Handelsfrequenz wird demnach von den Fixkosten aufgezehrt -- die
 Rentabilitätsanalyse zeigt, dass bei realistischen Trefferquoten kein
 Kapitaleinsatz die tägliche Round-Trip-Strategie in den positiven Erwartungswert
@@ -482,7 +486,7 @@ Strategie noch die Systemarchitektur stellen eine Empfehlung an Dritte dar.
 Schließlich zeigte die Umsetzung einen strukturellen Befund des Marktumfelds: Die
 kostengünstigsten Ausführungswege für Privatanleger sind systematisch nicht über
 offene Schnittstellen zugänglich, sodass autonome Agenten einen faktischen
-\enquote{API-Aufpreis} tragen -- ein Umstand, der die angestrebte, weitgehend
+\enquote{\glsxtrshort{api}-Aufpreis} tragen -- ein Umstand, der die angestrebte, weitgehend
 kostenfreie lokale Betreibbarkeit umso relevanter macht, da sie zumindest die
 Infrastruktur- und Inferenzkosten eliminiert.
 

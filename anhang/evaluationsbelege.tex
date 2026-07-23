@@ -1,0 +1,140 @@
+%  =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "anhang/evaluationsbelege.tex"
+%
+%  Anhang "Evaluationsbelege": reproduzierbare Belege der in Kapitel 3.4
+%  genannten Kennzahlen. Druckaufbereitung der Protokolle analog zu
+%  anhang/quelltexte.tex (ASCII-Ersetzungstabelle, footnotesize).
+%  =============================================================================
+
+\chapter{Evaluationsbelege}
+\label{sec:anhang-evaluationsbelege}
+
+Dieser Anhang dokumentiert die Datengrundlagen der Evaluation
+(\cref{sec:umsetzung-evaluation}). Sämtliche Protokolle wurden unverändert von
+den Produktionssystemen übernommen und lediglich typografisch für den Druck
+aufbereitet; Umfangreiche Rohdaten (Tagesbars, Rohticks) sind durch
+Herkunftsangaben referenziert, statt abgedruckt.
+
+\section{Backtest-Protokoll (B0/B1/B2)}
+\label{sec:anhang-backtest}
+
+Vollständige Ausgabe von \texttt{strategy.py backtest} für die Kapitaleinsätze
+2.000\,€ und 1.000\,€ (Datenstand 22.07.2026, 2.520 Handelstage; erzeugt am
+23.07.2026 auf der agent-vm). Die in \cref{sec:umsetzung-evaluation-ergebnisse}
+genannten Kennzahlen entstammen unverändert diesem Protokoll.
+
+\lstinputlisting[basicstyle=\ttfamily\footnotesize,breaklines=true]{anhang/belege/backtest_protokoll_20260723.txt}
+
+\section{Walk-Forward-Kalibrierung der statistischen Prüfinstanz}
+\label{sec:anhang-walkforward}
+
+Kalibrierungstabelle der Walk-Forward-Prüfung (\texttt{ml\_walkforward.csv};
+23.803 bewertete Prognosetage): je Wahrscheinlichkeits-Bin die Anzahl der
+Prognosen, die mittlere prognostizierte Wahrscheinlichkeit und die beobachtete
+Trefferrate.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{r r r r}
+    \hline
+    Bin & $n$ & $\bar{p}$ prognostiziert & beobachtete Rate \\
+    \hline
+    0{,}1 & 2      & 0{,}184 & 0{,}000 \\
+    0{,}2 & 7      & 0{,}262 & 0{,}429 \\
+    0{,}3 & 127    & 0{,}364 & 0{,}504 \\
+    0{,}4 & 4.142  & 0{,}483 & 0{,}501 \\
+    0{,}5 & 19.434 & 0{,}524 & 0{,}525 \\
+    0{,}6 & 91     & 0{,}624 & 0{,}549 \\
+    \hline
+  \end{tabular}
+  \caption[Walk-Forward-Kalibrierung der statistischen Prüfinstanz]{%
+    Walk-Forward-Kalibrierung der statistischen Prüfinstanz
+    (Quelle: \texttt{ml\_walkforward.csv}, Stand 22.07.2026).\quelleeigen}
+  \label{tab:anhang-walkforward}
+\end{table}
+
+\section{Ex-Ante-Transaktionskosten (Bankmessung)}
+\label{sec:anhang-kosten}
+
+Rohdaten der Kostenmessung gegen das Produktivsystem der Bank
+(\texttt{cost\_probe.py}, Ex-Ante-Kostenausweis der Ordervalidierung, Status
+201 = bankseitig validiert; Handelsplatz Live Trading/Direkthandel):
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{r r r r r r r}
+    \hline
+    Volumen & Stück & Provision & Produktkosten & Kauf gesamt & Round-Trip & RT-Quote \\
+    \hline
+    150\,€ & 10 & 3{,}90\,€ & 0{,}14\,€ & 4{,}04\,€ & 7{,}80\,€ & 5{,}20\,\% \\
+    495\,€ & 33 & 3{,}90\,€ & 0{,}47\,€ & 4{,}37\,€ & 7{,}80\,€ & 1{,}58\,\% \\
+    990\,€ & 66 & 3{,}90\,€ & 0{,}95\,€ & 4{,}85\,€ & 7{,}80\,€ & 0{,}79\,\% \\
+    \hline
+  \end{tabular}
+  \caption[Ex-Ante-Transaktionskosten der Bankmessung]{%
+    Ex-Ante-Transaktionskosten der Bankmessung
+    (Quelle: \texttt{kostentabelle.csv}, erhoben 19.07.2026).\quelleeigen}
+  \label{tab:anhang-kosten}
+\end{table}
+
+\section{Herkunftsnachweis der Marktdatenbasis}
+\label{sec:anhang-provenienz}
+
+Herkunfts- und Integritätsnachweis der produktiven Marktdatenbank
+(\texttt{marketdata.sqlite}, collector-vm; Abfragen vom 23.07.2026). Die
+Rohtick-Tabelle enthält konstruktionsbedingt nur die jüngsten Handelstage, da
+ältere Rohticks nach zehn Tagen zu Bars verdichtet und beschnitten werden
+(vgl. \cref{sec:umsetzung-implementierung}).
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{l l}
+    \hline
+    Merkmal & Wert \\
+    \hline
+    Tagesbars \texttt{bars\_1d} (S\&P~500) & 30.12.1927 -- 22.07.2026, 24.755 Zeilen \\
+    Rohticks \texttt{ticks\_raw} (rollierend) & 79.945 Zeilen \\
+    Integrität (\texttt{md5}) & \texttt{24771c148ec062b2c2dfa790b9d22975} \\
+    Replikation (Litestream) & \texttt{gs://fom-ki-marketdata-backup/marketdata/} \\
+    \hline
+  \end{tabular}
+  \caption[Herkunftsnachweis der Marktdatenbasis]{Herkunftsnachweis der
+    Marktdatenbasis (collector-vm, Stand 23.07.2026).\quelleeigen}
+  \label{tab:anhang-provenienz}
+\end{table}
+
+Die jüngsten Zeilen der Zweitquellenprüfung (\texttt{source\_crosscheck};
+Spalte \texttt{stooq\_close} enthält aus historischen Gründen den
+FRED-Schlusskurs) belegen die laufende Übereinstimmung der Datenquellen:
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{l r r r r}
+    \hline
+    Datum & Primärquelle & FRED & Divergenz & Suspekt \\
+    \hline
+    21.07.2026 & 7.509{,}20 & 7.509{,}20 & 0{,}0\,\% & 0 \\
+    20.07.2026 & 7.443{,}28 & 7.443{,}28 & 0{,}0\,\% & 0 \\
+    17.07.2026 & 7.457{,}69 & 7.457{,}69 & 0{,}0\,\% & 0 \\
+    16.07.2026 & 7.533{,}77 & 7.533{,}77 & 0{,}0\,\% & 0 \\
+    15.07.2026 & 7.572{,}40 & 7.572{,}40 & 0{,}0\,\% & 0 \\
+    14.07.2026 & 7.543{,}59 & 7.543{,}59 & 0{,}0\,\% & 0 \\
+    13.07.2026 & 7.515{,}34 & 7.515{,}34 & 0{,}0\,\% & 0 \\
+    10.07.2026 & 7.575{,}39 & 7.575{,}39 & 0{,}0\,\% & 0 \\
+    09.07.2026 & 7.543{,}64 & 7.543{,}64 & 0{,}0\,\% & 0 \\
+    \hline
+  \end{tabular}
+  \caption[Zweitquellenprüfung der Tagesschlusskurse]{Jüngste Zeilen der
+    Zweitquellenprüfung gegen \glsxtrshort{fred}
+    (Stand 23.07.2026).\quelleeigen}
+  \label{tab:anhang-crosscheck}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% PLATZHALTER (wird nach Go-live 27.07. befüllt):
+%
+% \section{Belegkette der ersten Echtgeld-Order}
+%   -> Tagesreport (redigiert), Journal-Auszug,
+%      Ordervalidierung Status 200/201 (BELEGKONZEPT, Abschnitt B3).
+% ---------------------------------------------------------------------------

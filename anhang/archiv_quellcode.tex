@@ -1,0 +1,91 @@
+%% ---------------------------------------------------------------------------
+%% GENERIERT durch build_quellcode_archiv.py am 25.07.2026 08:59 — NICHT von Hand
+%% pflegen; Aenderungen in archiv_manifest.csv vornehmen und Skript ausfuehren.
+%% ---------------------------------------------------------------------------
+\begin{longtable}{@{}p{0.29\textwidth}p{0.155\textwidth}p{0.455\textwidth}@{}}
+  \caption[Quellcodedateien des Archivs]{Ordner \texttt{Quellcode/} des Archivs: Dateien und Zwecke, gegliedert nach Funktionsbereichen der Projektstruktur.\quelleeigen}\label{tab:anhang-archiv-quellcode}\\
+  \toprule
+  Datei & Typ & Zweck \\
+  \midrule
+  \endfirsthead
+  \multicolumn{3}{@{}l}{\itshape Fortsetzung von vorheriger Seite}\\
+  \toprule
+  Datei & Typ & Zweck \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{3}{r@{}}{\itshape Fortsetzung auf der n\"achsten Seite}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  \multicolumn{3}{@{}l}{\textbf{Konfiguration}}\\*[2pt]
+  \texttt{agentconfig.yaml} & Kon\-fi\-gu\-ra\-tion & Betriebskonfiguration: Strategien, Deployments, Sprachmodelle, Zeitbudgets, ML-Prüfinstanz \\
+  \texttt{wknassign.yaml} & Kon\-fi\-gu\-ra\-tion & Zentrale Produktzuordnung Strategie zu Handelsinstrument (WKN/ISIN) \\
+  \addlinespace[6pt]
+  \multicolumn{3}{@{}l}{\textbf{Datenerfassung (collector-vm)}}\\*[2pt]
+  \texttt{datacollect.py} & Python & Kontinuierliche Marktdatenerfassung mit Sanitätsfilter, Bar-Verdichtung und FRED-Zweitquellenprüfung \\
+  \texttt{market\_\allowbreak calendar.py} & Python & Börsenkalender: Handelstage, Feiertage, Sitzungsfenster \\
+  \texttt{collector\_\allowbreak summary.py} & Python & Tageszusammenfassung der Datenerfassung für den Berichtsversand \\
+  \addlinespace[6pt]
+  \multicolumn{3}{@{}l}{\textbf{Strategieschicht}}\\*[2pt]
+  \texttt{strategy.py} & Python & Strategie-Handler: Signalberechnung, DecisionRequest, Audit-Flags, Kostenkontext, Instrumentenkatalog, Backtest-Kommando \\
+  \texttt{strategyloader.py} & Python & Plugin-Lader: aktive Strategien, Deployments, ML-Konfiguration \\
+  \texttt{plstrategy\_\allowbreak sma.py} & Python & Plugin der SMA-Regimestrategie (Kreuzungssignal) \\
+  \texttt{plstrategy\_\allowbreak smacross.py} & Python & Plugin-Variante des Kreuzungssignals \\
+  \texttt{plstrategy\_\allowbreak smatrend.py} & Python & Trendfolge-Alternative für den A/B-Vergleich \\
+  \texttt{plstrategy\_\allowbreak buyhold.py} & Python & Vergleichsmaßstab passives Halten \\
+  \texttt{plstrategy\_\allowbreak momentum.py} & Python & Vergleichsmaßstab Momentum \\
+  \texttt{wknassign\_\allowbreak sma.py} & Python & Veralteter Platzhalter, ersetzt durch wknassign.yaml (dokumentiert die Migration) \\
+  \texttt{wknassign\_\allowbreak smacross.py} & Python & Veralteter Platzhalter, ersetzt durch wknassign.yaml \\
+  \texttt{wknassign\_\allowbreak momentum.py} & Python & Veralteter Platzhalter, ersetzt durch wknassign.yaml \\
+  \addlinespace[6pt]
+  \multicolumn{3}{@{}l}{\textbf{Prüfinstanzen}}\\*[2pt]
+  \texttt{auditor.py} & Python & Multi-LLM-Voting: Pre-Gate, unabhängige Voten, strikte Mehrheit, fail-safe Validator \\
+  \texttt{mlforecast.py} & Python & Statistische Prüfinstanz: logistische Regression, Walk-Forward-Prüfung, Schatten- und Wirkmodus \\
+  \addlinespace[6pt]
+  \multicolumn{3}{@{}l}{\textbf{Orderausführung und Bankanbindung}}\\*[2pt]
+  \texttt{orchestrate.py} & Python & Abgesicherte Orderausführung: Frische-Gates, Intent-Journal, Orderbuch-Reconciliation, Circuit-Breaker \\
+  \texttt{broker.py} & Python & comdirect-Adapter: OAuth2, Session-TAN, Depot- und Orderbuchzugriff, tagesgültige Limit-Orders \\
+  \texttt{credstore.py} & Python & Verschlüsselte Ablage der Zugangsdaten, getrennt je Konto \\
+  \texttt{config.py} & Python & Lader der Umgebungskonfiguration \\
+  \addlinespace[6pt]
+  \multicolumn{3}{@{}l}{\textbf{Betrieb und Steuerung}}\\*[2pt]
+  \texttt{run\_\allowbreak cycle.sh} & Shell & Täglicher Entscheidungszyklus: Preflight, Strategie, Audit, Ausführung, Bericht \\
+  \texttt{run\_\allowbreak all.sh} & Shell & Cron-Einstieg: Entscheidungszyklus je Konto/Deployment \\
+  \texttt{control.py} & Python & Befehlsprotokoll des Steuerkanals: Not-Aus, Broker-Login, ML-Umschaltung, Status \\
+  \texttt{signal\_\allowbreak dispatcher.py} & Python & Empfangsschleife des Messaging-Kanals mit Absender-Autorisierung \\
+  \texttt{signal\_\allowbreak dispatcher.service} & Kon\-fi\-gu\-ra\-tion & systemd-Unit der Empfangsschleife \\
+  \texttt{notify.py} & Python & Berichts- und Alarmversand mit Stale-Guard \\
+  \texttt{notify\_\allowbreak tan.sh} & Shell & photoTAN-Benachrichtigung beim Broker-Login \\
+  \texttt{alert\_\allowbreak relay.sh} & Shell & Alarm-Weiterleitung der Datenerfassung an den Messaging-Kanal \\
+  \texttt{cleanup\_\allowbreak groups.py} & Python & Werkzeug: Aufräumen verwaister Messaging-Gruppen \\
+  \texttt{keepalive.sh} & Shell & Sitzungserhalt der Broker-Session (V2, Overnight-fähig) mit TAN-Fallback \\
+  \texttt{keepalive.service} & Kon\-fi\-gu\-ra\-tion & systemd-Unit des Sitzungserhalts \\
+  \texttt{keepalive.timer} & Kon\-fi\-gu\-ra\-tion & systemd-Timer des Sitzungserhalts \\
+  \texttt{healthcheck.sh} & Shell & Systemüberwachung agent-vm: Dienste, Speicherplatz, Zyklusstatus \\
+  \texttt{cycle\_\allowbreak watch.sh} & Shell & Wächter: Alarm bei ausbleibendem Zyklusergebnis \\
+  \texttt{heartbeat.sh} & Shell & Heartbeat der Datenerfassung (Lebenszeichen-Datei) \\
+  \texttt{heartbeat\_\allowbreak watch.sh} & Shell & Dead-Man-Überwachung des Heartbeats mit Alarmversand \\
+  \texttt{loadprobe.sh} & Shell & Lastmessung der agent-vm (Dimensionierungsnachweis) \\
+  \texttt{maintain.sh} & Shell & Wartungslauf der Datenerfassung (Rotation, Aufräumen) \\
+  \texttt{vacuum.sh} & Shell & SQLite-Vacuum der Marktdatenbank \\
+  \texttt{extract\_\allowbreak live\_\allowbreak config.sh} & Shell & Extraktion der Live-Betriebskonfiguration (systemd, Cron, Litestream) von den VMs \\
+  \addlinespace[6pt]
+  \multicolumn{3}{@{}l}{\textbf{Auswertung}}\\*[2pt]
+  \texttt{evaluate\_\allowbreak votes.py} & Python & Wöchentliche Voting-Kalibrierung und ML-Auswertung gegen den Folgetags-Return \\
+  \addlinespace[6pt]
+  \multicolumn{3}{@{}l}{\textbf{Werkzeuge und Diagnose}}\\*[2pt]
+  \texttt{cost\_\allowbreak probe.py} & Python & Ex-Ante-Kostenmessung der Ordervalidierung gegen das Banksystem \\
+  \texttt{venue\_\allowbreak probe.py} & Python & Sondierung der Handelsplätze und Orderarten (comdirect) \\
+  \texttt{dbg\_\allowbreak positions.py} & Python & Diagnose der Depotbestände \\
+  \addlinespace[6pt]
+  \multicolumn{3}{@{}l}{\textbf{Dashboard und Journal-Export (webfeed)}}\\*[2pt]
+  \texttt{webfeed/\allowbreak export\_\allowbreak journal.py} & Python & Redigierter Journal-Export des Handelsjournals für das Dashboard (collector-vm) \\
+  \texttt{webfeed/\allowbreak app/\allowbreak main.py} & Python & Öffentliches Dashboard (FastAPI, Cloud Run) \\
+  \texttt{webfeed/\allowbreak app/\allowbreak templates/\allowbreak index.html} & Web & Dashboard-Oberfläche (Diagramme, Journalansicht) \\
+  \texttt{webfeed/\allowbreak app/\allowbreak templates/\allowbreak doku.html} & Web & Dokumentationsseite des Dashboards \\
+  \texttt{webfeed/\allowbreak app/\allowbreak static/\allowbreak kf-logo.svg} & Web & Logo-Grafik des Dashboards \\
+  \texttt{webfeed/\allowbreak app/\allowbreak requirements.txt} & Kon\-fi\-gu\-ra\-tion & Python-Abhängigkeiten des Dashboards \\
+  \texttt{webfeed/\allowbreak app/\allowbreak Dockerfile} & Kon\-fi\-gu\-ra\-tion & Container-Bauvorschrift des Dashboards (Cloud Run) \\
+  \texttt{webfeed/\allowbreak app/\allowbreak .dockerignore} & Kon\-fi\-gu\-ra\-tion & Build-Ausschlüsse des Container-Images \\
+\end{longtable}

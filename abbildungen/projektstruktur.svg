@@ -5,15 +5,15 @@
        Konvertierung von Overleaf. -->
 
   <text x="30" y="34" font-size="19" font-weight="bold" fill="#1a2027">fom-ki-project/ — Projektstruktur (ein Codestand für beide virtuellen Maschinen)</text>
-  <text x="30" y="54" fill="#5c6773" font-size="11px">Stand 22.07.2026 · Zuordnung: C = collector-vm · A = agent-vm · im Anhang abgedruckte Dateien sind fett gesetzt</text>
+  <text x="30" y="54" fill="#5c6773" font-size="11px">Stand 25.07.2026 · Zuordnung: C = collector-vm · A = agent-vm · fett gesetzt: Kernmodule des Entscheidungs-, Order- und Betriebspfads</text>
 
   <!-- Konfiguration -->
   <rect x="30" y="72" width="940" height="150" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
   <text x="46" y="94" fill="#334155" font-size="13px" font-weight="bold">Konfiguration und Geheimnisse</text>
   <text x="60" y="116" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">agentconfig.yaml</tspan> <tspan fill="#5c6773">— Betriebskonfiguration: Strategien, Deployments, LLM-Modelle, timeout_s, ml.* (A)</tspan></text>
   <text x="60" y="136" font-size="12px" fill="#1a2027"><tspan font-family="monospace" font-weight="bold">wknassign.yaml</tspan> <tspan fill="#5c6773">— zentrale Produktzuordnung Strategie → Instrument (Präferenzlisten, ISINs) (A)</tspan></text>
-  <text x="60" y="156" font-size="12px" fill="#1a2027"><tspan font-family="monospace">agent.env</tspan> <tspan fill="#5c6773">— Umgebungsvariablen inkl. EXECUTION_MODE je Konto (A; enthält Kontobezüge, nicht abgedruckt)</tspan></text>
-  <text x="60" y="176" font-size="12px" fill="#1a2027"><tspan font-family="monospace">~/.fom-agent/</tspan> <tspan fill="#5c6773">— verschlüsselter Geheimnisspeicher (credstore) und Sitzungszustand (A; nicht abgedruckt)</tspan></text>
+  <text x="60" y="156" font-size="12px" fill="#1a2027"><tspan font-family="monospace">agent.env</tspan> <tspan fill="#5c6773">— Umgebungsvariablen inkl. EXECUTION_MODE je Konto (A; enthält Kontobezüge, nicht im Archiv)</tspan></text>
+  <text x="60" y="176" font-size="12px" fill="#1a2027"><tspan font-family="monospace">~/.fom-agent/</tspan> <tspan fill="#5c6773">— verschlüsselter Geheimnisspeicher (credstore) und Sitzungszustand (A; nicht im Archiv)</tspan></text>
   <text x="60" y="196" font-size="12px" fill="#1a2027"><tspan font-family="monospace">ML_MODES.json, TRADING_PAUSED*</tspan> <tspan fill="#5c6773">— Laufzeit-Schalter: ML-Modus je Strategie, Not-Aus-Flags (A)</tspan></text>
 
   <!-- Datenerfassung -->
@@ -63,7 +63,7 @@
 
   <!-- Dashboard und Tests -->
   <rect x="30" y="1028" width="940" height="128" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
-  <text x="46" y="1050" fill="#334155" font-size="13px" font-weight="bold">Öffentliches Dashboard (webfeed/) und Qualitätssicherung — im Anhang nur ausgewiesen</text>
+  <text x="46" y="1050" fill="#334155" font-size="13px" font-weight="bold">Öffentliches Dashboard (webfeed/) und Qualitätssicherung — im Archiv unter Quellcode/webfeed/ bzw. Tests/</text>
   <text x="60" y="1072" font-size="12px" fill="#1a2027"><tspan font-family="monospace">webfeed/export_journal.py</tspan> <tspan fill="#5c6773">— redigierter Feed-Export ohne Konto-/Zugangsdaten (C; minütlich bei Änderung)</tspan></text>
   <text x="60" y="1092" font-size="12px" fill="#1a2027"><tspan font-family="monospace">webfeed/app/</tspan> <tspan fill="#5c6773">— zustandslose Weboberfläche: main.py (Flask), templates/index.html, static/ (Cloud Run)</tspan></text>
   <text x="60" y="1112" font-size="12px" fill="#1a2027"><tspan font-family="monospace">test_*.py</tspan> <tspan fill="#5c6773">— zwölf Offline-Testsuiten mit gemockten Schnittstellen, von der Datensammlung über Voting und</tspan></text>

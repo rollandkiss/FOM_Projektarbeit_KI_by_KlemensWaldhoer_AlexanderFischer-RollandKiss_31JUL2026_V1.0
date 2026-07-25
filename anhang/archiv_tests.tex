@@ -1,0 +1,36 @@
+%% ---------------------------------------------------------------------------
+%% GENERIERT durch build_quellcode_archiv.py am 25.07.2026 08:59 — NICHT von Hand
+%% pflegen; Aenderungen in archiv_manifest.csv vornehmen und Skript ausfuehren.
+%% ---------------------------------------------------------------------------
+\begin{longtable}{@{}p{0.26\textwidth}p{0.26\textwidth}p{0.38\textwidth}@{}}
+  \caption[Testsuiten des Archivs]{Ordner \texttt{Tests/} des Archivs: Offline-Testsuiten mit gepr\"uftem Artefakt und Pr\"ufzweck.\quelleeigen}\label{tab:anhang-archiv-tests}\\
+  \toprule
+  Testdatei & Gepr\"uftes Artefakt & Zweck \\
+  \midrule
+  \endfirsthead
+  \multicolumn{3}{@{}l}{\itshape Fortsetzung von vorheriger Seite}\\
+  \toprule
+  Testdatei & Gepr\"uftes Artefakt & Zweck \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{3}{r@{}}{\itshape Fortsetzung auf der n\"achsten Seite}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  \texttt{run\_\allowbreak tests.sh} & alle Testsuiten & Testtreiber: führt alle Suiten mit korrektem Modulpfad (PYTHONPATH) gegen Quellcode/ aus \\
+  \texttt{test\_\allowbreak auditor.py} & \texttt{auditor.py} & Multi-LLM-Voting: Mehrheitslogik, Pre-Gate, fail-safe Verhalten (gemockte LLM-Antworten) \\
+  \texttt{test\_\allowbreak brokersession.py} & \texttt{broker.py} & Broker-Adapter: Session-, OAuth- und Orderbuchlogik gegen Attrappen \\
+  \texttt{test\_\allowbreak control.py} & \texttt{control.py} & Befehlsprotokoll des Steuerkanals einschließlich Absender-Autorisierung \\
+  \texttt{test\_\allowbreak credstore.py} & \texttt{credstore.py} & Ver- und Entschlüsselung der Zugangsdatenablage \\
+  \texttt{test\_\allowbreak crosscheck.py} & \texttt{datacollect.py} & Zweitquellenprüfung und Sanitätsfilter der Marktdatenerfassung \\
+  \texttt{test\_\allowbreak deployments.py} & \texttt{strategyloader.py}, \texttt{agentconfig.yaml} & Konsistenz der Deployment- und Strategiekonfiguration \\
+  \texttt{test\_\allowbreak dispatcher.py} & \texttt{signal\_\allowbreak dispatcher.py} & Empfangsschleife des Messaging-Kanals \\
+  \texttt{test\_\allowbreak evaluate\_\allowbreak votes.py} & \texttt{evaluate\_\allowbreak votes.py} & Voting- und ML-Auswertung gegen den Folgetags-Return \\
+  \texttt{test\_\allowbreak keepalive.sh} & \texttt{keepalive.sh} & Sitzungserhalt: Szenarien einschließlich TAN-Fallback und Nachtruhe \\
+  \texttt{test\_\allowbreak mlforecast.py} & \texttt{mlforecast.py} & Statistische Prüfinstanz: Merkmalsbildung, Walk-Forward, Schwellenlogik \\
+  \texttt{test\_\allowbreak notify.py} & \texttt{notify.py} & Berichtsversand und Stale-Guard \\
+  \texttt{test\_\allowbreak orchestrate.py} & \texttt{orchestrate.py} & Orderausführung: Frische-Gates, Intent-Journal, Reconciliation, Circuit-Breaker \\
+  \texttt{webfeed/\allowbreak test\_\allowbreak export.py} & \texttt{webfeed/\allowbreak export\_\allowbreak journal.py} & Journal-Export: Redaktion und Aggregation \\
+  \texttt{webfeed/\allowbreak app/\allowbreak test\_\allowbreak app.py} & \texttt{webfeed/\allowbreak app/\allowbreak main.py} & Dashboard-Endpunkte (FastAPI-Testclient) \\
+\end{longtable}

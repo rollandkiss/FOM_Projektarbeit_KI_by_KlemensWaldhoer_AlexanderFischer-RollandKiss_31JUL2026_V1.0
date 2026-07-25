@@ -632,28 +632,30 @@
 %   - Algorithmenverzeichnis: vollstaendig entfernt.
 %   - Mathematisches Formelverzeichnis: vollstaendig entfernt.
 %   - Symbolverzeichnis: vollstaendig entfernt (Quelldatei nicht vorhanden).
-%   - Tabellenverzeichnis: ausgeblendet (nur auskommentiert, s. u.).
+%   - Tabellenverzeichnis: seit V1_8 AKTIV (verzeichnisse/tabellenverzeichnis.tex);
+%     bis V1_7 ausgeblendet, da die Arbeit keine Tabellen enthielt. Mit den
+%     Anhaengen "Evaluationsbelege" (4 Tabellen) und "Projektstruktur und
+%     Quellcodearchiv" (4 Tabellen) gemaess Leitfaden Kap. 2.4 / 5.1 erforderlich.
 % Alle Verzeichnisse liegen einheitlich unter verzeichnisse/ und werden
 % gleichartig per \input eingebunden (das Abbildungsverzeichnis kapselt
 % \listoffigures in verzeichnisse/abbildungsverzeichnis.tex).
 \input{verzeichnisse/abbildungsverzeichnis}         % Kap. 2.3 / 5.1 / 5.7
+\input{verzeichnisse/tabellenverzeichnis}           % Kap. 2.4 / 5.1
 \input{verzeichnisse/abkuerzungen}                  % Kap. 2.5 / 5.1
 \input{verzeichnisse/formelzeichen}                 % Kap. 5.1 / 5.8
 \input{verzeichnisse/glossar}                       % Kap. 5.1
-%\listoftables                                      % Tabellenverzeichnis ausgeblendet
 \clearpage
 
-% Quelltextverzeichnis bewusst nicht aktiviert. Begruendung:
+% Quelltextverzeichnis bewusst nicht aktiviert. Begruendung (Stand V1_8):
 %   - Leitfaden Kap. 5.1 stuft das Verzeichnis als optional ein
 %     ("kann sinnvoll sein, wenn ...").
-%   - Saemtliche Quelltexte sind in einem einzigen Anhangskapitel gebuendelt
-%     und durch dessen Abschnittsstruktur (I.I, I.II, I.III) bereits navigierbar.
-%   - Die zusaetzliche Verzeichnisseite waere in dieser Konstellation eine
-%     redundante Wiederholung des Anhang-TOC.
-%   - Querverweise via \cref{lst:...} ermoeglichen die direkte Navigation.
-% Bei Bedarf — etwa wenn Listings ueber den Hauptteil verteilt eingesetzt
-% werden — die folgenden Zeilen aktivieren (KOMA fuegt mit listof=totoc
-% automatisch einen TOC-Eintrag hinzu, daher KEIN \addcontentsline noetig):
+%   - Seit dem Wegfall des Quelltext-Abdrucks (Anhang I = Quellcodearchiv,
+%     Quellcode liegt als Zip-Beilage vor) enthaelt die Arbeit nur noch EIN
+%     Listing (Backtest-Protokoll in Anhang II, bewusst ohne \caption) —
+%     \lstlistoflistings waere damit LEER.
+% Bei Bedarf — etwa wenn kuenftig betitelte Listings eingesetzt werden —
+% die folgenden Zeilen aktivieren (KOMA fuegt mit listof=totoc automatisch
+% einen TOC-Eintrag hinzu, daher KEIN \addcontentsline noetig):
 %\lstlistoflistings
 %\cleardoublepage
 

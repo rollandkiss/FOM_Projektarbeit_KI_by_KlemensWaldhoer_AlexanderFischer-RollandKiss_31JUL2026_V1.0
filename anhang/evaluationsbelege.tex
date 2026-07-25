@@ -10,6 +10,15 @@
 \chapter{Evaluationsbelege}
 \label{sec:anhang-evaluationsbelege}
 
+% Literate-Tabelle (bis V1_7 in anhang/quelltexte.tex gesetzt, seit dem
+% Wegfall des Quelltext-Abdrucks hier): pdflatex + listings verarbeiten
+% UTF-8-Mehrbytezeichen in Listings nur ueber diese Zuordnung.
+\lstset{%
+    literate={ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+             {Ä}{{\"A}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+             {ß}{{\ss{}}}1 {€}{{\euro{}}}1 {§}{{\S{}}}1
+}
+
 Dieser Anhang dokumentiert die Datengrundlagen der Evaluation
 (\cref{sec:umsetzung-evaluation}). Sämtliche Protokolle wurden unverändert von
 den Produktionssystemen übernommen und lediglich typografisch für den Druck

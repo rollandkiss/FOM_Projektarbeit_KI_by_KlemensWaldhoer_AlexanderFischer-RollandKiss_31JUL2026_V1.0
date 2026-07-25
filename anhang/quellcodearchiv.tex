@@ -1,0 +1,130 @@
+%  =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "anhang/quellcodearchiv.tex"
+%
+%  Anhang "Projektstruktur und Quellcodearchiv": ersetzt seit V1_8 den
+%  frueheren Volltext-Abdruck der Quelltexte (anhang/quelltexte.tex). Der
+%  Quellcode liegt der Arbeit gemaess Absprache im Beratungsgespraech vom
+%  23.07.2026 als elektronisches Zip-Archiv bei; dieser Anhang dokumentiert
+%  Identitaet, Aufbau und Inhalt des Archivs.
+%
+%  PFLEGE / REGENERIERUNG (z. B. nach der Echtgeld-Woche):
+%    1. Im Projektordner archiv_manifest.csv anpassen (neue Datei = neue
+%       Zeile; Status "geplant" -> "aktiv" setzen).
+%    2. python3 build_quellcode_archiv.py --version V3 --datum <TTMONJJJJ>
+%    3. Die vier GENERIERTEN Dateien archiv_meta.tex, archiv_quellcode.tex,
+%       archiv_tests.tex, archiv_daten.tex aus archiv_tex/ nach Overleaf in
+%       den Ordner anhang/ hochladen (ersetzen). Diese Datei hier bleibt
+%       unveraendert.
+%  Die alten Dateien anhang/quelltexte.tex und anhang/quelltexte/* werden in
+%  Overleaf nicht mehr benoetigt und koennen entfernt werden.
+%  =============================================================================
+
+\chapter{Anhang: Projektstruktur und Quellcodearchiv}
+\label{cha:anhang-archiv}
+
+% Generierte Metadaten des Archivs (Name, Datum, SHA-256, Umfang).
+\input{anhang/archiv_meta}
+
+Dieser Anhang dokumentiert den Quellcodestand des in \cref{cha:umsetzung}
+beschriebenen Handelsagenten. Der vollständige Quellcode wird nicht im Anhang
+abgedruckt, sondern liegt der Arbeit als elektronisches Archiv bei; die
+nachfolgenden Abschnitte weisen dessen Identität, Aufbau und Inhalt aus. Damit
+bleibt jede in \cref{sec:umsetzung-implementierung} beschriebene Absicherung im
+Quelltext nachvollziehbar, ohne den Anhang mit rund 7.000 Zeilen Quelltext zu
+belasten.
+
+\section{Projektstruktur}
+\label{sec:anhang-projektstruktur}
+
+\Cref{fig:projektstruktur} zeigt die Struktur des Projekts. Es handelt sich um
+einen einzigen Codestand, der auf beiden virtuellen Maschinen ausgerollt wird;
+die Zuordnung der Module zu collector-vm und agent-vm ist je Datei vermerkt.
+Die Zuordnung jeder Datei zu ihrem Zweck und ihrem Ort im Archiv dokumentieren
+die Tabellen der \cref{sec:anhang-archiv-quellcode,sec:anhang-archiv-tests,sec:anhang-archiv-daten}.
+
+\begin{figure}[htbp]
+    \centering
+    \includesvg[width=0.92\textwidth,height=0.88\textheight,keepaspectratio]{projektstruktur}
+    \caption[Projektstruktur des Handelsagenten]{Projektstruktur des
+        Handelsagenten: ein Codestand für beide virtuellen Maschinen
+        (C = collector-vm, A = agent-vm).\quelleeigenki}
+    \label{fig:projektstruktur}
+\end{figure}
+
+\section{Archividentität und Redaktion}
+\label{sec:anhang-archiv-identitaet}
+
+Das Archiv ist über Dateinamen, Erstellungsdatum und Prüfsumme eindeutig
+identifiziert; die Prüfsumme erlaubt den Nachweis, dass der beigelegte Stand
+dem hier dokumentierten entspricht.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{l l}
+    \hline
+    Merkmal & Wert \\
+    \hline
+    Dateiname & \texttt{\footnotesize\QuellcodeArchivName} \\
+    Version / Datum & \QuellcodeArchivVersion{} / \QuellcodeArchivDatum \\
+    Umfang & \QuellcodeArchivDateien{} Dateien, \QuellcodeArchivGroesse{}\,MB \\
+    Integrität (SHA-256) & \texttt{\footnotesize\QuellcodeArchivSHA} \\
+    \hline
+  \end{tabular}
+  \caption[Identität des Quellcodearchivs]{Identität des beigelegten
+    Quellcodearchivs.\quelleeigen}
+  \label{tab:anhang-archiv-identitaet}
+\end{table}
+
+Für die Beilage gelten zwei redaktionelle Regeln, die die Programmlogik
+unberührt lassen: Die Rufnummern des Messaging-Kanals sind redigiert
+(\texttt{+49XXXXXXXXXXX}), und Zugangsdaten erscheinen an keiner Stelle, da sie
+ausschließlich im verschlüsselten Geheimnisspeicher liegen -- die Datei
+\texttt{agent.env} und der Inhalt von \texttt{\textasciitilde/.fom-agent/}
+sind deshalb nicht Bestandteil des Archivs. Die unverändert eingebundene
+Fremdbibliothek Chart.js (\texttt{webfeed/app/static/chart.umd.js}, MIT-Lizenz)
+ist als Drittcode ebenfalls nicht beigelegt; im Übrigen liegt der Quellcode
+unverändert und lauffähig vor.
+
+\section{Aufbau des Archivs}
+\label{sec:anhang-archiv-aufbau}
+
+Das Archiv gliedert sich in drei Basisordner sowie eine erläuternde
+\texttt{README.md}: Der Ordner \texttt{Quellcode/} enthält sämtliche Module,
+Skripte und Konfigurationsdateien in der flachen Struktur der
+Produktivumgebung (vgl. \cref{fig:projektstruktur}), wodurch der Code ohne
+Umbau lauffähig bleibt; der Ordner \texttt{Tests/} enthält die
+Offline-Testsuiten einschließlich des Testtreibers \texttt{run\_tests.sh}; der
+Ordner \texttt{Daten/} enthält die Daten- und Evaluationsstände mit
+ausgewiesenem Snapshot-Datum.
+
+\section{Quellcode}
+\label{sec:anhang-archiv-quellcode}
+
+\input{anhang/archiv_quellcode}
+
+\section{Tests}
+\label{sec:anhang-archiv-tests}
+
+Die Testsuiten lagen in der Produktivumgebung neben den geprüften Modulen und
+sind im Archiv in den Ordner \texttt{Tests/} ausgegliedert. Der Testtreiber
+\texttt{run\_tests.sh} stellt den Modulpfad her und führt alle Suiten offline
+aus (\texttt{bash Tests/run\_tests.sh}); Suiten mit fehlenden
+Drittabhängigkeiten werden dabei als übersprungen ausgewiesen.
+
+\input{anhang/archiv_tests}
+
+\section{Daten}
+\label{sec:anhang-archiv-daten}
+
+Die Datenstände belegen die in \cref{sec:umsetzung-evaluation} berichteten
+Kennzahlen; ihr jeweiliges Snapshot-Datum ist ausgewiesen. Der Snapshot der
+produktiven Marktdatenbank sowie die redigierte Belegkette der
+Echtgeld-Orders werden nach Abschluss der Echtgeld-Woche mit der nächsten
+Archivversion ergänzt (kursive Einträge).
+
+\input{anhang/archiv_daten}
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

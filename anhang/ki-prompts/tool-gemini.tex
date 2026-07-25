@@ -3,25 +3,70 @@
 %  -> Abschnitt "anhang/ki-prompts/tool-gemini.tex"
 %  =============================================================================
 
-\section{Google Gemini (Flash~3.5)}
+\section{Google Gemini (3.5~Flash)}
 \label{sec:prompts-gemini}
 
-\kiwerkzeug{Google Gemini, Modell Flash 3.5}{Stand: Mai 2026}{https://gemini.google.com}
+\kiwerkzeug{Google Gemini, Modell 3.5 Flash}{Modellbezeichner
+\texttt{gemini-3.5-flash}, Model Card vom 19.05.2026}{https://gemini.google.com}
 % Eintrag im KI-Verzeichnis (Leitfaden Kap. 6.2.4) erzwingen mittels \nocite.
 \nocite{geminiFlash2026}
 
-\subsection{Literaturrecherche}
+Eingesetzt für die sprachliche Korrekturlesung, die Quellenrecherche, den
+Abgleich der automatischen Tests gegen die dokumentierten Anforderungen sowie
+für die Erstellung des Abkürzungsverzeichnisses.
+
+\subsection{Rechtschreibprüfung und Interpunktion}
+\label{sec:prompts-gemini-sprache}
+\begin{enumerate}
+    \item \enquote{Prüfe den folgenden Abschnitt auf Rechtschreib-,
+            Grammatik- und Zeichensetzungsfehler nach aktueller deutscher
+            Rechtschreibung und liste die Korrekturen mit kurzer Begründung
+            auf: [\dots]}
+            \par\hfill\textit{Kontext: gesamter Hauptteil (Korrekturlesung)}
+
+    \item \enquote{Überprüfe die Kommasetzung in den folgenden
+            verschachtelten Sätzen und schlage, wo erforderlich, eine
+            regelkonforme Zeichensetzung vor: [\dots]}
+            \par\hfill\textit{Kontext: gesamter Hauptteil}
+\end{enumerate}
+
+\subsection{Quellenrecherche}
 \label{sec:prompts-gemini-literatur}
 \begin{enumerate}
     \item \enquote{Nenne einschlägige, zitierfähige Quellen (Monografien,
-            Normen, begutachtete Fachartikel) zur BPMN-2.0-Prozessmodellierung
-            und gib jeweils vollständige bibliografische Angaben an: [\dots]}
-            \par\hfill\textit{Kontext: \Cref{cha:grundlagen}}
+            begutachtete Fachartikel) zur Profitabilität einfacher
+            Handelsregeln auf Basis gleitender Durchschnitte nach
+            Transaktionskosten und gib jeweils vollständige bibliografische
+            Angaben mit DOI an: [\dots]}
+            \par\hfill\textit{Kontext: \Cref{cha:umsetzung}}
 
-    \item \enquote{Fasse den aktuellen Forschungsstand zur
-            Geschäftsprozessmodellierung im ERP-Umfeld zusammen und benenne
-            die zentralen Referenzwerke: [\dots]}
-            \par\hfill\textit{Kontext: \Cref{cha:grundlagen}}
+    \item \enquote{Benenne die Referenzarbeiten zur Bewertung
+            probabilistischer Prognosen -- insbesondere zur Herkunft des
+            Brier-Scores und zur Kalibrierung -- mit vollständigen
+            bibliografischen Angaben: [\dots]}
+            \par\hfill\textit{Kontext:
+            \cref{sec:umsetzung-evaluation-design}}
+
+    \item \enquote{Prüfe die folgenden bibliografischen Angaben gegen die
+            Verlagsseite und melde jede Abweichung bei Band, Heft,
+            Seitenzahlen und Erscheinungsjahr: [\dots]}
+            \par\hfill\textit{Kontext: Literaturverzeichnis}
+\end{enumerate}
+
+\subsection{Abgleich der automatischen Tests}
+\label{sec:prompts-gemini-tests}
+\begin{enumerate}
+    \item \enquote{Gleiche die folgende Testsuite mit der darunter
+            stehenden Anforderungsbeschreibung ab und benenne, welche
+            zugesicherte Eigenschaft von keinem Testfall geprüft wird:
+            [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Fasse zusammen, welche Schutzpfade der Orderausführung die
+            nachfolgenden Testläufe tatsächlich durchlaufen haben, und
+            unterscheide dabei bestandene von übersprungenen Prüfungen:
+            [\dots]}
+            \par\hfill\textit{Kontext: Anhang~\ref{sec:anhang-archiv-tests}}
 \end{enumerate}
 
 \subsection{Erstellung des Abkürzungsverzeichnisses}
@@ -31,8 +76,10 @@
             erstelle ein alphabetisch sortiertes Abkürzungsverzeichnis mit
             jeweiliger Langform: [\dots]}
             \par\hfill\textit{Kontext: gesamte Arbeit}
+
     \item \enquote{Überprüfe das vorhandene Abkürzungsverzeichnis auf
-            Vollständigkeit und Konsistenz und ergänze fehlende Einträge: [\dots]}
+            Vollständigkeit und Konsistenz und ergänze fehlende Einträge:
+            [\dots]}
             \par\hfill\textit{Kontext: gesamte Arbeit}
 \end{enumerate}
 

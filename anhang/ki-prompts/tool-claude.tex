@@ -3,27 +3,19 @@
 %  -> Abschnitt "anhang/ki-prompts/tool-claude.tex"
 %  =============================================================================
 
-\section{Anthropic Claude (Opus~4.8)}
+\section{Anthropic Claude (Opus~5)}
 \label{sec:prompts-claude}
 
-\kiwerkzeug{Anthropic Claude, Modell Opus 4.8}{Stand: Juli 2026}{https://claude.ai}
+\kiwerkzeug{Anthropic Claude, Modell Opus 5}{Modellbezeichner
+\texttt{claude-opus-5}, veröffentlicht am 24.07.2026}{https://claude.ai}
 % Eintrag im KI-Verzeichnis (Leitfaden Kap. 6.2.4) erzwingen mittels \nocite.
 \nocite{claudeOpus2026}
 
-\subsection{Rechtschreibprüfung und Interpunktion}
-\label{sec:prompts-claude-sprache}
-\begin{enumerate}
-    \item \enquote{Prüfe den folgenden Abschnitt auf Rechtschreib-,
-            Grammatik- und Zeichensetzungsfehler nach aktueller deutscher
-            Rechtschreibung und liste die Korrekturen mit kurzer Begründung
-            auf: [\dots]}
-            \par\hfill\textit{Kontext: gesamter Hauptteil (Korrekturlesung)}
-
-    \item \enquote{Überprüfe die Kommasetzung in den folgenden
-            verschachtelten Sätzen und schlage, wo erforderlich, eine
-            regelkonforme Zeichensetzung vor: [\dots]}
-            \par\hfill\textit{Kontext: gesamter Hauptteil}
-\end{enumerate}
+Eingesetzt für die Verzeichnisse des Vorspanns und den Aufbau des Anhangs
+sowie für zwei Werkzeuge der Projektumgebung: die Anpassung des
+Extraktionsskripts, das Quellcode- und Datenbestände der Google-Cloud-Umgebung
+für das elektronische Archiv aufbereitet, und die Erzeugung der Testskripte
+zur Ergebniskontrolle.
 
 \subsection{Erstellung des Glossars}
 \label{sec:prompts-claude-glossar}
@@ -39,30 +31,88 @@
             \par\hfill\textit{Kontext: Glossar (Vorspann)}
 \end{enumerate}
 
-\subsection{Erstellung von Abbildungen der Projektstruktur}
-\label{sec:prompts-claude-strukturabbildungen}
+\subsection{Erstellung des Formelzeichenverzeichnisses}
+\label{sec:prompts-claude-formelzeichen}
 \begin{enumerate}
-    \item \enquote{Erzeuge aus dem nachfolgenden ASCII-Baum der
-            Modellhierarchie ein \texttt{matplotlib}-Skript, das die
-            Aufrufbeziehungen als schwarz-weißes Diagramm mit dezent-grauen
-            Boxen rendert; jede Box enthält ein Ebenen-Präfix und den
-            Prozessnamen, die Verbindungen folgen der Aufrufrichtung von oben
-            nach unten: [\dots]}
-            \par\hfill\textit{Kontext: \Cref{cha:umsetzung}}
+    \item \enquote{Extrahiere aus den folgenden nummerierten Gleichungen
+            sämtliche Formelzeichen und formuliere je Zeichen eine
+            Kurzerklärung, die Bedeutung und Wertebereich beziehungsweise
+            Einheit benennt: [\dots]}
+            \par\hfill\textit{Kontext: Formelzeichenverzeichnis (Vorspann)}
 
-    \item \enquote{Erzeuge aus der nachfolgenden ASCII-Repräsentation
-            der Verzeichnis- und Dateistruktur ein
-            \texttt{matplotlib}-Skript, das die Struktur in einer
-            monospaced Schriftart schwarz auf weiß rendert und die
-            Ebenen-Header (L0--L4, LX) durch Fettsatz hervorhebt:
+    \item \enquote{Prüfe, ob jedes in den Gleichungen verwendete Formelzeichen
+            im Verzeichnis geführt wird und ob umgekehrt jeder Eintrag des
+            Verzeichnisses im Text tatsächlich vorkommt; nenne Abweichungen in
+            beide Richtungen: [\dots]}
+            \par\hfill\textit{Kontext: Formelzeichenverzeichnis (Vorspann)}
+\end{enumerate}
+
+\subsection{Aufbau des Anhangs}
+\label{sec:prompts-claude-anhang}
+\begin{enumerate}
+    \item \enquote{Schlage eine Gliederung für einen dreiteiligen Anhang vor,
+            der ein elektronisches Quellcodearchiv, die Belege einer
+            Evaluation und die verwendeten KI-Prompts umfasst; benenne je
+            Teil, welche Angaben erforderlich sind, damit ein Dritter die
+            Ergebnisse nachvollziehen kann: [\dots]}
+            \par\hfill\textit{Kontext: Anhang~\ref{cha:anhang-archiv} bis
+            Anhang~\ref{cha:anhang-prompts}}
+
+    \item \enquote{Formuliere zu den nachfolgenden Rohprotokollen jeweils
+            einen einleitenden Absatz, der Herkunft, Erzeugungszeitpunkt und
+            Aussagegehalt des Belegs benennt, ohne die Zahlen selbst zu
+            wiederholen: [\dots]}
+            \par\hfill\textit{Kontext:
+            Anhang~\ref{sec:anhang-evaluationsbelege}}
+\end{enumerate}
+
+\subsection{Anpassung des Extraktionsskripts für Code- und Datenquellen}
+\label{sec:prompts-claude-extraktion}
+
+Das Skript zur Aufbereitung des Quellcodearchivs lag aus vorangegangenen
+Projekten bereits vor; Gegenstand der Prompts war ausschließlich seine
+Anpassung an die Zielarchitektur dieser Arbeit (\cref{fig:zielarchitektur})
+mit ihren zwei virtuellen Maschinen, Journaldateien und zeitgesteuerten
+Aufträgen.
+
+\begin{enumerate}
+    \item \enquote{Erweitere das vorhandene Extraktionsskript so, dass es
+            neben Python- und Shell-Quelltexten auch die
+            \texttt{systemd}-Einheiten und Cron-Definitionen beider
+            virtueller Maschinen erfasst und je Datei Herkunftsmaschine sowie
+            Ausführungsintervall in einem Manifest festhält: [\dots]}
+            \par\hfill\textit{Kontext:
+            Anhang~\ref{sec:anhang-archiv-quellcode}}
+
+    \item \enquote{Ergänze das Skript um eine Redaktionsstufe, die
+            Zugangsdaten sowie Konto- und Ordernummern aus den Journaldateien
+            entfernt, bevor diese in das Archiv aufgenommen werden, und die
+            jede Ersetzung protokolliert: [\dots]}
+            \par\hfill\textit{Kontext: Anhang~\ref{sec:anhang-archiv-daten}}
+
+    \item \enquote{Stelle sicher, dass die erzeugte Archivdatei bei
+            unverändertem Inhalt reproduzierbar dieselbe Prüfsumme liefert,
+            und erläutere, welche Zeitstempel dafür festzusetzen sind:
             [\dots]}
-            \par\hfill\textit{Kontext: \Cref{cha:umsetzung}}
+            \par\hfill\textit{Kontext:
+            Anhang~\ref{sec:anhang-archiv-identitaet}}
+\end{enumerate}
 
-    \item \enquote{Erzeuge eine SVG-Grafik der Zielarchitektur des
-            Handelsagenten auf Basis der bereits erfolgten Implementierungen
-            sowie der geplanten Bestandteile; umgesetzte Elemente durchgezogen,
-            geplante gestrichelt, mit Legende: [\dots]}
-            \par\hfill\textit{Kontext: \cref{fig:zielarchitektur}}
+\subsection{Erzeugung der Testskripte zur Ergebniskontrolle}
+\label{sec:prompts-claude-tests}
+\begin{enumerate}
+    \item \enquote{Entwirf zu der nachfolgenden Auswertungsfunktion eine
+            Testsuite mit gemockten Schnittstellen, die jede
+            sicherheitsrelevante Verzweigung abdeckt -- insbesondere die
+            Pfade, die zu einer Ablehnung oder zu einem Handelsstopp führen:
+            [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Formuliere Testfälle, die prüfen, ob die im Protokoll
+            ausgewiesenen Kennzahlen aus denselben Eingangsdaten
+            reproduzierbar hervorgehen, und benenne die Toleranz, innerhalb
+            derer Gleitkommaabweichungen zulässig sind: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-evaluation}}
 \end{enumerate}
 
 %  =============================================================================

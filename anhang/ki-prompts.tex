@@ -6,7 +6,7 @@
 \chapter{Anhang: Verwendete KI-Prompts}
 \label{cha:anhang-prompts}
 
-Im Verlauf der Erstellung dieser Arbeit wurden generative KI-Werkzeuge für folgende Zwecke herangezogen: zur Rechtschreib- und Interpunktionsprüfung, zur Erstellung des Glossars und Abkürzungsverzeichnisses, zur Erstellung der Abbildungen der Projektstruktur sowie zur Literaturrecherche.
+Im Verlauf der Erstellung dieser Arbeit wurden drei generative KI-Werkzeuge herangezogen. Anthropic Claude (Opus~5) diente der Erstellung des Glossars, des Formelzeichenverzeichnisses und des Anhangs sowie der Anpassung des Extraktionsskripts für die Code- und Datenquellen der Cloud-Umgebung und der Erzeugung der Testskripte zur Ergebniskontrolle. Anthropic Claude (Fable~5) unterstützte bei den Python- und Shell-Skripten des Agenten, bei der Cloud-Run-Anwendung des öffentlichen Dashboards, bei der Gegenprüfung der Testskripte sowie bei der Erzeugung der beiden als KI-generiert gekennzeichneten Abbildungen. Google Gemini (3.5~Flash) wurde für die Rechtschreib- und Interpunktionsprüfung, die Quellenrecherche, den Abgleich der automatischen Tests und die Erstellung des Abkürzungsverzeichnisses eingesetzt.
 
 Gemäß FOM-Leitfaden Kap.~6.2.4 sind die genutzten Prompts in Kurzform — ohne die jeweils generierten Antworten — zu dokumentieren. Sämtliche Antworten wurden inhaltlich geprüft, eigenständig verifiziert und nicht wörtlich in die Arbeit übernommen.
 
@@ -24,6 +24,7 @@ Gemäß FOM-Leitfaden Kap.~6.2.4 sind die genutzten Prompts in Kurzform — ohne
 
 % --- Eingesetzte KI-Werkzeuge (je Werkzeug eine modulare Datei) -------------
 \input{anhang/ki-prompts/tool-claude}
+\input{anhang/ki-prompts/tool-fable}
 \input{anhang/ki-prompts/tool-gemini}
 
 %  =============================================================================

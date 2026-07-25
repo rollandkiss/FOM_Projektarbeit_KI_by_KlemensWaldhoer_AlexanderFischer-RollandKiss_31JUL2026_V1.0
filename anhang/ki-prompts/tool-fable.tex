@@ -1,0 +1,110 @@
+%  =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "anhang/ki-prompts/tool-fable.tex"
+%  =============================================================================
+
+\section{Anthropic Claude (Fable~5)}
+\label{sec:prompts-fable}
+
+\kiwerkzeug{Anthropic Claude, Modell Fable 5}{Modellbezeichner
+\texttt{claude-fable-5}, veröffentlicht am 09.06.2026}{https://claude.ai}
+% Eintrag im KI-Verzeichnis (Leitfaden Kap. 6.2.4) erzwingen mittels \nocite.
+\nocite{claudeFable2026}
+
+Eingesetzt zur Unterstützung bei der Implementierung: Python- und
+Shell-Skripte des Agenten, die Cloud-Run-Anwendung des öffentlichen
+Dashboards, die Gegenprüfung der zuvor erzeugten Testskripte sowie die beiden
+als KI-generiert gekennzeichneten Abbildungen dieser Arbeit
+(\cref{fig:zielarchitektur} und \cref{fig:projektstruktur}).
+
+\subsection{Unterstützung bei Python- und Shell-Skripten}
+\label{sec:prompts-fable-skripte}
+\begin{enumerate}
+    \item \enquote{Überarbeite die folgende Funktion so, dass ein
+            Verbindungsabbruch des Datenstroms nicht zum Prozessabbruch führt,
+            sondern erkannt, protokolliert und über einen Wächterprozess
+            neu verbunden wird; erhalte dabei die bestehende Signatur:
+            [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-architektur}}
+
+    \item \enquote{Schreibe ein Shell-Skript, das den Entscheidungszyklus
+            startet, eine Prozesssperre je Konto setzt, überlappende Läufe
+            verhindert und im Fehlerfall mit eindeutigem Rückgabewert endet:
+            [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Erkläre, welche Fehlerbilder verteilter Systeme der
+            nachfolgende Ausführungspfad noch nicht abfängt, und schlage je
+            Fall die konservativste Behandlung vor: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+\end{enumerate}
+
+\subsection{Öffentliches Dashboard (Cloud-Run-Anwendung)}
+\label{sec:prompts-fable-dashboard}
+\begin{enumerate}
+    \item \enquote{Entwirf einen zustandslosen Dienst, der redigierte
+            JSON-Feeds aus einem Objektspeicher liest und daraus eine
+            Weboberfläche rendert, ohne dass die handelnden Maschinen einen
+            eingehenden Port öffnen müssen: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Erzeuge die Oberfläche des Dashboards so, dass der
+            Indexverlauf mit den Durchschnittslinien und den Regimewechseln
+            dargestellt wird und je Entscheidung das aggregierte Votum mit
+            aufklappbaren Einzelbegründungen erscheint: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Prüfe den folgenden Rendering-Pfad darauf, ob Inhalte aus
+            dem Journal ungeprüft in das Dokument geschrieben werden, und
+            schlage eine Ausgabekodierung vor: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+\end{enumerate}
+
+\subsection{Verifikation der erzeugten Testskripte}
+\label{sec:prompts-fable-testverifikation}
+
+Die Testskripte wurden mit Claude Opus~5 entworfen
+(\cref{sec:prompts-claude-tests}); die nachfolgenden Prompts dienten allein
+ihrer unabhängigen Gegenprüfung durch ein zweites Modell.
+
+\begin{enumerate}
+    \item \enquote{Prüfe die folgende Testsuite kritisch: Welche Verzweigung
+            des Produktivcodes wird von keinem Testfall erreicht, und welcher
+            Test würde auch dann bestehen, wenn die geprüfte Zusicherung
+            entfiele? [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Benenne Testfälle, die nur scheinbar prüfen, was ihr Name
+            behauptet, und schlage jeweils eine Formulierung vor, die den
+            tatsächlich geprüften Sachverhalt trifft: [\dots]}
+            \par\hfill\textit{Kontext: Anhang~\ref{sec:anhang-archiv-tests}}
+\end{enumerate}
+
+\subsection{Erzeugung der KI-generierten Abbildungen}
+\label{sec:prompts-fable-abbildungen}
+
+Beide Abbildungen sind in der jeweiligen Bildunterschrift als KI-generiert
+ausgewiesen (Leitfaden Kap.~5.7 in Verbindung mit Kap.~6.2.4). Inhaltliche
+Grundlage waren ausschließlich der eigene Quellcodebestand und die eigene
+Architekturplanung; die Modellantwort lieferte die grafische Umsetzung.
+
+\begin{enumerate}
+    \item \enquote{Erzeuge eine SVG-Grafik der Zielarchitektur des
+            Handelsagenten auf Basis der bereits erfolgten Implementierungen
+            sowie der geplanten Bestandteile; umgesetzte Elemente
+            durchgezogen, geplante gestrichelt, mit Legende. Style die Grafik
+            attributbasiert ohne \texttt{<style>}-Block, damit die
+            Inkscape-Konvertierung verlustfrei arbeitet: [\dots]}
+            \par\hfill\textit{Kontext: \cref{fig:zielarchitektur}}
+
+    \item \enquote{Erzeuge aus der nachfolgenden ASCII-Repräsentation der
+            Verzeichnis- und Dateistruktur eine SVG-Grafik, die die Struktur
+            in einer monospaced Schriftart schwarz auf weiß rendert, die
+            Ebenen-Header durch Fettsatz hervorhebt und je Datei die
+            Herkunftsmaschine kennzeichnet: [\dots]}
+            \par\hfill\textit{Kontext: \cref{fig:projektstruktur}}
+\end{enumerate}
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

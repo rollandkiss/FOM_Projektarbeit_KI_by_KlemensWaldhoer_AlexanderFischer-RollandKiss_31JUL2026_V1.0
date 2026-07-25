@@ -313,7 +313,7 @@ Der Einleitungsabsatz nennt die Zwecke je Werkzeug. **Wird eine Werkzeugdatei ge
 
 **Anthropic Claude Opus 5** (`claude-opus-5`, 24.07.2026), `\nocite{claudeOpus2026}`.
 
-Zwecke: Glossar, Formelzeichenverzeichnis, Aufbau des Anhangs, Anpassung des Extraktionsskripts für die Code- und Datenquellen der Cloud-Umgebung, Erzeugung der Testskripte zur Ergebniskontrolle.
+Zwecke: Glossar, Formelzeichenverzeichnis, Aufbau des Anhangs, Aufbau des Marktdatenstroms (yfinance + FRED), Datenhaltung (SQLite-Nebenläufigkeit, Replikation, Sicherung), Abgleich der Bank-Schnittstellendokumentation, Anpassung des Extraktionsskripts, Erzeugung der Testskripte zur Ergebniskontrolle.
 
 Der Abschnitt zum Extraktionsskript hält ausdrücklich fest, dass das Skript aus vorangegangenen Projekten bereits vorlag und nur angepasst wurde — diese Einordnung nicht streichen, sie betrifft die Eigenständigkeit.
 
@@ -321,7 +321,7 @@ Der Abschnitt zum Extraktionsskript hält ausdrücklich fest, dass das Skript au
 
 **Anthropic Claude Fable 5** (`claude-fable-5`, 09.06.2026), `\nocite{claudeFable2026}`.
 
-Zwecke: Unterstützung bei Python- und Shell-Skripten, Cloud-Run-Anwendung des öffentlichen Dashboards, Verifikation der mit Opus 5 erzeugten Testskripte, Erzeugung der beiden als KI-generiert gekennzeichneten Abbildungen (`fig:zielarchitektur`, `fig:projektstruktur`).
+Zwecke: Unterstützung bei Python- und Shell-Skripten, Cloud-Run-Anwendung des öffentlichen Dashboards, Totmann-Schalter über den Messaging-Kanal, Zeitreihenanalyse und Prognosebildung mit scikit-learn, Entwicklung des Prognosemoduls, Verifikation der mit Opus 5 erzeugten Testskripte, Erzeugung der beiden als KI-generiert gekennzeichneten Abbildungen (`fig:zielarchitektur`, `fig:projektstruktur`).
 
 Die Arbeitsteilung bei den Tests ist bewusst dokumentiert: **Opus 5 entwirft, Fable 5 prüft gegen.** Wer das ändert, muss beide Dateien anfassen.
 

@@ -11,11 +11,12 @@
 % Eintrag im KI-Verzeichnis (Leitfaden Kap. 6.2.4) erzwingen mittels \nocite.
 \nocite{claudeOpus2026}
 
-Eingesetzt für die Verzeichnisse des Vorspanns und den Aufbau des Anhangs
-sowie für zwei Werkzeuge der Projektumgebung: die Anpassung des
-Extraktionsskripts, das Quellcode- und Datenbestände der Google-Cloud-Umgebung
-für das elektronische Archiv aufbereitet, und die Erzeugung der Testskripte
-zur Ergebniskontrolle.
+Eingesetzt für die Verzeichnisse des Vorspanns und den Aufbau des Anhangs,
+für den Entwurf der Datenerfassung und ihrer Persistenz, für den Abgleich der
+Schnittstellendokumentation der Bank sowie für zwei Werkzeuge der
+Projektumgebung: die Anpassung des Extraktionsskripts, das Quellcode- und
+Datenbestände der Google-Cloud-Umgebung für das elektronische Archiv
+aufbereitet, und die Erzeugung der Testskripte zur Ergebniskontrolle.
 
 \subsection{Erstellung des Glossars}
 \label{sec:prompts-claude-glossar}
@@ -64,6 +65,97 @@ zur Ergebniskontrolle.
             wiederholen: [\dots]}
             \par\hfill\textit{Kontext:
             Anhang~\ref{sec:anhang-evaluationsbelege}}
+\end{enumerate}
+
+\subsection{Aufbau des Marktdatenstroms}
+\label{sec:prompts-claude-datenstrom}
+
+Die Kurserfassung stützt sich auf einen inoffiziellen Zugang zu
+Yahoo-Finance-Daten über die Python-Bibliothek \texttt{yfinance}; der jeweils
+jüngste Tagesschluss wird gegen die Zweitquelle der Federal Reserve Bank of
+St.\ Louis abgeglichen (\cref{sec:umsetzung-architektur}). Der Abgleich
+betrifft ausschließlich den Basiswert; die in Randzeiten erfassten
+Futures-Ticks sind über diese Reihe nicht prüfbar.
+
+\begin{enumerate}
+    \item \enquote{Entwirf eine Erfassung, die Rohticks über einen
+            WebSocket-Datenstrom bezieht und die Randzeiten des
+            Futures-Handels über ein ergänzendes Polling abdeckt; parse die
+            eingehenden Nachrichten defensiv, da nicht jede Nachricht alle
+            Felder trägt und sich die Feldbenennung zwischen
+            Bibliotheksfassungen ändern kann: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-architektur}}
+
+    \item \enquote{Ergänze einen idempotenten Bootstrap, der die historischen
+            Bars nachlädt und bei wiederholtem Aufruf keine Duplikate erzeugt;
+            begründe, welcher Schlüssel die Idempotenz sicherstellt: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Formuliere den Abgleich des Tagesschlusskurses gegen die
+            Zweitquelle: Welche Divergenzschwelle ist sachgerecht, wie sind
+            die dortigen Platzhalterzeilen an Börsenfeiertagen, die fehlenden
+            Wochenendzeilen und die Veröffentlichungsverzögerung von mehreren
+            Stunden nach Handelsschluss zu behandeln, und was soll bei
+            Überschreitung geschehen? [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-architektur},
+            Anhang~\ref{sec:anhang-evaluationsbelege}}
+\end{enumerate}
+
+\subsection{Datenhaltung: Nebenläufigkeit, Replikation und Sicherung}
+\label{sec:prompts-claude-datenhaltung}
+
+Gegenstand war die Frage, ob eine eingebettete Datenbank den Dauerbetrieb
+zweier virtueller Maschinen trägt und wie die Datenbasis gesichert und auf die
+entscheidende Maschine repliziert werden kann, ohne den laufenden Schreibpfad
+zu sperren.
+
+\begin{enumerate}
+    \item \enquote{Welche Nebenläufigkeitsgrenzen hat SQLite im Betrieb mit
+            einem dauerhaft schreibenden Sammelprozess und mehreren lesenden
+            Auswertungen? Erläutere, was der Write-Ahead-Logging-Modus daran
+            ändert und wo er nicht hilft: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-architektur}}
+
+    \item \enquote{Vergleiche Sicherungsverfahren für eine Datenbank, die
+            rund um die Uhr beschrieben wird -- Online-Backup-Schnittstelle,
+            dateibasierte Kopie und kontinuierliche Replikation -- hinsichtlich
+            Konsistenz, Ausfallfenster und Betriebsaufwand: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-architektur}}
+
+    \item \enquote{Wie lässt sich die Replik auf der entscheidenden Maschine
+            minütlich austauschen, ohne dass ein laufender Lesevorgang einen
+            halb geschriebenen Stand sieht? Berücksichtige dabei die
+            begleitenden Journal- und Shared-Memory-Dateien sowie den
+            Umstand, dass ein Umbenennen nur innerhalb desselben Dateisystems
+            atomar ist: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-architektur}}
+\end{enumerate}
+
+\subsection{Abgleich der Bank-Schnittstellendokumentation}
+\label{sec:prompts-claude-bankapi}
+
+Die Prompts dienten dem Abgleich der Schnittstellendokumentation der Bank mit
+dem eigenen Entwurf des Orderpfads; maßgeblich blieb in jedem Fall die
+Dokumentation, nicht die Modellantwort.
+
+\begin{enumerate}
+    \item \enquote{Fasse aus der folgenden Schnittstellendokumentation die
+            Zustandsübergänge einer Order zusammen: Wann gilt sie als
+            angenommen, wann als ausgeführt, welche Zustände sind
+            widerruflich, und woran ist ein unklarer Ausgang erkennbar?
+            [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Erläutere das Verhältnis von Orderbuch und Depotbestand:
+            Welche der beiden Sichten führt nach einer Ausführung, mit welcher
+            Verzögerung ist zu rechnen, und wie ist ein Abgleich zu
+            gestalten, der beide Sichten zusammenführt? [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Beschreibe die Gültigkeitsdauer der Sitzung und die
+            Abfolge der Token entlang eines Handelstages sowie den Zeitpunkt,
+            zu dem eine erneute Freigabe erforderlich wird: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
 \end{enumerate}
 
 \subsection{Anpassung des Extraktionsskripts für Code- und Datenquellen}

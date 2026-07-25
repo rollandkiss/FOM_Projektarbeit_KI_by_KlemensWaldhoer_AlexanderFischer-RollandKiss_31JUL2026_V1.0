@@ -13,9 +13,10 @@
 
 Eingesetzt zur Unterstützung bei der Implementierung: Python- und
 Shell-Skripte des Agenten, die Cloud-Run-Anwendung des öffentlichen
-Dashboards, die Gegenprüfung der zuvor erzeugten Testskripte sowie die beiden
-als KI-generiert gekennzeichneten Abbildungen dieser Arbeit
-(\cref{fig:zielarchitektur} und \cref{fig:projektstruktur}).
+Dashboards, der Totmann-Schalter über den Messaging-Kanal, die statistische
+Prüfinstanz samt Prognosemodul, die Gegenprüfung der zuvor erzeugten
+Testskripte sowie die beiden als KI-generiert gekennzeichneten Abbildungen
+dieser Arbeit (\cref{fig:zielarchitektur} und \cref{fig:projektstruktur}).
 
 \subsection{Unterstützung bei Python- und Shell-Skripten}
 \label{sec:prompts-fable-skripte}
@@ -57,6 +58,99 @@ als KI-generiert gekennzeichneten Abbildungen dieser Arbeit
     \item \enquote{Prüfe den folgenden Rendering-Pfad darauf, ob Inhalte aus
             dem Journal ungeprüft in das Dokument geschrieben werden, und
             schlage eine Ausgabekodierung vor: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+\end{enumerate}
+
+\subsection{Totmann-Schalter über den Messaging-Kanal}
+\label{sec:prompts-fable-totmann}
+
+Der Totmann-Schalter meldet den Ausfall des Agenten selbst
+(\cref{sec:umsetzung-wuerdigung}). Die Prompts dienten dem Abgleich der
+Schnittstellendokumentation des Messaging-Werkzeugs mit dem eigenen Entwurf
+des Wächters.
+
+\begin{enumerate}
+    \item \enquote{Welche Betriebsart der folgenden Messenger-Schnittstelle
+            erlaubt es einem zeitgesteuerten Auftrag, eine Nachricht ohne
+            interaktive Sitzung zu versenden, und welche Zustände muss der
+            Aufrufer dafür vorhalten? [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-architektur}}
+
+    \item \enquote{Entwirf einen Wächter, der auf der Sammelmaschine läuft
+            und Alarm schlägt, sobald der Lebenszeichen-Stempel der
+            entscheidenden Maschine veraltet; wähle die Schwelle so, dass
+            eine reguläre Handelspause keinen Fehlalarm auslöst: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-architektur}}
+
+    \item \enquote{Stelle sicher, dass ausschließlich der autorisierte
+            Absender Steuerbefehle auslösen kann -- geprüft über die stabile
+            Kontokennung statt über die Rufnummer -- und dass Nachrichten
+            anderer Absender verworfen werden, ohne dass der Kanal darauf
+            antwortet: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+\end{enumerate}
+
+\subsection{Zeitreihenanalyse und Prognosebildung mit scikit-learn}
+\label{sec:prompts-fable-scikit}
+
+Gegenstand war die Frage, welches Verfahren für eine binäre Richtungsprognose
+auf Tagesbasis angemessen ist und welche methodischen Fallen bei Zeitreihen zu
+beachten sind -- insbesondere, dass eine k-fache Kreuzvalidierung ohne
+Zeitbezug auch ohne Durchmischung der Daten auf zeitlich späteren Abschnitten
+trainiert und dadurch eine Verzerrung durch Vorgriff erzeugt.
+
+\begin{enumerate}
+    \item \enquote{Welches Verfahren eignet sich für eine binäre
+            Richtungsprognose auf Tagesbasis, wenn Nachvollziehbarkeit
+            wichtiger ist als Anpassungsgüte? Begründe die Wahl gegenüber
+            baum- und ensemblebasierten Alternativen und kläre, warum die
+            logistische Regression trotz ihres Namens der Klasse der
+            Klassifikationsverfahren zugerechnet wird: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Erläutere, warum eine k-fache Kreuzvalidierung ohne
+            Zeitbezug bei Zeitreihen zu optimistisch verzerrten Gütemaßen
+            führt, und benenne die Verfahren, die die zeitliche Ordnung
+            wahren: [\dots]}
+            \par\hfill\textit{Kontext:
+            \cref{sec:umsetzung-evaluation-design}}
+
+    \item \enquote{Wie ist zu prüfen, ob ein Modell kalibrierte
+            Wahrscheinlichkeiten liefert und nicht nur eine gute Trefferquote,
+            welche Referenz ist heranzuziehen, damit ein Ergebnis nahe der
+            Basisrate als solches erkennbar bleibt, und wie ist
+            sicherzustellen, dass die Kalibrierung selbst die zeitliche
+            Ordnung wahrt? [\dots]}
+            \par\hfill\textit{Kontext:
+            \cref{sec:umsetzung-evaluation-ergebnisse}}
+\end{enumerate}
+
+\subsection{Entwicklung des Prognosemoduls}
+\label{sec:prompts-fable-mlforecast}
+
+Das Modul erzeugt die Prognoseerwartung, die dem Entscheidungsdokument als
+zusätzlicher Risikohinweis beigegeben wird. Es besitzt bewusst keine
+Signalgewalt (\cref{sec:umsetzung-implementierung}); die Prompts waren
+entsprechend auf Merkmalsbildung, Reproduzierbarkeit und Betriebssicherheit
+gerichtet, nicht auf eine Ertragsoptimierung.
+
+\begin{enumerate}
+    \item \enquote{Leite aus den vorliegenden Tagesbars Merkmale ab, die
+            ausschließlich Informationen bis zum Vortagsschluss verwenden, und
+            weise für jedes Merkmal nach, dass kein Blick in die Zukunft
+            möglich ist: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Entwirf einen wöchentlichen Trainingslauf, der jeden
+            Modellstand mit Trainingsdatum und Prüfsumme kennzeichnet, sodass
+            sich jede journalisierte Entscheidung einem wiederherstellbaren
+            Stand zuordnen lässt: [\dots]}
+            \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Ergänze einen Schattenmodus, in dem das Modul rechnet und
+            journalisiert, ohne den Entscheidungspfad zu berühren, und stelle
+            sicher, dass ein Ausfall des Moduls den Zyklus nicht blockiert:
+            [\dots]}
             \par\hfill\textit{Kontext: \cref{sec:umsetzung-implementierung}}
 \end{enumerate}
 

@@ -74,7 +74,7 @@ umgesetzten und den geplanten Bestandteilen.
   \includesvg[width=\textwidth]{zielarchitektur}
   \caption[Zielarchitektur des autonomen Handelsagenten]{Zielarchitektur des
     autonomen Handelsagenten. Durchgezogene Elemente sind umgesetzt und in Betrieb,
-    gestrichelte Elemente geplant.\quelleeigenki}
+    gestrichelte Elemente geplant.\quelleeigenki{Anthropic Claude Fable~5 (Anthropic, 2026)}}
   \label{fig:zielarchitektur}
 \end{figure}
 
@@ -154,9 +154,9 @@ Der Kapitaleinsatz je Handelstag wird volatilitätsabhängig skaliert:
   \sigma^{*}/\sigma_{20}(t)\bigr),\; S_{\min},\; K\Bigr),
   \label{eq:sizing}
 \end{equation}
-mit dem Basiskapital $K = 2.000\,€$, der realisierten
+mit dem Basiskapital $K = 2.000$\,€, der realisierten
 20-Tage-Volatilität $\sigma_{20}$ der Index-Tagesrenditen, der Zielvolatilität
-$\sigma^{*} = 1{,}0\,\%$ pro Tag und der Mindestgröße $S_{\min} = 1.000\,€$. Die
+$\sigma^{*} = 1{,}0\,\%$ pro Tag und der Mindestgröße $S_{\min} = 1.000$\,€. Die
 Obergrenze $K$ ist als harter, weder über die Konfiguration noch durch die
 Sprachmodelle veränderbarer Deckel implementiert.
 
@@ -495,6 +495,13 @@ offene Schnittstellen zugänglich, sodass autonome Agenten einen faktischen
 \enquote{\glsxtrshort{api}-Aufpreis} tragen -- ein Umstand, der die angestrebte, weitgehend
 kostenfreie lokale Betreibbarkeit umso relevanter macht, da sie zumindest die
 Infrastruktur- und Inferenzkosten eliminiert.
+
+Bemerkenswert ist die Herkunft dieser Sicherungen: Die Wächterprozesse gegen stille
+Verbindungsabbrüche ebenso wie die tagesgenaue Gegenprüfung der Kursreihe waren im
+Entwurf nicht vorgesehen, sondern wurden durch Fehlerbilder des laufenden Betriebs
+erzwungen und anschließend in den Offline-Testsuiten festgeschrieben. Die
+Sicherungskette eines autonom handelnden Agenten lässt sich demnach nicht
+vollständig vorab bestimmen; sie bleibt an Betriebserfahrung gebunden.
 
 Über den konkreten Anwendungsfall hinaus beansprucht die Architektur
 Übertragbarkeit. Strategie, Produktzuordnung, Modellgremium und Bankadapter sind

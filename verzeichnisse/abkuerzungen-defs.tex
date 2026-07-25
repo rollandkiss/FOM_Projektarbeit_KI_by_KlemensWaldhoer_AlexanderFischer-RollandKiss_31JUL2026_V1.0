@@ -8,12 +8,32 @@
 %  (Leitfaden Kap. 2.5: Abkuerzungen werden vor der ersten Verwendung
 %  formal eingefuehrt; \glsaddall in abkuerzungen.tex nimmt alle
 %  definierten Eintraege in das Verzeichnis auf).
+%
+%  GESTRICHEN am 25.07.2026 (Leitfaden Kap. 2.5 / 5.1: "nicht aber
+%  triviale des allgemeinen Gebrauchs" bzw. Waehrungen):
+%    eur  -- EUR (Euro); Waehrungskuerzel, laut Leitfaden Kap. 2.5 allgemein
+%            ueblich. Der Hauptteil verwendet durchgaengig das Eurozeichen;
+%            die Buchstabenform steht nur in Anhang II (Backtest-Protokoll)
+%            und im vorgegebenen Wortlaut der Eigenstaendigkeitserklaerung.
+%    dls  -- DLS (Digitales Live-Studium); kommt nur auf dem Titelblatt vor,
+%            dort unmittelbar ausgeschrieben.
+%    fom  -- FOM (Hochschule fuer Oekonomie & Management); auf dem Titelblatt
+%            vollstaendig ausgeschrieben. Ausserdem in Anhang III als Teil des
+%            Eigennamens "FOM-Leitfaden" sowie im Archiv-Dateinamen -- an
+%            beiden Stellen als Institutionskuerzel der eigenen Hochschule
+%            nicht einfuehrungsbeduerftig.
+%    stgb -- StGB (Strafgesetzbuch); steht ausschliesslich im vorgegebenen
+%            Originalwortlaut der Eigenstaendigkeitserklaerung (\S 156 StGB)
+%            und wird dort bewusst nicht aufgeloest, da der Wortlaut nicht
+%            veraendert werden darf. Juristisch uebliche Zitierform.
+%  Keine dieser vier Kurzformen wurde im Fliesstext je ueber \gls
+%  eingefuehrt; sie standen ausschliesslich ueber \glsaddall im
+%  Verzeichnis. Beibehalten bleiben gcp, gcs, ml, rest, svg und wal:
+%  Sie erscheinen in Abbildungen bzw. im Anhang, die eine formale
+%  Einfuehrung im Fliesstext nicht leisten koennen.
 % =============================================================================
 
 \newabbreviation{api}{API}{Application Programming Interface (Programmierschnittstelle)}
-\newabbreviation{dls}{DLS}{Digitales Live-Studium}
-\newabbreviation{eur}{EUR}{Euro}
-\newabbreviation{fom}{FOM}{Hochschule für Oekonomie \& Management}
 \newabbreviation{fred}{FRED}{Federal Reserve Economic Data (Datenangebot der Federal Reserve Bank of St.\,Louis)}
 \newabbreviation{gcp}{GCP}{Google Cloud Platform}
 \newabbreviation{gcs}{GCS}{Google Cloud Storage}
@@ -24,7 +44,6 @@
 \newabbreviation{oauth}{OAuth}{Open Authorization (offener Autorisierungsstandard)}
 \newabbreviation{rest}{REST}{Representational State Transfer}
 \newabbreviation{sma}{SMA}{Simple Moving Average}
-\newabbreviation{stgb}{StGB}{Strafgesetzbuch}
 \newabbreviation{svg}{SVG}{Scalable Vector Graphics}
 \newabbreviation{tan}{TAN}{Transaktionsnummer}
 \newabbreviation{wal}{WAL}{Write-Ahead Logging}

@@ -177,8 +177,12 @@
 
 % ----------------------------- Fussnoten ------------------------------------
 % Leitfaden Kap. 5.2.2: "Zeilenabstand in Fussnoten ist einzeilig, der
-% Schriftgrad 10 pt (Times New Roman) oder 9,5 pt (Arial)." Bei Open Sans
-% (sans-serif analog Arial) ist 10 pt eine zulaessige Wahl.
+% Schriftgrad 10 pt (Times New Roman) oder 9,5 pt (Arial)." Open Sans ist
+% hier das Arial-Analogon, massgeblich sind also 9,5 pt.
+% ACHTUNG: Der folgende \setkomafont-Aufruf bleibt aus Dokumentations-
+% gruenden stehen, ist aber WIRKUNGSLOS -- footmisc ersetzt weiter unten
+% \@footnotetext und umgeht den KOMA-Haken. Der tatsaechlich wirksame
+% Schriftgrad wird direkt nach \usepackage{footmisc} gesetzt.
 % Vgl. auch Leitfaden Kap. 5.4 zur Verwendung von Fussnoten.
 % \deffootnote ist in KOMA-Script direkt verfuegbar (kein zusaetzliches Paket).
 \deffootnote[1em]{1.5em}{1em}{\textsuperscript{\thefootnotemark}\ }
@@ -223,6 +227,42 @@
 % weiter unten im Bibliografie-Abschnitt, nachdem biblatex-chicago
 % \mkbibfootnote definiert hat.
 \usepackage[multiple]{footmisc}
+
+% --- Fussnoten-Schriftgrad (Leitfaden Kap. 5.2.2) ---------------------------
+% BEFUND 25.07.2026: footmisc ersetzt \@footnotetext und umgeht dabei den
+% KOMA-Font-Haken \setkomafont{footnote} (Zeile oben). Der Schriftgrad kam
+% deshalb faktisch aus \footnotesize (= 9 pt bei 11-pt-Grundschrift) und lag
+% damit UNTER den vom Leitfaden genannten Werten -- die 10-pt-Angabe im
+% \setkomafont-Aufruf war wirkungslos. Nachgemessen im Kompilat: 8,73 pt
+% physisch (9 pt nominal x opensans-scale 0,97).
+% Leitfaden Kap. 5.2.2 fordert 10 pt (Times New Roman) bzw. 9,5 pt (Arial);
+% da Open Sans hier als Arial-Analogon gefuehrt wird, gilt der 9,5-pt-Wert.
+% Der Grad wird daher NACH footmisc erzwungen. Zeilenabstand 11,5 pt = 1,21x
+% und damit einzeilig im Sinne des Leitfadens.
+\makeatletter
+\newcommand*{\FOM@fnsize}{\fontsize{9.5pt}{11.5pt}\selectfont}
+\let\FOM@orig@footnotetext\@footnotetext
+% \footnotesize wird innerhalb von \@footnotetext gesetzt, BEVOR \@makefntext
+% die Fussnotenziffer ausgibt. Der Grad wird deshalb ueber ein lokales \let
+% umgehaengt -- so tragen Ziffer UND Text denselben Grad (ein Patch, der nur
+% das Argument #1 umschliesst, laesst die Ziffer auf 9 pt zurueck).
+\long\def\@footnotetext#1{%
+    \begingroup
+      \let\footnotesize\FOM@fnsize
+      \FOM@orig@footnotetext{#1}%
+    \endgroup}
+\makeatother
+% Abstand ZWISCHEN zwei Fussnoten muss groesser sein als der Zeilenabstand
+% INNERHALB einer Fussnote (11,5 pt), sonst verschmelzen mehrere Fussnoten
+% optisch zu einem Block.
+\setlength{\footnotesep}{13pt}
+
+% URLs in der Schrift der Umgebung setzen statt in der CM-Ersatzfamilie:
+% Computer Modern kennt den Grad 9,5 pt nicht und faellt auf 9 pt zurueck --
+% ohne diese Zeile laufen URLs in Fussnoten sichtbar kleiner und in einer
+% anderen Schriftfamilie als der uebrige Fussnotentext. \urlstyle stammt aus
+% url, das erst ueber pdfx/hyperref geladen wird, daher \AtBeginDocument.
+\AtBeginDocument{\urlstyle{same}}
 \renewcommand{\multfootsep}{\space}
 
 % ----------------------------- Grafik & Tabellen ----------------------------
@@ -255,8 +295,9 @@
 % projektweit konsistent abbildet (FOM-Leitfaden Kap. 5.7).
 % Verwendung in jeder figure-Caption am Ende:
 %   \caption[Kurztitel]{Langtitel.\quelleeigen}     % rein eigene Darstellung
-%   \caption[Kurztitel]{Langtitel.\quelleeigenki}   % KI-unterstuetzt
-%                                                    % erstellte Darstellung
+%   \caption[Kurztitel]{Langtitel.\quelleeigenki{Anbieter Modell (Anbieter, Jahr)}}
+%                                                    % KI-erstellte Darstellung;
+%                                                    % Kurzbeleg zwingend
 %                                                    % (FOM-Leitfaden Kap. 6.2.4)
 %   \caption[Kurztitel]{Langtitel.\quellefremd{Autor (Jahr, S.~X)}}
 % Caption-Format: gesamter Beschriftungsblock (Abbildungskennung + Titel +
@@ -270,7 +311,7 @@
 
 % Quellenangabe beginnt eine neue, linksbuendige Zeile innerhalb der Box.
 \newcommand{\quelleeigen}{\par\vspace{2pt}\raggedright\small Quelle: Eigene Darstellung.}
-\newcommand{\quelleeigenki}{\par\vspace{2pt}\raggedright\small Quelle: Eigene Darstellung (KI-generiert).}
+\newcommand{\quelleeigenki}[1]{\par\vspace{2pt}\raggedright\small Quelle: Eigene Darstellung, erstellt mit #1.}
 \newcommand{\quellefremd}[1]{\par\vspace{2pt}\raggedright\small Quelle: #1.}
 
 % Abbildungs- und Tabellenverzeichnis bündig am linken Seitenrand setzen
@@ -640,6 +681,12 @@
 % \listoffigures in verzeichnisse/abbildungsverzeichnis.tex).
 % Reihenfolge der Vorspann-Verzeichnisse: ALPHABETISCH (Abbildungs- ->
 % Abkuerzungs- -> Formelzeichen- -> Glossar -> Tabellenverzeichnis).
+% BEWUSSTE PROJEKTFESTLEGUNG, abweichend vom Leitfaden Kap. 5.1, S. 12:
+% Der Leitfaden listet dort Inhalt -> Abbildung -> Tabelle -> Abkuerzung
+% -> Glossar -> Formelzeichen -> Quelltext. Diese Liste ist im Leitfaden
+% nicht ausdruecklich als verbindliche Reihenfolge gekennzeichnet; die
+% alphabetische Sortierung wird als einheitliches, nachvollziehbares
+% Ordnungsprinzip beibehalten (Entscheidung Kiss, 25.07.2026).
 \input{verzeichnisse/abbildungsverzeichnis}         % Kap. 2.3 / 5.1 / 5.7
 \input{verzeichnisse/abkuerzungen}                  % Kap. 2.5 / 5.1
 \input{verzeichnisse/formelzeichen}                 % Kap. 5.1 / 5.8
@@ -659,6 +706,16 @@
 % einen TOC-Eintrag hinzu, daher KEIN \addcontentsline noetig):
 %\lstlistoflistings
 %\cleardoublepage
+% OFFEN FUER DEN FINALEN REVIEW (vermerkt 25.07.2026, zurueckgestellt):
+% Leitfaden Kap. 5.9.2 sieht vor, dass bei selbst entwickelter Software
+% die wesentlichen Quelltextpassagen wiedergegeben und ueber Titel in ein
+% Quelltextverzeichnis aufgenommen werden. Derzeit enthaelt die Arbeit
+% keinen betitelten eigenen Quelltext. Vor der Abgabe ist zu entscheiden,
+% ob ein kurzes Listing (z. B. Regimebestimmung oder Aggregation der
+% Modellvoten, 10--15 Zeilen) aufgenommen und das Verzeichnis oben
+% aktiviert wird. Gegenargument: Kap. 5.1 S. 14 und Kap. 7.3 lassen die
+% Auslagerung umfangreichen Materials auf den Datentraeger ausdruecklich
+% zu -- die bestehende Archivloesung ist insofern leitfadenkonform.
 
 % --- Hauptteil (arabische Seitenzaehlung ab Kapitel 1) ----------------------
 % Leitfaden Kap. 5.2.1: arabische Seitennummerierung beginnt mit "1" am

@@ -52,7 +52,13 @@
 % Zeichen je Seite erreicht werden.
 % Open Sans (humanistische Sans-Serif, Apache-2.0-Lizenz) erfuellt diese
 % Vorgabe bei 11 pt analog zu Arial und ist daher leitfadenkonform.
-\usepackage[default,scale=0.97]{opensans}   % Open Sans als Hauptschrift (auf ~2.200 Zeichen/Seite kalibriert, Leitfaden Kap. 5.2.2)
+\usepackage[default,defaultsans,scale=0.97]{opensans}  % Open Sans als Hauptschrift (auf ~2.200 Zeichen/Seite kalibriert, Leitfaden Kap. 5.2.2)
+% Die Option "default" belegt nur \familydefault, NICHT \sfdefault. Ohne
+% "defaultsans" greift jedes \sffamily -- in den Ueberschriften-Fonts unten
+% und auf dem Titelblatt -- auf Computer Modern Sans zu und bringt damit
+% eine zweite Schriftart ins Dokument (Verstoss gegen Leitfaden Kap. 5.2.2,
+% "durchgaengig verwendet"). \ttdefault bleibt bewusst Inconsolata, weil
+% Kap. 5.9.2 fuer Quelltexte ausdruecklich eine Fixtype verlangt.
 \usepackage[scaled=0.95]{inconsolata}        % Inconsolata als Monospace-
                                              % schrift fuer Code-Listings
                                              % (FOM Kap. 5.9.2 verlangt eine
@@ -310,8 +316,17 @@
 \captionsetup[figure]{format=quellecentered}
 
 % Quellenangabe beginnt eine neue, linksbuendige Zeile innerhalb der Box.
-\newcommand{\quelleeigen}{\par\vspace{2pt}\raggedright\small Quelle: Eigene Darstellung.}
-\newcommand{\quelleeigenki}[1]{\par\vspace{2pt}\raggedright\small Quelle: Eigene Darstellung, erstellt mit #1.}
+% Leitfaden Kap. 6.2: "Alle verwendeten Quellen ... sind zu referenzieren --
+% im Umkehrschluss impliziert eine fehlende Quelle, dass die Passage von der
+% Autorin oder dem Autor stammt; dies muss nicht explizit angegeben werden.
+% Insbesondere sollte auf den Vermerk \enquote{Eigene Darstellung} verzichtet
+% werden." Das Makro gibt daher nichts mehr aus; die Aufrufe bleiben an den
+% Tabellen stehen, damit die Entscheidung an EINER Stelle umkehrbar ist.
+\newcommand{\quelleeigen}{}
+% KI-Kennzeichnung nach Leitfaden Kap. 6.2.4: Anbieter und Jahr der Abfrage
+% analog zum Kurzbeleg. OHNE den Zusatz \enquote{Eigene Darstellung} -- den
+% untersagt Kap. 6.2 ausdruecklich (siehe \quelleeigen oben).
+\newcommand{\quelleeigenki}[1]{\par\vspace{2pt}\raggedright\small Erstellt mit #1.}
 \newcommand{\quellefremd}[1]{\par\vspace{2pt}\raggedright\small Quelle: #1.}
 
 % Abbildungs- und Tabellenverzeichnis bündig am linken Seitenrand setzen

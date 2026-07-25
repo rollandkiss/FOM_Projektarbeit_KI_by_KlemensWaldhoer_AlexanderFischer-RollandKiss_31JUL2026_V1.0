@@ -1,63 +1,1058 @@
 % =============================================================================
-%  Einzige Quelle des Literatur- und KI-Verzeichnisses (biblatex-chicago).
-%  Eintraege mit dem Schluesselwort "ki" erscheinen im KI-Verzeichnis (Kap. 6.2.4),
-%  alle uebrigen im Literaturverzeichnis (Kap. 6.3).
-%  Hinweis: Die fuenf unzitierten BPMN-/Prozessmanagement-Quellen der
-%  Vorlagen-Version wurden entfernt (nicht verwendete Elemente).
+%  references.bib -- Einzige Quelle des Literatur- und KI-Verzeichnisses
+%  (biblatex-chicago). Eintraege mit dem Schluesselwort "ki" erscheinen im
+%  KI-Verzeichnis (Kap. 6.2.4), alle uebrigen im Literaturverzeichnis (Kap. 6.3).
 % =============================================================================
 
+% --- KI-Verzeichnis (Kap. 6.2.4) ---------------------------------------------
 @online{claudeOpus2026,
     author   = {{Anthropic}},
-    title    = {{Claude, Modell Opus 4.8}},
-    year     = {2026},
-    url      = {https://claude.ai},
-    urldate  = {2026-07-18},
+    title    = {{Claude Opus 4.8}},
+    date     = {2026-05-28},
+    url      = {https://www.anthropic.com/news/claude-opus-4-8},
+    urldate  = {2026-07-25},
+    note     = {Modellbezeichner \texttt{claude-opus-4-8}; genutzt über
+                https://claude.ai. Prompts siehe Anhang III.I},
     keywords = {ki}
 }
-
 @online{geminiFlash2026,
-    author   = {{Google}},
-    title    = {{Gemini, Modell Flash 3.5}},
-    year     = {2026},
-    url      = {https://gemini.google.com},
-    urldate  = {2026-05-31},
+    author   = {{Google DeepMind}},
+    title    = {{Gemini 3.5 Flash. Model Card}},
+    date     = {2026-05-19},
+    url      = {https://deepmind.google/models/model-cards/gemini-3-5-flash/},
+    urldate  = {2026-07-25},
+    note     = {Genutzt über https://gemini.google.com. Nicht zu verwechseln
+                mit Gemini 3.5 Flash-Lite bzw. 3.6 Flash (beide 21.07.2026).
+                Prompts siehe Anhang III.II},
     keywords = {ki}
 }
 
-% =============================================================================
-
-@misc{waldhoerKI2025,
-    author       = {Waldhör, Klemens},
-    title        = {{Periodensystem der Künstlichen Intelligenz. Digitalisierung
-                     gestalten mit dem Periodensystem der Künstlichen Intelligenz
-                     -- Ein Navigationssystem für Entscheider}},
-    year         = {2025},
-    howpublished = {Vorlesungsskript},
-    note         = {FOM Hochschule für Oekonomie \& Management, WS 2025/26}
+% --- Ordnungsrahmen: Periodensystem der Kuenstlichen Intelligenz -------------
+@report{bitkom2018,
+    author      = {{Bitkom e.\,V.}},
+    title       = {{Digitalisierung gestalten mit dem Periodensystem der
+                    Künstlichen Intelligenz}},
+    subtitle    = {{Ein Navigationssystem für Entscheider}},
+    institution = {Bitkom -- Bundesverband Informationswirtschaft,
+                   Telekommunikation und neue Medien e.\,V.},
+    location    = {Berlin},
+    year        = {2018},
+    url         = {https://www.bitkom.org/sites/main/files/2018-12/181204_LF_Periodensystem_online_0.pdf},
+    urldate     = {2026-07-25},
+    note        = {Projektleitung: T. Hartmann, S. Holtel, M. Weber.
+                   Übersichtsseite: https://www.bitkom.org/Periodensystem-KI}
+}
+@online{hammond2016,
+    author       = {Hammond, Kris},
+    title        = {{The Periodic Table of AI}},
+    date         = {2016-12-14},
+    organization = {XPRIZE Foundation},
+    url          = {https://www.xprize.org/news/the-periodic-table-of-ai},
+    urldate      = {2026-07-25},
+    note         = {Ursprungsbeitrag der dem Periodensystem zugrunde
+                    liegenden Idee}
 }
 
-@misc{waldhoerBitkom2025,
-    author       = {Waldhör, Klemens},
-    title        = {{Periodensystem der Künstlichen Intelligenz (bitkom-Fassung
-                     nach Hammond)}},
-    year         = {2025},
-    howpublished = {Vorlesungsskript},
-    note         = {FOM Hochschule für Oekonomie \& Management, WS 2025/26}
-}
-
-@online{bitkom2018,
-    author  = {{Bitkom e.\,V.}},
-    title   = {{Periodensystem der Künstlichen Intelligenz}},
-    year    = {2018},
-    url     = {https://www.bitkom.org/Periodensystem-KI},
-    urldate = {2026-07-20}
-}
+% --- Agenten & LLMs ----------------------------------------------------------
 @book{gollnick2025,
     author    = {Gollnick, Bert},
     title     = {{Generative KI mit Python}},
+    subtitle  = {{RAG-Anwendungen und Agentensysteme mit Vektordatenbanken
+                  und LLMs}},
     year      = {2025},
     edition   = {1},
-    publisher = {Rheinwerk},
+    publisher = {Rheinwerk Computing},
     location  = {Bonn},
-    isbn      = {978-3-367-10731-5}
+    pagetotal = {447},
+    isbn      = {978-3-367-10731-5},
+    note      = {Zitiert nach der Online-Ausgabe (DNB/K10plus);
+                 gedruckte Ausgabe: ISBN 978-3-367-10729-2}
 }
+@book{russellNorvig2023,
+    author    = {Russell, Stuart J. and Norvig, Peter},
+    title     = {{Künstliche Intelligenz}},
+    subtitle  = {{Ein moderner Ansatz}},
+    year      = {2023},
+    edition   = {4},
+    publisher = {Pearson Studium},
+    location  = {Hallbergmoos},
+    isbn      = {978-3-86894-430-3}
+}
+@book{russellNorvig2021,
+    author    = {Russell, Stuart J. and Norvig, Peter},
+    title     = {{Artificial Intelligence}},
+    subtitle  = {{A Modern Approach}},
+    year      = {2021},
+    edition   = {4},
+    publisher = {Pearson},
+    location  = {Hoboken, NJ},
+    isbn      = {978-0-13-461099-3},
+    note      = {Englische Originalausgabe der deutschen Fassung
+                 Russell/Norvig 2023}
+}
+@article{wooldridgeJennings1995,
+    author       = {Wooldridge, Michael and Jennings, Nicholas R.},
+    title        = {{Intelligent Agents: Theory and Practice}},
+    journaltitle = {The Knowledge Engineering Review},
+    volume       = {10},
+    number       = {2},
+    year         = {1995},
+    pages        = {115--152},
+    doi          = {10.1017/S0269888900008122}
+}
+@book{wooldridge2009,
+    author    = {Wooldridge, Michael},
+    title     = {{An Introduction to MultiAgent Systems}},
+    year      = {2009},
+    edition   = {2},
+    publisher = {John Wiley \& Sons},
+    location  = {Chichester},
+    isbn      = {978-0-470-51946-2}
+}
+@incollection{franklinGraesser1997,
+    author    = {Franklin, Stan and Graesser, Art},
+    title     = {{Is it an Agent, or just a Program? A Taxonomy for Autonomous
+                  Agents}},
+    booktitle = {{Intelligent Agents III. Agent Theories, Architectures, and
+                  Languages}},
+    editor    = {Müller, Jörg P. and Wooldridge, Michael J. and Jennings,
+                 Nicholas R.},
+    series    = {Lecture Notes in Computer Science},
+    volume    = {1193},
+    year      = {1997},
+    pages     = {21--35},
+    publisher = {Springer},
+    location  = {Berlin und Heidelberg},
+    doi       = {10.1007/BFb0013570},
+    note      = {Vortrag auf dem ECAI'96-Workshop ATAL, Budapest,
+                 12.--13.08.1996}
+}
+@article{wangSurvey2024,
+    author       = {Wang, Lei and Ma, Chen and Feng, Xueyang and Zhang, Zeyu
+                    and Yang, Hao and Zhang, Jingsen and Chen, Zhiyuan and
+                    Tang, Jiakai and Chen, Xu and Lin, Yankai and Zhao,
+                    Wayne Xin and Wei, Zhewei and Wen, Ji-Rong},
+    title        = {{A Survey on Large Language Model Based Autonomous Agents}},
+    journaltitle = {Frontiers of Computer Science},
+    volume       = {18},
+    number       = {6},
+    year         = {2024},
+    pages        = {186345},
+    doi          = {10.1007/s11704-024-40231-1},
+    note         = {Artikelnummer 186345; Open Access (CC BY 4.0)}
+}
+@online{anthropicAgents2024,
+    author       = {{Anthropic}},
+    title        = {{Building Effective AI Agents}},
+    date         = {2024-12-19},
+    url          = {https://www.anthropic.com/engineering/building-effective-agents},
+    urldate      = {2026-07-25},
+    note         = {Anthropic Engineering Blog; auf der Seite gezeichnet als
+                    \enquote{Erik S. and Barry Zhang}}
+}
+@inproceedings{wei2022,
+    author     = {Wei, Jason and Wang, Xuezhi and Schuurmans, Dale and Bosma,
+                  Maarten and Ichter, Brian and Xia, Fei and Chi, Ed H. and Le,
+                  Quoc V. and Zhou, Denny},
+    title      = {{Chain-of-Thought Prompting Elicits Reasoning in Large
+                   Language Models}},
+    booktitle  = {{Advances in Neural Information Processing Systems 35
+                   (NeurIPS 2022)}},
+    year       = {2022},
+    volume     = {35},
+    pages      = {24824--24837},
+    eprint     = {2201.11903},
+    eprinttype = {arXiv}
+}
+@inproceedings{wang2023selfconsistency,
+    ids        = {wangSelfconsistency2023},
+    author     = {Wang, Xuezhi and Wei, Jason and Schuurmans, Dale and Le,
+                  Quoc V. and Chi, Ed H. and Narang, Sharan and Chowdhery,
+                  Aakanksha and Zhou, Denny},
+    title      = {{Self-Consistency Improves Chain of Thought Reasoning in
+                   Language Models}},
+    booktitle  = {{The Eleventh International Conference on Learning
+                   Representations (ICLR 2023)}},
+    year       = {2023},
+    eprint     = {2203.11171},
+    eprinttype = {arXiv},
+    note       = {ICLR vergibt keine Seitenzahlen}
+}
+@inproceedings{yao2023react,
+    author     = {Yao, Shunyu and Zhao, Jeffrey and Yu, Dian and Du, Nan and
+                  Shafran, Izhak and Narasimhan, Karthik and Cao, Yuan},
+    title      = {{ReAct: Synergizing Reasoning and Acting in Language Models}},
+    booktitle  = {{The Eleventh International Conference on Learning
+                   Representations (ICLR 2023)}},
+    year       = {2023},
+    eprint     = {2210.03629},
+    eprinttype = {arXiv},
+    note       = {ICLR vergibt keine Seitenzahlen}
+}
+@inproceedings{shinn2023reflexion,
+    author     = {Shinn, Noah and Cassano, Federico and Gopinath, Ashwin and
+                  Narasimhan, Karthik and Yao, Shunyu},
+    title      = {{Reflexion: Language Agents with Verbal Reinforcement
+                   Learning}},
+    booktitle  = {{Advances in Neural Information Processing Systems 36
+                   (NeurIPS 2023)}},
+    year       = {2023},
+    volume     = {36},
+    pages      = {8634--8652},
+    eprint     = {2303.11366},
+    eprinttype = {arXiv},
+    note       = {arXiv-Fassung nennt zusätzlich E. Berman als Ko-Autor}
+}
+@inproceedings{zheng2023judge,
+    author     = {Zheng, Lianmin and Chiang, Wei-Lin and Sheng, Ying and Zhuang,
+                  Siyuan and Wu, Zhanghao and Zhuang, Yonghao and Lin, Zi and
+                  Li, Zhuohan and Li, Dacheng and Xing, Eric P. and Zhang, Hao
+                  and Gonzalez, Joseph E. and Stoica, Ion},
+    title      = {{Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena}},
+    booktitle  = {{Advances in Neural Information Processing Systems 36,
+                   Datasets and Benchmarks Track (NeurIPS 2023)}},
+    year       = {2023},
+    volume     = {36},
+    pages      = {46595--46623},
+    eprint     = {2306.05685},
+    eprinttype = {arXiv}
+}
+@inproceedings{du2024debate,
+    ids        = {duDebate2024},
+    author     = {Du, Yilun and Li, Shuang and Torralba, Antonio and Tenenbaum,
+                  Joshua B. and Mordatch, Igor},
+    title      = {{Improving Factuality and Reasoning in Language Models
+                   through Multiagent Debate}},
+    booktitle  = {{Proceedings of the 41st International Conference on Machine
+                   Learning (ICML 2024)}},
+    series     = {Proceedings of Machine Learning Research},
+    volume     = {235},
+    year       = {2024},
+    pages      = {11733--11763},
+    url        = {https://proceedings.mlr.press/v235/du24e.html},
+    urldate    = {2026-07-25},
+    eprint     = {2305.14325},
+    eprinttype = {arXiv}
+}
+@article{ji2023,
+    author       = {Ji, Ziwei and Lee, Nayeon and Frieske, Rita and Yu, Tiezheng
+                    and Su, Dan and Xu, Yan and Ishii, Etsuko and Bang, Yejin
+                    and Madotto, Andrea and Fung, Pascale},
+    title        = {{Survey of Hallucination in Natural Language Generation}},
+    journaltitle = {ACM Computing Surveys},
+    year         = {2023},
+    volume       = {55},
+    number       = {12},
+    pages        = {1--38},
+    doi          = {10.1145/3571730},
+    note         = {Artikel 248; Preprint arXiv:2202.03629 frei zugänglich}
+}
+@article{huangHallucination2025,
+    author       = {Huang, Lei and Yu, Weijiang and Ma, Weitao and Zhong,
+                    Weihong and Feng, Zhangyin and Wang, Haotian and Chen,
+                    Qianglong and Peng, Weihua and Feng, Xiaocheng and Qin, Bing
+                    and Liu, Ting},
+    title        = {{A Survey on Hallucination in Large Language Models:
+                     Principles, Taxonomy, Challenges, and Open Questions}},
+    journaltitle = {ACM Transactions on Information Systems},
+    volume       = {43},
+    number       = {2},
+    year         = {2025},
+    pages        = {1--55},
+    doi          = {10.1145/3703155},
+    note         = {Preprint arXiv:2311.05232 frei zugänglich}
+}
+@online{he2025nondeterminism,
+    author       = {He, Horace},
+    title        = {{Defeating Nondeterminism in LLM Inference}},
+    date         = {2025-09-10},
+    organization = {Thinking Machines Lab},
+    url          = {https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/},
+    urldate      = {2026-07-25},
+    doi          = {10.64434/tml.20250910},
+    note         = {Graue Literatur; nicht begutachtet}
+}
+@inproceedings{rebedeaNemo2023,
+    author    = {Rebedea, Traian and Dinu, Razvan and Sreedhar, Makesh Narsimhan
+                 and Parisien, Christopher and Cohen, Jonathan},
+    title     = {{NeMo Guardrails: A Toolkit for Controllable and Safe LLM
+                  Applications with Programmable Rails}},
+    booktitle = {{Proceedings of the 2023 Conference on Empirical Methods in
+                  Natural Language Processing: System Demonstrations}},
+    publisher = {Association for Computational Linguistics},
+    location  = {Singapur},
+    year      = {2023},
+    pages     = {431--445},
+    doi       = {10.18653/v1/2023.emnlp-demo.40}
+}
+@inproceedings{gengGcd2023,
+    author    = {Geng, Saibo and Josifoski, Martin and Peyrard, Maxime and
+                 West, Robert},
+    title     = {{Grammar-Constrained Decoding for Structured NLP Tasks without
+                  Finetuning}},
+    booktitle = {{Proceedings of the 2023 Conference on Empirical Methods in
+                  Natural Language Processing}},
+    publisher = {Association for Computational Linguistics},
+    location  = {Singapur},
+    year      = {2023},
+    pages     = {10932--10952},
+    doi       = {10.18653/v1/2023.emnlp-main.674}
+}
+@article{yuFinmem2024,
+    author       = {Yu, Yangyang and Li, Haohang and Chen, Zhi and Jiang,
+                    Yuechen and Li, Yang and Zhang, Denghui and Liu, Rong and
+                    Suchow, Jordan W. and Khashanah, Khaldoun},
+    title        = {{FinMem: A Performance-Enhanced LLM Trading Agent with
+                     Layered Memory and Character Design}},
+    journaltitle = {Proceedings of the AAAI Symposium Series},
+    volume       = {3},
+    number       = {1},
+    year         = {2024},
+    pages        = {595--597},
+    doi          = {10.1609/aaaiss.v3i1.31290},
+    note         = {Begutachteter Kurzbeitrag; Langfassung arXiv:2311.13743}
+}
+@article{lazarosHitl2026,
+    author       = {Lazaros, Konstantinos and Vrahatis, Aristidis G. and
+                    Kotsiantis, Sotiris},
+    title        = {{Human-in-the-Loop Artificial Intelligence: A Systematic
+                     Review of Concepts, Methods, and Applications}},
+    journaltitle = {Entropy},
+    volume       = {28},
+    number       = {4},
+    year         = {2026},
+    pages        = {377},
+    doi          = {10.3390/e28040377},
+    note         = {Artikelnummer 377 (MDPI vergibt keine Seitenspannen);
+                    erschienen 26.03.2026, Open Access}
+}
+@book{suttonBarto2018,
+    author    = {Sutton, Richard S. and Barto, Andrew G.},
+    title     = {{Reinforcement Learning: An Introduction}},
+    year      = {2018},
+    edition   = {2},
+    publisher = {MIT Press},
+    location  = {Cambridge, MA},
+    isbn      = {978-0-262-03924-6},
+    note      = {Autorenfassung frei: http://incompleteideas.net/book/the-book-2nd.html}
+}
+
+% --- Ensembles und Mehrheitsentscheide ---------------------------------------
+@incollection{dietterich2000,
+    author    = {Dietterich, Thomas G.},
+    title     = {{Ensemble Methods in Machine Learning}},
+    booktitle = {{Multiple Classifier Systems (MCS 2000)}},
+    editor    = {Kittler, Josef and Roli, Fabio},
+    series    = {Lecture Notes in Computer Science},
+    volume    = {1857},
+    year      = {2000},
+    pages     = {1--15},
+    publisher = {Springer},
+    location  = {Berlin und Heidelberg},
+    doi       = {10.1007/3-540-45014-9_1}
+}
+@book{kuncheva2014,
+    author    = {Kuncheva, Ludmila I.},
+    title     = {{Combining Pattern Classifiers}},
+    subtitle  = {{Methods and Algorithms}},
+    year      = {2014},
+    edition   = {2},
+    publisher = {John Wiley \& Sons},
+    location  = {Hoboken, NJ},
+    isbn      = {978-1-118-31523-1},
+    doi       = {10.1002/9781118914564}
+}
+@article{ladha1992,
+    author       = {Ladha, Krishna K.},
+    title        = {{The Condorcet Jury Theorem, Free Speech, and Correlated
+                     Votes}},
+    journaltitle = {American Journal of Political Science},
+    year         = {1992},
+    volume       = {36},
+    number       = {3},
+    pages        = {617--634},
+    doi          = {10.2307/2111584}
+}
+@article{grofman1983,
+    author       = {Grofman, Bernard and Owen, Guillermo and Feld, Scott L.},
+    title        = {{Thirteen Theorems in Search of the Truth}},
+    journaltitle = {Theory and Decision},
+    year         = {1983},
+    volume       = {15},
+    number       = {3},
+    pages        = {261--278},
+    doi          = {10.1007/BF00125672}
+}
+
+% --- Modellreports & Framework (Primaerquellen, nicht peer-reviewed) ---------
+@online{gemma3Report2025,
+    author     = {{Gemma Team, Google DeepMind}},
+    title      = {{Gemma 3 Technical Report}},
+    year       = {2025},
+    eprint     = {2503.19786},
+    eprinttype = {arXiv},
+    url        = {https://arxiv.org/abs/2503.19786},
+    urldate    = {2026-07-25},
+    note       = {Herstellerbericht; nicht begutachtet}
+}
+@online{qwen25Report2024,
+    author     = {{Qwen Team}},
+    title      = {{Qwen2.5 Technical Report}},
+    year       = {2024},
+    eprint     = {2412.15115},
+    eprinttype = {arXiv},
+    url        = {https://arxiv.org/abs/2412.15115},
+    urldate    = {2026-07-25},
+    note       = {Herstellerbericht; nicht begutachtet}
+}
+@online{deepseekV3Report2024,
+    author     = {{DeepSeek-AI}},
+    title      = {{DeepSeek-V3 Technical Report}},
+    year       = {2024},
+    eprint     = {2412.19437},
+    eprinttype = {arXiv},
+    url        = {https://arxiv.org/abs/2412.19437},
+    urldate    = {2026-07-25},
+    note       = {Herstellerbericht; nicht begutachtet}
+}
+@online{openclawRepo2026,
+    ids          = {openclaw2026},
+    author       = {{OpenClaw Foundation}},
+    title        = {{OpenClaw. Your own personal AI assistant}},
+    year         = {2026},
+    organization = {GitHub},
+    url          = {https://github.com/openclaw/openclaw},
+    urldate      = {2026-07-25},
+    note         = {Quelloffenes Agenten-Framework (MIT-Lizenz), begründet von
+                    Peter Steinberger; verwendete Fassung v2026.7.1 vom
+                    13.07.2026}
+}
+@online{openclawDocs2026,
+    author  = {{OpenClaw Foundation}},
+    title   = {{OpenClaw Docs}},
+    url     = {https://docs.openclaw.ai/},
+    urldate = {2026-07-25},
+    note    = {Ohne Versions- und Standangabe; zitiert nach Abrufdatum}
+}
+@online{openclawGateway2026,
+    author  = {{OpenClaw Foundation}},
+    title   = {{Gateway runbook}},
+    url     = {https://docs.openclaw.ai/gateway},
+    urldate = {2026-07-25},
+    note    = {Betriebs- und Sicherheitskonzept des selbst gehosteten Gateways;
+               ohne Standangabe}
+}
+@online{openclawSignal2026,
+    author  = {{OpenClaw Foundation}},
+    title   = {{Signal}},
+    url     = {https://docs.openclaw.ai/channels/signal},
+    urldate = {2026-07-25},
+    note    = {Anbindung des Messaging-Kanals über signal-cli;
+               ohne Standangabe}
+}
+@online{openclawSoul2026,
+    author  = {{OpenClaw Foundation}},
+    title   = {{SOUL.md personality guide}},
+    url     = {https://docs.openclaw.ai/concepts/soul},
+    urldate = {2026-07-25},
+    note    = {Konfigurationsdatei der Agentenpersona; ohne Standangabe}
+}
+@online{openclawProviders2026,
+    author  = {{OpenClaw Foundation}},
+    title   = {{Provider directory}},
+    url     = {https://docs.openclaw.ai/providers},
+    urldate = {2026-07-25},
+    note    = {Kapselung der Modellanbindung; Grundlage des Wechsels zwischen
+               cloud-gehosteter und lokaler Inferenz; ohne Standangabe}
+}
+@online{hermesAgent2026,
+    ids          = {nousHermes2026},
+    author       = {{Nous Research}},
+    title        = {{Hermes Agent. The agent that grows with you}},
+    year         = {2026},
+    organization = {GitHub},
+    url          = {https://github.com/NousResearch/hermes-agent},
+    urldate      = {2026-07-25},
+    note         = {In der Frameworkauswahl geprüfte Alternative mit fest
+                    verdrahteter Lernschleife; MIT-Lizenz, Fassung v0.19.0
+                    vom 20.07.2026}
+}
+
+% --- Finanzmethodik ----------------------------------------------------------
+@article{brock1992,
+    ids          = {brockEtAl1992},
+    author       = {Brock, William and Lakonishok, Josef and LeBaron, Blake},
+    title        = {{Simple Technical Trading Rules and the Stochastic
+                     Properties of Stock Returns}},
+    journaltitle = {The Journal of Finance},
+    year         = {1992},
+    volume       = {47},
+    number       = {5},
+    pages        = {1731--1764},
+    doi          = {10.1111/j.1540-6261.1992.tb04681.x}
+}
+@article{sullivan1999,
+    author       = {Sullivan, Ryan and Timmermann, Allan and White, Halbert},
+    title        = {{Data-Snooping, Technical Trading Rule Performance, and the
+                     Bootstrap}},
+    journaltitle = {The Journal of Finance},
+    year         = {1999},
+    volume       = {54},
+    number       = {5},
+    pages        = {1647--1691},
+    doi          = {10.1111/0022-1082.00163}
+}
+@article{park2007,
+    author       = {Park, Cheol-Ho and Irwin, Scott H.},
+    title        = {{What Do We Know About the Profitability of Technical
+                     Analysis?}},
+    journaltitle = {Journal of Economic Surveys},
+    year         = {2007},
+    volume       = {21},
+    number       = {4},
+    pages        = {786--826},
+    doi          = {10.1111/j.1467-6419.2007.00519.x}
+}
+@article{lo2000,
+    author       = {Lo, Andrew W. and Mamaysky, Harry and Wang, Jiang},
+    title        = {{Foundations of Technical Analysis: Computational
+                     Algorithms, Statistical Inference, and Empirical
+                     Implementation}},
+    journaltitle = {The Journal of Finance},
+    year         = {2000},
+    volume       = {55},
+    number       = {4},
+    pages        = {1705--1765},
+    doi          = {10.1111/0022-1082.00265}
+}
+@book{zakamulin2017,
+    author    = {Zakamulin, Valeriy},
+    title     = {{Market Timing with Moving Averages}},
+    subtitle  = {{The Anatomy and Performance of Trading Rules}},
+    series    = {New Developments in Quantitative Trading and Investment},
+    year      = {2017},
+    publisher = {Palgrave Macmillan},
+    location  = {Cham},
+    isbn      = {978-3-319-60969-0},
+    doi       = {10.1007/978-3-319-60970-6}
+}
+@article{faber2007,
+    author       = {Faber, Mebane T.},
+    title        = {{A Quantitative Approach to Tactical Asset Allocation}},
+    journaltitle = {The Journal of Wealth Management},
+    year         = {2007},
+    volume       = {9},
+    number       = {4},
+    pages        = {69--79},
+    doi          = {10.3905/jwm.2007.674809},
+    note         = {Volltext frei über SSRN-ID 962461}
+}
+@article{moskowitzEtAl2012,
+    author       = {Moskowitz, Tobias J. and Ooi, Yao Hua and Pedersen,
+                    Lasse Heje},
+    title        = {{Time Series Momentum}},
+    journaltitle = {Journal of Financial Economics},
+    volume       = {104},
+    number       = {2},
+    year         = {2012},
+    pages        = {228--250},
+    doi          = {10.1016/j.jfineco.2011.11.003}
+}
+@article{moreiraMuir2017,
+    author       = {Moreira, Alan and Muir, Tyler},
+    title        = {{Volatility-Managed Portfolios}},
+    journaltitle = {The Journal of Finance},
+    volume       = {72},
+    number       = {4},
+    year         = {2017},
+    pages        = {1611--1644},
+    doi          = {10.1111/jofi.12513}
+}
+@article{barberOdean2000,
+    author       = {Barber, Brad M. and Odean, Terrance},
+    title        = {{Trading Is Hazardous to Your Wealth: The Common Stock
+                     Investment Performance of Individual Investors}},
+    journaltitle = {The Journal of Finance},
+    volume       = {55},
+    number       = {2},
+    year         = {2000},
+    pages        = {773--806},
+    doi          = {10.1111/0022-1082.00226}
+}
+@article{fama1970,
+    author       = {Fama, Eugene F.},
+    title        = {{Efficient Capital Markets: A Review of Theory and
+                     Empirical Work}},
+    journaltitle = {The Journal of Finance},
+    year         = {1970},
+    volume       = {25},
+    number       = {2},
+    pages        = {383--417},
+    doi          = {10.1111/j.1540-6261.1970.tb00518.x},
+    note         = {Crossref führt fälschlich B. G. Malkiel als Ko-Autor --
+                    bei DOI-Import nicht übernehmen}
+}
+@article{malkiel2003,
+    author       = {Malkiel, Burton G.},
+    title        = {{The Efficient Market Hypothesis and Its Critics}},
+    journaltitle = {Journal of Economic Perspectives},
+    volume       = {17},
+    number       = {1},
+    year         = {2003},
+    pages        = {59--82},
+    doi          = {10.1257/089533003321164958},
+    note         = {Open Access}
+}
+@book{malkiel2023,
+    author    = {Malkiel, Burton G.},
+    title     = {{A Random Walk Down Wall Street}},
+    subtitle  = {{The Best Investment Guide That Money Can Buy}},
+    year      = {2023},
+    edition   = {13},
+    publisher = {W. W. Norton \& Company},
+    location  = {New York},
+    isbn      = {978-1-324-05113-8}
+}
+
+% --- Statistische Validierung ------------------------------------------------
+@article{brier1950,
+    author       = {Brier, Glenn W.},
+    title        = {{Verification of Forecasts Expressed in Terms of
+                     Probability}},
+    journaltitle = {Monthly Weather Review},
+    year         = {1950},
+    volume       = {78},
+    number       = {1},
+    pages        = {1--3},
+    doi          = {10.1175/1520-0493(1950)078<0001:VOFEIT>2.0.CO;2}
+}
+@article{murphy1973,
+    author       = {Murphy, Allan H.},
+    title        = {{A New Vector Partition of the Probability Score}},
+    journaltitle = {Journal of Applied Meteorology},
+    year         = {1973},
+    volume       = {12},
+    number       = {4},
+    pages        = {595--600},
+    doi          = {10.1175/1520-0450(1973)012<0595:ANVPOT>2.0.CO;2}
+}
+@article{gneitingRaftery2007,
+    author       = {Gneiting, Tilmann and Raftery, Adrian E.},
+    title        = {{Strictly Proper Scoring Rules, Prediction, and Estimation}},
+    journaltitle = {Journal of the American Statistical Association},
+    year         = {2007},
+    volume       = {102},
+    number       = {477},
+    pages        = {359--378},
+    doi          = {10.1198/016214506000001437}
+}
+@inproceedings{niculescuMizil2005,
+    author    = {Niculescu-Mizil, Alexandru and Caruana, Rich},
+    title     = {{Predicting Good Probabilities with Supervised Learning}},
+    booktitle = {{Proceedings of the 22nd International Conference on Machine
+                  Learning (ICML '05)}},
+    year      = {2005},
+    pages     = {625--632},
+    publisher = {ACM},
+    location  = {New York},
+    doi       = {10.1145/1102351.1102430}
+}
+@article{bailey2014,
+    author       = {Bailey, David H. and Borwein, Jonathan M. and {López de
+                    Prado}, Marcos and Zhu, Qiji Jim},
+    title        = {{Pseudo-Mathematics and Financial Charlatanism: The Effects
+                     of Backtest Overfitting on Out-of-Sample Performance}},
+    journaltitle = {Notices of the American Mathematical Society},
+    year         = {2014},
+    volume       = {61},
+    number       = {5},
+    pages        = {458--471},
+    doi          = {10.1090/noti1105}
+}
+@article{bailey2017,
+    ids          = {baileyEtAl2017},
+    author       = {Bailey, David H. and Borwein, Jonathan M. and {López de
+                    Prado}, Marcos and Zhu, Qiji Jim},
+    title        = {{The Probability of Backtest Overfitting}},
+    journaltitle = {Journal of Computational Finance},
+    year         = {2017},
+    volume       = {20},
+    number       = {4},
+    pages        = {39--69},
+    doi          = {10.21314/JCF.2016.322},
+    note         = {Online first 19.09.2016, Heft April 2017;
+                    Preprint SSRN-ID 2326253}
+}
+@book{lopezdeprado2018,
+    author    = {{López de Prado}, Marcos},
+    title     = {{Advances in Financial Machine Learning}},
+    year      = {2018},
+    publisher = {John Wiley \& Sons},
+    location  = {Hoboken, NJ},
+    isbn      = {978-1-119-48208-6}
+}
+@book{pardo2008,
+    author    = {Pardo, Robert},
+    title     = {{The Evaluation and Optimization of Trading Strategies}},
+    series    = {Wiley Trading},
+    year      = {2008},
+    edition   = {2},
+    publisher = {John Wiley \& Sons},
+    location  = {Hoboken, NJ},
+    isbn      = {978-0-470-12801-5},
+    doi       = {10.1002/9781119196969},
+    note      = {Crossref weist zum DOI abweichend 2012/1st ed. aus --
+                 maßgeblich ist die gedruckte 2. Auflage 2008}
+}
+@article{pedregosa2011,
+    author       = {Pedregosa, Fabian and Varoquaux, Gaël and Gramfort,
+                    Alexandre and Michel, Vincent and Thirion, Bertrand and
+                    Grisel, Olivier and Blondel, Mathieu and Prettenhofer, Peter
+                    and Weiss, Ron and Dubourg, Vincent and Vanderplas, Jake and
+                    Passos, Alexandre and Cournapeau, David and Brucher, Matthieu
+                    and Perrot, Matthieu and Duchesnay, Édouard},
+    title        = {{Scikit-learn: Machine Learning in Python}},
+    journaltitle = {Journal of Machine Learning Research},
+    year         = {2011},
+    volume       = {12},
+    pages        = {2825--2830},
+    url          = {https://www.jmlr.org/papers/v12/pedregosa11a.html},
+    urldate      = {2026-07-25}
+}
+
+% --- Gehebelte Derivate (Faktor-Zertifikate) ---------------------------------
+@article{cheng2009,
+    author       = {Cheng, Minder and Madhavan, Ananth},
+    title        = {{The Dynamics of Leveraged and Inverse Exchange-Traded
+                     Funds}},
+    journaltitle = {Journal of Investment Management},
+    year         = {2009},
+    volume       = {7},
+    number       = {4},
+    pages        = {43--62},
+    note         = {JOIM vergibt keine DOIs; Volltext frei über
+                    SSRN-ID 1539120}
+}
+@article{avellaneda2010,
+    author       = {Avellaneda, Marco and Zhang, Stanley J.},
+    title        = {{Path-Dependence of Leveraged ETF Returns}},
+    journaltitle = {SIAM Journal on Financial Mathematics},
+    year         = {2010},
+    volume       = {1},
+    number       = {1},
+    pages        = {586--603},
+    doi          = {10.1137/090760805}
+}
+@online{xmarkets2026,
+    author  = {{Deutsche Bank AG}},
+    title   = {{Faktor-Zertifikate}},
+    url     = {https://www.xmarkets.db.com/AT/Wissen-Academy/Produktwissen/Faktor-Zertifikate},
+    urldate = {2026-07-25},
+    note    = {X-markets Wissen/Academy; Emittenteninformation zu konstantem
+               Hebel, täglichem Reset und Anpassungsschwelle.
+               Die Seite trägt keine Datumsangabe -- zitiert nach Abrufdatum}
+}
+
+% --- Regulatorik & Aufsicht --------------------------------------------------
+@online{mifid2014,
+    author  = {{Europäisches Parlament und Rat der Europäischen Union}},
+    title   = {{Richtlinie 2014/65/EU über Märkte für Finanzinstrumente
+               sowie zur Änderung der Richtlinien 2002/92/EG und 2011/61/EU
+               (Neufassung)}},
+    date    = {2014-05-15},
+    url     = {https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32014L0065},
+    urldate = {2026-07-25},
+    note    = {ABl.\ L 173 vom 12.06.2014, S.~349--496; CELEX 32014L0065.
+               Ex-Ante-Kostenausweis: Art.~24 Abs.~4}
+}
+@online{delvo2017,
+    author  = {{Europäische Kommission}},
+    title   = {{Delegierte Verordnung (EU) 2017/565 zur Ergänzung der
+               Richtlinie 2014/65/EU in Bezug auf die organisatorischen
+               Anforderungen an Wertpapierfirmen und die Bedingungen für die
+               Ausübung ihrer Tätigkeit}},
+    date    = {2016-04-25},
+    url     = {https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32017R0565},
+    urldate = {2026-07-25},
+    note    = {ABl.\ L 87 vom 31.03.2017, S.~1; CELEX 32017R0565.
+               Kostenausweis: Art.~50}
+}
+@online{aiact2024,
+    author  = {{Europäisches Parlament und Rat der Europäischen Union}},
+    title   = {{Verordnung (EU) 2024/1689 zur Festlegung harmonisierter
+               Vorschriften für künstliche Intelligenz (Verordnung über
+               künstliche Intelligenz)}},
+    date    = {2024-06-13},
+    url     = {https://eur-lex.europa.eu/eli/reg/2024/1689/oj?locale=de},
+    urldate = {2026-07-25},
+    note    = {ABl.\ L, 2024/1689 vom 12.07.2024; CELEX 32024R1689.
+               Seit 10/2023 vergibt das Amtsblatt Aktnummern statt Seiten}
+}
+@report{nist2023,
+    author      = {{National Institute of Standards and Technology}},
+    title       = {{Artificial Intelligence Risk Management Framework
+                    (AI RMF 1.0)}},
+    institution = {U.S. Department of Commerce},
+    type        = {NIST AI},
+    number      = {100-1},
+    date        = {2023-01-26},
+    location    = {Gaithersburg, MD},
+    doi         = {10.6028/NIST.AI.100-1},
+    url         = {https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf},
+    urldate     = {2026-07-25}
+}
+@online{bafin2021,
+    author  = {{Bundesanstalt für Finanzdienstleistungsaufsicht}},
+    title   = {{Big Data und künstliche Intelligenz: Prinzipien für den
+               Einsatz von Algorithmen in Entscheidungsprozessen}},
+    date    = {2021-06-15},
+    url     = {https://www.bafin.de/SharedDocs/Downloads/DE/Aufsichtsrecht/dl_Prinzipienpapier_BDAI.pdf},
+    urldate = {2026-07-25},
+    note    = {Prinzipienpapier, 24~S.}
+}
+@online{bafin2024,
+    author  = {{Bundesanstalt für Finanzdienstleistungsaufsicht}},
+    title   = {{KI bei Banken und Versicherern: Automatisch fair?}},
+    date    = {2024-08-01},
+    url     = {https://www.bafin.de/SharedDocs/Veroeffentlichungen/DE/Fachartikel/2024/fa-bj_0801_KI_Finanzindustrie.html},
+    urldate = {2026-07-25},
+    note    = {BaFinJournal, Fachartikel}
+}
+@online{estg32d,
+    author  = {{Bundesministerium der Justiz und Bundesamt für Justiz}},
+    title   = {{Einkommensteuergesetz (EStG), \S~32d -- Gesonderter Steuertarif
+               für Einkünfte aus Kapitalvermögen}},
+    url     = {https://www.gesetze-im-internet.de/estg/__32d.html},
+    urldate = {2026-07-25},
+    note    = {Rechtsgrundlage der Abgeltungsteuer im Kostenmodell des
+               Backtests; \S~32d zuletzt geändert durch JStG 2020 vom
+               21.12.2020 (BGBl.\ I S.~3096). Die Einzelnormseite weist keinen
+               Bearbeitungsstand aus -- zitiert nach Abrufdatum}
+}
+
+% --- Infrastruktur & Betrieb (Primaerquellen) --------------------------------
+@online{ollama2026,
+    author  = {{Ollama Inc.}},
+    title   = {{Ollama documentation}},
+    url     = {https://docs.ollama.com/},
+    urldate = {2026-07-25},
+    note    = {Einheitliche Schnittstelle der Sprachmodellinferenz. Die
+               Dokumentationsseite weist keine Version aus; eingesetzte
+               Softwarefassung 0.32.3 vom 23.07.2026
+               (https://github.com/ollama/ollama)}
+}
+@online{sqliteWal,
+    author  = {{SQLite (Hwaci, Inc.)}},
+    title   = {{Write-Ahead Logging}},
+    url     = {https://www.sqlite.org/wal.html},
+    urldate = {2026-07-25},
+    note    = {Journalmodus der Datenschicht des Agenten;
+               Seitenstand 13.04.2026, Bezug auf SQLite 3.51.3}
+}
+@online{gcpRun2026,
+    author  = {{Google LLC}},
+    title   = {{Cloud Run documentation}},
+    url     = {https://docs.cloud.google.com/run/docs},
+    urldate = {2026-07-25},
+    note    = {Seitenstand 22.07.2026}
+}
+@online{gcpCompute2026,
+    author  = {{Google LLC}},
+    title   = {{Compute Engine documentation}},
+    url     = {https://docs.cloud.google.com/compute/docs},
+    urldate = {2026-07-25},
+    note    = {Seitenstand 21.07.2026}
+}
+@online{gcpStorage2026,
+    author  = {{Google LLC}},
+    title   = {{Cloud Storage documentation}},
+    url     = {https://docs.cloud.google.com/storage/docs},
+    urldate = {2026-07-25},
+    note    = {Seitenstand 18.06.2026}
+}
+@online{gcpSecret2026,
+    author  = {{Google LLC}},
+    title   = {{Secret Manager documentation}},
+    url     = {https://docs.cloud.google.com/secret-manager/docs},
+    urldate = {2026-07-25},
+    note    = {Seitenstand 22.07.2026}
+}
+@online{chartjs2026,
+    author  = {{Chart.js Contributors}},
+    title   = {{Chart.js}},
+    url     = {https://www.chartjs.org/},
+    urldate = {2026-07-25},
+    note    = {Diagrammbibliothek des öffentlichen Dashboards; eingesetzte
+               Fassung 4.5.1 vom 13.10.2025 (MIT-Lizenz), belegt über
+               https://github.com/chartjs/Chart.js/releases}
+}
+@online{signalcli2026,
+    author       = {Scheibner, Sebastian},
+    title        = {{signal-cli}},
+    year         = {2026},
+    organization = {GitHub},
+    url          = {https://github.com/AsamK/signal-cli},
+    urldate      = {2026-07-25},
+    note         = {Inoffizielle Kommandozeilen-, JSON-RPC- und D-Bus-
+                    Schnittstelle des Signal-Messengers; eingesetzte Fassung
+                    0.14.6 vom 13.07.2026}
+}
+
+% --- Datenquellen & Bankschnittstelle ----------------------------------------
+@online{fredSP500,
+    ids          = {fred2026},
+    author       = {{S\&P Dow Jones Indices LLC}},
+    title        = {{S\&P 500 [SP500]}},
+    organization = {Federal Reserve Bank of St.\ Louis (FRED)},
+    url          = {https://fred.stlouisfed.org/series/SP500},
+    urldate      = {2026-07-25},
+    note         = {Offizielle Zweitquelle des Tagesschlussabgleichs.
+                    Von FRED vorgeschriebene Zitierform: \enquote{S\&P Dow
+                    Jones Indices LLC, S\&P 500 [SP500], retrieved from FRED,
+                    Federal Reserve Bank of St. Louis}}
+}
+@online{comdirectApi2026,
+    ids     = {comdirect2026},
+    author  = {{comdirect -- eine Marke der Commerzbank AG}},
+    title   = {{comdirect REST API}},
+    url     = {https://www.comdirect.de/cms/kontakt-zugaenge-api.html},
+    urldate = {2026-07-25},
+    note    = {Öffentliche Übersichtsseite. Die Spezifikation
+               \enquote{comdirect REST API Dokumentation} (Dokumentstand
+               18.04.2026) ist nur nach Registrierung beziehbar und nicht
+               öffentlich abrufbar}
+}
+@online{comdirectPreise2026,
+    author  = {{Commerzbank AG}},
+    title   = {{Preis- und Leistungsverzeichnis}},
+    year    = {2026},
+    url     = {https://www.comdirect.de/cms/docs/cori7105.pdf},
+    urldate = {2026-07-25},
+    note    = {comdirect -- eine Marke der Commerzbank AG; Stand: Juni 2026.
+               Grundlage der Ordergebühren im Direkthandel. Fundstelle über
+               https://www.comdirect.de/faq/preisverzeichnis}
+}
+
+% --- Wissenschaftliche Bibliotheken (Python) ---------------------------------
+@inproceedings{mckinney2010,
+    author    = {McKinney, Wes},
+    title     = {{Data Structures for Statistical Computing in Python}},
+    booktitle = {{Proceedings of the 9th Python in Science Conference}},
+    editor    = {{van der Walt}, Stéfan and Millman, Jarrod},
+    year      = {2010},
+    pages     = {56--61},
+    doi       = {10.25080/Majora-92bf1922-00a}
+}
+@article{harris2020,
+    author       = {Harris, Charles R. and Millman, K. Jarrod and {van der Walt},
+                    Stefan J. and Gommers, Ralf and Virtanen, Pauli and
+                    Cournapeau, David and Wieser, Eric and Taylor, Julian and
+                    Berg, Sebastian and Smith, Nathaniel J. and Kern, Robert and
+                    Picus, Matti and Hoyer, Stephan and {van Kerkwijk},
+                    Marten H. and Brett, Matthew and Haldane, Allan and
+                    {Fernández del Río}, Jaime and Wiebe, Mark and Peterson,
+                    Pearu and {Gérard-Marchant}, Pierre and Sheppard, Kevin and
+                    Reddy, Tyler and Weckesser, Warren and Abbasi, Hameer and
+                    Gohlke, Christoph and Oliphant, Travis E.},
+    title        = {{Array Programming with NumPy}},
+    journaltitle = {Nature},
+    year         = {2020},
+    volume       = {585},
+    number       = {7825},
+    pages        = {357--362},
+    doi          = {10.1038/s41586-020-2649-2},
+    note         = {Open Access (CC BY 4.0)}
+}
+@online{sklearnLogreg2026,
+    author  = {{scikit-learn developers}},
+    title   = {{sklearn.linear\_model.LogisticRegression}},
+    year    = {2026},
+    url     = {https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html},
+    urldate = {2026-07-25},
+    note    = {Dokumentationsstand scikit-learn 1.9.0; Implementierung der
+               statistischen Prüfinstanz}
+}
+@online{pandasMarketCalendars2026,
+    author  = {Sheftel, Ryan},
+    title   = {{pandas\_market\_calendars}},
+    year    = {2026},
+    url     = {https://pypi.org/project/pandas-market-calendars/},
+    urldate = {2026-07-25},
+    note    = {Fassung 5.4.0 vom 27.05.2026; Börsenkalender der Zeitplanung
+               des Entscheidungszyklus}
+}
+
+% --- Anbieterdokumentation: erzwungene JSON-Schemata -------------------------
+@online{openaiStructured2026,
+    author  = {{OpenAI}},
+    title   = {{Structured model outputs}},
+    url     = {https://developers.openai.com/api/docs/guides/structured-outputs},
+    urldate = {2026-07-25},
+    note    = {Ohne Standangabe; zitiert nach Abrufdatum}
+}
+@online{anthropicStructured2026,
+    author  = {{Anthropic}},
+    title   = {{Structured outputs}},
+    url     = {https://platform.claude.com/docs/en/build-with-claude/structured-outputs},
+    urldate = {2026-07-25},
+    note    = {Claude Platform Docs; ohne Standangabe}
+}
+@online{geminiStructured2026,
+    author  = {{Google}},
+    title   = {{Structured outputs. Gemini API}},
+    url     = {https://ai.google.dev/gemini-api/docs/structured-output},
+    urldate = {2026-07-25},
+    note    = {Google AI for Developers; ohne Standangabe}
+}
+
+% --- Satz- und Zitierwerkzeuge -----------------------------------------------
+@online{biblatexChicago2024,
+    author  = {Fussner, David},
+    title   = {{biblatex-chicago. Chicago Style Files for BibLaTeX}},
+    year    = {2024},
+    url     = {https://ctan.org/pkg/biblatex-chicago},
+    urldate = {2026-07-25},
+    note    = {Fassung 2.3b vom 15.04.2024}
+}
+
+
+% =============================================================================
+%  NICHT AUFGENOMMEN -- Pruefung nicht bestanden (Details: PRUEFBERICHT_QUELLEN.md)
+%  Bei Bedarf einkommentieren; die Maengel bleiben dann bestehen.
+% =============================================================================
+%
+% @misc{waldhoerKI2025,          % rolland_references.bib + Altbestand
+%     author       = {Waldhoer, Klemens},
+%     title        = {{Periodensystem der Kuenstlichen Intelligenz ...}},
+%     year         = {2025},
+%     howpublished = {Vorlesungsskript},
+%     note         = {FOM Hochschule, WS 2025/26}
+% }                              % -> ersetzen durch bitkom2018
+%
+% @misc{waldhoerBitkom2025,      % rolland_references.bib + Altbestand
+%     author       = {Waldhoer, Klemens},
+%     title        = {{Periodensystem der KI (bitkom-Fassung nach Hammond)}},
+%     year         = {2025},
+%     howpublished = {Vorlesungsskript},
+%     note         = {FOM Hochschule, WS 2025/26}
+% }                              % -> ersetzen durch bitkom2018 / hammond2016
+%
+% @misc{waldhoerNethack2026,     % rolland_references.bib
+%     author       = {Waldhoer, Klemens},
+%     title        = {{Projektbeispiel NetHack}},
+%     date         = {2026-03-01},
+%     howpublished = {Lehrmaterial}
+% }                              % -> kein Nachweis, nicht zitiert
+%
+% @online{stooq2026,             % rolland_references.bib
+%     author  = {{Stooq}},
+%     title   = {{^SPX -- S&P 500 -- U.S. -- Historical data}},
+%     url     = {https://stooq.com/q/d/?s=%5Espx},
+%     urldate = {2026-07-25},
+%     note    = {Symbol bei Stooq ist ^SPX, NICHT ^GSPC (Yahoo-Kuerzel);
+%                Domain per robots.txt gesperrt, kein Impressum}
+% }
+%
+% =============================================================================
+%  Ende
+% =============================================================================

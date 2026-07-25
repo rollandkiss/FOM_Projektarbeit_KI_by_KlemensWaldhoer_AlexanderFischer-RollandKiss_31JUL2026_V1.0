@@ -18,8 +18,8 @@ Ziel dieser Arbeit war der Aufbau eines Live-Trading-Agenten auf Basis des
 Agenten-Frameworks OpenClaw, dessen deterministische \glsxtrshort{sma}-Strategie
 durch ein Gremium großer Sprachmodelle geprüft wird, bevor ein Mehrheitsentscheid
 die Orderausführung freigibt (\cref{sec:zielsetzung}). Dieses Ziel wurde erreicht:
-Der vollständige Handelszyklus -- von der kontinuierlichen, gegen eine offizielle
-Zweitquelle abgesicherten Marktdatenerfassung über die regelbasierte
+Der vollständige Handelszyklus -- von der kontinuierlichen, gegen eine
+Referenzreihe abgesicherten Marktdatenerfassung über die regelbasierte
 Regimeentscheidung und das Multi-Modell-Voting bis zur Orderaufgabe über die
 Schnittstelle einer regulierten Bank -- ist umgesetzt, im Trockenlauf erprobt und
 in \cref{cha:umsetzung} vollständig dokumentiert. Die theoretischen Grundlagen aus
@@ -73,8 +73,8 @@ beobachteter Fehlerfall -- weder Schemaverletzungen einzelner Modelle noch
 Zeitüberschreitungen oder Datenlücken -- konnte eine unbeabsichtigte Order
 auslösen, weil jede Unklarheit konservativ als Veto oder Handelsstopp endet.
 Zweitens hat sich die Entscheidung ausgezahlt, die Evaluation auf gemessene statt
-angenommene Größen zu stützen: Reale Kostenausweise, eine unabhängige Zweitquelle
-und die Walk-Forward-Prüfung machen die Ergebnisse belastbar, und der ehrliche
+angenommene Größen zu stützen: Reale Kostenausweise, die laufende
+Kursgegenprüfung und die Walk-Forward-Prüfung machen die Ergebnisse belastbar, und der ehrliche
 Negativbefund zur Prognosekraft trägt die zentrale Architekturentscheidung
 empirisch, statt sie zu beschädigen. Drittens schafft die durchgängige
 Journalisierung zusammen mit dem öffentlichen Dashboard eine Transparenz, die

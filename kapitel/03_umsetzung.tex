@@ -19,7 +19,7 @@ Handlung vollständig und lässt sich als Verbindung mehrerer KI-Elemente im Sin
 Periodensystems auffassen.
 
 Auf der Ebene der Wahrnehmung stützt sich der Agent auf die kontinuierliche,
-gegen eine unabhängige Zweitquelle geprüfte Erfassung von Marktdaten und die
+gegen eine zweite Bezugsquelle geprüfte Erfassung von Marktdaten und die
 Erkennung von Trendmustern in der Kurszeitreihe. Auf der Ebene der
 Schlussfolgerung prüft ein Gremium aus drei großen Sprachmodellen die
 regelbasiert vorbereitete Entscheidung jeweils unabhängig und begründet; harte
@@ -82,8 +82,8 @@ Das produktive System verteilt sich auf zwei virtuelle Maschinen der Google Clou
 Platform. Die \emph{collector-vm} sammelt rund um die Uhr Marktdaten des S\&P~500:
 Rohticks werden über einen WebSocket-Datenstrom sowie ein ergänzendes Polling für
 Futures-Randzeiten erfasst, durch einen Sanitätsfilter geprüft und zu Minuten- und
-Tagesbars verdichtet. Der jeweils jüngste Tagesschluss wird gegen die offizielle
-Zweitquelle der Federal Reserve Bank of St.\ Louis (\glsxtrshort{fred}) abgeglichen; Divergenzen
+Tagesbars verdichtet. Der jeweils jüngste Tagesschluss wird gegen die
+Referenzreihe der Federal Reserve Bank of St.\ Louis (\glsxtrshort{fred}) abgeglichen; Divergenzen
 oberhalb einer Schwelle lösen einen Alarm aus. Die \emph{agent-vm} erhält die
 Datenbasis als minütlich synchronisierte, atomar ersetzte Replik und beherbergt den
 eigentlichen Entscheidungs- und Orderpfad: die deterministische Strategieauswertung,
@@ -442,7 +442,10 @@ Aufbau beträgt die Datenfrische am Entscheidungspunkt 60 bis 90 Sekunden, wesha
 ausschließlich Limit-Orders verwendet werden. Der Backtest approximiert das
 Faktor-Zertifikat über das zweifache Index-Tagessegment und modelliert weder
 Währungseffekte noch den variablen Geld-Brief-Spread exakt; die inoffizielle
-Kursdatenquelle bietet keine Verfügbarkeitsgarantie. Trotz Temperatur null und
+Kursdatenquelle bietet keine Verfügbarkeitsgarantie. Die Gegenprüfung ist
+begrenzt: Beide Reihen entstammen derselben Indexberechnung und prüfen daher den
+Übertragungsweg, nicht den Indexstand; die Referenzreihe reicht lizenzbedingt nur
+zehn Jahre zurück. Trotz Temperatur null und
 erzwungenem Antwortschema bleibt ein Restmaß an Nichtdeterminismus der
 Sprachmodelle bestehen, und die Stichprobe der Voting-Kalibrierung ist zu Beginn
 des Betriebs klein, weshalb die Auswertung bewusst deskriptiv bleibt und keine

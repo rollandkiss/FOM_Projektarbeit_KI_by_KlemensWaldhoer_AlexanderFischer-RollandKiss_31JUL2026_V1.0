@@ -1,5 +1,5 @@
 %% ---------------------------------------------------------------------------
-%% GENERIERT durch build_quellcode_archiv.py am 25.07.2026 08:59 — NICHT von Hand
+%% GENERIERT durch build_quellcode_archiv.py am 27.07.2026 12:00 — NICHT von Hand
 %% pflegen; Aenderungen in archiv_manifest.csv vornehmen und Skript ausfuehren.
 %% ---------------------------------------------------------------------------
 \begin{longtable}{@{}p{0.29\textwidth}p{0.155\textwidth}p{0.455\textwidth}@{}}
@@ -70,6 +70,9 @@
   \texttt{maintain.sh} & Shell & Wartungslauf der Datenerfassung (Rotation, Aufräumen) \\
   \texttt{vacuum.sh} & Shell & SQLite-Vacuum der Marktdatenbank \\
   \texttt{extract\_\allowbreak live\_\allowbreak config.sh} & Shell & Extraktion der Live-Betriebskonfiguration (systemd, Cron, Litestream) von den VMs \\
+  \texttt{deploy.sh} & Shell & Deploy-Wrapper: lokaler Preflight, Soll/Ist-Abgleich der Prüfsummen, selektives Kopieren, Verifikation auf der VM, abschließender Health-Check \\
+  \texttt{deploy\_\allowbreak manifest.txt} & Kon\-fi\-gu\-ra\-tion & Einzige Quelle darüber, welche Datei auf welche VM gehört (Grundlage von deploy.sh) \\
+  \texttt{md5sync.py} & Python & Hält die Prüfsummenregister der Runbooks mit den Dateien im Einklang (prüfen und nachziehen) \\
   \addlinespace[6pt]
   \multicolumn{3}{@{}l}{\textbf{Auswertung}}\\*[2pt]
   \texttt{evaluate\_\allowbreak votes.py} & Python & Wöchentliche Voting-Kalibrierung und ML-Auswertung gegen den Folgetags-Return \\
@@ -78,14 +81,32 @@
   \texttt{cost\_\allowbreak probe.py} & Python & Ex-Ante-Kostenmessung der Ordervalidierung gegen das Banksystem \\
   \texttt{venue\_\allowbreak probe.py} & Python & Sondierung der Handelsplätze und Orderarten (comdirect) \\
   \texttt{dbg\_\allowbreak positions.py} & Python & Diagnose der Depotbestände \\
+  \texttt{reconcile.py} & Python & Soll/Ist-Abgleich Journal gegen Depot (read-only): Stückzahl je Instrument, Zahlungsrisiko je Order, nicht-terminale Orderzustände, Alt-Orders im Orderbuch \\
+  \texttt{seed\_\allowbreak probe.py} & Python & Empirischer Vergleich zweier Seed-Kandidaten über die Order-Validierung (ohne Orderanlage) inkl. Prüfung des Limit-Preisformats \\
+  \texttt{order\_\allowbreak path\_\allowbreak probe.py} & Python & Aufzeichnung des realen Orderpfads (Anlage, Statusabfrage, PATCH, OCO, Storno) — Belegquelle für das Antwortschema der Bank \\
+  \texttt{venue\_\allowbreak probe2.py} & Python & Handelsplatz- und Ordertypprüfung (Trailing/GTD) gegen die Bank-API \\
   \addlinespace[6pt]
   \multicolumn{3}{@{}l}{\textbf{Dashboard und Journal-Export (webfeed)}}\\*[2pt]
   \texttt{webfeed/\allowbreak export\_\allowbreak journal.py} & Python & Redigierter Journal-Export des Handelsjournals für das Dashboard (collector-vm) \\
-  \texttt{webfeed/\allowbreak app/\allowbreak main.py} & Python & Öffentliches Dashboard (FastAPI, Cloud Run) \\
+  \texttt{webfeed/\allowbreak app/\allowbreak main.py} & Python & Öffentliches Dashboard (Flask, Cloud Run) \\
   \texttt{webfeed/\allowbreak app/\allowbreak templates/\allowbreak index.html} & Web & Dashboard-Oberfläche (Diagramme, Journalansicht) \\
   \texttt{webfeed/\allowbreak app/\allowbreak templates/\allowbreak doku.html} & Web & Dokumentationsseite des Dashboards \\
   \texttt{webfeed/\allowbreak app/\allowbreak static/\allowbreak kf-logo.svg} & Web & Logo-Grafik des Dashboards \\
+  \texttt{webfeed/\allowbreak app/\allowbreak static/\allowbreak chart.umd.js} & Fremdbibliothek & FREMDCODE, nicht eigene Leistung: Chart.js v4.4.3 (MIT-Lizenz, unveraendert uebernommen, chartjs.org). Liegt bei, weil das Dashboard die Bibliothek bewusst selbst ausliefert statt ueber ein CDN und test\_app.py genau das prueft \\
   \texttt{webfeed/\allowbreak app/\allowbreak requirements.txt} & Kon\-fi\-gu\-ra\-tion & Python-Abhängigkeiten des Dashboards \\
   \texttt{webfeed/\allowbreak app/\allowbreak Dockerfile} & Kon\-fi\-gu\-ra\-tion & Container-Bauvorschrift des Dashboards (Cloud Run) \\
   \texttt{webfeed/\allowbreak app/\allowbreak .dockerignore} & Kon\-fi\-gu\-ra\-tion & Build-Ausschlüsse des Container-Images \\
+  \texttt{webfeed/\allowbreak README.md} & Dokumentation & Komponentenbeschreibung des Dashboards: Architektur (agent-vm zu collector-vm zu Cloud Run), Namenskonvention der Journal-Spiegel, Verhalten bei gestoerten Quellen und Rueckschritt-Sperre, Betriebs- und Testanleitung \\
+  \addlinespace[6pt]
+  \multicolumn{3}{@{}l}{\textbf{Reproduzierbarkeit der Beilage}}\\*[2pt]
+  \texttt{build\_\allowbreak quellcode\_\allowbreak archiv.py} & Python & Erzeugt diese Quellcode-Beilage und die zugehörigen LaTeX-Tabellen aus dem Manifest \\
+  \texttt{archiv\_\allowbreak manifest.csv} & Kon\-fi\-gu\-ra\-tion & Manifest der Beilage: je Datei Kategorie, Gruppe, Zweck, Status \\
+  \texttt{build\_\allowbreak anhang.sh} & Shell & Regeneriert den Quellcode-Anhang aus dem Projektstand \\
+  \addlinespace[6pt]
+  \multicolumn{3}{@{}l}{\textbf{Auswertung (Laborcode)}}\\*[2pt]
+  \texttt{regime\_\allowbreak profit\_\allowbreak backtest.py} & Python & Regime-Only-Backtest (smatrend/sma) mit Kosten- und Haltekostenmodell — Grundlage der Profitabilitätsanalyse \\
+  \texttt{veto\_\allowbreak overlay\_\allowbreak backtest.py} & Python & Backtest des ML-Veto-Overlays auf den Regime-Arm (Ergebnis negativ) \\
+  \texttt{mlforecast\_\allowbreak backtest.py} & Python & Walk-Forward-Backtest der scikit-Prüfinstanz \\
+  \texttt{mlforecast\_\allowbreak lab.py} & Python & Laborfassung der ML-Prüfinstanz (Horizont- und Cross-Index-Untersuchung) \\
+  \texttt{mlforecast\_\allowbreak v2.py} & Python & Zweite Modellvariante der ML-Prüfinstanz \\
 \end{longtable}

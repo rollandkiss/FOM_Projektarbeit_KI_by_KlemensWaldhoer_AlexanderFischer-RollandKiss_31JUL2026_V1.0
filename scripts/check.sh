@@ -33,7 +33,8 @@ for f in main.tex verzeichnisse/references.bib main.xmpdata \
          verzeichnisse/glossar.tex verzeichnisse/glossar-defs.tex \
          verzeichnisse/ki-verzeichnis.tex \
          anhang/anhang.tex anhang/ki-prompts.tex \
-         anhang/ki-prompts/tool-claude.tex anhang/ki-prompts/tool-gemini.tex \
+         anhang/ki-prompts/tool-claude.tex anhang/ki-prompts/tool-fable.tex \
+         anhang/ki-prompts/tool-gemini.tex anhang/ki-prompts/tool-kimi.tex \
          anhang/eigenstaendigkeitserklaerung.tex; do
     if [[ -f "$f" ]]; then ok "$f vorhanden"
     else fail "$f fehlt"

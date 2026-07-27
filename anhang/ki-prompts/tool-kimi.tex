@@ -1,0 +1,99 @@
+%  =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "anhang/ki-prompts/tool-kimi.tex"
+%
+%  BESONDERHEIT DIESES ABSCHNITTS: Die Prompts wurden in ENGLISCHER Sprache
+%  gestellt und sind hier in deutscher Uebersetzung wiedergegeben. Der Hinweis
+%  steht sowohl im Vorspann des Abschnitts als auch an jedem einzelnen Prompt
+%  ("aus dem Englischen uebersetzt") -- beides beibehalten, damit kein Prompt
+%  fuer sich betrachtet als deutschsprachige Eingabe missverstanden wird.
+%
+%  ABSCHNITTSNUMMER: Dieser Abschnitt ist Anhang III.IV. Das \note-Feld des
+%  Bib-Eintrags moonshotKimi2026 verweist darauf. Wird die Reihenfolge der
+%  \input-Zeilen in anhang/ki-prompts.tex geaendert, ist der Verweis dort
+%  mitzufuehren.
+%  =============================================================================
+
+\section{Moonshot AI Kimi (K3)}
+\label{sec:prompts-kimi}
+
+\kiwerkzeug{Moonshot AI Kimi, Modell K3}{Modellbezeichner
+\texttt{kimi-k3}, Modellvorstellung vom 17.07.2026}{https://www.kimi.com}
+% Eintrag im KI-Verzeichnis (Leitfaden Kap. 6.2.4) erzwingen mittels \nocite.
+\nocite{moonshotKimi2026}
+
+Eingesetzt für ein allgemeines Codereview der beigelegten Quellcodebeilage
+(\cref{cha:anhang-archiv}) sowie für den Erstentwurf des
+Änderungsverzeichnisses der Beilage. Das Modell erhielt ausschließlich das
+entpackte Archiv und keinen Zugriff auf den Projektordner; es war damit die
+einzige Prüfinstanz, die den Code in genau der Form vorfand, in der er einem
+Dritten vorliegt.
+
+Die Prompts dieses Abschnitts wurden in englischer Sprache gestellt und sind
+nachfolgend sinngleich ins Deutsche übersetzt wiedergegeben; der Zusatz
+\textit{aus dem Englischen übersetzt} weist an jedem Prompt darauf hin. Die
+Übersetzung war nicht Teil der Eingabe an das Modell.
+
+Wie bei den übrigen Werkzeugen wurde jede Antwort eigenständig gegengeprüft.
+Das Ergebnis fiel hier geteilt aus und ist deshalb ausdrücklich vermerkt: Von
+zwei vorgeschlagenen Änderungen wurde die erste nach eigener Messung
+übernommen -- sie betraf den Selbstschutz des Sitzungserhalts und beschrieb
+einen zuvor unentdeckten Fehler --, die zweite als Rückschritt verworfen. Ihr
+lag eine Verwechslung zweier Spalten des Archivmanifests zugrunde, die ohne
+Kenntnis des Bauprozesses nicht erkennbar war; ihre Übernahme hätte den Bau
+der Beilage abgebrochen. Auch der Erstentwurf des Änderungsverzeichnisses
+wurde vor der Übernahme in drei Punkten korrigiert.
+
+\subsection{Allgemeines Codereview der Quellcodebeilage}
+\label{sec:prompts-kimi-codereview}
+\begin{enumerate}
+    \item \enquote{Anbei der vollständige Quellcodebestand eines
+            Handelsagenten in der Fassung, die einer wissenschaftlichen
+            Arbeit als Beilage beigefügt wird. Prüfe ihn ohne Vorgabe eines
+            Schwerpunkts auf Fehler und benenne je Befund die betroffene
+            Datei, die Zeile, die Wirkung im Betrieb und deine Sicherheit über
+            den Befund: [\dots]}
+            \par\hfill\textit{Kontext: \cref{cha:anhang-archiv}; aus dem
+            Englischen übersetzt}
+
+    \item \enquote{Beschränke die Prüfung nun auf die Shell-Skripte und dort
+            auf die Behandlung von Rückgabewerten: Welche Abfrage deutet einen
+            Fehlerausgang als regulären Zustand, und in welchem Fall bleibt
+            eine notwendige Handlung dadurch unbemerkt aus? [\dots]}
+            \par\hfill\textit{Kontext: \cref{cha:anhang-archiv},
+            \cref{sec:umsetzung-implementierung}; aus dem Englischen
+            übersetzt}
+
+    \item \enquote{Lege zu jedem übernahmewürdigen Befund eine minimale
+            Änderung als Textunterschied vor, die die bestehende Struktur
+            wahrt, und benenne für jede Änderung, in welchen Umgebungen sie
+            das Verhalten ändert und in welchen sie nachweislich wirkungslos
+            bleibt: [\dots]}
+            \par\hfill\textit{Kontext: \cref{cha:anhang-archiv}; aus dem
+            Englischen übersetzt}
+\end{enumerate}
+
+\subsection{Entwurf des Änderungsverzeichnisses der Beilage}
+\label{sec:prompts-kimi-changelog}
+\begin{enumerate}
+    \item \enquote{Formuliere zu den bestätigten Befunden einen Abschnitt für
+            den Anhang, der die Unterschiede zwischen der vorliegenden und der
+            nächsten Version der Beilage benennt: je Punkt das fehlerhafte
+            Verhalten davor, die Änderung und den Beleg, dass sie wirkt --
+            sachlich, ohne Wertung und ohne Wiedergabe von Quelltext:
+            [\dots]}
+            \par\hfill\textit{Kontext:
+            Anhang~\ref{sec:anhang-archiv-identitaet}; aus dem Englischen
+            übersetzt}
+
+    \item \enquote{Prüfe den Abschnitt gegen die Angaben der Beilage: Welche
+            Zahl, welcher Dateiname und welcher Verweis darin sind aus dem
+            beigefügten Bestand nicht belegbar? [\dots]}
+            \par\hfill\textit{Kontext:
+            Anhang~\ref{sec:anhang-archiv-identitaet}; aus dem Englischen
+            übersetzt}
+\end{enumerate}
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

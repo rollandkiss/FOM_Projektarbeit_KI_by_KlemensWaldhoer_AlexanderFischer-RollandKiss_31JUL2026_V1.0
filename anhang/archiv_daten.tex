@@ -1,5 +1,5 @@
 %% ---------------------------------------------------------------------------
-%% GENERIERT durch build_quellcode_archiv.py am 25.07.2026 09:54 — NICHT von Hand
+%% GENERIERT durch build_quellcode_archiv.py am 27.07.2026 12:00 — NICHT von Hand
 %% pflegen; Aenderungen in archiv_manifest.csv vornehmen und Skript ausfuehren.
 %% ---------------------------------------------------------------------------
 \begin{longtable}{@{}p{0.28\textwidth}p{0.17\textwidth}p{0.45\textwidth}@{}}
@@ -24,4 +24,17 @@
   \texttt{gspc\_\allowbreak bars1d.csv} & 24.07.2026 & Tagesbars S\&P 500 (Export der Tabelle bars\_1d der Marktdatenbank, ab 30.12.1927) \\
   \texttt{marketdata\_\allowbreak snapshot.sqlite} & \itshape folgt (Live-Woche ab 27.07.2026) & \itshape Snapshot der produktiven Marktdatenbank (collector-vm) zum Abschluss der Echtgeld-Woche \\
   \texttt{journal\_\allowbreak echtgeld\_\allowbreak woche/} & \itshape folgt (Live-Woche ab 27.07.2026) & \itshape Redigierte Journal- und Berichtsauszüge der Echtgeld-Woche (Belegkette der Orders) \\
+  \texttt{regime\_\allowbreak profit\_\allowbreak ergebnis.csv} & 24.07.2026 & Ergebnistabelle der Regime-Profitabilitätsanalyse (smatrend/sma über Kapitalstufen, Fenster und Kostenannahmen) — Grundlage der Aussagen zur Handelsgröße \\
+  \texttt{veto\_\allowbreak overlay\_\allowbreak ergebnis.csv} & 24.07.2026 & Ergebnistabelle des ML-Veto-Overlays auf den Regime-Arm (Befund negativ) \\
+  \texttt{backtest\_\allowbreak v6.csv} & 24.07.2026 & Walk-Forward-Backtest der ML-Prüfinstanz, Konventionsstand v6 \\
+  \texttt{mlforecast\_\allowbreak lab\_\allowbreak ergebnis.csv} & 24.07.2026 & Laborergebnisse der Horizont- und Cross-Index-Untersuchung (Zusammenfassung) \\
+  \texttt{mlforecast\_\allowbreak lab\_\allowbreak voll.csv} & 24.07.2026 & Laborergebnisse der Horizont- und Cross-Index-Untersuchung (Vollausgabe) \\
+  \texttt{lab5\_\allowbreak metriken.csv} & 24.07.2026 & Kennzahlen des Laborlaufs 5 \\
+  \texttt{lab5\_\allowbreak tail.csv} & 24.07.2026 & Randverteilung des Laborlaufs 5 \\
+  \texttt{lab6\_\allowbreak metriken.csv} & 24.07.2026 & Kennzahlen des Laborlaufs 6 \\
+  \texttt{lab6\_\allowbreak tail.csv} & 24.07.2026 & Randverteilung des Laborlaufs 6 \\
+  \texttt{orderbuch\_\allowbreak smoketest\_\allowbreak 20260724.csv} & 24.07.2026 & Orderbuchauszug der Orderpfad-Erprobung (Anlage, Änderung, Storno) — Beleg für Statuswerte und Ordermerkmale der Bank \\
+  \texttt{venue\_\allowbreak probe2\_\allowbreak protokoll\_\allowbreak 20260724.txt} & 24.07.2026 & Protokoll der Handelsplatz- und Ordertypprüfung inkl. abgelehnter Varianten (HTTP 422) — Beleg für die Grenzen der Bank-API \\
+  \texttt{dimensions2\_\allowbreak DE000SB295Z1.json} & 24.07.2026 & Handelsplatz- und Ordertyp-Dimensionen der Bank für das Faktor-Zertifikat — maschineller Beleg zum Protokoll der Handelsplatzprüfung \\
+  \texttt{trailing\_\allowbreak validation\_\allowbreak DE000SB295Z1.json} & 24.07.2026 & Validierungsantworten der Bank zu Trailing-/Stop-Varianten inkl. abgelehnter Kombinationen (HTTP 422) \\
 \end{longtable}

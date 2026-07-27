@@ -1,5 +1,5 @@
 %% ---------------------------------------------------------------------------
-%% GENERIERT durch build_quellcode_archiv.py am 25.07.2026 08:59 — NICHT von Hand
+%% GENERIERT durch build_quellcode_archiv.py am 27.07.2026 12:00 — NICHT von Hand
 %% pflegen; Aenderungen in archiv_manifest.csv vornehmen und Skript ausfuehren.
 %% ---------------------------------------------------------------------------
 \begin{longtable}{@{}p{0.26\textwidth}p{0.26\textwidth}p{0.38\textwidth}@{}}
@@ -32,5 +32,14 @@
   \texttt{test\_\allowbreak notify.py} & \texttt{notify.py} & Berichtsversand und Stale-Guard \\
   \texttt{test\_\allowbreak orchestrate.py} & \texttt{orchestrate.py} & Orderausführung: Frische-Gates, Intent-Journal, Reconciliation, Circuit-Breaker \\
   \texttt{webfeed/\allowbreak test\_\allowbreak export.py} & \texttt{webfeed/\allowbreak export\_\allowbreak journal.py} & Journal-Export: Redaktion und Aggregation \\
-  \texttt{webfeed/\allowbreak app/\allowbreak test\_\allowbreak app.py} & \texttt{webfeed/\allowbreak app/\allowbreak main.py} & Dashboard-Endpunkte (FastAPI-Testclient) \\
+  \texttt{webfeed/\allowbreak app/\allowbreak test\_\allowbreak app.py} & \texttt{webfeed/\allowbreak app/\allowbreak main.py} & Dashboard-Endpunkte (Flask-Testclient) \\
+  \texttt{test\_\allowbreak strategy.py} & \texttt{strategy.py}, \texttt{strategyloader.py} & Handelbarkeits-Gate (eligible): je Constraint ein Fall an der Grenze und einer dahinter; Katalog- und Zuordnungskonsistenz \\
+  \texttt{test\_\allowbreak regime\_\allowbreak exit.py} & \texttt{orchestrate.py} & Regime-Ausstieg (A5-light): Marker je Instrument, Fail-safe-Zweige, Füllstandsbewertung, Teil-Blockaden \\
+  \texttt{test\_\allowbreak reconcile.py} & \texttt{reconcile.py} & Soll/Ist-Abgleich: Bestandsrechnung mit Teilausführungen, Limit-Toleranz, nicht-terminale Zustände, Gegenrichtung gegen Fehlalarme \\
+  \texttt{test\_\allowbreak shell.sh} & \texttt{run\_\allowbreak all.sh}, \texttt{run\_\allowbreak cycle.sh}, \texttt{cycle\_\allowbreak watch.sh} & Testharness der Betriebsskripte in einer Sandbox mit Werkzeug-Attrappen: Exit-Codes, ausgelöste Meldungen, aufgerufene Kommandos \\
+  \texttt{mutation\_\allowbreak probe.py} & \texttt{orchestrate.py}, \texttt{broker.py}, \texttt{strategy.py}, \texttt{reconcile.py} & Mutationstest: misst die Fehlererkennung der Testsuite anhand kuratierter und unabhängiger mechanischer Fehlerinjektionen \\
+  \texttt{webfeed/\allowbreak mutation\_\allowbreak probe\_\allowbreak webfeed.py} & \texttt{webfeed/\allowbreak export\_\allowbreak journal.py}, \texttt{webfeed/\allowbreak app/\allowbreak main.py}, \texttt{webfeed/\allowbreak app/\allowbreak templates/\allowbreak index.html} & Mutationstest der Dashboard-Suiten: misst die Fehlererkennung anhand kuratierter Befunde (gestoerte Journalquellen, Rueckschritt-Sperre, Konto-Zuordnung) und unabhaengiger mechanischer Fehlerinjektionen \\
+  \texttt{test\_\allowbreak mlforecast\_\allowbreak v2.py} & \texttt{mlforecast\_\allowbreak v2.py} & Tests der zweiten ML-Modellvariante \\
+  \texttt{order\_\allowbreak path\_\allowbreak probe\_\allowbreak 20260724-0953.json} & \texttt{test\_\allowbreak brokersession.py} & Aufzeichnung des realen Orderpfads (Anlage → Statusabfrage → Änderung → Storno); dient test\_brokersession.py als Fixture und belegt, dass HTTP 201 'angenommen' und nicht 'ausgeführt' bedeutet \\
+  \texttt{order\_\allowbreak path\_\allowbreak probe\_\allowbreak 20260724-0933.json} & \texttt{test\_\allowbreak brokersession.py} & Zweite Aufzeichnung desselben Orderpfad-Laufs (Vorlauf) \\
 \end{longtable}

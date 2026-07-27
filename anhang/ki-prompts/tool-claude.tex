@@ -13,10 +13,12 @@
 
 Eingesetzt für die Verzeichnisse des Vorspanns und den Aufbau des Anhangs,
 für den Entwurf der Datenerfassung und ihrer Persistenz, für den Abgleich der
-Schnittstellendokumentation der Bank sowie für zwei Werkzeuge der
+Schnittstellendokumentation der Bank sowie für drei Werkzeuge der
 Projektumgebung: die Anpassung des Extraktionsskripts, das Quellcode- und
 Datenbestände der Google-Cloud-Umgebung für das elektronische Archiv
-aufbereitet, und die Erzeugung der Testskripte zur Ergebniskontrolle.
+aufbereitet, die Erzeugung der Testskripte zur Ergebniskontrolle und die
+Erzeugung der Testsuite für die Betriebsskripte, die Ausführungspfade und die
+Mutationsprobe.
 
 \subsection{Erstellung des Glossars}
 \label{sec:prompts-claude-glossar}
@@ -205,6 +207,60 @@ Aufträgen.
             reproduzierbar hervorgehen, und benenne die Toleranz, innerhalb
             derer Gleitkommaabweichungen zulässig sind: [\dots]}
             \par\hfill\textit{Kontext: \cref{sec:umsetzung-evaluation}}
+\end{enumerate}
+
+\subsection{Erzeugung der Testsuite für Betriebsskripte, Ausführungspfade und
+Mutationsprobe}
+\label{sec:prompts-claude-testsuite}
+
+Gegenstand dieses Abschnitts ist die zeitlich spätere Erweiterung der
+Prüfmittel um drei Bereiche, die die zuvor erzeugten Testskripte
+(\cref{sec:prompts-claude-tests}) nicht abdeckten: die Betriebs-Shell-Skripte,
+für die von zwanzig Skripten zuvor nur eines eine Prüfung besaß; die
+Ausführungspfade Handelbarkeitsprüfung, Regime-Ausstieg und
+Soll-Ist-Abgleich; sowie eine Mutationsprobe, die nicht den Produktivcode,
+sondern die Aussagekraft der Testsuiten selbst messbar macht. Alle drei
+Bereiche liegen dem elektronischen Archiv als eigene Prüfmittel bei
+(\cref{tab:anhang-archiv-tests}).
+
+\begin{enumerate}
+    \item \enquote{Die Betriebsskripte sind bislang nahezu ungeprüft, obwohl
+            die letzten drei Fehler dieser Schicht ausschließlich beim
+            Ausführen sichtbar wurden -- eine Abfrage, die den Rückgabewert
+            verschluckt, ein Zugriff auf eine nicht gesetzte Variable und ein
+            Zweig, der jeden Fehlerausgang als gewollte Pause deutet. Entwirf
+            einen Testharness, der die Skripte in einer Sandbox mit
+            Werkzeug-Attrappen ausführt und je Fall dreierlei prüft:
+            Rückgabewert, ausgelöste Meldung und tatsächlich aufgerufenes
+            Kommando: [\dots]}
+            \par\hfill\textit{Kontext:
+            \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Ergänze Testfälle für die Handelbarkeitsprüfung, die je
+            Randbedingung einen Fall unmittelbar an der Grenze und einen
+            dahinter vorsehen, sodass eine versehentlich umgekehrte
+            Vergleichsrichtung auffällt: [\dots]}
+            \par\hfill\textit{Kontext:
+            \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Entwirf Testfälle für den Regime-Ausstieg und den
+            Soll-Ist-Abgleich, die neben dem Normalfall auch die
+            Gegenrichtung prüfen -- also belegen, dass bei
+            unauffälliger Lage kein Alarm und keine Teilblockade entsteht --
+            und die Teilausführungen sowie nicht endgültige Auftragszustände
+            einschließen: [\dots]}
+            \par\hfill\textit{Kontext:
+            \cref{sec:umsetzung-implementierung}}
+
+    \item \enquote{Eine bestandene Testsuite belegt noch nicht, dass sie
+            Fehler auch findet. Entwirf ein Verfahren, das gezielt Fehler in
+            den Produktivcode einspielt und misst, welcher Anteil davon von
+            den Suiten erkannt wird; trenne dabei eigens ausgewählte
+            Fehlerbilder von mechanisch erzeugten und begründe, warum ein
+            Ausbleiben von Befunden erst dann aussagekräftig ist, wenn das
+            Verfahren nachweislich echte Fehler entdeckt: [\dots]}
+            \par\hfill\textit{Kontext:
+            \cref{sec:umsetzung-evaluation-design}}
 \end{enumerate}
 
 %  =============================================================================

@@ -4,12 +4,29 @@
 %
 %  PFLEGE / REGENERIERUNG (z. B. nach der Echtgeld-Woche):
 %    1. Im Projektordner archiv_manifest.csv anpassen (neue Datei = neue
-%       Zeile; Status "geplant" -> "aktiv" setzen).
-%    2. python3 build_quellcode_archiv.py --version V3 --datum <TTMONJJJJ>
+%       Zeile; Status "geplant" -> "aktiv" setzen). ACHTUNG bei den beiden
+%       geplanten Datenzeilen: Spalte 'quelle' ist LEER und muss vor der
+%       Umstellung gefuellt werden, sonst bricht der Bau mit "FEHLT:" ab.
+%       Daten/journal_echtgeld_woche/ ist ausserdem ein ORDNER, der
+%       Bauprozess kennt nur Einzeldateien -- entweder je Datei eine
+%       Manifestzeile (aussagekraeftiger) oder vorher zu einer Datei buendeln.
+%    2. python3 build_quellcode_archiv.py --version V4 --datum 31JUL2026
 %    3. Die vier GENERIERTEN Dateien archiv_meta.tex, archiv_quellcode.tex,
 %       archiv_tests.tex, archiv_daten.tex aus archiv_tex/ nach Overleaf in
 %       den Ordner anhang/ hochladen (ersetzen). Diese Datei hier bleibt
-%       unveraendert.
+%       unveraendert -- mit EINER Ausnahme: der auskommentierte Abschnitt
+%       "Aenderungen der Beilage" am Dateiende ist dann zu aktivieren.
+%
+%  STAND DIESER DATEI: Archiv V3 (27.07.2026, 112 Dateien). Die Zahlenangaben
+%  im Fliesstext (Zeilenumfang, Testbilanz) sind am 27.07.2026 gegen die
+%  entpackte Beilage gemessen; nach dem V4-Bau erneut erheben.
+%    * Zeilenumfang gemessen: 13.842 Zeilen Quellcode/ + 5.897 Zeilen Tests/
+%      = 19.739. Im Text bewusst als "mehr als 15.000 Zeilen Quelltext"
+%      formuliert -- untere Schranke statt Punktwert, damit die Aussage auch
+%      bei kleineren Aenderungen der Beilage tragfaehig bleibt und nicht bei
+%      jedem Bau nachgezogen werden muss (Entscheid Kiss, 27.07.2026).
+%    * Testbilanz gemessen: run_tests.sh = 18 bestanden / 0 fehlgeschlagen /
+%      0 uebersprungen.
 %  =============================================================================
 
 \chapter{Anhang: Projektstruktur und Quellcodearchiv}
@@ -23,8 +40,8 @@ beschriebenen Handelsagenten. Der vollständige Quellcode wird nicht im Anhang
 abgedruckt, sondern liegt der Arbeit als elektronisches Archiv bei; die
 nachfolgenden Abschnitte weisen dessen Identität, Aufbau und Inhalt aus. Damit
 bleibt jede in \cref{sec:umsetzung-implementierung} beschriebene Absicherung im
-Quelltext nachvollziehbar, ohne den Anhang mit rund 7.000 Zeilen Quelltext zu
-belasten.
+Quelltext nachvollziehbar, ohne den Anhang mit mehr als 15.000 Zeilen Quelltext
+zu belasten.
 
 \section{Projektstruktur}
 \label{sec:anhang-projektstruktur}
@@ -75,7 +92,11 @@ ausschließlich im verschlüsselten Geheimnisspeicher liegen -- die Datei
 \texttt{agent.env} und der Inhalt von \texttt{\textasciitilde/.fom-agent/}
 sind deshalb nicht Bestandteil des Archivs. Die unverändert eingebundene
 Fremdbibliothek Chart.js (\texttt{webfeed/app/static/chart.umd.js}, MIT-Lizenz)
-ist als Drittcode ebenfalls nicht beigelegt; im Übrigen liegt der Quellcode
+liegt seit der Archivversion~V3 bei, weil das Dashboard sie bewusst selbst
+ausliefert statt sie von einem Auslieferungsnetz zu laden, und eine Testprüfung
+genau das sicherstellt; sie ist im Manifest und in
+\cref{tab:anhang-archiv-quellcode} ausdrücklich als Fremdcode und damit als
+nicht eigene Leistung gekennzeichnet. Im Übrigen liegt der Quellcode
 unverändert und lauffähig vor.
 
 \section{Aufbau des Archivs}
@@ -86,7 +107,8 @@ Das Archiv gliedert sich in drei Basisordner sowie eine erläuternde
 Skripte und Konfigurationsdateien in der flachen Struktur der
 Produktivumgebung (vgl. \cref{fig:projektstruktur}), wodurch der Code ohne
 Umbau lauffähig bleibt; der Ordner \texttt{Tests/} enthält die
-Offline-Testsuiten einschließlich des Testtreibers \texttt{run\_tests.sh}; der
+Offline-Testsuiten einschließlich des Testtreibers \texttt{run\_tests.sh}, die
+beiden Mutationsproben und die aufgezeichneten Prüfdaten des Orderpfads; der
 Ordner \texttt{Daten/} enthält die Daten- und Evaluationsstände mit
 ausgewiesenem Snapshot-Datum.
 
@@ -100,9 +122,23 @@ ausgewiesenem Snapshot-Datum.
 
 Die Testsuiten lagen in der Produktivumgebung neben den geprüften Modulen und
 sind im Archiv in den Ordner \texttt{Tests/} ausgegliedert. Der Testtreiber
-\texttt{run\_tests.sh} stellt den Modulpfad her und führt alle Suiten offline
-aus (\texttt{bash Tests/run\_tests.sh}); Suiten mit fehlenden
-Drittabhängigkeiten werden dabei als übersprungen ausgewiesen.
+\texttt{run\_tests.sh} stellt den Modulpfad her und führt die achtzehn Suiten
+des Kernsystems, des Sitzungserhalts und des Dashboards offline aus
+(\texttt{bash Tests/run\_tests.sh}); Suiten mit fehlenden Drittabhängigkeiten
+werden dabei als übersprungen ausgewiesen. Ein Kontrolllauf der Beilage am
+27.07.2026 ergab achtzehn bestandene Suiten ohne fehlgeschlagene und ohne
+übersprungene Prüfung.
+
+Drei Artefakte des Ordners ruft der Treiber bewusst nicht auf: Der Testharness
+der Betriebsskripte (\texttt{test\_shell.sh}) und die beiden Mutationsproben
+erwarten die geprüften Skripte und Module im eigenen Verzeichnis und sind
+deshalb im Projektordner zu starten, in dem Quelltexte und Prüfmittel
+nebeneinanderliegen; in der Ordnertrennung des Archivs finden sie ihre
+Prüfgegenstände nicht.\footnote{Die Trennung ist Absicht: Sie hält den Ordner
+\texttt{Quellcode/} auf dem Stand der Produktivumgebung. Für den Mutationstest
+ist sie folgenlos, weil er ohnehin gegen den Arbeitsstand und nicht gegen die
+Beilage geführt wird.} Zwei aufgezeichnete Orderpfad-Protokolle liegen als
+Prüfdaten im selben Ordner und dienen der Broker-Suite als Vorlage.
 
 \input{anhang/archiv_tests}
 
@@ -116,6 +152,62 @@ Echtgeld-Orders werden nach Abschluss der Echtgeld-Woche mit der nächsten
 Archivversion ergänzt (kursive Einträge).
 
 \input{anhang/archiv_daten}
+
+%  ---------------------------------------------------------------------------
+%  VORBEREITET, NOCH NICHT AKTIV: Abschnitt "Aenderungen der Beilage V3 -> V4".
+%
+%  AKTIVIERUNG (erst NACH dem Bau von V4, also nach der Echtgeld-Woche):
+%    1. Voraussetzung 1: Der flock-Fix in keepalive.sh ist angewandt UND auf
+%       der agent-vm deployt (Entscheid 27.07.: erst nach der Live-Woche,
+%       gemeinsam mit der deploy.sh-Haertung). Danach test_keepalive.sh VON
+%       HAND gegenpruefen -- die Suite laeuft in keiner automatischen Kette
+%       mit. Erwartetes Ergebnis: 22 von 22 Pruefungen, mit UND ohne flock.
+%    2. Voraussetzung 2: Die beiden Datenzeilen des Manifests stehen auf
+%       'aktiv' (siehe Pflegehinweis am Dateikopf).
+%    3. Dann die folgenden Zeilen entkommentieren (fuehrendes "% " je Zeile
+%       entfernen) und das Datum von V4 einsetzen.
+%
+%  HERKUNFT: Der Erstentwurf dieses Abschnitts entstand im allgemeinen
+%  Codereview mit Moonshot AI Kimi K3 (Anhang III.IV). Er wurde eigenstaendig
+%  gegengeprueft und dabei in drei Punkten korrigiert: die Zahl der Pruefungen
+%  (22 statt 23, ueber einen vollstaendigen Lauf gezaehlt), die Kennzeichnung
+%  des Ausfalls (nicht stumm, sondern irreführend beschriftet) und die
+%  Streichung eines dritten Punktes, der auf einer Verwechslung der Manifest-
+%  spalten 'quelle' und 'archivpfad' beruhte und den Bau der Beilage
+%  abgebrochen haette.
+%  ---------------------------------------------------------------------------
+% \section{Änderungen der Beilage von V3 (27.07.2026) zu V4 (TT.07.2026)}
+% \label{sec:anhang-archiv-changelog}
+%
+% \begin{itemize}
+%   \item \textbf{Robustheit des Sitzungserhalts (\texttt{keepalive.sh}).}
+%     Der Selbstschutz gegen überlappende Läufe prüft nun die Verfügbarkeit des
+%     Sperrwerkzeugs, bevor er die Sperre setzt. Zuvor wurde ein fehlendes
+%     Werkzeug (Rückgabewert~127, \emph{command not found}) von der
+%     Abfrage wie eine belegte Sperre behandelt: Das Skript meldete
+%     "`läuft bereits"' und endete erfolgreich, ohne die Sitzung erneuert zu
+%     haben. Der Ausfall war damit nicht stumm, aber irreführend beschriftet
+%     -- und auf Systemen ohne das Werkzeug dauerhaft. Jetzt gilt: Ist das
+%     Werkzeug vorhanden (Produktivumgebung), bleibt das Verhalten
+%     unverändert; fehlt es, etwa im Offline-Testlauf eines Prüfers, wird eine
+%     Warnung ausgegeben und ohne Selbstschutz weitergearbeitet. Die Suite
+%     \texttt{test\_keepalive.sh} (22 Prüfungen) besteht damit auch außerhalb
+%     der Produktivumgebung vollständig; zuvor schlugen dort zehn Prüfungen
+%     fehl.
+%   \item \textbf{Nachgelieferte Datenstände der Echtgeld-Woche.}
+%     Zwei in V3 ausstehende Nachweise wurden nach Abschluss der
+%     Echtgeld-Woche aufgenommen: \texttt{Daten/marketdata\_snapshot.sqlite}
+%     als Snapshot der produktiven Marktdatenbank sowie die redigierten
+%     Journal- und Berichtsauszüge der Echtgeld-Woche als Belegkette der
+%     Orders. \Cref{tab:anhang-archiv-daten} führt beide Einträge nun mit
+%     ihrem Datenstand statt der kursiven Platzhalter.
+% \end{itemize}
+%
+% \noindent
+% Prüfsumme, Dateianzahl und Größe der Beilage~V4 sind in
+% \cref{tab:anhang-archiv-identitaet} verzeichnet; die Integrität der
+% Vorgängerversion~V3 bleibt über die dort zuvor dokumentierte
+% SHA-256-Prüfsumme nachprüfbar.
 
 %  =============================================================================
 %  Ende

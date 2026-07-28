@@ -140,6 +140,31 @@ FRED-Schlusskurs) belegen die laufende Übereinstimmung der Datenquellen:
   \label{tab:anhang-crosscheck}
 \end{table}
 
+\section{Kosten der Trailing-Distanz}
+\label{sec:anhang-trailing-distanz}
+
+Beleg zu der in \cref{sec:umsetzung-wuerdigung} genannten Wirkung der
+Stopdistanz. \Cref{tab:anhang-trailing-distanz} misst die Regimestrategie über
+die vollständige Indexhistorie (24.757 Tagesbars ab 30.12.1927) im
+approximierten 2x-Zertifikat -- zweifache Index-Tagesrendite abzüglich
+gemessener Haltekosten von 4{,}87\,\% jährlich, 20 Basispunkte Spread je
+Round-Trip, Ausführung mit einem Handelstag Verzögerung. Der Wiedereinstieg
+erfolgt am Folgetag und bildet damit das Verhalten des Livesystems ab, das
+einen Stop-Out nicht vermerkt und im nächsten Zyklus erneut kauft. Erzeugt von
+\texttt{trailing\_distanz\_backtest.py}; die vollständige Ergebnistabelle liegt
+als \texttt{trailing\_distanz\_ergebnis.csv} im Quellcodearchiv.
+
+% GENERIERT — Inhalt aus trailing_distanz_ergebnis.csv, s. Skript
+\input{anhang/trailing_distanz}
+
+Der Befund ist über alle drei Zeitfenster hinweg stabil: Die im Betrieb
+gewählten vier bis fünf Prozent liegen im ungünstigsten Bereich der Skala,
+und der Maximalverlust fällt nicht niedriger aus als ohne Absicherung. Die
+Rechtfertigung des Stops liegt daher nicht in der Rendite, sondern in der
+Begrenzung des Übernachtrisikos eines gehebelten Produkts. Da nur
+Tagesschlusskurse vorliegen, ein realer Stop aber innertägig auslöst, ist die
+ausgewiesene Auslösefrequenz eine Untergrenze.
+
 % ---------------------------------------------------------------------------
 % PLATZHALTER (wird nach Go-live 27.07. befüllt):
 %

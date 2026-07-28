@@ -1,0 +1,25 @@
+%% -------------------------------------------------------------------------
+%% GENERIERT durch trailing_distanz_backtest.py — NICHT von Hand pflegen;
+%% Ergebniszeilen in trailing_distanz_ergebnis.csv aendern/ergaenzen und das
+%% Skript erneut ausfuehren (--from-csv erzeugt nur die Tabelle neu).
+%% -------------------------------------------------------------------------
+\begin{table}[htbp]
+  \centering
+  \caption[Kosten der Stopdistanz]{Wirkung der Trailing-Distanz auf die Regimestrategie im 2x-Zertifikat: Jahresrendite je Zeitfenster, Ausl\"osefrequenz und Maximalverlust. Wiedereinstieg am Folgetag (Verhalten des Livesystems); Ausl\"osefrequenz und Maximalverlust aus dem Fenster \emph{ab 2015}. Grundlage: Tagesschlusskurse, daher ist die Ausl\"osefrequenz eine Untergrenze.\quelleeigen}
+  \label{tab:anhang-trailing-distanz}
+  \begin{tabular}{@{}lrrrrr@{}}
+    \toprule
+    Stopdistanz & CAGR gesamt & CAGR ab 2000 & CAGR ab 2015 & Stop-Outs/Jahr & Max.\ Verlust \\
+    \midrule
+    ohne Stop & 6{,}09\,\% & 5{,}87\,\% & 7{,}51\,\% & 0{,}0 & 41{,}8\,\% \\
+    2\,\% & 4{,}67\,\% & $-$0{,}55\,\% & 2{,}51\,\% & 23{,}6 & 38{,}7\,\% \\
+    3\,\% & 3{,}94\,\% & $-$1{,}54\,\% & 0{,}22\,\% & 16{,}5 & 51{,}9\,\% \\
+    4\,\% & 3{,}65\,\% & 0{,}94\,\% & 3{,}71\,\% & 11{,}5 & 49{,}0\,\% \\
+    5\,\% & 3{,}74\,\% & 1{,}17\,\% & 3{,}98\,\% & 8{,}6 & 43{,}0\,\% \\
+    6\,\% & 4{,}63\,\% & 4{,}85\,\% & 7{,}25\,\% & 6{,}5 & 38{,}7\,\% \\
+    8\,\% & 4{,}82\,\% & 6{,}12\,\% & 10{,}12\,\% & 4{,}2 & 43{,}2\,\% \\
+    10\,\% & 4{,}20\,\% & 5{,}65\,\% & 8{,}35\,\% & 2{,}6 & 40{,}7\,\% \\
+    15\,\% & 4{,}87\,\% & 4{,}43\,\% & 6{,}72\,\% & 1{,}2 & 45{,}5\,\% \\
+    \bottomrule
+  \end{tabular}
+\end{table}

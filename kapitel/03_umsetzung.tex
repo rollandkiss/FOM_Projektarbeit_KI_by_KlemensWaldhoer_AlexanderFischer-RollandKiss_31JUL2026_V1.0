@@ -1,5 +1,4 @@
 %  =============================================================================
-%  Datei-Hinweise & Konfiguration: siehe config.md
 %  -> Abschnitt "kapitel/03_umsetzung.tex"
 %
 %  Gliederung an der KI-Fallstudie ausgerichtet:
@@ -19,15 +18,15 @@ Handlung vollständig und lässt sich als Verbindung mehrerer KI-Elemente im Sin
 Periodensystems auffassen.
 
 Auf der Ebene der Wahrnehmung stützt sich der Agent auf die kontinuierliche,
-gegen eine zweite Bezugsquelle geprüfte Erfassung von Marktdaten und die
+gegen eine unabhängige Zweitquelle geprüfte Erfassung von Marktdaten und die
 Erkennung von Trendmustern in der Kurszeitreihe. Auf der Ebene der
 Schlussfolgerung prüft ein Gremium aus drei großen Sprachmodellen die
 regelbasiert vorbereitete Entscheidung jeweils unabhängig und begründet; harte
 Ausschlusskriterien entscheiden deterministische Vorprüfungen bereits vor dem
 ersten Modellaufruf. Auf der Ebene der Reaktion ordnet sich das Vorhaben
 unmittelbar dem Element der prozesssteuernden Kontrolle zu, das der zugrunde
-gelegte Rahmen ausdrücklich mit dem automatisierten Handel als Anwendungsbeispiel
-verbindet.\zit[S.~18]{bitkom2018} Ergänzend sichern eine
+gelegte Rahmen ausdrücklich mit dem Börsenhandel als Anwendung
+verbindet.\zit[S. 19]{waldhoerKI2025} Ergänzend sichern eine
 Kommunikationskomponente die Rückbindung an den Menschen -- tägliche Freigabe der
 Banksitzung, Berichte, jederzeit wirksamer Not-Aus -- und ein öffentliches,
 redigiertes Dashboard die Transparenz der Entscheidungs- und Wertentwicklung.
@@ -74,7 +73,7 @@ umgesetzten und den geplanten Bestandteilen.
   \includesvg[width=\textwidth]{zielarchitektur}
   \caption[Zielarchitektur des autonomen Handelsagenten]{Zielarchitektur des
     autonomen Handelsagenten. Durchgezogene Elemente sind umgesetzt und in Betrieb,
-    gestrichelte Elemente geplant.\quelleeigenki{Anthropic Claude Fable~5 (Anthropic, 2026)}}
+    gestrichelte Elemente geplant.\quelleeigenki}
   \label{fig:zielarchitektur}
 \end{figure}
 
@@ -82,8 +81,8 @@ Das produktive System verteilt sich auf zwei virtuelle Maschinen der Google Clou
 Platform. Die \emph{collector-vm} sammelt rund um die Uhr Marktdaten des S\&P~500:
 Rohticks werden über einen WebSocket-Datenstrom sowie ein ergänzendes Polling für
 Futures-Randzeiten erfasst, durch einen Sanitätsfilter geprüft und zu Minuten- und
-Tagesbars verdichtet. Der jeweils jüngste Tagesschluss wird gegen die
-Referenzreihe der Federal Reserve Bank of St.\ Louis (\glsxtrshort{fred}) abgeglichen; Divergenzen
+Tagesbars verdichtet. Der jeweils jüngste Tagesschluss wird gegen die offizielle
+Zweitquelle der Federal Reserve Bank of St.\ Louis (\glsxtrshort{fred}) abgeglichen; Divergenzen
 oberhalb einer Schwelle lösen einen Alarm aus. Die \emph{agent-vm} erhält die
 Datenbasis als minütlich synchronisierte, atomar ersetzte Replik und beherbergt den
 eigentlichen Entscheidungs- und Orderpfad: die deterministische Strategieauswertung,
@@ -118,7 +117,7 @@ bleiben ohne offenen eingehenden Port. Im Ordnungsrahmen des Periodensystems der
 Künstlichen Intelligenz verbindet die Architektur damit Elemente der Wahrnehmung
 (Daten- und Mustererfassung), der Schlussfolgerung (Entscheiden und Erklären) und
 der Reaktion, deren Zentrum das Element der prozesssteuernden Kontrolle
-bildet.\zit[S.~18]{bitkom2018}
+bildet.\zit[S.~19]{waldhoerKI2025}
 
 \section{SMA-Handelsstrategie}
 \label{sec:umsetzung-strategie}
@@ -154,9 +153,9 @@ Der Kapitaleinsatz je Handelstag wird volatilitätsabhängig skaliert:
   \sigma^{*}/\sigma_{20}(t)\bigr),\; S_{\min},\; K\Bigr),
   \label{eq:sizing}
 \end{equation}
-mit dem Basiskapital $K = 2.000$\,€, der realisierten
+mit dem Basiskapital $K = 2.000\,€$, der realisierten
 20-Tage-Volatilität $\sigma_{20}$ der Index-Tagesrenditen, der Zielvolatilität
-$\sigma^{*} = 1{,}0\,\%$ pro Tag und der Mindestgröße $S_{\min} = 1.000$\,€. Die
+$\sigma^{*} = 1{,}0\,\%$ pro Tag und der Mindestgröße $S_{\min} = 1.000\,€$. Die
 Obergrenze $K$ ist als harter, weder über die Konfiguration noch durch die
 Sprachmodelle veränderbarer Deckel implementiert.
 
@@ -313,9 +312,7 @@ täglich sichtbar dokumentiert.
 Die Qualitätssicherung stützt sich auf zwölf Offline-Testsuiten, die von der
 Datensammlung über den Voting-Mechanismus bis zu den Schutzpfaden der
 Orderausführung jede sicherheitsrelevante Verzweigung mit gemockten Schnittstellen
-durchspielen; der vollständige Quellcode einschließlich der Testsuiten liegt
-der Arbeit als elektronisches Archiv bei, dessen Aufbau und Inhalt
-Anhang~\ref{cha:anhang-archiv} dokumentiert.
+durchspielen; die Volltexte der zentralen Module sind im Anhang dokumentiert.
 
 \section{Evaluation}
 \label{sec:umsetzung-evaluation}
@@ -332,7 +329,7 @@ Datenbasis des Backtests sind zehn Jahre echter Tagesschlusskurse des S\&P~500
 (2.520 Handelstage, Datenstand 22.07.2026), die über die Datensammlung des
 Agenten bezogen und gegen die \glsxtrshort{fred}-Zweitquelle gegengeprüft
 wurden; das vollständige Backtest-Protokoll ist in
-Anhang~\ref{sec:anhang-evaluationsbelege} dokumentiert. Der Strategie werden drei Vergleichsmaßstäbe gegenübergestellt:
+\cref{sec:anhang-evaluationsbelege} dokumentiert. Der Strategie werden drei Vergleichsmaßstäbe gegenübergestellt:
 der tägliche Round-Trip der Regel selbst (B0), das passive Halten des Index (B1)
 sowie eine Variante, die nur bei einem Regimewechsel handelt (B2). Das Kostenmodell
 verwendet keine Annahmen, sondern die real gemessenen Ex-Ante-Kostenausweise der
@@ -413,9 +410,16 @@ und die Prüfinstanz bis zu einem gegenteiligen Kalibrierungsnachweis aus dem
 laufenden Betrieb im Schattenmodus verbleibt.
 
 Die Kostenmessung gegen das Produktivsystem der Bank lieferte darüber hinaus
-eigenständige Befunde. Die Kaufprovision erwies sich über alle getesteten
-Ordergrößen als fixer Betrag von 3{,}90\,€, womit sich die Round-Trip-Fixkosten von
-7{,}80\,€ bestätigen; die Wahl des Direkthandels beim Emittenten statt eines
+eigenständige Befunde. Die Kaufprovision erwies sich zunächst über alle getesteten
+Ordergrößen als fixer Betrag von 3{,}90\,€. Ein kontrolliertes Experiment über beide
+Depots, beide Ordertypen und eine Volumenreihe zeigte jedoch, dass die Provision ab
+einem Ordervolumen von 1.000\,€ vollständig entfällt: Der Emittent vergütet die Bank
+im Rahmen der Premium-Partner-Konstruktion mit 9{,}50\,€, die im
+Ex-Ante-Kostenausweis als \enquote{Zahlung von Dritten an die Bank} erscheint. Es
+handelt sich um eine Stufe, nicht um eine Kurve. Da die Mindestordergröße des Agenten
+bei 1.000\,€ liegt, ist faktisch jede seiner Orders provisionsfrei; die zuvor
+angenommenen Round-Trip-Fixkosten von 7{,}80\,€ beschreiben einen Kostenblock, der im
+Betrieb nicht anfällt. Die Wahl des Direkthandels beim Emittenten statt eines
 Börsenplatzes senkt die Gesamtkosten je Round-Trip um weitere 5\,€, da die
 Handelsplatzentgelte entfallen. Zugleich zeigte sich ein versteckter Kostenfaktor:
 Der Geld-Brief-Spread des Direkthandels wird im Ex-Ante-Kostenausweis nicht
@@ -435,23 +439,22 @@ eine Sekunde je Votum.
 
 Die Aussagekraft der Ergebnisse unterliegt mehreren Einschränkungen. Die
 Bankschnittstelle bietet keine Sandbox, sodass die Ordervalidierung gegen das
-Produktivsystem erfolgt und die Ausführungsseite bis zum Echtgeldbetrieb nur bis zur
-Kostenvorschau demonstriert werden konnte. Die Autonomie ist regulatorisch durch die
+Produktivsystem erfolgt. Die Autonomie ist regulatorisch durch die
 täglich erforderliche photoTAN-Freigabe der Banksitzung begrenzt. Im verteilten
 Aufbau beträgt die Datenfrische am Entscheidungspunkt 60 bis 90 Sekunden, weshalb
 ausschließlich Limit-Orders verwendet werden. Der Backtest approximiert das
 Faktor-Zertifikat über das zweifache Index-Tagessegment und modelliert weder
 Währungseffekte noch den variablen Geld-Brief-Spread exakt; die inoffizielle
-Kursdatenquelle bietet keine Verfügbarkeitsgarantie. Die Gegenprüfung ist
-begrenzt: Beide Reihen entstammen derselben Indexberechnung und prüfen daher den
-Übertragungsweg, nicht den Indexstand; die Referenzreihe reicht lizenzbedingt nur
-zehn Jahre zurück. Trotz Temperatur null und
+Kursdatenquelle bietet keine Verfügbarkeitsgarantie. Trotz Temperatur null und
 erzwungenem Antwortschema bleibt ein Restmaß an Nichtdeterminismus der
 Sprachmodelle bestehen, und die Stichprobe der Voting-Kalibrierung ist zu Beginn
 des Betriebs klein, weshalb die Auswertung bewusst deskriptiv bleibt und keine
 automatische Modellabschaltung auslöst. Gleiches gilt für die statistische
 Prüfinstanz, die zu Betriebsbeginn im Schattenmodus läuft und deren Beitrag daher
-zunächst nur beobachtend gemessen werden kann.
+zunächst nur beobachtend gemessen werden kann. Schließlich kappt der Backtest
+Positionen bei drei Prozent Verlust, während der Livebetrieb mit vier Prozent
+Trailing-Distanz absichert; Simulation und Betrieb messen insoweit nicht denselben
+Mechanismus.
 
 \section{Kritische Würdigung}
 \label{sec:umsetzung-wuerdigung}
@@ -476,10 +479,30 @@ regulatorisch erzwungenen Kontrollpunkt, durch den in Echtzeit wirksamen Not-Aus
 Agenten selbst meldet. Das öffentliche Dashboard ergänzt die Kontrolle um
 Transparenz, ohne die handelnden Systeme zu exponieren.
 
-Gleichwohl bleiben Restrisiken bestehen. Der Ausstiegspfad bei einem Regimewechsel
-ist bis zum geplanten Soll-Positions-Abgleich bewusst auf einen alarmierten Stopp
-mit manueller Behandlung reduziert -- eine konservative Zwischenlösung, die
-menschliches Eingreifen erfordert, statt fehlerhaft zu automatisieren. Die
+Der Ausstiegspfad wurde während der Echtgeldwoche in drei Stufen vervollständigt.
+Zunächst verkauft der Agent bei einem Regimewechsel den Bestand oberhalb einer
+Restposition selbständig; anschließend sichert er jede gehaltene Position mit einer
+serverseitigen Trailing-Stop-Order ab, die er vor dem nächsten Zyklus freigibt und
+danach neu setzt; zuletzt löst er bei einem Richtungswechsel den gegenläufigen
+Bestand auf und steigt in die Gegenrichtung ein. Tragend ist dabei eine Belegpflicht:
+Gekauft wird erst, wenn die Auflösung am Depot nachgewiesen ist, nicht wenn die
+Verkaufsorder angenommen wurde -- der Rückgabewert der Bank bedeutet Annahme, nicht
+Ausführung. Eine Schlusskontrolle vergleicht am Ende jedes Laufs, was entsichert und
+was wieder abgesichert wurde, und pausiert das Konto bei einer Differenz.
+
+Die Absicherung ist zugleich das Beispiel für eine Maßnahme, deren Preis erst die
+Messung sichtbar macht. Ein Rückblick über die vollständige Indexhistorie zeigt, dass
+Stopdistanzen zwischen drei und fünf Prozent -- also genau der im Betrieb gewählte
+Bereich -- die Rendite der Regimestrategie in jedem geprüften Zeitfenster um mehrere
+Prozentpunkte jährlich mindern, ohne den Maximalverlust zu senken: Da der Agent nach
+einem Stop-Out am Folgetag zurückkauft, summieren sich die Rückkäufe im Abwärtsmarkt.
+Der Stop rechtfertigt sich damit nicht über die Rendite, sondern als Schutz gegen die
+Kurslücke über Nacht auf einem zweifach gehebelten Produkt -- ein Risiko, gegen das
+weder der Trendfilter noch ein einmal täglich laufender Zyklus wirkt.
+
+Gleichwohl bleiben Restrisiken bestehen. Als eines davon verbleibt das Fenster
+zwischen zwei Zyklen: Ein Prozessabbruch zwischen Freigabe und Neusetzen oder eine
+über Nacht verfallende Verkaufsorder lässt die Position bis zum Folgetag ohne Stop. Die
 Wirksamkeit des Modell-Gremiums ist zu Betriebsbeginn empirisch noch unbelegt und
 wird erst durch die laufende Kalibrierung überprüfbar; korrelierte Fehlurteile der
 Modelle bleiben trotz Anbieterdiversität möglich, da alle Modelle denselben
@@ -495,13 +518,6 @@ offene Schnittstellen zugänglich, sodass autonome Agenten einen faktischen
 \enquote{\glsxtrshort{api}-Aufpreis} tragen -- ein Umstand, der die angestrebte, weitgehend
 kostenfreie lokale Betreibbarkeit umso relevanter macht, da sie zumindest die
 Infrastruktur- und Inferenzkosten eliminiert.
-
-Bemerkenswert ist die Herkunft dieser Sicherungen: Die Wächterprozesse gegen stille
-Verbindungsabbrüche ebenso wie die tagesgenaue Gegenprüfung der Kursreihe waren im
-Entwurf nicht vorgesehen, sondern wurden durch Fehlerbilder des laufenden Betriebs
-erzwungen und anschließend in den Offline-Testsuiten festgeschrieben. Die
-Sicherungskette eines autonom handelnden Agenten lässt sich demnach nicht
-vollständig vorab bestimmen; sie bleibt an Betriebserfahrung gebunden.
 
 Über den konkreten Anwendungsfall hinaus beansprucht die Architektur
 Übertragbarkeit. Strategie, Produktzuordnung, Modellgremium und Bankadapter sind

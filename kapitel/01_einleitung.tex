@@ -24,7 +24,7 @@ benannt\footcite[vgl.][S.~18, 86]{bitkom2018}. Er kennzeichnet damit ein Anwendu
 welchem Autonomie und Sicherheit in besonderem Maße gegeneinander abzuwägen sind. Es
 besteht ein Spannungsfeld zwischen einem kontrollierten Handelssystem mit Anforderungen
 an die Reproduzierbarkeit und Auditierbarkeit und \glsxtrshortpl{llm}, deren plausible
-Ausgaben nicht deterministisch erzeugt werden\footcite[vgl.][]{huang2025}. Dies scheint auf den ersten Blick
+Ausgaben nicht deterministisch erzeugt werden\footcites[vgl.][S.~2]{huangHallucination2025}[vgl.][]{he2025nondeterminism}. Dies scheint auf den ersten Blick
 unvereinbar. Hinzu kommen weitere praktische Hürden, denn kommerzielle KI-Dienste und
 komplexe Handelsinfrastrukturen verursachen laufende Kosten und setzen die Preisgabe
 sensibler Daten an Dritte voraus. Genau an diesem Spannungsfeld setzt die
@@ -113,7 +113,9 @@ Zweitens, ob das Mehrheitsvotum mehrerer Sprachmodelle einen belegbaren Beitrag 
 Verlustrisikominimierung leistet, der über eine bloße Bestätigung des
 deterministischen Signals hinausgeht.
 
-Aus den beiden Leitfragen leiten sich drei prüfbare Hypothesen ab. 
+Beide Leitfragen werden zu prüfbaren Hypothesen verdichtet; hinzu tritt eine dritte,
+die die Annahme hinter der begrenzten Rolle der Prognose prüft. Alle drei werden in
+\cref{cha:umsetzung} an gemessenen Größen geprüft.
 
 \begin{description}
   \item[H1] Der Agent durchläuft den täglichen Handelszyklus im Normalbetrieb ohne
@@ -124,8 +126,6 @@ Aus den beiden Leitfragen leiten sich drei prüfbare Hypothesen ab.
   \item[H3] Die Tagesrichtung des Index lässt sich mit einem einfachen statistischen
     Modell nicht über die Basisrate hinaus prognostizieren.
 \end{description}
-
-Die Prüfung erfolgt in \cref{cha:umsetzung}.
 
 \section{Vorgehen und Methodik}
 \label{sec:methodik}

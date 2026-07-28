@@ -10,96 +10,130 @@
 \label{sec:problemstellung}
 
 Ein Agent der Künstlichen Intelligenz (\glsxtrshort{ki}) ist ein System, das seine
-Umgebung wahrnimmt, aus dem Wahrgenommenen
-Schlüsse zieht und eigenständig handelt\footcite[In Anlehnung an das KI-Element-Tripel Assess--Infer--Respond,][S.~15]{bitkom2018}
--- ebenso wie ein Anleger Kursverläufe beobachtet, bewertet und daraus Kauf- oder
-Verkaufsentscheidungen ableitet. In beiden Fällen entscheidet die Nachvollziehbarkeit
-des Entscheidungswegs darüber, ob dem Ergebnis vertraut werden kann. Mit der breiten
-Verfügbarkeit großer Sprachmodelle rückt die Frage in den Mittelpunkt, wie weit einem
-softwarebasierten Agenten Handlungen mit realen, insbesondere finanziellen Konsequenzen
-überlassen werden dürfen: Der automatisierte Handel wird im zugrunde gelegten
-Ordnungsrahmen ausdrücklich als Anwendungsbeispiel der prozesssteuernden Kontrolle
-benannt\zit[S.~18]{bitkom2018} und markiert damit ein Feld, in dem Autonomie und
-Absicherung in besonderem Maße gegeneinander abzuwägen sind. Sprachmodelle erzeugen
-plausible, aber nicht deterministische Ausgaben; ein unkontrolliert entscheidendes
-Modell ist mit den Anforderungen an Reproduzierbarkeit und Auditierbarkeit eines
-Handelssystems unvereinbar. Hinzu tritt eine praktische Hürde: Kommerzielle
-KI-Dienste und Handelsinfrastrukturen verursachen laufende Kosten und verlagern
-sensible Daten zu externen Anbietern, was der Nutzung durch Privatanwender entgegensteht.
-Vor diesem Hintergrund widmet sich die vorliegende Projektarbeit dem Aufbau und dem
-Live-Betrieb eines autonomen Handelsagenten, der diese Spannung durch eine bewusst
-begrenzte, überprüfbare Rolle der eingesetzten Sprachmodelle auflöst.
+Umgebung wahrnimmt, beurteilt und daraus Schlüsse zieht, um eigenständig zu handeln,
+wie auch Investoren Aktienkursverläufe beobachten und bewerten, um daraus Kauf- oder
+Verkaufsentscheidungen abzuleiten\footcites[vgl.][S.~36]{russellNorvig2021}[vgl.][S.~303]{gollnick2025}[In Anlehnung an das KI-Element-Tripel Assess--Infer--Respond,][S.~15]{bitkom2018}.
+Entscheidend ist dabei die Nachvollziehbarkeit der Handlungen und
+Entscheidungswege, denn sie trägt die Verlässlichkeit des Ergebnisses. Durch die breite Verfügbarkeit großer Sprachmodelle
+(engl. \glsxtrlong{llm}, \glsxtrshort{llm}) rückt die Frage in den Mittelpunkt,
+inwieweit einem softwarebasierten Agenten Handlungen mit realer Wirkung --
+insbesondere mit finanziellen Konsequenzen -- überlassen werden dürfen. Der
+automatische bzw. algorithmische Handel wird hierbei im zugrunde gelegten
+Ordnungsrahmen als Anwendungsbeispiel der prozesssteuernden Kontrolle
+benannt\footcite[vgl.][S.~18, 86]{bitkom2018}. Er kennzeichnet damit ein Anwendungsgebiet, in
+welchem Autonomie und Sicherheit in besonderem Maße gegeneinander abzuwägen sind. Es
+besteht ein Spannungsfeld zwischen einem kontrollierten Handelssystem mit Anforderungen
+an die Reproduzierbarkeit und Auditierbarkeit und \glsxtrshortpl{llm}, deren plausible
+Ausgaben nicht deterministisch erzeugt werden. Dies scheint auf den ersten Blick
+unvereinbar. Hinzu kommen weitere praktische Hürden, denn kommerzielle KI-Dienste und
+komplexe Handelsinfrastrukturen verursachen laufende Kosten und setzen die Preisgabe
+sensibler Daten an Dritte voraus. Genau an diesem Spannungsfeld setzt die
+vorliegende Projektarbeit an. Wie anspruchsvoll die gewählte Zielumgebung dabei ist,
+zeigt \cref{sec:umgebungsmerkmale}.
 
-Als Erprobungsumgebung für autonome Agenten ist der Börsenhandel dabei in
-besonderem Maße anspruchsvoll; die Schwierigkeiten lassen sich in fünf Merkmalen
-bündeln, die zugleich die Anforderungen an die spätere Architektur begründen.
-Erstens ist die Umgebung nicht stationär: Kursverläufe folgen keiner festen
-Verteilung, sodass einmal beobachtete Zusammenhänge fortlaufend an Gültigkeit
-verlieren können. Zweitens sind Handlungen irreversibel -- anders als in
-simulierten Umgebungen existiert kein folgenloser Neustart, jeder Fehler
-materialisiert sich unmittelbar als realer Vermögensverlust. Drittens erfolgt jede
-Handlung über die regulierte Schnittstelle einer Bank, die eine tägliche
-Zwei-Faktor-Freigabe erzwingt und keine Testumgebung bereitstellt, sodass bereits
-die Erprobung gegen das Produktivsystem erfolgen muss. Viertens setzen fixe
-Ordergebühren und Geld-Brief-Spannen jeder Entscheidungsfrequenz enge ökonomische
-Grenzen, die ein autonomes System kennen und ausweisen muss. Fünftens schließlich
-trifft die probabilistische Natur der Sprachmodelle auf ein Anwendungsfeld, das
-Reproduzierbarkeit und lückenlose Nachvollziehbarkeit verlangt. Diese fünf
-Merkmale bilden den Prüfstein, an dem sich die in dieser Arbeit entwickelte
-Architektur messen lassen muss.
+\section{Merkmale der Umgebung}
+\label{sec:umgebungsmerkmale}
+
+Der Börsenhandel ist als Zielumgebung eines autonom handelnden KI-Agenten in
+besonderem Maße anspruchsvoll. Sechs Merkmale skizzieren die Schwierigkeiten und
+prägen zugleich die Anforderungen an die Architektur. Erstens ist die Dynamik der Kursverläufe zu nennen:
+Ihre fehlende Stationarität entwertet beobachtete Zusammenhänge fortlaufend, und eine
+Entscheidung altert bereits während ihrer Prüfung. Datenbeschaffung, Prüfung und
+Orderaufgabe müssen deshalb in ein knappes Zeitbudget passen, von dem jeder
+zusätzliche Prüfschritt mitverbraucht und das den Entwurf entsprechend verkompliziert. Zweitens ist die Unumkehrbarkeit von Handlungen
+zu nennen. Getroffene Entscheidungen materialisieren sich unmittelbar und können zu
+realem Vermögensverlust führen. Drittens ist der Infrastrukturzugang für Privatanwender
+eingeschränkt. Kostenlose Kursdaten stehen in der benötigten Intraday-Auf\"|lösung nur
+über inoffizielle und nicht stabile Schnittstellen bereit, was Robustheit und
+Skalierbarkeit des Lösungsdesigns beeinflusst. Auf der Ausführungsseite setzt eine
+automatisierte Anbindung eine programmierbare
+\glsxtrshort{rest}-\glsxtrshort{api} bei einer inländischen depotführenden Stelle
+voraus\footcites[vgl.][]{comdirectApi2026}[vgl.][Kap.~7, S.~38--47]{comdirectSpec2020},
+die den Steuerabzug unmittelbar vornimmt\footcite[vgl.][\S~44 Abs.~1]{estg44}. Unter
+den in Deutschland ansässigen Direktbanken erfüllt zum Erhebungszeitpunkt allein
+comdirect beide Bedingungen\footcite[Eigene Recherche, Stand 19.07.2026. Bei nicht in
+Deutschland ansässigen Anbietern entfällt der Abzug, die Veranlagung obliegt dann dem
+Anleger, vgl.][\S~32d Abs.~3]{estg32d}. Schnittstellenbeschränkungen, eine tägliche
+Zwei-Faktor-Freigabe und das Fehlen einer bankseitigen Testumgebung sind ohne
+Ausweichmöglichkeit hinzunehmen; Erhebungen zur Lauf\"|fähigkeit erfolgen deshalb im
+Produktivsystem\footnote{Eigene Backtests und Trockenläufe sichern die
+Entscheidungslogik ab, nicht jedoch den Ausführungspfad.}.
+Viertens sind die verarbeiteten Daten schutzbedürftig, denn
+Depotbestände, eingesetztes Kapital und einzelne Transaktionen lassen auf die
+Vermögensverhältnisse des Anlegers schließen. Werden Entscheidungskontexte an
+cloudbasierte Modelldienste übergeben, verlassen diese Angaben die eigene
+Infrastruktur. Die Betriebsform der eingesetzten Modelle ist damit keine
+Nebenentscheidung, sondern eine Anforderung an die Lösungsarchitektur. Fünftens
+setzen fixe Ordergebühren und Geld-Brief-Spannen jeder Entscheidungsfrequenz enge
+ökonomische Grenzen, die ein autonomes System kennen und ausweisen
+muss\footcite[vgl.][S.~9]{comdirectPreise2026}. Sechstens
+schließlich trifft die probabilistische Natur der Sprachmodelle auf ein
+Anwendungsgebiet, welches Reproduzierbarkeit und lückenlose Nachvollziehbarkeit
+verlangt. Diese Umgebungsmerkmale bilden das Prüfraster, an dem sich die im
+Folgenden entwickelte Lösungsarchitektur eines KI-Agenten messen lassen muss.
 
 \section{Zielsetzung und Relevanz der Arbeit}
 \label{sec:zielsetzung}
 
-Ziel dieser Projektarbeit ist der Aufbau eines Live-Trading-Agenten mithilfe des
-Agenten-Frameworks OpenClaw. Die Handelsentscheidungen entstammen dabei nicht dem
+Ziel dieser Projektarbeit ist der Aufbau und Betrieb eines Live-Trading-Agenten
+mithilfe des Agenten-Frameworks OpenClaw\footcite[vgl.][]{openclawRepo2026} und lokal
+bzw. geschlossen betreibbarer \glsxtrshortpl{llm}. Der in \cref{sec:problemstellung}
+benannte Vorbehalt der Unvereinbarkeit soll dabei aufgelöst werden, indem den
+Sprachmodellen eine bewusst begrenzte und überprüfbare Rolle zugewiesen wird. Die Handelsentscheidungen entstammen dabei nicht dem
 Sprachmodell, sondern einer festgelegten, deterministisch implementierten Strategie
-auf Basis gleitender Durchschnitte (engl. \glsxtrlong{sma}, \glsxtrshort{sma}), die in
-\cref{cha:umsetzung} formal
-gefasst und in Quelltext umgesetzt wird. Lokal betreibbare große Sprachmodelle
-übernehmen die Rolle unabhängiger Prüfinstanzen: Jedes Modell verifiziert die
-regelbasiert vorbereitete Entscheidung eigenständig und stimmt ihr zu oder gegen sie;
-erst ein Mehrheitsentscheid des Modellgremiums gibt die Orderausführung über die
-Bankschnittstelle frei, während jede Ablehnung, Unerreichbarkeit oder regelwidrige
-Antwort konservativ als Veto wirkt. Ergänzt wird das Gremium um eine statistische
-Prüfinstanz: Ein kleines, klassisches Prognosemodell schätzt die
-Wahrscheinlichkeit, dass sich der Folgetag in Signalrichtung entwickelt, und
-reichert mit diesem Risikohinweis ausschließlich den Entscheidungskontext der
-Sprachmodelle an. Sämtliche Prüfinstanzen können Handelsvorschläge somit
-verhindern oder verkleinern, jedoch niemals erzeugen oder umkehren (Prinzip der begrenzten Diskretion). Ein weiteres Ziel
-betrifft die Betriebsform: Die Agentenstruktur ist modular aufgebaut und darauf
-ausgelegt, lokal für den Privatgebrauch betrieben zu werden -- als Zielkonfiguration
-auf einem Mac mini, sodass der Agent nach Einrichtung weitgehend kostenfrei verfügbar
-ist und sensible Daten die eigene Infrastruktur nicht verlassen müssen. Der praktische
-Beitrag der Arbeit liegt damit in einer nachvollziehbar dokumentierten, übertragbaren
-Referenzarchitektur für sicherheitsorientiert begrenzten KI-Einsatz im autonomen
-Handel sowie in empirischen Befunden aus dem realen Betrieb, etwa zur Kostenstruktur
-der Orderausführung und zum Abstimmungsverhalten der beteiligten Modelle. Daraus
-leiten sich zwei Leitfragen ab, an denen sich die Arbeit messen lässt: Erstens, ob
-sich der vollständige Handelszyklus -- von der Datenerfassung über die geprüfte
-Entscheidung bis zur Orderaufgabe bei einer regulierten Bank -- mit vertretbarem
-Aufwand autonom, nachvollziehbar und abgesichert betreiben lässt. Zweitens, ob das
-Mehrheitsvotum mehrerer Sprachmodelle einen belegbaren Beitrag zur
+auf Basis gleitender Durchschnitte (engl. \glsxtrlong{sma}, \glsxtrshort{sma}),
+angewendet auf einen ausgewählten Index, die \cref{cha:umsetzung} formal fasst und in
+Quelltext umsetzt. Ein Gremium aus drei lokal betreibbaren
+Sprachmodellen übernimmt die Rolle unabhängiger Prüf\"|instanzen: Jedes Modell
+prüft die regelbasiert vorbereitete Entscheidung eigenständig, und erst ein
+Mehrheitsentscheid des Modellgremiums gibt die Orderausführung über die
+Bankschnittstelle frei. Ergänzt
+wird das Gremium um eine statistische Prüf\"|instanz: Ein kleines, klassisches
+Prognosemodell schätzt die Wahrscheinlichkeit einer Folgetagsbewegung in
+Signalrichtung und soll damit ausschließlich den Entscheidungskontext der
+Sprachmodelle anreichern. In untergeordneten Parametern bleibt den Modellen ein eng
+gefasster Spielraum: Sie wählen die Ordergröße innerhalb einer vorgegebenen Spanne,
+dürfen den vorgeschlagenen Wert aber nur unterschreiten, und bei mehreren Zustimmungen
+gilt die kleinste genannte Größe.
+Sämtliche Prüf\"|instanzen können Handelsvorschläge somit verhindern oder verkleinern,
+jedoch niemals erzeugen oder umkehren (Prinzip der begrenzten Diskretion). Die
+Betriebsform ist dabei selbst ein Ziel: Die Agentenstruktur ist modular aufgebaut und für den lokalen
+Privatgebrauch ausgelegt -- als Zielkonfiguration auf einem Mac~mini, sodass sie
+weitgehend kostenfrei betreibbar bleibt und sensible Daten die eigene Infrastruktur
+nicht verlassen müssen. Der Agent versteht sich dabei als Erkenntnis-, nicht als Renditeinstrument.
+Der praktische Beitrag liegt in einer übertragbaren Referenzarchitektur
+für sicherheitsorientiert begrenzten KI-Einsatz im autonomen Handel sowie in
+empirischen Befunden aus dem realen Betrieb. Daraus leiten sich zwei Leitfragen ab, an denen sich die Arbeit messen lässt:
+Erstens, ob sich der vollständige Handelszyklus -- von der Datenerfassung über die
+geprüfte Entscheidung bis zur Orderaufgabe bei einer regulierten Bank -- mit
+vertretbarem Aufwand autonom, nachvollziehbar und abgesichert betreiben lässt.
+Zweitens, ob das Mehrheitsvotum mehrerer Sprachmodelle einen belegbaren Beitrag zur
 Verlustrisikominimierung leistet, der über eine bloße Bestätigung des
 deterministischen Signals hinausgeht.
 
 \section{Vorgehen und Methodik}
 \label{sec:methodik}
 
-Methodisch fußt die Arbeit auf einer zweistufigen Vorgehensweise. In der ersten Stufe
-werden mittels literaturbasierter Recherche die begrifflichen Grundlagen autonomer
+Methodisch fußt die Arbeit auf einer zweistufigen Vorgehensweise. Die Wahl folgt aus
+den Leitfragen und aus den in \cref{sec:umgebungsmerkmale} genannten Merkmalen. Die
+erste Leitfrage zielt auf die Betreibbarkeit eines Artefakts und ist nur konstruktiv zu
+beantworten, die zweite auf einen empirischen Beitrag, der sich allein im realen
+Betrieb messen lässt. Ein kontrolliertes Experiment scheidet aus, weil weder eine
+bankseitige Testumgebung noch ein wiederholbarer Marktverlauf zur Verfügung steht. In der ersten Stufe
+werden mittels literaturbasierter Recherche die begriff\"|lichen Grundlagen autonomer
 KI-Agenten erarbeitet und mit dem Periodensystem der Künstlichen Intelligenz ein
-Ordnungsrahmen eingeführt, der die eingesetzten Funktionalitäten systematisch verortet.
+Ordnungsrahmen eingeführt, der die eingesetzten Funktionalitäten systematisch
+verortet\footcite[vgl.][S.~15, 18]{bitkom2018}\footcite[Ursprungsbeitrag der zugrunde liegenden Idee, vgl.][]{hammond2016}.
 In der zweiten Stufe erfolgt die konstruktive Umsetzung als Fallstudie: Der Agent wird
-iterativ implementiert, durch Backtests und einen mehrtägigen Trockenlauf abgesichert
+iterativ implementiert, durch Backtests, eine Walk-Forward-Prüfung des statistischen
+Prognosemodells ohne Blick in die Zukunft\footcite[vgl.][]{pardo2008} und einen
+mehrtägigen Trockenlauf abgesichert
 erprobt und anschließend im Live-Betrieb gegen die produktive Bankschnittstelle
 validiert. Die Arbeit gliedert sich wie folgt: \cref{cha:grundlagen} führt den
-Agentenbegriff ein, stellt das Periodensystem der Künstlichen Intelligenz vor und
-grenzt regelbasierte von lernenden Agenten ab. \cref{cha:umsetzung} beschreibt
-Systemarchitektur, Handelsstrategie und Implementierung des Agenten, wertet die
-Ergebnisse anhand von Backtests, realen Kostendaten und dem Abstimmungsverhalten der
-Sprachmodelle aus und würdigt die verbleibenden Risiken kritisch. \cref{cha:schluss}
-fasst die zentralen Erkenntnisse zusammen und zieht ein Fazit im Hinblick auf die
+Agentenbegriff und das Periodensystem der Künstlichen Intelligenz ein und grenzt
+regelbasierte von lernenden Agenten ab. \cref{cha:umsetzung} beschreibt Architektur,
+Strategie und Implementierung, wertet Backtests, Kostendaten und Abstimmungsverhalten
+aus und würdigt die Risiken kritisch. \cref{cha:schluss} zieht ein Fazit zur
 Zielerreichung.
 
 %  =============================================================================

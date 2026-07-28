@@ -24,7 +24,7 @@ benannt\footcite[vgl.][S.~18, 86]{bitkom2018}. Er kennzeichnet damit ein Anwendu
 welchem Autonomie und Sicherheit in besonderem Maße gegeneinander abzuwägen sind. Es
 besteht ein Spannungsfeld zwischen einem kontrollierten Handelssystem mit Anforderungen
 an die Reproduzierbarkeit und Auditierbarkeit und \glsxtrshortpl{llm}, deren plausible
-Ausgaben nicht deterministisch erzeugt werden. Dies scheint auf den ersten Blick
+Ausgaben nicht deterministisch erzeugt werden\footcite[vgl.][]{huang2025}. Dies scheint auf den ersten Blick
 unvereinbar. Hinzu kommen weitere praktische Hürden, denn kommerzielle KI-Dienste und
 komplexe Handelsinfrastrukturen verursachen laufende Kosten und setzen die Preisgabe
 sensibler Daten an Dritte voraus. Genau an diesem Spannungsfeld setzt die
@@ -103,13 +103,23 @@ weitgehend kostenfrei betreibbar bleibt und sensible Daten die eigene Infrastruk
 nicht verlassen müssen. Der Agent versteht sich dabei als Erkenntnis-, nicht als Renditeinstrument.
 Der praktische Beitrag liegt in einer übertragbaren Referenzarchitektur
 für sicherheitsorientiert begrenzten KI-Einsatz im autonomen Handel sowie in
-empirischen Befunden aus dem realen Betrieb. Daraus leiten sich zwei Leitfragen ab, an denen sich die Arbeit messen lässt:
+empirischen Befunden aus dem realen Betrieb, etwa zur Kostenstruktur der
+Orderausführung, zum Abstimmungsverhalten der beteiligten Modelle und zur
+Prognosegüte einfacher statistischer Modelle. Daraus leiten sich zwei Leitfragen ab, an denen sich die Arbeit messen lässt:
 Erstens, ob sich der vollständige Handelszyklus -- von der Datenerfassung über die
 geprüfte Entscheidung bis zur Orderaufgabe bei einer regulierten Bank -- mit
 vertretbarem Aufwand autonom, nachvollziehbar und abgesichert betreiben lässt.
 Zweitens, ob das Mehrheitsvotum mehrerer Sprachmodelle einen belegbaren Beitrag zur
 Verlustrisikominimierung leistet, der über eine bloße Bestätigung des
 deterministischen Signals hinausgeht.
+
+Aus den beiden Leitfragen leiten sich drei prüfbare Hypothesen ab. H1: Der Agent
+durchläuft den täglichen Handelszyklus im Normalbetrieb ohne manuelle Eingriffe,
+die über die regulatorisch erforderliche tägliche Freigabe der Banksitzung
+hinausgehen. H2: Die Vetos des Modellgremiums vermeiden Verlusttage in
+Signalrichtung häufiger, als es der Zufall erwarten ließe. H3: Die Tagesrichtung
+des Index lässt sich mit einem einfachen statistischen Modell nicht über die
+Basisrate hinaus prognostizieren. Die Prüfung erfolgt in \cref{cha:umsetzung}.
 
 \section{Vorgehen und Methodik}
 \label{sec:methodik}

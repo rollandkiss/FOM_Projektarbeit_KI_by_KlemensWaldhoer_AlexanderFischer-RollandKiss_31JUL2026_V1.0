@@ -21,8 +21,8 @@ die Orderausführung freigibt (\cref{sec:zielsetzung}). Dieses Ziel wurde erreic
 Der vollständige Handelszyklus -- von der kontinuierlichen, gegen eine
 Referenzreihe abgesicherten Marktdatenerfassung über die regelbasierte
 Regimeentscheidung und das Multi-Modell-Voting bis zur Orderaufgabe über die
-Schnittstelle einer regulierten Bank -- ist umgesetzt, im Trockenlauf erprobt und
-in \cref{cha:umsetzung} vollständig dokumentiert. Die theoretischen Grundlagen aus
+Schnittstelle einer regulierten Bank -- ist umgesetzt, im Trockenlauf erprobt, im
+Echtgeldbetrieb validiert und in \cref{cha:umsetzung} vollständig dokumentiert. Die theoretischen Grundlagen aus
 \cref{cha:grundlagen} bildeten dafür den methodischen Rahmen: Das Periodensystem
 der Künstlichen Intelligenz erlaubte es, die bewusste Begrenzung des
 \glsxtrshort{ki}-Einsatzes nicht als Verzicht, sondern als gestalterische Aussage
@@ -40,6 +40,16 @@ messbaren Beitrag des Mehrheitsvotums bleibt zum Abgabezeitpunkt bewusst offen;
 die dafür geschaffene Kalibrierung misst den Veto-Beitrag der Modelle fortlaufend
 gegen die tatsächliche Marktentwicklung und benötigt eine längere Betriebsdauer,
 bevor valide Aussagen möglich sind (\cref{sec:umsetzung-evaluation-design}).
+
+Damit lassen sich die in \cref{sec:forschungsfragen} aufgestellten Hypothesen
+auflösen. \emph{H1} gilt für den Normalbetrieb, seit der Ausstiegs- und
+Absicherungspfad vollständig automatisiert ist; für die ersten Handelstage wurde der
+Lebenszyklus der Schutzorders dokumentiert von Hand geführt. \emph{H2} bleibt offen --
+die Stichprobe der Echtgeldwoche ist zu klein für eine belastbare Aussage; die
+Kalibrierung erhebt die nötigen Daten weiter. \emph{H3} ist bestätigt: Die
+Walk-Forward-Prüfung über 23.803 Handelstage zeigt keine Prognosekraft über die
+Basisrate hinaus. Der Negativbefund stützt die Architektur, statt sie zu schwächen --
+er ist der empirische Grund dafür, der Prognose keine Signalgewalt zu geben.
 
 In Kennzahlen verdichtet stellt sich das Ergebnis wie folgt dar: Der Backtest
 über zehn Jahre stellt dem täglichen Round-Trip der Demonstrationsstrategie
@@ -82,9 +92,9 @@ Entscheidungskontext erhalten; die Kalibrierung kann dies erst nach längerer
 Betriebsdauer klären. Die tägliche Handelsfrequenz ist nach Kosten strukturell
 defizitär und nur als Demonstrationsvehikel zu rechtfertigen. Die Autonomie
 bleibt an regulatorische und betriebliche Grenzen gebunden -- die tägliche
-photoTAN-Freigabe, den bewusst manuell gehaltenen Ausstiegspfad bei
-Regimewechseln und eine Datenfrische von 60 bis 90 Sekunden am
-Entscheidungspunkt. Schließlich stützt sich die Kursdatenerfassung auf eine
+photoTAN-Freigabe, das Fenster zwischen zwei Zyklen, in dem ein Prozessabbruch
+zwischen Freigabe und Neusetzen der Schutzorder unentdeckt bliebe, und eine
+Datenfrische von 60 bis 90 Sekunden am Entscheidungspunkt. Schließlich stützt sich die Kursdatenerfassung auf eine
 inoffizielle Quelle ohne Verfügbarkeitsgarantie, deren Ausfall der Betrieb zwar
 erkennen, aber nicht kompensieren kann.
 

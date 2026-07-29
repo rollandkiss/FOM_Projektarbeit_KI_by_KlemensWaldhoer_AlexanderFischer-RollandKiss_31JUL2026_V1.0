@@ -221,17 +221,19 @@
 % --- Trenner zwischen aufeinanderfolgenden Fußnoten-Markierungen -----------
 % Bei aufeinanderfolgenden Fußnoten-Citationen -- etwa
 % "...{a}\footcite{b}\footcite{c}" -- kollidieren die Hochziffern im
-% Fließtext optisch (Ergebnis "¹²³" statt "¹ ² ³"). Das Paket footmisc
-% loest dies mit der Option `multiple`: per kerngesteuerter
-% Folge-Erkennung wird zwischen direkt aufeinanderfolgenden
-% Hochziffern automatisch ein Trenner gesetzt -- nicht jedoch vor
-% Satzzeichen oder vor regulaer mit Leerzeichen abgesetzten Folgewoertern.
-% Der Trenner wird ueber \multfootsep konfiguriert; Default ist ein
-% Komma, hier auf \space (Leerzeichen) umgestellt.
-% Hinweis: Die fuer die biblatex-Kombination noetige Neudefinition von
-% \mkbibfootnote (Entfernen des Kern-zerstoerenden \unspace) erfolgt
-% weiter unten im Bibliografie-Abschnitt, nachdem biblatex-chicago
-% \mkbibfootnote definiert hat.
+% Fließtext optisch (Ergebnis "1011" statt "10, 11").
+% BEFUND 29.07.2026 (Glyph-Analyse des Kompilats): Der footmisc-Mechanismus
+% (Option `multiple`, kernbasierte Folge-Erkennung ueber \FN@mf@check /
+% \FN@mf@prepare) ist in diesem Dokument WIRKUNGSLOS, weil pdfx/hyperref
+% (Ladereihenfolge: footmisc Z.~239, pdfx Z.~401) \@footnotemark anschliessend
+% fuer die Hyperlink-Anker neu definiert und dabei die footmisc-Haken
+% verwirft. Folge: \multfootsep wird niemals ausgewertet; zwischen den
+% Marken steht lediglich ein Leerraum (-172/1000 em im Content-Stream,
+% S.~17: "10 11"). Der Trenner wird deshalb weiter unten im
+% Bibliografie-Abschnitt in der Neudefinition von \mkbibfootnote mit einem
+% eigenen, hyperref-festen Marker-Verfahren umgesetzt (siehe dort).
+% Das Paket footmisc selbst wird weiterhin benoetigt (u. a. ersetzt es
+% \@footnotetext, worauf der Schriftgrad-Patch unten aufbaut).
 \usepackage[multiple]{footmisc}
 
 % --- Fussnoten-Schriftgrad (Leitfaden Kap. 5.2.2) ---------------------------
@@ -269,7 +271,11 @@
 % anderen Schriftfamilie als der uebrige Fussnotentext. \urlstyle stammt aus
 % url, das erst ueber pdfx/hyperref geladen wird, daher \AtBeginDocument.
 \AtBeginDocument{\urlstyle{same}}
-\renewcommand{\multfootsep}{\space}
+% HINWEIS 29.07.2026: Eine fruehere Umdefinition von \multfootsep an
+% dieser Stelle wurde entfernt -- sie war wirkungslos, weil der
+% footmisc-Trennermechanismus unter pdfx/hyperref nicht greift
+% (siehe Kommentarblock oben). Der Trenner wird im \mkbibfootnote-Patch
+% weiter unten selbst umgesetzt.
 
 % ----------------------------- Grafik & Tabellen ----------------------------
 % Abbildungen: Leitfaden Kap. 2.3 / 5.7 (Bildunterschrift UNTER der Abbildung,
@@ -449,6 +455,16 @@
     backrefpage = {{vgl\adddotspace S\adddotspace}}
 }
 
+% Trennzeichen bei Mehrfachnachweisen (\footcites{a}{b}{c}) explizit
+% festgeschrieben. biblatex-Standard ist das Semikolon; die Angabe hier
+% macht das Trennzeichen unabhaengig von Stil-Updates deterministisch.
+% (Leitfaden Kap. 6: "Zitationen sind einheitlich zu gestalten" --
+% Semikolon erfuellt die Vorgabe; verifiziert im Kompilat V1.0, S. 13,
+% Fussnote 1: "...ISBN: 978-0-13-461099-3; vgl. B. Gollnick, ...")
+\renewcommand*{\multicitedelim}{\addsemicolon\space}
+\renewcommand*{\compcitedelim}{\addsemicolon\space}
+\renewcommand*{\textcitedelim}{\addsemicolon\space}
+
 % Bibliografie-Datei einbinden
 % verzeichnisse/references.bib -- einzige Quelle des Literaturverzeichnisses;
 %                   wird ueber Mendeley Reference Manager synchronisiert. Die
@@ -457,22 +473,49 @@
 \addbibresource{verzeichnisse/references.bib}
 
 % --- Mehrfache-Fußnoten-Patch fuer biblatex --------------------------------
-% biblatex setzt \mkbibfootnote standardmaessig in der Form
-%   \unspace\xspace\bibsentence\footnote{\bibsentence#1\addperiod}
-% ein. Das fuehrende \unspace entfernt vorhandene Trailing-Spaces und
-% damit auch den Kern-Marker, den footmisc[multiple] hinter jeder
-% Fußnoten-Markierung platziert, um aufeinanderfolgende Marken zu
-% erkennen. Folge: bei \footcite\footcite-Sequenzen schlaegt die
-% Trennererkennung fehl ("¹²" statt "¹ ²").
-% Die Neudefinition entfernt das stoerende \unspace und behaelt das
-% darauf folgende \bibsentence bei. Da biblatex-chicago Fußnoten-
-% Citationen ausschliesslich ueber \mkbibfootnote abwickelt, wirkt
-% der Patch zugleich fuer \footcite, \footcites und \autocite.
+% UEBERARBEITET 29.07.2026 nach Glyph-Analyse des Kompilats:
+% Der footmisc-Trennermechanismus (Option `multiple`) greift in diesem
+% Dokument nicht, weil pdfx/hyperref \@footnotemark nach footmisc neu
+% definiert und dessen Kern-Markierung (\FN@mf@prepare/\FN@mf@check)
+% verwirft; \multfootsep wird dadurch nie ausgewertet. Im Kompilat stand
+% zwischen aufeinanderfolgenden Marken lediglich ein Leerraum
+% ("10 11" statt "10, 11").
+% Die Neudefinition von \mkbibfootnote setzt den Trenner deshalb mit
+% einem eigenen Marker-Verfahren um, das dem footmisc-Prinzip folgt,
+% aber vollstaendig in unserer Kontrolle liegt:
+%   * \FOM@fnmark@prepare hinterlaesst hinter JEDER Fussnoten-Marke ein
+%     sich aufhebendes Kern-Paar (letzter Listenknoten: Kern 7sp).
+%   * \FOM@fnmark@check prueft zu Beginn der NAECHSTEN Fussnote, ob der
+%     letzte Knoten dieser Marker ist; nur dann wird vor der neuen Marke
+%     der Trenner \FOM@fnmark@sep gesetzt.
+%   * Das vorangestellte \unskip entfernt Zwischenraum vor der Marke
+%     (u. a. den im Kompilat beobachteten Leerraum zwischen den Marken)
+%     und legt den Marker frei; ohne Marker wirkt \unskip wie das
+%     klassische biblatex-\unspace (Marke schliesst an das Wort an).
+% Da biblatex-chicago Fussnoten-Citationen ausschliesslich ueber
+% \mkbibfootnote abwickelt, wirkt der Patch fuer \footcite, \footcites
+% und \autocite. Der Wert 7sp kollidiert nicht mit dem (hier toten)
+% footmisc-Marker 3sp. Satzzeichen vor der Folgefussnote bleiben
+% unberuehrt, weil dann kein Marker am Listenende steht.
+\makeatletter
+\newcommand*{\FOM@fnmark@sep}{,\space}%  % sichtbarer Trenner: "10, 11"
+\newcommand*{\FOM@fnmark@prepare}{\ifhmode\kern-7sp\kern7sp\relax\fi}
+\newcommand*{\FOM@fnmark@check}{%
+    \ifhmode
+        \unskip
+        \ifdim\lastkern=7sp\relax
+            \unkern
+            \textsuperscript{\FOM@fnmark@sep}%
+        \fi
+    \fi}
 \renewcommand*{\mkbibfootnote}[1]{%
     \iftoggle{blx@footnote}%
         {#1}%
-        {\bibsentence\footnote{\bibsentence#1\addperiod}}%
+        {\FOM@fnmark@check
+         \bibsentence\footnote{\bibsentence#1\addperiod}%
+         \FOM@fnmark@prepare}%
 }
+\makeatother
 
 % Filter: Eintraege mit Schluesselwort "ki" -> KI-Verzeichnis (Kap. 6.2.4),
 % alle uebrigen -> Hauptliteraturverzeichnis (Kap. 6.3).
@@ -624,7 +667,7 @@
 % und Studiengang, Erstgutachter, Datum/Ort der Fertigstellung.
 % ============================================================================
 \newcommand{\arbeitTitel}{OpenClaw als Trading Agent}
-\newcommand{\arbeitUntertitel}{Deterministische Handelsentscheidungen unter Prüfung eines Sprachmodell-Gremiums}
+\newcommand{\arbeitUntertitel}{Sicherheitsorientiert begrenzte KI-Autonomie im automatisierten Derivatehandel}
 \newcommand{\arbeitArt}{Projektarbeit} % Bachelor-Thesis oder Master-Thesis / Seminararbeit
 \newcommand{\arbeitGrad}{Bachelor of Science (B.Sc.)}
 \newcommand{\arbeitStudiengang}{Informatik}

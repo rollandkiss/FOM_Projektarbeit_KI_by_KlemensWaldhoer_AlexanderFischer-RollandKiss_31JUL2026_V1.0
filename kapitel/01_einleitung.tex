@@ -107,25 +107,19 @@ für sicherheitsorientiert begrenzten KI-Einsatz im autonomen Handel sowie in
 empirischen Befunden aus dem realen Betrieb, etwa zur Kostenstruktur der
 Orderausführung, zum Abstimmungsverhalten der beteiligten Modelle und zur
 Prognosegüte einfacher statistischer Modelle. Daraus leiten sich zwei Leitfragen ab, an denen sich die Arbeit messen lässt:
-Erstens, ob sich der vollständige Handelszyklus -- von der Datenerfassung über die
-geprüfte Entscheidung bis zur Orderaufgabe bei einer regulierten Bank -- mit
+Erstens, ob sich der vollständige Handelszyklus auf Basis des Agenten-Frameworks OpenClaw -- 
+von der Datenerfassung über die geprüfte Entscheidung bis zur Orderaufgabe bei einer regulierten Bank -- mit
 vertretbarem Aufwand autonom, nachvollziehbar und abgesichert betreiben lässt.
-Zweitens, ob das Mehrheitsvotum mehrerer Sprachmodelle einen belegbaren Beitrag zur
-Verlustrisikominimierung leistet, der über eine bloße Bestätigung des
-deterministischen Signals hinausgeht.
+Zweitens, ob das Sprachmodell-Gremium seine begrenzte Diskretion verlässlich ausübt -- im Regelfall beschränkt auf Verhindern, Verkleinern und zeitliches Einordnen, im Fehlerfall durchgängig fail-safe -- ohne Handelsentscheidungen jemals zu erzeugen oder umzukehren.
 
-Beide Leitfragen werden zu prüfbaren Hypothesen verdichtet; hinzu tritt eine dritte,
-die die Annahme hinter der begrenzten Rolle der Prognose prüft. Alle drei werden in
-\cref{cha:umsetzung} an gemessenen Größen geprüft.
+Beide Leitfragen werden zu prüfbaren Hypothesen verdichtet: \emph{H1} prüft die Autonomie des Handelszyklus, \emph{H2} die Diskretionsausübung des Gremiums. \emph{H3} prüft ergänzend die Annahme, die der begrenzten Rolle des Prognosemodells zugrunde liegt. Alle drei werden in \cref{cha:umsetzung} an gemessenen Größen geprüft.
 
 \begin{description}
   \item[H1] Der Agent durchläuft den täglichen Handelszyklus im Normalbetrieb ohne
     manuelle Eingriffe, die über die regulatorisch erforderliche tägliche Freigabe der
     Banksitzung hinausgehen.
-  \item[H2] Die Vetos des Modellgremiums vermeiden Verlusttage in Signalrichtung
-    häufiger, als es der Zufall erwarten ließe.
-  \item[H3] Die Tagesrichtung des Index lässt sich mit einem einfachen statistischen
-    Modell nicht über die Basisrate hinaus prognostizieren.
+  \item[H2] Das Sprachmodell-Gremium übt seine begrenzte Diskretion nachweisbar aus: Im Regelfall treten voneinander abweichende Einzelvoten auf, und seine Eingriffe beschränken sich auf Verhindern, Verkleinern und zeitliches Einordnen der vorbereiteten Entscheidung.
+  \item[H3] Das eingesetzte statistische Prognosemodell erreicht in einer Walk-Forward-Prüfung keine bessere Trennschärfe als die Basisrate, und sein Brier-Score unterschreitet den der Klimatologie nicht.
 \end{description}
 
 \section{Vorgehen und Methodik}

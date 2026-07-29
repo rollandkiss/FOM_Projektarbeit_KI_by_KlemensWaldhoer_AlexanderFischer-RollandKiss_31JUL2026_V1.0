@@ -44,7 +44,7 @@ Orderaufgabe müssen deshalb in ein knappes Zeitbudget passen, von dem jeder
 zusätzliche Prüfschritt mitverbraucht und das den Entwurf entsprechend verkompliziert. Zweitens ist die Unumkehrbarkeit von Handlungen
 zu nennen. Getroffene Entscheidungen materialisieren sich unmittelbar und können zu
 realem Vermögensverlust führen. Drittens ist der Infrastrukturzugang für Privatanwender
-eingeschränkt. Kostenlose Kursdaten stehen in der benötigten Intraday-Auf\"|lösung nur
+eingeschränkt. Kostenlose Kursdaten stehen in der benötigten Intraday-Auflösung nur
 über inoffizielle und nicht stabile Schnittstellen bereit, was Robustheit und
 Skalierbarkeit des Lösungsdesigns beeinflusst. Auf der Ausführungsseite setzt eine
 automatisierte Anbindung eine programmierbare
@@ -56,7 +56,7 @@ comdirect beide Bedingungen\footcite[Eigene Recherche, Stand 19.07.2026. Bei nic
 Deutschland ansässigen Anbietern entfällt der Abzug, die Veranlagung obliegt dann dem
 Anleger, vgl.][\S~32d Abs.~3]{estg32d}. Schnittstellenbeschränkungen, eine tägliche
 Zwei-Faktor-Freigabe und das Fehlen einer bankseitigen Testumgebung sind ohne
-Ausweichmöglichkeit hinzunehmen; Erhebungen zur Lauf\"|fähigkeit erfolgen deshalb im
+Ausweichmöglichkeit hinzunehmen; Erhebungen zur Lauf"|fähigkeit erfolgen deshalb im
 Produktivsystem\footnote{Eigene Backtests und Trockenläufe sichern die
 Entscheidungslogik ab, nicht jedoch den Ausführungspfad.}.
 Viertens sind die verarbeiteten Daten schutzbedürftig, denn
@@ -85,18 +85,18 @@ Sprachmodell, sondern einer festgelegten, deterministisch implementierten Strate
 auf Basis gleitender Durchschnitte (engl. \glsxtrlong{sma}, \glsxtrshort{sma}),
 angewendet auf einen ausgewählten Index, die \cref{cha:umsetzung} formal fasst und in
 Quelltext umsetzt. Ein Gremium aus drei lokal betreibbaren
-Sprachmodellen übernimmt die Rolle unabhängiger Prüf\"|instanzen: Jedes Modell
+Sprachmodellen übernimmt die Rolle unabhängiger Prüfinstanzen: Jedes Modell
 prüft die regelbasiert vorbereitete Entscheidung eigenständig, und erst ein
 Mehrheitsentscheid des Modellgremiums gibt die Orderausführung über die
 Bankschnittstelle frei. Ergänzt
-wird das Gremium um eine statistische Prüf\"|instanz: Ein kleines, klassisches
+wird das Gremium um eine statistische Prüfinstanz: Ein kleines, klassisches
 Prognosemodell schätzt die Wahrscheinlichkeit einer Folgetagsbewegung in
 Signalrichtung und soll damit ausschließlich den Entscheidungskontext der
 Sprachmodelle anreichern. In untergeordneten Parametern bleibt den Modellen ein eng
 gefasster Spielraum: Sie wählen die Ordergröße innerhalb einer vorgegebenen Spanne,
 dürfen den vorgeschlagenen Wert aber nur unterschreiten, und bei mehreren Zustimmungen
 gilt die kleinste genannte Größe.
-Sämtliche Prüf\"|instanzen können Handelsvorschläge somit verhindern oder verkleinern,
+Sämtliche Prüfinstanzen können Handelsvorschläge somit verhindern oder verkleinern,
 jedoch niemals erzeugen oder umkehren (Prinzip der begrenzten Diskretion). Die
 Betriebsform ist dabei selbst ein Ziel: Die Agentenstruktur ist modular aufgebaut und für den lokalen
 Privatgebrauch ausgelegt -- als Zielkonfiguration auf einem Mac~mini, sodass sie
@@ -114,7 +114,7 @@ Zweitens, ob das Mehrheitsvotum mehrerer Sprachmodelle einen belegbaren Beitrag 
 Verlustrisikominimierung leistet, der über eine bloße Bestätigung des
 deterministischen Signals hinausgeht.
 
-Beide Leitfragen werden zu prüfbaren Hypothesen verdichtet; hinzu tritt eine dritte,
+Beide Leitfragen werden zu prüfbaren Hypothesen verdichtet. Hinzu tritt eine dritte,
 die die Annahme hinter der begrenzten Rolle der Prognose prüft. Alle drei werden in
 \cref{cha:umsetzung} an gemessenen Größen geprüft.
 
@@ -137,7 +137,7 @@ erste Leitfrage zielt auf die Betreibbarkeit eines Artefakts und ist nur konstru
 beantworten, die zweite auf einen empirischen Beitrag, der sich allein im realen
 Betrieb messen lässt. Ein kontrolliertes Experiment scheidet aus, weil weder eine
 bankseitige Testumgebung noch ein wiederholbarer Marktverlauf zur Verfügung steht. In der ersten Stufe
-werden mittels literaturbasierter Recherche die begriff\"|lichen Grundlagen autonomer
+werden mittels literaturbasierter Recherche die begriff"|lichen Grundlagen autonomer
 KI-Agenten erarbeitet und mit dem Periodensystem der Künstlichen Intelligenz ein
 Ordnungsrahmen eingeführt, der die eingesetzten Funktionalitäten systematisch
 verortet\footcite[vgl.][S.~15, 18]{bitkom2018}\footcite[Ursprungsbeitrag der zugrunde liegenden Idee, vgl.][]{hammond2016}.

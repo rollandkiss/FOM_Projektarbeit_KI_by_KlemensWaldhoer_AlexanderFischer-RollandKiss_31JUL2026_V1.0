@@ -6,181 +6,152 @@
 \chapter{Theoretische Grundlagen zu KI-Agenten}
 \label{cha:grundlagen}
 
-Das vorliegende Kapitel legt die begrifflichen und konzeptionellen Grundlagen,
-auf denen die spätere Fallstudie aufbaut. Zunächst werden der Agentenbegriff und
-die mit autonomen Systemen verbundenen Zielsetzungen geklärt. Anschließend wird
-mit dem Periodensystem der Künstlichen Intelligenz ein Ordnungsrahmen eingeführt,
-der es erlaubt, die im Projekt eingesetzten KI-Funktionalitäten systematisch zu
-verorten. Abschließend erfolgt eine Abgrenzung unterschiedlicher Agentenauffassungen,
-die zugleich die gestalterischen Entscheidungen der Arbeit vorbereitet.
+Das Kapitel klärt zunächst den Agentenbegriff und den Autonomiegrad. Es führt
+anschließend das Periodensystem der Künstlichen Intelligenz als Ordnungsrahmen ein
+und leitet daraus vier Gestaltungsprinzipien ab. Der letzte Abschnitt fügt beides zur
+Lösungsarchitektur zusammen und führt zu \cref{cha:umsetzung} über.
 
-\section{Begriffe und Ziele}
-\label{sec:grundlagen-ziele}
+\section{Agentenbegriff und Autonomiegrad}
+\label{sec:grundlagen-agentenbegriff}
 
-Unter einem KI-Agenten wird im Rahmen dieser Arbeit ein softwarebasiertes System
-verstanden, das seine Umgebung über definierte Schnittstellen wahrnimmt, aus den
-gewonnenen Informationen Handlungsoptionen ableitet und eigenständig Maßnahmen
-ergreift, um ein vorgegebenes Ziel zu verfolgen. Kennzeichnend ist der geschlossene
-Kreis aus Wahrnehmung, Schlussfolgerung und Handlung, der ohne kontinuierliche
-menschliche Steuerung durchlaufen wird.\zit[S.~303]{gollnick2025} Der Grad an
-Autonomie ist dabei nicht binär,
-sondern erstreckt sich über ein Kontinuum, das von rein assistierenden Systemen bis
-zu weitgehend selbstständig agierenden Lösungen reicht. Für die vorliegende Arbeit
-ist insbesondere die Frage bedeutsam, wie weit diese Autonomie in einem
-sicherheitskritischen Anwendungsfeld verantwortbar ausgedehnt werden kann und an
-welchen Stellen
-eine menschliche Rückbindung erforderlich bleibt.
+Ein Agent nimmt seine Umgebung über Sensoren wahr und wirkt über Aktoren auf sie
+ein\footcite[vgl.][S.~36]{russellNorvig2021}. Die Agentenforschung ergänzt diesen
+weiten Begriff um vier Eigenschaften, die einen Softwareagenten von einem
+gewöhnlichen Programm unterscheiden. Er handelt autonom, reagiert auf seine Umgebung,
+verfolgt eigene Ziele und ist
+interaktionsfähig\footcites[vgl.][S.~116]{wooldridgeJennings1995}[vgl.][S.~26\,f.]{wooldridge2009}.
+Hinzu tritt die zeitliche Dimension, denn ein autonomer Agent handelt fortlaufend und
+verfolgt dabei eine eigene Agenda\footcite[vgl.][S.~25]{franklinGraesser1997}. Ein
+\glsxtrshort{ki}-Agent wird in dieser Arbeit daher als softwarebasiertes System
+verstanden, das den geschlossenen Kreis aus Wahrnehmung, Schlussfolgerung und
+Handlung ohne kontinuierliche menschliche Steuerung
+durchläuft\footcite[vgl.][S.~303]{gollnick2025}.
 
-Eine besondere Ausprägung erfahren KI-Agenten seit der breiten Verfügbarkeit großer
-Sprachmodelle (\glsxtrlong{llm}, \glsxtrshort{llm}). Diese ermöglichen es,
-unstrukturierte Situationsbeschreibungen zu
-verarbeiten und in natürlicher Sprache begründete Ausgaben zu erzeugen, wodurch sich
-Sprachmodelle als bewertende oder orchestrierende Komponente innerhalb eines Agenten
-anbieten. Zugleich bringen sie Eigenschaften mit, die in sicherheitskritischen
-Anwendungen ausdrücklich zu behandeln sind: Ihre Ausgaben entstehen probabilistisch
-und sind selbst bei identischer Eingabe nicht vollständig reproduzierbar; sie können
-inhaltlich plausible, aber sachlich falsche Aussagen erzeugen, was ihre Verlässlichkeit
-gerade bei Aufgaben mit hohen Genauigkeitsanforderungen
-begrenzt;\zit[S.~59]{gollnick2025} und sie folgen
-Formatvorgaben nicht zwingend, sofern diese nicht technisch erzwungen werden. Für den
-Einsatz als Prüfinstanz folgt daraus, dass Sprachmodellantworten grundsätzlich als
-unzuverlässige Eingaben zu behandeln sind, die ein deterministischer Validator gegen
-ein festes Schema und feste Regeln prüft, bevor ihnen Wirkung zukommt. Dieses Vorgehen
-entspricht dem in der Literatur beschriebenen Muster einer nachgelagerten Prüfschicht,
-die jede Modellantwort kontrolliert, bevor sie an nachgelagerte Systeme
-gelangt.\zit[S.~135]{gollnick2025}
-Hinsichtlich der Betriebsform erstreckt sich das Spektrum von cloud-gehosteter
-Inferenz über einen externen Dienst bis zum lokalen Betrieb, bei dem die Modellinferenz
-auf eigener oder selbst kontrollierter Infrastruktur erfolgt. Für Anwendungsfelder mit
-erhöhten Anforderungen an Datenhoheit und Nachvollziehbarkeit ist die lokale Betriebsform
-von besonderem Interesse, da sensible Eingaben die kontrollierte Umgebung nicht verlassen
-und die eingesetzte Modellversion reproduzierbar festgelegt werden kann. Architektonisch
-folgt daraus die Anforderung, die Modellanbindung hinter einer einheitlichen Schnittstelle
-zu kapseln, sodass der Wechsel zwischen den Betriebsformen eine Konfigurations- und keine
-Umbauentscheidung darstellt; die Fallstudie dieser Arbeit setzt dieses Prinzip um, indem
-derselbe Codestand cloud-gehostete Modelle nutzt und für die Migration auf lokale
-Infrastruktur vorbereitet ist.
+Autonomie ist dabei keine Eigenschaft, die ein System besitzt oder nicht besitzt,
+sondern eine Gestaltungsgröße auf einem Kontinuum. Mit wachsender Autonomie steigt
+die Flexibilität eines Agenten, während seine Zuverlässigkeit tendenziell
+abnimmt\footcite[vgl.][S.~303\,f.]{gollnick2025}. Große Sprachmodelle verschärfen
+diese Abwägung. Sie verarbeiten unstrukturierte Situationsbeschreibungen und
+verschränken Schlussfolgern und
+Handeln\footcites[vgl.][]{yao2023react}[vgl.][]{wangSurvey2024}, sodass sie sich als
+bewertende Komponente eines Agenten eignen. Zugleich entstehen ihre Ausgaben
+probabilistisch und sind selbst bei identischer Eingabe nicht vollständig
+reproduzierbar\footcite[vgl.][]{he2025nondeterminism}. Sie erzeugen plausible, aber
+sachlich falsche
+Aussagen\footcites[vgl.][S.~59]{gollnick2025}[vgl.][S.~1--38]{ji2023}[vgl.][S.~1]{huangHallucination2025}.
+Formatvorgaben befolgen sie nur, sofern diese technisch erzwungen werden. Für den
+Einsatz als Prüf\"|instanz folgt daraus, dass Modellantworten als unzuverlässige
+Eingaben zu behandeln sind. Empfohlen wird deshalb die einfachste tragfähige
+Struktur\footcite[vgl.][]{anthropicAgents2024}.
 
-Das Ziel eines autonomen Agenten besteht nicht allein in der technischen
-Funktionsfähigkeit, sondern ebenso in der Beherrschbarkeit seines Verhaltens. Gerade
-wenn ein Agent Handlungen mit realen Konsequenzen auslöst, treten neben die
-Leistungsfähigkeit die Anforderungen an Transparenz, Überprüfbarkeit und Absicherung.
-Die Literatur zu Agentensystemen beschreibt diesen Zusammenhang als grundlegende
-Abwägung: Mit wachsender Autonomie steigt die Flexibilität eines Agenten, während
-seine Zuverlässigkeit -- die Fähigkeit, konsistent und vorhersagbar zu arbeiten --
-tendenziell abnimmt.\zit[S.~303\,f.]{gollnick2025} Die in dieser Arbeit verfolgte
-Architektur entscheidet diese Abwägung bewusst zugunsten der Zuverlässigkeit:
-Autonomie wird nur dort gewährt, wo deterministische Prüfungen sie einhegen. Diese
-Spannung zwischen Autonomie und Kontrolle bildet den Bezugsrahmen, vor dem die
-weiteren Ausführungen zu lesen sind.
-
-\section{Einordnung}
-\label{sec:grundlagen-einordnung}
+\section{Das Periodensystem der Künstlichen Intelligenz}
+\label{sec:grundlagen-periodensystem}
 
 Zur systematischen Beschreibung der Bausteine, aus denen sich KI-Anwendungen
 zusammensetzen, greift die Arbeit auf das Periodensystem der Künstlichen Intelligenz
-zurück.\zit[S.~15\,f.]{bitkom2018} Das Konzept überträgt die aus dem Chemieunterricht
-vertraute Systematik des Periodensystems der Elemente auf den Bereich der Künstlichen
-Intelligenz. So wie sich in der Chemie eine überschaubare Zahl von Elementen zu einer
-Vielzahl von Molekülen verbindet, werden KI-Funktionalitäten als abgegrenzte
-Grundbausteine aufgefasst, die sich zu konkreten Anwendungen zusammenfügen lassen. Die
-zugrunde liegende Idee geht auf Hammond zurück, der Künstliche Intelligenz als
-Kombination gekapselter Teilfunktionen nach dem Bild ineinandergreifender
-Bausteine beschreibt.\zit[S.~15]{bitkom2018}\zit{hammond2016}
+zurück\footcite[vgl.][S.~15\,f.]{bitkom2018}. Es überträgt die aus der Chemie
+vertraute Systematik auf die Künstliche Intelligenz, denn wie sich dort wenige
+Elemente zu einer Vielzahl von Molekülen verbinden, fügen sich abgegrenzte
+KI-Grundbausteine zu konkreten Anwendungen zusammen. Die zugrunde liegende Idee geht auf Hammond
+zurück, der Künstliche Intelligenz als Kombination gekapselter Teilfunktionen
+beschreibt\footcites[vgl.][S.~15]{bitkom2018}[vgl.][]{hammond2016}.
 
-Das Periodensystem umfasst achtundzwanzig KI-Elemente, die jeweils eine spezifische,
-historisch als eigenständige Fähigkeit etablierte Funktionalität repräsentieren.\zit[S.~15]{bitkom2018}
-Die Anordnung folgt dem typischen Verarbeitungsablauf einer KI-gestützten Anwendung,
-der sich in ein Tripel aus Wahrnehmung, Schlussfolgerung und Reaktion gliedert. Die
-Gruppe \enquote{Assess} umfasst jene Elemente, die Daten erfassen und Muster erkennen,
-von der Verarbeitung von Sprache, Bildern und Sensorsignalen bis zur Auswertung
-strukturierter Datenquellen. Die Gruppe \enquote{Infer} bündelt die Fähigkeiten des
-Schlussfolgerns und Entscheidens, worunter etwa die Prognose künftiger Zustände, das
-Planen von Handlungsfolgen, das Treffen von Entscheidungen sowie das Erklären der
-gezogenen Schlüsse fallen. Die Gruppe \enquote{Respond} schließlich fasst die Elemente
-zusammen, die eine Wirkung in der Umwelt entfalten, sei es durch physische Bewegung,
-durch Kommunikation oder durch die Steuerung von Prozessen.\zit[S.~15, 17\,f.]{bitkom2018}
+Das Periodensystem umfasst achtundzwanzig KI-Elemente, die jeweils eine eigenständig
+etablierte Fähigkeit repräsentieren. Ihre Anordnung folgt dem typischen
+Verarbeitungsablauf einer KI-gestützten Anwendung, der sich in das Tripel aus
+Wahrnehmung, Schlussfolgerung und Reaktion gliedert. Die Gruppe \enquote{Assess} erfasst
+Daten und erkennt Muster, die Gruppe \enquote{Infer} bündelt Prognostizieren, Planen,
+Entscheiden und Erklären, und die Gruppe \enquote{Respond} entfaltet eine Wirkung in
+der Umwelt\footcite[vgl.][S.~15, 17\,f.]{bitkom2018}. Der Rahmen macht Anwendungen
+damit vergleichbar und in ihrem Reifegrad
+einordenbar\footcite[vgl.][S.~16, 19\,f.]{bitkom2018}. Für diese Arbeit ist eine
+zweite Eigenschaft bedeutsam. Da der Rahmen alle Elemente ausweist, macht er den
+bewussten Verzicht auf einzelne sichtbar und damit begründungspflichtig.
 
-Der Nutzen dieses Ordnungsrahmens liegt darin, dass er komplexe KI-Anwendungen einer
-strukturierten Beschreibung zugänglich macht. Anwendungen lassen sich als Verbindung
-mehrerer Elemente auffassen und auf diese Weise vergleichen, hinsichtlich ihres
-Reifegrades einordnen und in ihren organisatorischen Wirkungen kommunizieren.\zit[S.~16, 19\,f.]{bitkom2018}
-Für die vorliegende Arbeit dient das Periodensystem als Bezugssystem, um die im
-Handelsagenten eingesetzten Funktionalitäten nicht nur zu benennen, sondern in ihrem
-Zusammenspiel nachvollziehbar zu verorten. Die entsprechende Zuordnung wird in
-Kapitel~\ref{cha:umsetzung} vorgenommen.
+\section{Gestaltungsprinzipien kontrollierter Autonomie}
+\label{sec:grundlagen-prinzipien}
 
-\section{Abgrenzung}
-\label{sec:grundlagen-abgrenzung}
+Aus dem in \cref{sec:problemstellung} benannten Spannungsfeld und den Merkmalen der
+Umgebung lassen sich vier Prinzipien ableiten. Erstens trägt ein deterministischer
+Kern die Entscheidung, während probabilistische Komponenten ausschließlich prüfen.
+Harte Ausschlusskriterien werden regelbasiert vor jedem Modellaufruf entschieden,
+und eine nachgelagerte Prüfschicht kontrolliert jede Modellantwort, bevor ihr Wirkung
+zukommt\footcite[vgl.][S.~135]{gollnick2025}. Technisch stützt sich diese Schicht auf
+erzwungene Antwortschemata\footcites[vgl.][S.~10932--10952]{gengGcd2023}[vgl.][]{openaiStructured2026}[vgl.][]{anthropicStructured2026}[vgl.][]{geminiStructured2026}
+sowie auf programmierbare Leitplanken zwischen Modell und
+Folgesystem\footcite[vgl.][S.~431--445]{rebedeaNemo2023}. Zweitens ersetzt ein
+redundantes Urteil das Einzelurteil. Ensembles sind einem einzelnen Bewerter
+überlegen, sofern dessen Fehler nicht vollständig korreliert
+sind\footcites[vgl.][S.~1--15]{dietterich2000}[vgl.][Kap.~8]{kuncheva2014}. Die
+formale Grenze dieses Arguments ist bekannt, denn der Zugewinn eines
+Mehrheitsentscheids schrumpft mit wachsender Korrelation der
+Einzelstimmen\footcites[vgl.][S.~617\,f.]{ladha1992}[vgl.][S.~261--278]{grofman1983}.
+Wiederholte Stichproben aus derselben Verteilung gleichen systematische Fehler eines
+Modells nicht aus\footcites[vgl.][S.~167]{gollnick2025}[vgl.][]{wang2023selfconsistency}.
+Mehrere Modelle verschiedener Anbieter sind der Mehrfachbefragung eines einzelnen
+Modells deshalb vorzuziehen. Dass Sprachmodelle als Bewerter überhaupt taugen, belegt
+die Forschung zum \foreignlanguage{english}{LLM-as-a-Judge} und zu
+Mehrmodellverfahren\footcites[vgl.][]{zheng2023judge}[vgl.][S.~11733--11763]{du2024debate}.
+Drittens findet kein Lernen im Betrieb statt. Ein bestärkend lernender Agent schriebe
+seine Handelspolitik aus Belohnungssignalen
+fort\footcite[vgl.][Kap.~1]{suttonBarto2018} und müsste dafür an irreversiblen realen
+Verlusten lernen. Ein sich verschiebendes Verhalten widerspräche außerdem der
+geforderten Auditierbarkeit. Dieselbe Erwägung schloss ein Agenten-Framework mit fest
+verdrahteter Lernschleife aus\footcites[vgl.][]{hermesAgent2026}[vgl.][]{shinn2023reflexion}.
+Auch ein Prognosemodell als Signalquelle ist voraussetzungsreich, da die
+Markteffizienzhypothese der Prognostizierbarkeit von Kursen enge Grenzen
+setzt\footcites[vgl.][S.~383--417]{fama1970}[vgl.][S.~59--82]{malkiel2003}. Die
+Befunde zu technischen Handelsregeln fallen zudem
+uneinheitlich aus\footcites[vgl.][S.~1731--1764]{brock1992}[vgl.][S.~1647--1691]{sullivan1999}[vgl.][S.~786--826]{park2007},
+und für gleitende Durchschnitte relativiert die Literatur den Mehrwert gegenüber
+einfachen Vergleichsmaßstäben\footcites[vgl.][S.~69--79]{faber2007}[vgl.][Kap.~1]{zakamulin2017}.
+Jede Aussage über Strategiegüte ist gegen Überanpassung an historische Daten
+abzusichern\footcites[vgl.][S.~458--471]{bailey2014}[vgl.][S.~39--69]{bailey2017}[vgl.][Kap.~11]{lopezdeprado2018}.
+Genau dieser Vorbehalt wird als \emph{H3} geprüft (\cref{sec:zielsetzung}). Viertens
+bleibt der Mensch eingebunden, denn die Rückbindung an einen menschlichen
+Kontrollpunkt ist ein etabliertes
+Entwurfsmuster\footcite[vgl.][S.~377]{lazarosHitl2026} und wird
+durch regulatorische Anforderungen an Aufsicht, Transparenz und Risikomanagement
+gestützt\footcites[vgl.][Art.~14]{aiact2024}[vgl.][Kap.~3]{nist2023}[vgl.][]{bafin2021}[vgl.][]{bafin2024}.
+Ebenso bleibt die Betriebsform gestaltbar, da die Modellanbindung hinter einer
+einheitlichen Schnittstelle gekapselt
+ist\footcites[vgl.][]{ollama2026}[vgl.][]{openclawProviders2026}. Der Wechsel
+zwischen cloud-gehosteter und lokaler Inferenz ist damit zu konfigurieren, nicht zu
+programmieren. Offen verfügbare Modellgewichte machen den lokalen Betrieb praktisch
+erreichbar\footcites[vgl.][]{gemma3Report2025}[vgl.][]{qwen25Report2024}[vgl.][]{deepseekV3Report2024}.
 
-Für das Verständnis der späteren Gestaltungsentscheidungen ist eine Abgrenzung
-unterschiedlicher Agentenauffassungen erforderlich. Ein regelbasierter Agent leitet
-sein Verhalten aus fest definierten, deterministischen Vorschriften ab, sodass gleiche
-Eingaben stets zu gleichen Ausgaben führen und das Verhalten vollständig nachvollziehbar
-bleibt. Ein lernender Agent hingegen verändert sein Verhalten fortlaufend auf Grundlage
-neuer Erfahrungen; er gewinnt dadurch an Anpassungsfähigkeit, büßt jedoch an
-Reproduzierbarkeit ein, da sich seine Reaktionen über die Zeit verschieben können.
+\section{Ableitung der Lösungsarchitektur}
+\label{sec:grundlagen-ableitung}
 
-Aus dieser Gegenüberstellung folgt die Wahl des KI-Ansatzes, die angesichts der in
-\cref{sec:problemstellung} benannten Merkmale des Anwendungsfelds explizit
-abzuwägen ist. Ein bestärkend lernender Agent (Reinforcement Learning), der seine
-Handelspolitik aus Belohnungssignalen fortschreibt, scheidet für den
-Echtgeldbetrieb aus: Sein Erfahrungslernen müsste an irreversiblen realen
-Verlusten stattfinden, die fehlende Stationarität der Märkte entwertet Gelerntes
-fortlaufend, und ein sich verschiebendes Verhalten widerspräche der geforderten
-Auditierbarkeit -- dieselbe Erwägung führte bei der Wahl des Agenten-Frameworks
-zum Ausschluss einer Alternative mit fest verdrahteter Lernschleife. Ein rein
-sprachmodellgetriebener Agent, der Entscheidungen unmittelbar dem Modell
-entnimmt, scheitert an dessen probabilistischer Natur und
-Halluzinationsneigung.\zit[S.~59]{gollnick2025} Ein klassisches Prognosemodell
-als Signalquelle schließlich wird in dieser Arbeit nicht vorab verworfen, sondern
-empirisch geprüft; das Ergebnis dieser Prüfung begründet die in \cref{sec:zielsetzung}
-eingeführte Rollenumkehr zur bloßen Prüfinstanz (\cref{cha:umsetzung}). Gewählt
-wird daher ein hybrider Ansatz, der zwischen den eingangs benannten Polen einen
-deterministischen Kern mit eng geführten probabilistischen Prüfinstanzen
-verbindet. Diese Instanz ist als Gremium mehrerer unabhängiger Sprachmodelle ausgeführt,
-deren Einzelvoten nach einer strikten Mehrheitsregel aggregiert werden: Ein Handel kommt
-nur zustande, wenn die Mehrheit der Modelle zustimmt, während jedes nicht erreichbare
-oder regelwidrig antwortende Modell konservativ als Veto gewertet wird. Der
-Mehrheitsentscheid begrenzt so den Einfluss einzelner Modellfehler, ersetzt jedoch keine
-deterministische Prüfung: Harte Ausschlusskriterien, etwa veraltete Daten oder ein
-fehlendes Handelsinstrument, werden vor jedem Modellaufruf regelbasiert entschieden,
-sodass die Sprachmodelle nur dort befragt werden, wo ihre Bewertung das Ergebnis noch
-beeinflussen kann.
+Aus den vier Prinzipien folgt ein hybrider Ansatz. Den Kern bildet eine
+deterministisch implementierte Regelstrategie, der ein Gremium mehrerer
+Sprachmodelle als Prüf\"|instanz nachgeordnet ist. Ein Handel kommt nur bei
+Zustimmung der Mehrheit zustande, während jedes nicht erreichbare oder regelwidrig
+antwortende Modell konservativ als Veto zählt. Sämtliche Prüf\"|instanzen können
+einen Handelsvorschlag verhindern oder verkleinern, ihn jedoch niemals erzeugen oder
+umkehren. Diese begrenzte Diskretion ist die architektonische Antwort auf die
+Abwägung zwischen Flexibilität und Zuverlässigkeit. Ihr Sicherheitsgewinn bleibt eine
+empirische Frage und wird als \emph{H2} gemessen (\cref{sec:zielsetzung}).
 
-Dem Gremiumsgedanken liegt eine einfache Ensembleüberlegung zugrunde: Treffen mehrere
-Bewerter ihre Urteile unabhängig voneinander und sind ihre Fehler nicht vollständig
-korreliert, so ist ein Mehrheitsurteil zuverlässiger als das Urteil eines einzelnen
-Bewerters. Der naheliegenden Alternative, dasselbe Modell mehrfach zu befragen und
-die Antworten zu aggregieren (Self-Consistency), wurde dabei bewusst die Befragung
-verschiedener Modelle vorgezogen: Wiederholte Stichproben aus derselben Verteilung
-können systematische Fehler des einzelnen Modells nicht
-ausgleichen.\zit[S.~167]{gollnick2025}
-Die Anbieterdiversität der eingesetzten Modelle soll diese Unabhängigkeit
-befördern, kann sie jedoch nicht garantieren, da alle Modelle denselben
-Entscheidungskontext erhalten -- ein Umstand, der in der kritischen Würdigung wieder
-aufgegriffen wird. Ergänzend bleibt der Mensch in einer doppelten Rolle eingebunden:
-als täglicher Freigabepunkt der Banksitzung und als jederzeit handlungsfähige
-Aufsicht mit Not-Aus. Diese Kombination aus deterministischem Kern, redundanter
-probabilistischer Prüfung und menschlicher Letztverantwortung kennzeichnet die
-Architektur der Fallstudie.
-
-Aus dem Periodensystem folgt für diese Abgrenzung eine wichtige Konsequenz. Nicht jedes
-der achtundzwanzig Elemente ist für einen gegebenen Anwendungsfall gleichermaßen
-einschlägig, und der bewusste Verzicht auf einzelne Elemente stellt selbst eine
-gestalterische Aussage dar. Insbesondere die Elemente, die eine Prognose künftiger
-Ereignisse sowie eine erfahrungsbasierte Fortschreibung des eigenen Wissens
-beschreiben, sind in datengetriebenen Finanzanwendungen zwar naheliegend, stehen
-jedoch in einem Spannungsverhältnis zu den Anforderungen an Auditierbarkeit und
-Reproduzierbarkeit.\zit[S.~17\,f.]{bitkom2018} Die vorliegende Arbeit nimmt diese
-Spannung zum Ausgangspunkt und löst sie in Kapitel~\ref{cha:umsetzung} differenziert
-auf: Auf eine erfahrungsbasierte Fortschreibung des eigenen Wissens verzichtet der
-Agent vollständig, während die Prognose künftiger Ereignisse nicht ausgespart, sondern
-in ihrer Rolle umgekehrt wird -- ein einfaches, kalibriertes statistisches Modell
-wirkt ausschließlich als zusätzliche Prüfinstanz, die vorbereitete Entscheidungen
-abschwächen oder verhindern, jedoch niemals auslösen kann. Die Rolle des
-Sprachmodells bleibt unverändert auf eine begrenzte, überprüfbare
-Bewertungsfunktion eingeschränkt.
+Im Ordnungsrahmen des Periodensystems lässt sich der Agent damit vorab verorten. Er
+besetzt in der Gruppe \enquote{Assess} die Datenerfassung und die Mustererkennung und
+in der Gruppe \enquote{Infer} das Entscheiden und das Erklären. In der Gruppe
+\enquote{Respond} steht die prozesssteuernde Kontrolle im Zentrum, die der Rahmen
+ausdrücklich mit dem automatisierten Handel als Anwendung
+verbindet\footcite[vgl.][S.~18]{bitkom2018}. Zwei Elemente bleiben bewusst unbesetzt
+oder umgewidmet. Auf eine erfahrungsbasierte Fortschreibung des eigenen Wissens
+verzichtet der Agent vollständig, und die Prognose künftiger Ereignisse wird in ihrer
+Rolle umgekehrt. Ein kalibriertes statistisches Modell wirkt ausschließlich als
+zusätzlicher Risikohinweis. Beides ist eine eigene Entscheidung und keine technische
+Notwendigkeit, denn ein Handelsagent kann dem Sprachmodell die Entscheidung
+überlassen und Erfahrung in einer Gedächtnisschicht
+fortschreiben\footcite[vgl.][S.~595--597]{yuFinmem2024}. Die vorliegende Arbeit
+grenzt sich davon ab, weil ein im Betrieb lernendes System die geforderte
+Reproduzierbarkeit und Auditierbarkeit
+aufgibt\footcites[vgl.][Art.~12]{aiact2024}[vgl.][]{bafin2021}. Der Nachweis, dass
+der so begrenzte Agent den täglichen Zyklus ohne Eingriffe durchläuft, steht als
+\emph{H1} aus. Die Umsetzung dieser Ableitung in Architektur, Strategie und Quelltext
+beschreibt \cref{cha:umsetzung}.
 
 %  =============================================================================
 %  Ende

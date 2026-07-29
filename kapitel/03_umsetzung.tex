@@ -8,42 +8,25 @@
 \chapter{Fallstudie: OpenClaw als Trading Agent}
 \label{cha:umsetzung}
 
-Nachdem das vorangegangene Kapitel mit dem Periodensystem der Künstlichen Intelligenz
-einen Ordnungsrahmen bereitgestellt hat, überträgt das folgende Kapitel diesen Rahmen
-auf den konkreten Gegenstand der Arbeit. Der untersuchte Agent verfolgt eine auf
-gleitenden Durchschnitten beruhende Handelsstrategie und löst die daraus abgeleiteten
+Nachdem \cref{cha:grundlagen} den Ordnungsrahmen bereitgestellt und daraus die
+Lösungsarchitektur abgeleitet hat, überträgt dieses Kapitel beides auf den konkreten
+Gegenstand der Arbeit. Der untersuchte Agent verfolgt eine auf gleitenden
+Durchschnitten beruhende Handelsstrategie und löst die daraus abgeleiteten
 Entscheidungen eigenständig als Ordervorgänge über eine Bankschnittstelle aus. Damit
 schließt er den eingangs beschriebenen Kreis aus Wahrnehmung, Schlussfolgerung und
-Handlung vollständig und lässt sich als Verbindung mehrerer KI-Elemente im Sinne des
-Periodensystems auffassen.
+Handlung vollständig.
 
-Auf der Ebene der Wahrnehmung stützt sich der Agent auf die kontinuierliche,
-gegen eine unabhängige Zweitquelle geprüfte Erfassung von Marktdaten und die
-Erkennung von Trendmustern in der Kurszeitreihe. Auf der Ebene der
-Schlussfolgerung prüft ein Gremium aus drei großen Sprachmodellen die
-regelbasiert vorbereitete Entscheidung jeweils unabhängig und begründet; harte
-Ausschlusskriterien entscheiden deterministische Vorprüfungen bereits vor dem
-ersten Modellaufruf. Auf der Ebene der Reaktion ordnet sich das Vorhaben
-unmittelbar dem Element der prozesssteuernden Kontrolle zu, das der zugrunde
-gelegte Rahmen ausdrücklich mit dem Börsenhandel als Anwendung
-verbindet.\footcite[vgl.][S.~19]{waldhoerKI2025} Ergänzend sichern eine
-Kommunikationskomponente die Rückbindung an den Menschen -- tägliche Freigabe der
-Banksitzung, Berichte, jederzeit wirksamer Not-Aus -- und ein öffentliches,
-redigiertes Dashboard die Transparenz der Entscheidungs- und Wertentwicklung.
-
-Kennzeichnend für die gewählte Gestaltung ist weniger die Breite der eingesetzten
-Fähigkeiten als vielmehr deren bewusste Begrenzung. Die Sprachmodelle werden nicht zur
-Prognose künftiger Kurse und nicht zur erfahrungsbasierten Selbstveränderung
-eingesetzt. Das Element der prognostischen Inferenz, das in Finanzanwendungen
-üblicherweise die Signalquelle stellt, ist stattdessen in umgekehrter Rolle besetzt:
-Ein einfaches statistisches Prognosemodell wirkt ausschließlich als zusätzlicher
-Risikohinweis für das Prüfgremium; das Element der erfahrungsbasierten
-Fortschreibung des eigenen Wissens bleibt bewusst unbesetzt. Das Gremium
-kann Handelsvorschläge ausschließlich verhindern, verkleinern oder zeitlich einordnen,
-niemals erzeugen oder in ihrer Richtung umkehren. Die
-eigentliche gestalterische Aussage der Arbeit liegt somit in der sicherheitsorientierten
-Einschränkung des KI-Einsatzes, deren Ausprägung -- einschließlich des mehrstufig
-abgesicherten Orderpfads -- im weiteren Verlauf des Kapitels dargelegt wird.
+Auf der Ebene der Wahrnehmung erfasst er Marktdaten kontinuierlich und gegen eine
+unabhängige Zweitquelle geprüft. Auf der Ebene der Schlussfolgerung prüft ein Gremium
+aus drei großen Sprachmodellen die regelbasiert vorbereitete Entscheidung unabhängig
+und begründet. Auf der Ebene der Reaktion füllt er das Element der prozesssteuernden
+Kontrolle, das der zugrunde gelegte Rahmen ausdrücklich mit dem automatisierten Handel
+als Anwendung verbindet\footcite[vgl.][S.~18]{bitkom2018}. Ergänzend sichern eine
+Kommunikationskomponente die Rückbindung an den Menschen und ein öffentliches,
+redigiertes Dashboard die Transparenz der Entscheidungs- und Wertentwicklung. Die
+eigentliche gestalterische Aussage der Arbeit liegt in der sicherheitsorientierten
+Einschränkung des KI-Einsatzes, die \cref{sec:grundlagen-ableitung} begründet und
+deren Ausprägung im Folgenden dargelegt wird.
 
 Der Aufbau des Kapitels folgt dem Weg von der Struktur zur Bewertung. Zunächst wird die
 Systemarchitektur des Agenten mit ihren Komponenten und Datenflüssen beschrieben. Darauf
@@ -117,7 +100,7 @@ bleiben ohne offenen eingehenden Port. Im Ordnungsrahmen des Periodensystems der
 Künstlichen Intelligenz verbindet die Architektur damit Elemente der Wahrnehmung
 (Daten- und Mustererfassung), der Schlussfolgerung (Entscheiden und Erklären) und
 der Reaktion, deren Zentrum das Element der prozesssteuernden Kontrolle
-bildet.\footcite[vgl.][S.~19]{waldhoerKI2025}
+bildet.\footcite[vgl.][S.~18]{bitkom2018}
 
 \section{SMA-Handelsstrategie}
 \label{sec:umsetzung-strategie}
@@ -159,27 +142,34 @@ $\sigma^{*} = 1{,}0\,\%$ pro Tag und der Mindestgröße $S_{\min} = 1.000\,€$.
 Obergrenze $K$ ist als harter, weder über die Konfiguration noch durch die
 Sprachmodelle veränderbarer Deckel implementiert.
 
-Die Ausführungsregeln sind ebenfalls deterministisch festgelegt. Gehandelt wird im
-Fenster der US-Kassasitzung mit drei diskreten Einstiegsoptionen, unter denen das
-Prüfgremium wählen darf: dem Einstieg kurz nach der Eröffnungsauktion, einem
-bestätigungsbasierten Einstieg nach den ersten fünfzehn Handelsminuten oder einem
-bewusst verzögerten Einstieg, der die Eröffnungsvolatilität meidet. Der Ausstieg
-folgt dem zuerst erreichten Kriterium aus Verluststopp (drei Prozent), Gewinnziel
-(zwei Prozent) und Fensterschluss. Es gilt ein hartes Tagesbudget von höchstens
-einem Kauf und einem Verkauf, und sämtliche Orders werden ausschließlich limitiert
-aufgegeben, da die Datenfrische im verteilten Aufbau eine Slippage-Kontrolle über
-den Limitpreis erfordert.
+Die Ausführungsregeln sind ebenfalls deterministisch festgelegt, unterscheiden sich
+jedoch zwischen Simulation und Betrieb. Der Backtest modelliert einen täglichen
+Round-Trip. Er eröffnet die Position im Fenster der US-Kassasitzung und schließt sie
+nach dem zuerst erreichten Kriterium aus Verluststopp (drei Prozent), Gewinnziel
+(zwei Prozent) und Fensterschluss. Der Livebetrieb hält die Position dagegen
+regimegeführt. Er steigt im selben Fenster ein, sichert den Bestand anschließend über
+eine serverseitige Trailing-Stop-Order ab und stellt erst bei einem Regimewechsel
+glatt. Diese Differenz ist gewollt und in
+\cref{sec:umsetzung-evaluation-limitationen} als Grenze der Vergleichbarkeit
+ausgewiesen. Dem Prüfgremium stehen drei diskrete Einstiegszeitpunkte zur Wahl. Diese Wahl wird
+journalisiert, wirkt gegenwärtig jedoch nicht auf die Ausführung
+(\cref{sec:umsetzung-evaluation-limitationen}). Sämtliche Orders werden ausschließlich
+limitiert aufgegeben, da die Datenfrische im verteilten Aufbau eine
+Slippage-Kontrolle über den Limitpreis erfordert.
 
-Die ökonomische Hürde dieser Taktung lässt sich vorab beziffern: Ein Round-Trip
-kostet im Direkthandel 7{,}80\,€ an Fixgebühren, hinzu kommt der Geld-Brief-Spread
-des Zertifikats. Bei einem Einsatz von 2.000\,€ muss sich der Index folglich um
-etwa 0{,}3\,\% in Regimerichtung bewegen, bevor ein Handelstag den Break-even
-erreicht -- eine erreichbare, aber keineswegs sichere Schwelle, deren Konsequenzen
-die Evaluation quantifiziert. Die Mindestgröße von 1.000\,€ folgt umgekehrt aus der
-Gebührenstruktur: Darunter dominiert die Fixkostenlast jede realistische
-Tagesbewegung.
+Die ökonomische Hürde dieser Taktung lässt sich vorab beziffern. Der
+Ex-Ante-Kostenausweis der Bank nennt für Ordervolumina unterhalb von 1.000\,€ eine
+Kaufprovision von 3{,}90\,€; das Kostenmodell des Backtests setzt daraus 7{,}80\,€
+je Round-Trip an. Bei einem Einsatz von 2.000\,€ muss sich der Index unter diesem
+Ansatz um etwa 0{,}3\,\% in Regimerichtung bewegen, bevor ein Handelstag den
+Break-even erreicht. Die Messung im Betrieb widerlegt den Ansatz jedoch
+(\cref{sec:umsetzung-evaluation-ergebnisse}), sodass die daraus abgeleiteten
+Schwellen als obere Schranke zu lesen sind. Es verbleibt der Geld-Brief-Spread des
+Zertifikats, den der Ex-Ante-Ausweis nicht enthält. Die Mindestgröße von 1.000\,€
+folgt umgekehrt aus derselben Gebührenstruktur, denn genau an dieser Schwelle
+entfällt die Provision.
 
-Als extern validierte Alternative ist die Regimestrategie \emph{smatrend}
+Als zweite Regelstrategie ist die Variante \emph{smatrend}
 implementiert, die statt eines Kreuzungssignals den Indexstand gegen einen einzelnen
 langfristigen Durchschnitt stellt:
 \begin{equation}
@@ -332,20 +322,30 @@ wurden; das vollständige Backtest-Protokoll ist in
 \cref{sec:anhang-evaluationsbelege} dokumentiert. Der Strategie werden drei Vergleichsmaßstäbe gegenübergestellt:
 der tägliche Round-Trip der Regel selbst (B0), das passive Halten des Index (B1)
 sowie eine Variante, die nur bei einem Regimewechsel handelt (B2). Das Kostenmodell
-verwendet keine Annahmen, sondern die real gemessenen Ex-Ante-Kostenausweise der
-Bank -- im Direkthandel 7,80\,€ je Round-Trip -- und berücksichtigt die
+stützt sich auf die Ex-Ante-Kostenausweise der Bank und setzt 7,80\,€ je Round-Trip
+an; die im Betrieb gemessene Kostenstruktur weicht davon ab und wird in
+\cref{sec:umsetzung-evaluation-ergebnisse} ausgewiesen. Berücksichtigt ist ferner die
 Kapitalertragsteuer unter Teilfreistellung. Ergänzend misst ein wöchentlicher
 Auswertungslauf das Abstimmungsverhalten der Sprachmodelle im laufenden Betrieb: je
 Modell die Zustimmungsquote, die Schemafehlerrate, die Antwortlatenz sowie die
 Veto-Trefferquote gegen den Folgetags-Return, also den Anteil der Ablehnungen, die
 tatsächlich einen Verlusttag in Signalrichtung vermieden hätten, einschließlich des
-kontrafaktischen Gewinn- und Verlustbeitrags der Vetos.
+kontrafaktischen Gewinn- und Verlustbeitrags der Vetos. Zur Prüfung von \emph{H2}
+treten zwei Konsistenzmaße hinzu: der Anteil identischer Voten bei wiederholter
+Vorlage desselben Entscheidungsdokuments und der Anteil übereinstimmender
+Freigabeentscheidungen beider Depots an den Tagen, an denen beide Strategien dasselbe
+Regime tragen. Der Entscheidungskontext beider Depots ist dabei nicht identisch,
+sondern unterscheidet sich neben dem Feld der statistischen Prognose auch in
+Signalalter, Volatilitätskennzahlen und Handelsinstrument; das Maß bleibt insoweit
+konfundiert und wird ausschließlich deskriptiv ausgewiesen.
 
 Die statistische Prüfinstanz wird gesondert einer Walk-Forward-Prüfung ohne Blick
 in die Zukunft unterzogen: Die Vorhersage für einen Handelstag nutzt ausschließlich
 ein Modell, das auf den Daten vor diesem Tag trainiert wurde, und wird alle
 21~Handelstage nachtrainiert. Als Gütemaß dient neben der Trefferquote gegenüber
-der Basisrate der Brier-Score
+der Basisrate der
+Brier-Score\footcites[vgl.][S.~1--3]{brier1950}[zum Vergleich probabilistischer
+Prognosen vgl.][S.~359--378]{gneitingRaftery2007}
 \begin{equation}
   B \;=\; \frac{1}{N}\sum_{t=1}^{N}\bigl(p_t - o_t\bigr)^{2},
   \label{eq:brier}
@@ -356,19 +356,25 @@ Prognosetage misst; verglichen wird gegen die Klimatologie, also die konstante
 Prognose der Basisrate.
 
 Zur Einordnung der Handelsfrequenz dient zusätzlich ein einfaches
-Rentabilitätsmodell. Bezeichnet $C(S)$ die Round-Trip-Kosten bei Kapitaleinsatz $S$
-und wird die mittlere absolute Intraday-Bewegung des Index mit rund $0{,}6\,\%$
-angesetzt, so ergibt sich die für einen positiven Erwartungswert erforderliche
-Trefferquote als
+Rentabilitätsmodell. Bei symmetrischen Gewinn- und Verlusttagen beträgt der
+Erwartungswert eines Handelstags $(2p-1)\,h\,S - C(S)$, wobei $p$ die Trefferquote,
+$S$ den Kapitaleinsatz, $h$ die erwartete absolute Tagesbewegung der Position und
+$C(S)$ die Round-Trip-Kosten bezeichnet. Mit der aus der eigenen Datenbasis
+geschätzten mittleren absoluten Intraday-Bewegung des Index von rund $0{,}6\,\%$ und
+dem zweifachen Hebel des Zertifikats gilt $h = 2 \cdot 0{,}006$, sodass sich die für
+einen positiven Erwartungswert erforderliche Trefferquote ergibt als
 \begin{equation}
   p^{*}(S) \;=\; 0{,}5 \;+\; \frac{C(S)}{4 \cdot S \cdot 0{,}006}.
   \label{eq:breakeven}
 \end{equation}
-Für 1.000\,€ Einsatz liegt diese Schwelle bei etwa 91\,\%, für 2.000\,€ bei etwa
-75\,\%; selbst im Grenzfall sehr großer Einsätze setzt der Spread eine
-kapitalunabhängige Untergrenze von rund 58\,\% -- Werte, denen die Literatur für
-Intraday-Signale einfacher Durchschnittsstrategien lediglich Trefferquoten nahe der
-Zufallsschwelle gegenüberstellt. Das Modell begründet damit vorab, weshalb die
+In $C(S)$ gehen neben der Fixgebühr die volumenabhängigen Kosten des
+Geld-Brief-Spreads ein; ohne diesen Anteil lägen die folgenden Schwellen deutlich
+niedriger. Für 1.000\,€ Einsatz liegt die Schwelle bei etwa 91\,\%, für 2.000\,€ bei
+etwa 75\,\%, und selbst im Grenzfall sehr großer Einsätze setzt der Spread eine
+kapitalunabhängige Untergrenze von rund 58\,\%. Die Literatur zu technischen
+Handelsregeln stellt solchen Anforderungen Trefferquoten nahe der Zufallsschwelle
+gegenüber\footcites[vgl.][S.~786--826]{park2007}[vgl.][Kap.~1]{zakamulin2017}. Das
+Modell begründet damit vorab, weshalb die
 tägliche Handelsfrequenz als Demonstrations- und nicht als Renditevehikel zu
 verstehen ist.
 
@@ -382,11 +388,13 @@ Variante (B2) erzielt mit neun Positionswechseln in zehn Jahren rund $+96\,\%$
 vor beziehungsweise $+60\,\%$ nach Steuern bei lediglich 106\,€ Kosten; das
 passive Halten des Index (B1) rund $+248\,\%$ vor beziehungsweise $+203\,\%$
 nach Steuern. Die
-tägliche Handelsfrequenz wird demnach von den Fixkosten aufgezehrt -- die
-Rentabilitätsanalyse zeigt, dass bei realistischen Trefferquoten kein
-Kapitaleinsatz die tägliche Round-Trip-Strategie in den positiven Erwartungswert
-hebt. Diese Erwartung wurde bewusst ehrlich formuliert: Das Erkenntnisziel der
-Arbeit ist nicht eine positive Handelsrendite, sondern die autonome, abgesicherte
+tägliche Handelsfrequenz wird demnach von den Transaktionskosten aufgezehrt. Der
+Kostenblock des Backtests folgt dem Ex-Ante-Kostenausweis und bildet damit eine
+Obergrenze; unter den im Betrieb gemessenen Konditionen fällt er kleiner aus, ohne
+die Aussage zu ändern, da bereits der verbleibende Spread bei der beobachteten
+Trefferquote von 31,7\,\% keinen positiven Erwartungswert zulässt
+(\cref{eq:breakeven}). Das Erkenntnisziel der Arbeit ist nicht eine positive
+Handelsrendite, sondern die autonome, abgesicherte
 Ausführung selbst sowie der messbare Beitrag des Sprachmodell-Gremiums; die
 Differenz zwischen B0 und B2 beziffert insofern den Preis der täglich demonstrierten
 Autonomie. Die Voting-Kalibrierung aus dem Live-Betrieb -- Trockenlauf seit dem
@@ -396,13 +404,16 @@ oder lediglich Rauschen darstellen.
 
 Die Walk-Forward-Prüfung des Prognosemodells über 23.803 Handelstage der
 vollständigen Indexhistorie fällt ernüchternd und zugleich aufschlussreich aus:
-Einer Basisrate von 52,1\,\% aufwärts gerichteter Folgetage steht eine Trefferquote
-von 52,0\,\% gegenüber, und der Brier-Score von 0,2498 unterschreitet die
-Klimatologie (0,2496) nicht -- das Modell besitzt keine Prognosekraft über die
-Basisrate hinaus. Bemerkenswert ist, dass es dabei gut kalibriert bleibt: Im
-dominierenden Wahrscheinlichkeitsbereich um 0,5 stimmen prognostizierte
-(52,4\,\%) und beobachtete Häufigkeit (52,5\,\%) nahezu überein, und selbst an den
-Tagen, an denen das Modell skeptisch war, stieg der Markt in 50,4\,\% der Fälle.
+Einer Basisrate von 52,1\,\% in Regimerichtung schließender Folgetage steht eine
+Trefferquote von 52,0\,\% gegenüber, und der Brier-Score von 0,2498 unterschreitet
+die Klimatologie (0,2496) nicht -- das Modell besitzt keine Prognosekraft über die
+Basisrate hinaus. Die Kalibrierung ist ordentlich, wird jedoch vom dominierenden
+Wahrscheinlichkeitsbereich getragen: 19.434 der 23.803 Prognosen und damit 81,6\,\%
+liegen im Bereich um 0,5, in dem prognostizierte (52,4\,\%) und beobachtete
+Häufigkeit (52,5\,\%) nahezu übereinstimmen. Auch der skeptischste besetzte Bereich
+weicht mit 50,4\,\% bei lediglich 127 Beobachtungen nicht verwertbar
+ab\footcite[zur Zerlegung des Brier-Scores in Kalibrierungs- und Auflösungsanteil
+vgl.][S.~595--600]{murphy1973}.
 Dieser ehrliche Negativbefund trägt die zentrale Architekturentscheidung empirisch:
 Die Tagesrichtung des Index ist auch mit einem sauber validierten Modell praktisch
 nicht prognostizierbar, weshalb die Prognose im System keine Signalgewalt erhält
@@ -442,7 +453,9 @@ Bankschnittstelle bietet keine Sandbox, sodass die Ordervalidierung gegen das
 Produktivsystem erfolgt. Die Autonomie ist regulatorisch durch die
 täglich erforderliche photoTAN-Freigabe der Banksitzung begrenzt. Im verteilten
 Aufbau beträgt die Datenfrische am Entscheidungspunkt 60 bis 90 Sekunden, weshalb
-ausschließlich Limit-Orders verwendet werden. Der Backtest approximiert das
+ausschließlich Limit-Orders verwendet werden. Die vom Prüfgremium gewählte
+Einstiegsoption wird journalisiert, ist im Ausführungspfad jedoch noch nicht wirksam.
+Der Backtest approximiert das
 Faktor-Zertifikat über das zweifache Index-Tagessegment und modelliert weder
 Währungseffekte noch den variablen Geld-Brief-Spread exakt; die inoffizielle
 Kursdatenquelle bietet keine Verfügbarkeitsgarantie. Trotz Temperatur null und
@@ -464,7 +477,7 @@ Marktrisiko des gehebelten Instruments, das Betriebsrisiko eines unbeaufsichtigt
 laufenden Systems und das spezifische Risiko probabilistischer Modellkomponenten.
 Die Architektur begegnet dem mit einer gestaffelten Sicherungskette, deren
 tragendes Prinzip die begrenzte Diskretion ist: Das Sprachmodell-Gremium kann
-Handelsvorschläge verhindern, verkleinern oder zeitlich einordnen, niemals aber
+Handelsvorschläge verhindern oder verkleinern, niemals aber
 erzeugen oder in ihrer Richtung umkehren, und deterministische Ausschlusskriterien
 werden grundsätzlich vor jedem Modellaufruf entschieden. Dieselbe Grenze gilt für
 die statistische Prognoseinstanz, deren Einschätzung ausschließlich als

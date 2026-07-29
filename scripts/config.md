@@ -151,9 +151,9 @@ Strichstärke durchgehend 0,8 pt, Farbe `FOMakzent` (#239F91, FOM-Petrolgrün). 
 
 `footmisc[multiple]` setzt zwischen direkt aufeinanderfolgenden Fußnotenmarken einen Trenner, damit aus „¹²" ein „¹ ²" wird. Dazu platziert das Paket hinter jeder Marke einen Kern-Marker. biblatex' Standard-`\mkbibfootnote` beginnt jedoch mit `\unspace` und löscht genau diesen Marker — die Erkennung schlägt fehl.
 
-`main.tex` definiert `\mkbibfootnote` deshalb ohne das führende `\unspace` neu. Der Patch wirkt für `\footcite`, `\autocite` und damit auch für die Wrapper `\zit` und `\zitw`.
+`main.tex` definiert `\mkbibfootnote` deshalb ohne das führende `\unspace` neu. Der Patch wirkt für `\footcite`, `\footcites` und `\autocite`.
 
-**Praktische Folge:** `\zit[S.~15]{bitkom2018}\zit{hammond2016}` erzeugt zwei sauber getrennte Marken. Diese Konstruktion wird in `kapitel/02_grundlagen.tex` genutzt.
+**Praktische Folge:** Zwei unmittelbar aufeinanderfolgende `\footcite`-Aufrufe erzeugen zwei sauber getrennte Marken. Genutzt wird das in `kapitel/01_einleitung.tex` (Zeile 143, `bitkom2018` gefolgt von `hammond2016`). Wo beide Belege in **eine** Fußnote gehören, steht stattdessen `\footcites` — so durchgängig in `kapitel/02_grundlagen.tex`.
 
 ### 3.4 Glossar-Infrastruktur
 
@@ -233,9 +233,13 @@ Der Beleg zum Element der prozesssteuernden Kontrolle zitiert `bitkom2018`, S. 1
 
 ### 4.5 `kapitel/02_grundlagen.tex`
 
-Agentenbegriff, Einordnung über das Periodensystem, Abgrenzung regelbasiert/lernend.
+Vier Abschnitte als Ableitungskette (Stand 29.07.2026): Agentenbegriff und Autonomiegrad → Periodensystem als Ordnungsrahmen → vier Gestaltungsprinzipien → Ableitung der Lösungsarchitektur. Labels: `sec:grundlagen-agentenbegriff`, `-periodensystem`, `-prinzipien`, `-ableitung`. Die alten Labels `sec:grundlagen-ziele`, `-einordnung` und `-abgrenzung` existieren nicht mehr.
 
-Seitenanker in `bitkom2018`: S. 15 f. (Grundgedanke, LEGO-Metapher, 28 Elemente, Tripel Assess–Infer–Respond), S. 17 f. (Tabelle 1 mit allen Elementen und Gruppen), S. 19 f. (Einsatzszenarien: vergleichen, Reifegrad, organisationale Wirkung). Die Doppelfußnote in Zeile 88 belegt Sekundär- und Primärquelle nebeneinander.
+Seitenanker in `bitkom2018`: S. 15 f. (Grundgedanke, LEGO-Metapher, 28 Elemente, Tripel Assess–Infer–Respond), S. 17 f. (Tabelle 1 mit allen Elementen und Gruppen), S. 18 (prozesssteuernde Kontrolle, „z. B. automatisierter Handel"), S. 19 f. (Einsatzszenarien: vergleichen, Reifegrad, organisationale Wirkung).
+
+Das Kapitel bindet die Hypothesen des Research-Canvas an: H3 in Abschnitt 2.3, H2 und H1 in Abschnitt 2.4. Wer dort kürzt, muss die Rückbindung erhalten — Kapitel 4 löst alle drei auf.
+
+Belege stehen ausschließlich als `\footcite`/`\footcites`, nie über die stillgelegten Wrapper (siehe 5.1).
 
 ### 4.6 `kapitel/03_umsetzung.tex`
 
@@ -345,12 +349,16 @@ Letztes Blatt, ohne Seitenzahl und ohne Eintrag im Inhaltsverzeichnis (Leitfaden
 
 ### 5.1 Zitieren
 
-Zwei Wrapper statt `\footcite` direkt:
+Ausschließlich die biblatex-Standardbefehle, keine projekteigenen Wrapper:
 
 ```latex
-\zit[S.~24]{schluessel}    % → Fußnote mit vorangestelltem "Vgl."
-\zitw[S.~24]{schluessel}   % → ohne "Vgl." (wörtliches Zitat)
+\footcite[vgl.][S.~24]{schluessel}                 % → Fußnote mit vorangestelltem "Vgl."
+\footcite[][S.~24]{schluessel}                     % → ohne "Vgl." (wörtliches Zitat)
+\footcites[vgl.][S.~24]{a}[vgl.][S.~7]{b}          % → mehrere Belege in EINER Fußnote
+\footcite[vgl.][S.~24]{a}\footcite[vgl.][]{b}      % → zwei getrennte Fußnotenmarken
 ```
+
+Die früheren Wrapper `\zit` und `\zitw` sind seit dem 29.07.2026 in `main.tex` auskommentiert. Grund: Sie kapselten nur `\footcite` und konnten die Mehrfachsyntax von `\footcites` nicht abbilden, die Kapitel 1 und 2 benötigen. Nicht reaktivieren, ohne den Fließtext zu prüfen.
 
 Chicago Notes liefert bei der Erstnennung den Vollbeleg, danach automatisch die Kurzform. Seitenangaben immer mit geschütztem Leerzeichen: `S.~15`. Folgeseite als `S.~17\,f.`, mehrere Stellen als `S.~15, 17\,f.`.
 

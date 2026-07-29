@@ -467,8 +467,7 @@
 % Die Neudefinition entfernt das stoerende \unspace und behaelt das
 % darauf folgende \bibsentence bei. Da biblatex-chicago Fußnoten-
 % Citationen ausschliesslich ueber \mkbibfootnote abwickelt, wirkt
-% der Patch zugleich fuer \footcite, \autocite und die Wrapper \zit
-% und \zitw.
+% der Patch zugleich fuer \footcite, \footcites und \autocite.
 \renewcommand*{\mkbibfootnote}[1]{%
     \iftoggle{blx@footnote}%
         {#1}%
@@ -480,13 +479,20 @@
 \defbibfilter{nichtKI}{not keyword=ki}
 \defbibfilter{nurKI}{keyword=ki}
 
-% Hilfsmakros für Fußnoten-Belege (Chicago Notes):
-%   \zit[S.~24]{key}  -> Fußnote mit voranstehendem "Vgl. ..."
-%   \zitw[S.~24]{key} -> Fußnote ohne "vgl." (wörtliches Zitat)
-% Äquivalent zu \footcite (siehe biblatex-chicago); die Kurznamen werden
-% aus Lesbarkeitsgründen beibehalten.
-\newcommand{\zit}[2][]{\footcite[vgl.][#1]{#2}}
-\newcommand{\zitw}[2][]{\footcite[#1]{#2}}
+% Hilfsmakros für Fußnoten-Belege -- AUSSER BETRIEB seit 29.07.2026.
+% Der Fließtext nutzt durchgaengig die biblatex-Standardbefehle:
+%   \footcite[vgl.][S.~24]{key}              -> Fußnote mit "Vgl. ..."
+%   \footcite[][S.~24]{key}                  -> ohne "Vgl." (woertliches Zitat)
+%   \footcites[vgl.][S.~24]{a}[vgl.][]{b}    -> mehrere Belege in EINER Fußnote
+% Begruendung der Umstellung: Die Wrapper kapselten nur \footcite und konnten
+% die Mehrfachsyntax von \footcites nicht abbilden; Kapitel 1 und 2 brauchen
+% sie. Ein Sonderbefehl fuer etwas, das biblatex bereits standardisiert
+% anbietet, ist zudem eine unnoetige Fehlerquelle bei der Uebergabe.
+% Die Definitionen bleiben nur als Notnagel auskommentiert stehen, falls ein
+% Altbestand nachgezogen werden muss. Beim Wiedereinschalten pruefen, ob im
+% Text \footcites-Aufrufe stehen -- die Wrapper ersetzen sie NICHT.
+% \newcommand{\zit}[2][]{\footcite[vgl.][#1]{#2}}
+% \newcommand{\zitw}[2][]{\footcite[#1]{#2}}
 
 % ----------------------------- Glossar / Abkuerzungen / Symbole ------------
 % Leitfaden Kap. 2.5: "Abkuerzungen werden vor der ersten Verwendung formal

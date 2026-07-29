@@ -36,7 +36,7 @@ Aufwand liegt dabei nicht im Handelsweg, sondern in seiner Absicherung: im
 zweiphasigen Ausführungsjournal gegen Doppelorders, im Orderbuchabgleich nach
 Kommunikationsfehlern, in den Kapitalobergrenzen sowie im jederzeit wirksamen
 Not-Aus (\cref{sec:umsetzung-implementierung}). Die zweite Leitfrage nach der
-Nachvollziehbarkeit der Gremiumsentscheidung bleibt zum Abgabezeitpunkt offen; die
+verlässlichen Diskretionsausübung des Sprachmodell-Gremiums bleibt zum Abgabezeitpunkt offen; die
 dafür geschaffene Kalibrierung erfasst Voten, Begründungen und Antwortzeiten
 fortlaufend und benötigt eine längere Betriebsdauer, bevor valide Aussagen möglich
 sind (\cref{sec:umsetzung-evaluation-design}).
@@ -45,24 +45,21 @@ Damit lassen sich die in \cref{sec:zielsetzung} aufgestellten Hypothesen
 auflösen. \emph{H1} gilt für den Normalbetrieb, seit der Ausstiegs- und
 Absicherungspfad vollständig automatisiert ist; für die ersten Handelstage wurde der
 Lebenszyklus der Schutzorders dokumentiert von Hand geführt. \emph{H2} bleibt offen --
-die Zahl der auswertbaren Handelstage ist für eine belastbare Aussage zur Konsistenz
-des Gremiums zu klein; die Kalibrierung erhebt die nötigen Daten weiter. \emph{H3}
+die Zahl der auswertbaren Handelstage ist für eine belastbare Aussage zur
+Diskretionsausübung des Gremiums zu klein; die Kalibrierung erhebt die nötigen Daten weiter. \emph{H3}
 wurde nicht verworfen: Trefferquote und Brier-Score der Walk-Forward-Prüfung über
 23.803 Handelstage bleiben im Rahmen der Basisrate beziehungsweise der
 Klimatologie. Der Negativbefund stützt die Architektur, statt sie zu schwächen --
 er ist der empirische Grund dafür, der Prognose keine Signalgewalt zu geben.
 
-In Kennzahlen verdichtet stellt sich das Ergebnis wie folgt dar: Der Backtest
-über zehn Jahre stellt dem täglichen Round-Trip der Demonstrationsstrategie
-(rund $-29.700$\,€, davon etwa 98\,\% Transaktionskosten) das reine Regimefolgen
-(rund $+96\,\%$ vor Steuern bei neun Positionswechseln) und das passive Halten
-(rund $+248\,\%$ vor Steuern) gegenüber; die Walk-Forward-Prüfung des
-Prognosemodells über
-23.803 Handelstage ergibt keine Prognosekraft über die Basisrate hinaus bei
-zugleich guter Kalibrierung; die im Kostenmodell angesetzten Fixkosten von
-7,80\,€ je Round-Trip fallen im Betrieb nicht an, weil jede Order des Agenten die
-Provisionsschwelle von 1.000\,€ überschreitet, und die Antwortlatenzen des Modellgremiums liegen im eingeschwungenen
-Betrieb unter einer Sekunde je Votum
+In Kennzahlen verdichtet: Der Zehn-Jahres-Backtest stellt dem täglichen
+Round-Trip der Demonstrationsstrategie (rund $-29.700$\,€, davon etwa 98\,\%
+Transaktionskosten) das reine Regimefolgen (rund $+96\,\%$ vor Steuern) und das
+passive Halten (rund $+248\,\%$) gegenüber; die Walk-Forward-Prüfung zeigt bei
+guter Kalibrierung keine Prognosekraft über die Basisrate; die im Kostenmodell
+angesetzen Fixkosten von 7,80\,€ je Round-Trip fallen im Betrieb nicht an, weil
+jede Order die Provisionsschwelle von 1.000\,€ überschreitet; die Voten des
+Modellgremiums liegen im eingeschwungenen Betrieb unter einer Sekunde
 (\cref{sec:umsetzung-evaluation-ergebnisse}). Ökonomisch fällt die Antwort damit
 eindeutig aus: Die täglich handelnde Demonstrationsstrategie ist nach realen
 Kosten strukturell defizitär; der Agent ist ein Erkenntnis-, kein

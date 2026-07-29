@@ -162,8 +162,8 @@ Ex-Ante-Kostenausweis der Bank nennt für Ordervolumina unterhalb von 1.000\,€
 Kaufprovision von 3{,}90\,€; das Kostenmodell des Backtests setzt daraus 7{,}80\,€
 je Round-Trip an. Bei einem Einsatz von 2.000\,€ muss sich der Index unter diesem
 Ansatz um etwa 0{,}3\,\% in Regimerichtung bewegen, bevor ein Handelstag den
-Break-even erreicht. Die Messung im Betrieb widerlegt den Ansatz jedoch
-(\cref{sec:umsetzung-evaluation-ergebnisse}), sodass die daraus abgeleiteten
+Break-even erreicht. Die Messung im Betrieb korrigiert den Ansatz jedoch nach
+unten (\cref{sec:umsetzung-evaluation-ergebnisse}), sodass die daraus abgeleiteten
 Schwellen als obere Schranke zu lesen sind. Es verbleibt der Geld-Brief-Spread des
 Zertifikats, den der Ex-Ante-Ausweis nicht enthält. Die Mindestgröße von 1.000\,€
 folgt umgekehrt aus derselben Gebührenstruktur, denn genau an dieser Schwelle
@@ -193,14 +193,10 @@ Gespeichert werden Rohticks, aus denen Bars abgeleitet werden -- nie umgekehrt.
 Damit bleibt jede Verdichtung reproduzierbar, und Auffälligkeiten lassen sich bis
 zum einzelnen Tick zurückverfolgen. Ein Sanitätsfilter verwirft unplausible Werte
 nicht, sondern markiert sie, sodass die Provenienz erhalten bleibt. Lücken im
-Datenstrom werden nach ihrer Ursache klassifiziert; ein empirischer Befund des
-Betriebs unterstreicht, warum das nötig ist: Die reguläre Stille des Index
-außerhalb der US-Kassasitzung hätte an jedem Montagmorgen fälschlich als
-Datenfehler gegolten und den Handel strukturell blockiert. Erst die Unterscheidung
+Datenstrom werden nach ihrer Ursache klassifiziert: Erst die Unterscheidung
 zwischen legitimer Sitzungspause und echtem Verbindungsverlust machte das
-Qualitätskriterium betriebstauglich -- ein Beispiel dafür, dass sich die
-Schwellwerte eines autonomen Systems nicht am Schreibtisch, sondern nur gegen
-reale Betriebsdaten kalibrieren lassen.
+Qualitätskriterium betriebstauglich -- die Schwellwerte ließen sich nur gegen
+reale Betriebsdaten kalibrieren, nicht am Schreibtisch festlegen.
 
 Der tägliche Zyklus beginnt mit der Erzeugung eines strukturierten
 Entscheidungsdokuments (\emph{DecisionRequest}): Die Strategieauswertung liefert
@@ -283,13 +279,12 @@ strukturelle Änderung erfordert. Zugangsdaten liegen verschlüsselt in einem
 dedizierten Geheimnisspeicher und erscheinen zu keinem Zeitpunkt im Kontext der
 Sprachmodelle.
 
-Das öffentliche Dashboard schließlich ist als eigenständiges, bewusst kleines
-Teilsystem implementiert. Ein Exportprozess redigiert das Entscheidungsjournal auf
-die veröffentlichungsfähigen Inhalte und trennt so den öffentlichen Lesezugriff
-vollständig vom Handelspfad; die Oberfläche stellt den Indexverlauf mit den
-Durchschnittslinien und Regimewechseln dar und zeigt je Entscheidung das
-aggregierte Votum mit den aufklappbaren Einzelbegründungen der Modelle -- sie
-dient damit zugleich als öffentlich prüfbarer Lauffähigkeitsnachweis des Agenten.
+Das öffentliche Dashboard schließlich redigiert das Entscheidungsjournal auf
+veröffentlichungsfähige Inhalte und trennt so den öffentlichen Lesezugriff
+vollständig vom Handelspfad; es zeigt den Indexverlauf mit den Durchschnittslinien
+und Regimewechseln sowie je Entscheidung das aggregierte Votum mit den
+aufklappbaren Einzelbegründungen der Modelle und dient damit als öffentlich
+prüfbarer Lauffähigkeitsnachweis des Agenten.
 
 Die Betriebsführung rundet die Implementierung ab. Ein Zeitplandienst startet den
 Entscheidungszyklus an Handelstagen kurz vor der US-Markteröffnung; ein
@@ -475,22 +470,15 @@ Mechanismus.
 Autonomer Handel mit gehebelten Derivaten vereint mehrere Risikoklassen: das
 Marktrisiko des gehebelten Instruments, das Betriebsrisiko eines unbeaufsichtigt
 laufenden Systems und das spezifische Risiko probabilistischer Modellkomponenten.
-Die Architektur begegnet dem mit einer gestaffelten Sicherungskette, deren
+Die Architektur begegnet dem mit einer gestaffelten Sicherungskette
+(\cref{sec:umsetzung-architektur}, \cref{sec:umsetzung-implementierung}), deren
 tragendes Prinzip die begrenzte Diskretion ist: Das Sprachmodell-Gremium kann
 Handelsvorschläge verhindern oder verkleinern, niemals aber
-erzeugen oder in ihrer Richtung umkehren, und deterministische Ausschlusskriterien
-werden grundsätzlich vor jedem Modellaufruf entschieden. Dieselbe Grenze gilt für
-die statistische Prognoseinstanz, deren Einschätzung ausschließlich als
-zusätzlicher Risikohinweis in die Bewertung einfließt. Auf der Ausführungsseite
-verhindern das zweiphasige Intent-Journal die Doppelausführung, die
-Orderbuch-Reconciliation unbemerkte Zustandslücken nach Kommunikationsfehlern und
-die Einzel- sowie Portfolio-Obergrenzen ein unkontrolliertes Anwachsen der
-Positionen; jeder unklare Zustand mündet in einem alarmierten Handelsstopp. Der
-Mensch bleibt dreifach eingebunden: durch die tägliche photoTAN-Freigabe als
-regulatorisch erzwungenen Kontrollpunkt, durch den in Echtzeit wirksamen Not-Aus
-über den Messaging-Kanal und durch einen Totmannschalter, der den Ausfall des
-Agenten selbst meldet. Das öffentliche Dashboard ergänzt die Kontrolle um
-Transparenz, ohne die handelnden Systeme zu exponieren.
+erzeugen oder in ihrer Richtung umkehren, deterministische Ausschlusskriterien
+werden vor jedem Modellaufruf entschieden, und die Prognoseinstanz wirkt
+ausschließlich als zusätzlicher Risikohinweis. Jeder unklare Zustand mündet in
+einem alarmierten Handelsstopp, und der Mensch bleibt über photoTAN-Freigabe,
+Not-Aus und Totmannschalter eingebunden.
 
 Der Ausstiegspfad wurde während der Echtgeldwoche in drei Stufen vervollständigt.
 Zunächst verkauft der Agent bei einem Regimewechsel den Bestand oberhalb einer

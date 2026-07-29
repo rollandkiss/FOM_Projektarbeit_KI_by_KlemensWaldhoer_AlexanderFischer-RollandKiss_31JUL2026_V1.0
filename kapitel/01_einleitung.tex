@@ -44,7 +44,7 @@ Orderaufgabe müssen deshalb in ein knappes Zeitbudget passen, von dem jeder
 zusätzliche Prüfschritt mitverbraucht und das den Entwurf entsprechend verkompliziert. Zweitens ist die Unumkehrbarkeit von Handlungen
 zu nennen. Getroffene Entscheidungen materialisieren sich unmittelbar und können zu
 realem Vermögensverlust führen. Drittens ist der Infrastrukturzugang für Privatanwender
-eingeschränkt. Kostenlose Kursdaten stehen in der benötigten Intraday-Auflösung nur
+eingeschränkt. Kostenlose Kursdaten stehen in der benötigten Intraday-Auf"|lösung nur
 über inoffizielle und nicht stabile Schnittstellen bereit, was Robustheit und
 Skalierbarkeit des Lösungsdesigns beeinflusst. Auf der Ausführungsseite setzt eine
 automatisierte Anbindung eine programmierbare
@@ -85,18 +85,18 @@ Sprachmodell, sondern einer festgelegten, deterministisch implementierten Strate
 auf Basis gleitender Durchschnitte (engl. \glsxtrlong{sma}, \glsxtrshort{sma}),
 angewendet auf einen ausgewählten Index, die \cref{cha:umsetzung} formal fasst und in
 Quelltext umsetzt. Ein Gremium aus drei lokal betreibbaren
-Sprachmodellen übernimmt die Rolle unabhängiger Prüfinstanzen: Jedes Modell
+Sprachmodellen übernimmt die Rolle unabhängiger Prüf"|instanzen: Jedes Modell
 prüft die regelbasiert vorbereitete Entscheidung eigenständig, und erst ein
 Mehrheitsentscheid des Modellgremiums gibt die Orderausführung über die
 Bankschnittstelle frei. Ergänzt
-wird das Gremium um eine statistische Prüfinstanz: Ein kleines, klassisches
+wird das Gremium um eine statistische Prüf"|instanz: Ein kleines, klassisches
 Prognosemodell schätzt die Wahrscheinlichkeit einer Folgetagsbewegung in
 Signalrichtung und soll damit ausschließlich den Entscheidungskontext der
 Sprachmodelle anreichern. In untergeordneten Parametern bleibt den Modellen ein eng
 gefasster Spielraum: Sie wählen die Ordergröße innerhalb einer vorgegebenen Spanne,
 dürfen den vorgeschlagenen Wert aber nur unterschreiten, und bei mehreren Zustimmungen
 gilt die kleinste genannte Größe.
-Sämtliche Prüfinstanzen können Handelsvorschläge somit verhindern oder verkleinern,
+Sämtliche Prüf"|instanzen können Handelsvorschläge somit verhindern oder verkleinern,
 jedoch niemals erzeugen oder umkehren (Prinzip der begrenzten Diskretion). Die
 Betriebsform ist dabei selbst ein Ziel: Die Agentenstruktur ist modular aufgebaut und für den lokalen
 Privatgebrauch ausgelegt -- als Zielkonfiguration auf einem Mac~mini, sodass sie
@@ -114,7 +114,7 @@ Zweitens, ob das Mehrheitsvotum mehrerer Sprachmodelle einen belegbaren Beitrag 
 Verlustrisikominimierung leistet, der über eine bloße Bestätigung des
 deterministischen Signals hinausgeht.
 
-Beide Leitfragen werden zu prüfbaren Hypothesen verdichtet. Hinzu tritt eine dritte,
+Beide Leitfragen werden zu prüfbaren Hypothesen verdichtet; hinzu tritt eine dritte,
 die die Annahme hinter der begrenzten Rolle der Prognose prüft. Alle drei werden in
 \cref{cha:umsetzung} an gemessenen Größen geprüft.
 

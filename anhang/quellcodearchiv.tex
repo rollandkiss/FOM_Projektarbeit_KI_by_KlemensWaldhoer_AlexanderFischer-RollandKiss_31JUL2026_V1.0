@@ -66,10 +66,14 @@ die Tabellen der \cref{sec:anhang-archiv-quellcode,sec:anhang-archiv-tests,sec:a
 
 Das Archiv ist über Dateinamen, Erstellungsdatum und Prüfsumme eindeutig
 identifiziert; die Prüfsumme erlaubt den Nachweis, dass der beigelegte Stand
-dem hier dokumentierten entspricht.
+dem hier dokumentierten entspricht. \Cref{tab:anhang-archiv-identitaet} weist
+Dateiname, Version, Umfang und Prüfsumme aus.
 
 \begin{table}[htbp]
   \centering
+  \caption[Identität des Quellcodearchivs]{Identität des beigelegten
+    Quellcodearchivs.\quelleeigen}
+  \label{tab:anhang-archiv-identitaet}
   \begin{tabular}{l l}
     \hline
     Merkmal & Wert \\
@@ -80,9 +84,6 @@ dem hier dokumentierten entspricht.
     Integrität (SHA-256) & \texttt{\footnotesize\QuellcodeArchivSHA} \\
     \hline
   \end{tabular}
-  \caption[Identität des Quellcodearchivs]{Identität des beigelegten
-    Quellcodearchivs.\quelleeigen}
-  \label{tab:anhang-archiv-identitaet}
 \end{table}
 
 Für die Beilage gelten zwei redaktionelle Regeln, die die Programmlogik
@@ -120,8 +121,9 @@ ausgewiesenem Snapshot-Datum.
 \section{Tests}
 \label{sec:anhang-archiv-tests}
 
-Die Testsuiten lagen in der Produktivumgebung neben den geprüften Modulen und
-sind im Archiv in den Ordner \texttt{Tests/} ausgegliedert. Der Testtreiber
+Das Archiv enthält neunzehn Offline-Testsuiten. Sie lagen in der
+Produktivumgebung neben den geprüften Modulen und sind im Archiv in den Ordner
+\texttt{Tests/} ausgegliedert. Der Testtreiber
 \texttt{run\_tests.sh} stellt den Modulpfad her und führt die achtzehn Suiten
 des Kernsystems, des Sitzungserhalts und des Dashboards offline aus
 (\texttt{bash Tests/run\_tests.sh}); Suiten mit fehlenden Drittabhängigkeiten
@@ -146,7 +148,8 @@ Prüfdaten im selben Ordner und dienen der Broker-Suite als Vorlage.
 \label{sec:anhang-archiv-daten}
 
 Die Datenstände belegen die in \cref{sec:umsetzung-evaluation} berichteten
-Kennzahlen; ihr jeweiliges Snapshot-Datum ist ausgewiesen. Der Snapshot der
+Kennzahlen. \Cref{tab:anhang-archiv-daten} führt sie mit ihrem jeweiligen
+Snapshot-Datum auf. Der Snapshot der
 produktiven Marktdatenbank sowie die redigierte Belegkette der
 Echtgeld-Orders werden nach Abschluss der Echtgeld-Woche mit der nächsten
 Archivversion ergänzt (kursive Einträge).

@@ -39,7 +39,7 @@ fortpflanzen. \Cref{fig:zielarchitektur} zeigt die Zielarchitektur.
   \includesvg[width=\textwidth]{zielarchitektur}
   \caption[Zielarchitektur des autonomen Handelsagenten]{Zielarchitektur des
     autonomen Handelsagenten. Durchgezogene Elemente sind umgesetzt und in Betrieb,
-    gestrichelte Elemente geplant.\quelleeigenki}
+    gestrichelte Elemente geplant.\quelleeigenki{Anthropic Claude Fable~5 (Anthropic, 2026)}}
   \label{fig:zielarchitektur}
 \end{figure}
 
@@ -129,8 +129,8 @@ Durchschnittslinie:
   \end{cases}
   \label{eq:regime}
 \end{equation}
-Die Entscheidung für den Handelstag $t{+}1$ nutzt ausschließlich Schlusskurse bis
-einschließlich Tag $t$, sodass kein Blick in die Zukunft (Look-Ahead) möglich ist.
+Die Entscheidung für Tag $t{+}1$ nutzt ausschließlich Schlusskurse bis Tag $t$, ein
+Look-Ahead ist damit ausgeschlossen.
 Eine zentrale Zuordnungsdatei bildet das Regime auf ein Faktor-Zertifikat mit zweifachem
 Hebel in Long- beziehungsweise Short-Richtung ab. Ein Katalog mit Eignungsregeln
 (Mindestkurs, maximaler Spread, Hebelobergrenze) begrenzt die Produktauswahl.
@@ -147,35 +147,30 @@ $\sigma^{*} = 1{,}0\,\%$ pro Tag und der Mindestgröße $S_{\min} = 1.000\,€$.
 Obergrenze $K$ ist als harter, weder über die Konfiguration noch durch die
 Sprachmodelle veränderbarer Deckel implementiert.
 
-Die Ausführungsregeln sind ebenfalls deterministisch festgelegt, unterscheiden sich
-jedoch zwischen Simulation und Betrieb. Der Backtest modelliert einen täglichen
-Round-Trip. Er eröffnet die Position im Fenster der US-Kassasitzung und schließt sie
-nach dem zuerst erreichten Kriterium aus Verluststopp (drei Prozent), Gewinnziel
-(zwei Prozent) und Fensterschluss. Der Livebetrieb hält die Position dagegen
+Die Ausführungsregeln unterscheiden sich zwischen Simulation und Betrieb. Der Backtest
+modelliert einen täglichen Round-Trip: Einstieg im Fenster der US-Kassasitzung, Ausstieg
+nach dem zuerst erreichten Kriterium aus Verluststopp (drei Prozent), Gewinnziel (zwei
+Prozent) und Fensterschluss. Der Livebetrieb hält die Position dagegen
 regimegeführt. Er steigt im selben Fenster ein, sichert den Bestand anschließend über
 eine serverseitige Trailing-Stop-Order ab und stellt erst bei einem Regimewechsel
 glatt. Diese Differenz ist gewollt und in
 \cref{sec:umsetzung-evaluation-limitationen} als Grenze der Vergleichbarkeit
-ausgewiesen. Dem Prüfgremium stehen drei diskrete Einstiegszeitpunkte zur Wahl. Diese Wahl wird
-journalisiert, wirkt gegenwärtig jedoch nicht auf die Ausführung. Sämtliche Orders werden ausschließlich
+ausgewiesen. Sämtliche Orders werden ausschließlich
 limitiert aufgegeben, da die Datenfrische im verteilten Aufbau eine
 Slippage-Kontrolle über den Limitpreis erfordert.
 
 Die ökonomische Hürde dieser Taktung lässt sich vorab beziffern. Der
 Ex-Ante-Kostenausweis der Bank nennt für Ordervolumina unterhalb von 1.000\,€ eine
-Kaufprovision von 3{,}90\,€; das Kostenmodell des Backtests setzt daraus 7{,}80\,€
-je Round-Trip an. Bei einem Einsatz von 2.000\,€ muss sich der Index unter diesem
-Ansatz um etwa 0{,}3\,\% in Regimerichtung bewegen, bevor ein Handelstag den
-Break-even erreicht. Die Messung im Betrieb korrigiert den Ansatz jedoch nach
-unten (\cref{sec:umsetzung-evaluation-ergebnisse}), sodass die daraus abgeleiteten
-Schwellen als obere Schranke zu lesen sind. Es verbleibt der Geld-Brief-Spread des
-Zertifikats, den der Ex-Ante-Ausweis nicht enthält. Die Mindestgröße von 1.000\,€
-folgt umgekehrt aus derselben Gebührenstruktur, denn genau an dieser Schwelle
-entfällt die Provision.
+Kaufprovision von 3{,}90\,€; das Kostenmodell des Backtests setzt daraus 7{,}80\,€ je
+Round-Trip an. Bei einem Einsatz von 2.000\,€ muss sich der Index unter diesem Ansatz um
+etwa 0{,}3\,\% in Regimerichtung bewegen, bevor ein Handelstag den Break-even erreicht.
+Die Messung im Betrieb korrigiert den Ansatz nach unten
+(\cref{sec:umsetzung-evaluation-ergebnisse}), die Schwellen sind daher obere Schranken.
+Die Mindestgröße von 1.000\,€ folgt umgekehrt aus derselben Gebührenstruktur, denn genau
+an dieser Schwelle entfällt die Provision.
 
-Als zweite Regelstrategie ist die Variante \emph{smatrend}
-implementiert, die statt eines Kreuzungssignals den Indexstand gegen einen einzelnen
-langfristigen Durchschnitt stellt:
+Die zweite Regelstrategie \emph{smatrend} stellt statt eines Kreuzungssignals den
+Indexstand gegen einen einzelnen langfristigen Durchschnitt:
 \begin{equation}
   R'(t) \;=\;
   \begin{cases}
@@ -287,11 +282,12 @@ Einzelbegründungen und dient damit als öffentlich prüfbarer Lauffähigkeitsna
 
 Ein Zeitplandienst startet den Entscheidungszyklus an Handelstagen kurz vor der
 US-Markteröffnung, ein Börsenkalender überspringt Feiertage und eine Prozesssperre je
-Konto verhindert überlappende Läufe. Die Qualitätssicherung stützt sich auf achtzehn
-Offline-Testsuiten, die jede sicherheitsrelevante Verzweigung mit gemockten
-Schnittstellen durchspielen (\cref{tab:anhang-archiv-tests}). Zwei Mutationsproben
-messen ergänzend, wie zuverlässig diese Suiten eingebaute Fehler erkennen. Die Volltexte
-der zentralen Module sind im Anhang dokumentiert.
+Konto verhindert überlappende Läufe. Die Qualitätssicherung stützt sich auf neunzehn
+Offline-Testsuiten, von denen der Testtreiber achtzehn automatisiert ausführt. Sie
+spielen jede sicherheitsrelevante Verzweigung mit gemockten Schnittstellen durch
+(\cref{tab:anhang-archiv-tests}). Zwei Mutationsproben messen ergänzend, wie zuverlässig
+diese Suiten eingebaute Fehler erkennen. Die zentralen Module sind im beigelegten
+Quellcodearchiv vollständig dokumentiert.
 
 \section{Evaluation}
 \label{sec:umsetzung-evaluation}
@@ -365,70 +361,68 @@ verstehen ist.
 Das zentrale Backtest-Ergebnis fällt eindeutig aus: Der tägliche Round-Trip (B0)
 verliert über zehn Jahre 29.675,14\,€, wovon 28.940,15\,€ auf Transaktionskosten
 entfallen, bei einer Trefferquote von 31,7\,\%. Die nur bei Regimewechseln handelnde
-Variante (B2) erzielt mit neun Positionswechseln in zehn Jahren rund $+96\,\%$
-vor beziehungsweise $+60\,\%$ nach Steuern bei lediglich 106\,€ Kosten; das
-passive Halten des Index (B1) rund $+248\,\%$ vor beziehungsweise $+203\,\%$
-nach Steuern. 
-Die tägliche Handelsfrequenz wird demnach von den Transaktionskosten aufgezehrt. Der Kostenblock des Backtests ist nur eine Obergrenze. Bereits der verbleibende Spread
-lässt bei einer Trefferquote von 31,7\,\% keinen positiven Erwartungswert zu
-(\cref{eq:breakeven}). Die
+Variante (B2) erzielt mit neun Positionswechseln in zehn Jahren rund $+96\,\%$ vor
+beziehungsweise $+60\,\%$ nach Steuern bei lediglich 106\,€ Kosten; das passive Halten
+des Index (B1) rund $+248\,\%$ vor beziehungsweise $+203\,\%$ nach Steuern. Die tägliche
+Handelsfrequenz wird demnach von den Transaktionskosten aufgezehrt. Der Kostenblock des
+Backtests ist nur eine Obergrenze. Bereits der verbleibende Spread lässt bei einer
+Trefferquote von 31,7\,\% keinen positiven Erwartungswert zu (\cref{eq:breakeven}). Die
 Differenz zwischen B0 und B2 beziffert insofern den Preis der täglich demonstrierten
 Autonomie. Die Voting-Kalibrierung aus dem Live-Betrieb (Trockenlauf seit dem
-21.07.2026, Echtgeldbetrieb ab dem 27.07.2026) prüft
-fortlaufend, ob die Vetos der Modelle systematisch Verlusttage treffen
-oder lediglich Rauschen darstellen.
+21.07.2026, Echtgeldbetrieb ab dem 27.07.2026) prüft fortlaufend, ob die Vetos der
+Modelle systematisch Verlusttage treffen oder lediglich Rauschen darstellen.
 
-Die Walk-Forward-Prüfung des Prognosemodells über 23.803 Handelstage der
-vollständigen Indexhistorie fällt eindeutig aus:
-Einer Basisrate von 52,1\,\% in Regimerichtung schließender Folgetage steht eine
-Trefferquote von 52,0\,\% gegenüber und der Brier-Score von 0,2498 unterschreitet
-die Klimatologie (0,2496) nicht -- das Modell besitzt keine Prognosekraft über die
-Basisrate hinaus. Prognostizierte und beobachtete Häufigkeit stimmen dabei in jedem besetzten
-Wahrscheinlichkeitsbereich nahezu überein
-(\cref{tab:anhang-walkforward})\footcite[zur Zerlegung des Brier-Scores in
-Kalibrierungs- und Auflösungsanteil vgl.][S.~595--600]{murphy1973}.
-Dieser Negativbefund trägt die zentrale Architekturentscheidung empirisch:
-Die Tagesrichtung des Index ist auch mit sauber validiertem Modell praktisch
-nicht prognostizierbar. Die Prüfinstanz bleibt daher bis zu einem gegenteiligen
+Die Walk-Forward-Prüfung des Prognosemodells über 23.803 Handelstage der vollständigen
+Indexhistorie fällt eindeutig aus: Einer Basisrate von 52,1\,\% in Regimerichtung
+schließender Folgetage steht eine Trefferquote von 52,0\,\% gegenüber und der
+Brier-Score von 0,2498 unterschreitet die Klimatologie (0,2496) nicht -- das Modell
+besitzt keine Prognosekraft über die Basisrate hinaus. In den beiden besetzungsstarken
+Bins, auf die 99,0\,\% der Prognosen entfallen, stimmen prognostizierte und beobachtete
+Häufigkeit nahezu überein (\cref{tab:anhang-walkforward}). Die Randbins sind mit
+zusammen 227 Fällen zu dünn besetzt, um interpretierbar zu sein\footcite[zur Zerlegung
+des Brier-Scores in Kalibrierungs- und Auflösungsanteil vgl.][S.~595--600]{murphy1973}.
+Dieser Negativbefund trägt die zentrale Architekturentscheidung empirisch: Die
+Tagesrichtung des Index ist auch mit sauber validiertem Modell praktisch nicht
+prognostizierbar. Die Prüfinstanz bleibt daher bis zu einem gegenteiligen
 Kalibrierungsnachweis aus dem laufenden Betrieb im Schattenmodus.
 
 Die Kostenmessung gegen das Produktivsystem der Bank lieferte darüber hinaus
-eigenständige Befunde. Ein kontrolliertes Experiment über beide
-Depots, beide Ordertypen und eine Volumenreihe zeigte, dass die Provision ab
-einem Ordervolumen von 1.000\,€ vollständig entfällt: Der Emittent vergütet die Bank
-im Rahmen der Premium-Partner-Konstruktion mit 9{,}50\,€, die im
-Ex-Ante-Kostenausweis als \enquote{Zahlung von Dritten an die Bank} erscheint --
-eine Stufe, keine Kurve. Da die Mindestordergröße des Agenten
-bei 1.000\,€ liegt, ist faktisch jede seiner Orders provisionsfrei; die zuvor
-angenommenen Round-Trip-Fixkosten von 7{,}80\,€ beschreiben einen Kostenblock, der im
-Betrieb nicht anfällt. Die Wahl des Direkthandels beim Emittenten statt eines
-Börsenplatzes senkt die Gesamtkosten je Round-Trip um weitere 5\,€, da die
-Handelsplatzentgelte entfallen; der Geld-Brief-Spread wird dagegen im
-Ex-Ante-Kostenausweis nicht ausgewiesen und musste im Betrieb empirisch gemessen
-werden. Auch der Betrieb der Sprachmodelle erbrachte belastbare Beobachtungen: Die Schema-Adhärenz musste
-schrittweise erzwungen werden, für Modelle mit aktivierter Reasoning-Ausgabe war deren Abschaltung erforderlich, weil der Denkmodus das erzwungene Antwortformat überstimmte. Ein viertes
-Modell wurde wegen langer Antwortzeiten und inhaltlichen Rauschens ausgeschlossen. Die
-Antwortlatenzen fielen nach der Warmlaufphase von knapp zehn Sekunden auf unter
-eine Sekunde je Votum.
+eigenständige Befunde. Ein kontrolliertes Experiment über beide Depots, beide Ordertypen
+und eine Volumenreihe zeigte, dass die Provision ab einem Ordervolumen von 1.000\,€
+vollständig entfällt: Der Emittent vergütet die Bank im Rahmen der
+Premium-Partner-Konstruktion mit 9{,}50\,€, die im Ex-Ante-Kostenausweis als
+\enquote{Zahlung von Dritten an die Bank} erscheint -- eine Stufe, keine Kurve. Da die
+Mindestordergröße des Agenten bei 1.000\,€ liegt, ist faktisch jede seiner Orders
+provisionsfrei; die zuvor angenommenen Round-Trip-Fixkosten von 7{,}80\,€ beschreiben
+einen Kostenblock, der im Betrieb nicht anfällt. Die Wahl des Direkthandels beim
+Emittenten statt eines Börsenplatzes senkt die Gesamtkosten je Round-Trip um weitere
+5\,€, da die Handelsplatzentgelte entfallen; der Geld-Brief-Spread wird dagegen im
+Ex-Ante-Kostenausweis nicht ausgewiesen und musste im Betrieb empirisch gemessen werden.
+Auch der Betrieb der Sprachmodelle erbrachte belastbare Beobachtungen: Die
+Schema-Adhärenz musste schrittweise erzwungen werden, für Modelle mit aktivierter
+Reasoning-Ausgabe war deren Abschaltung erforderlich, weil der Denkmodus das erzwungene
+Antwortformat überstimmte. Ein viertes Modell wurde wegen langer Antwortzeiten und
+inhaltlichen Rauschens ausgeschlossen. Die Antwortlatenzen fielen nach der Warmlaufphase
+von knapp zehn Sekunden auf unter eine Sekunde je Votum.
 
 \subsection{Limitationen}
 \label{sec:umsetzung-evaluation-limitationen}
 
 Die Aussagekraft der Ergebnisse unterliegt mehreren Einschränkungen. Die
 Bankschnittstelle bietet keine Sandbox, sodass die Ordervalidierung gegen das
-Produktivsystem erfolgt. Die Autonomie ist regulatorisch durch die tägliche photoTAN-Freigabe begrenzt. Die
-Datenfrische am Entscheidungspunkt beträgt 60 bis 90 Sekunden.
-Der Backtest approximiert das
-Faktor-Zertifikat über das zweifache Index-Tagessegment und modelliert weder
-Währungseffekte noch den variablen Geld-Brief-Spread exakt; die inoffizielle
-Kursdatenquelle bietet keine Verfügbarkeitsgarantie. Trotz Temperatur null und
-erzwungenem Antwortschema bleibt ein Restmaß an Nichtdeterminismus der
-Sprachmodelle bestehen und die Stichprobe der Voting-Kalibrierung ist zu Beginn
-des Betriebs klein, weshalb die Auswertung bewusst deskriptiv bleibt und keine
-automatische Modellabschaltung auslöst. Gleiches gilt für die statistische
-Prüfinstanz, die zu Betriebsbeginn im Schattenmodus läuft und deren Beitrag daher
-zunächst nur beobachtend gemessen werden kann. Schließlich messen Simulation und Betrieb nicht denselben Mechanismus: drei Prozent
-Verluststopp gegen vier Prozent Trailing-Distanz.
+Produktivsystem erfolgt. Die Autonomie ist regulatorisch durch die tägliche
+photoTAN-Freigabe begrenzt. Die Datenfrische am Entscheidungspunkt beträgt 60 bis 90
+Sekunden. Der Backtest approximiert das Faktor-Zertifikat über das zweifache
+Index-Tagessegment und modelliert weder Währungseffekte noch den variablen
+Geld-Brief-Spread exakt; die inoffizielle Kursdatenquelle bietet keine
+Verfügbarkeitsgarantie. Trotz Temperatur null und erzwungenem Antwortschema bleibt ein
+Restmaß an Nichtdeterminismus der Sprachmodelle bestehen und die Stichprobe der
+Voting-Kalibrierung ist zu Beginn des Betriebs klein, weshalb die Auswertung bewusst
+deskriptiv bleibt und keine automatische Modellabschaltung auslöst. Gleiches gilt für
+die statistische Prüfinstanz, die zu Betriebsbeginn im Schattenmodus läuft und deren
+Beitrag daher zunächst nur beobachtend gemessen werden kann. Schließlich messen
+Simulation und Betrieb nicht denselben Mechanismus: drei Prozent Verluststopp gegen vier
+Prozent Trailing-Distanz.
 
 \section{Kritische Würdigung}
 \label{sec:umsetzung-wuerdigung}

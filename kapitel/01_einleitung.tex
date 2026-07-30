@@ -90,8 +90,7 @@ gefasster Spielraum: Sie wählen die Ordergröße innerhalb einer vorgegebenen S
 dürfen den vorgeschlagenen Wert aber nur unterschreiten, und bei mehreren Zustimmungen
 gilt die kleinste genannte Größe.
 Sämtliche Prüf"|instanzen können Handelsvorschläge somit verhindern oder verkleinern,
-jedoch niemals erzeugen oder umkehren (Prinzip der begrenzten Diskretion). Die
-Betriebsform ist dabei selbst ein Ziel: Die Agentenstruktur ist modular aufgebaut und für den lokalen
+jedoch niemals erzeugen oder umkehren (Prinzip der begrenzten Diskretion). Ein weiteres Ziel betrifft die Betriebsform: Die Agentenstruktur ist modular aufgebaut und für den lokalen
 Privatgebrauch ausgelegt -- als Zielkonfiguration auf einem Mac~mini\footcite[vgl.][]{appleMacmini2026}, sodass sie weitgehend kostenfrei betreibbar bleibt und sensible Daten die eigene Infrastruktur nicht verlassen müssen. Der Erprobungsbetrieb nutzt noch cloud-gehostete Inferenz (\cref{sec:umsetzung-architektur}). Der Agent versteht sich dabei als Erkenntnis-, nicht als Renditeinstrument.
 Der praktische Beitrag liegt in einer übertragbaren Referenzarchitektur
 für sicherheitsorientiert begrenzten KI-Einsatz im autonomen Handel sowie in
@@ -102,7 +101,7 @@ Erstens, ob sich der vollständige Handelszyklus -- von der Datenerfassung über
 vertretbarem Aufwand autonom, nachvollziehbar und abgesichert betreiben lässt.
 Zweitens, ob das Sprachmodell-Gremium seine begrenzte Diskretion verlässlich ausübt -- im Regelfall beschränkt auf Verhindern und Verkleinern, im Fehlerfall durchgängig fail-safe und konsistent -- ohne Handelsentscheidungen jemals zu erzeugen oder umzukehren.
 
-Beide Leitfragen werden zu prüfbaren Hypothesen verdichtet: \emph{H1} prüft die Autonomie des Handelszyklus, \emph{H2} die Diskretionsausübung des Gremiums. \emph{H3} prüft ergänzend die Annahme, die der begrenzten Rolle des Prognosemodells zugrunde liegt. Alle drei werden in \cref{cha:umsetzung} an gemessenen Größen geprüft.
+Beide Leitfragen werden in prüfbare Hypothesen überführt: \emph{H1} prüft die Autonomie des Handelszyklus, \emph{H2} die Diskretionsausübung des Gremiums. \emph{H3} prüft ergänzend die Annahme, die der begrenzten Rolle des Prognosemodells zugrunde liegt. Alle drei werden in \cref{cha:umsetzung} an gemessenen Größen geprüft.
 
 \begin{description}
   \item[H1] Der Agent durchläuft den täglichen Handelszyklus im Normalbetrieb ohne

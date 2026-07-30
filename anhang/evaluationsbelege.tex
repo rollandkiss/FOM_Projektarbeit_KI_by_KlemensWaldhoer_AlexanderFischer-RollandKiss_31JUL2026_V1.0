@@ -38,13 +38,16 @@ genannten Kennzahlen entstammen unverändert diesem Protokoll.
 \section{Walk-Forward-Kalibrierung der statistischen Prüfinstanz}
 \label{sec:anhang-walkforward}
 
-Kalibrierungstabelle der Walk-Forward-Prüfung (\texttt{ml\_walkforward.csv};
-23.803 bewertete Prognosetage): je Wahrscheinlichkeits-Bin die Anzahl der
+\Cref{tab:anhang-walkforward} führt je Wahrscheinlichkeits-Bin die Anzahl der
 Prognosen, die mittlere prognostizierte Wahrscheinlichkeit und die beobachtete
-Trefferrate.
+Trefferrate auf (\texttt{ml\_walkforward.csv}; 23.803 bewertete Prognosetage).
 
 \begin{table}[htbp]
   \centering
+  \caption[Walk-Forward-Kalibrierung der statistischen Prüfinstanz]{%
+    Walk-Forward-Kalibrierung der statistischen Prüfinstanz
+    (Quelle: \texttt{ml\_walkforward.csv}, Stand 22.07.2026).\quelleeigen}
+  \label{tab:anhang-walkforward}
   \begin{tabular}{r r r r}
     \hline
     Bin & $n$ & $\bar{p}$ prognostiziert & beobachtete Rate \\
@@ -57,21 +60,22 @@ Trefferrate.
     0{,}6 & 91     & 0{,}624 & 0{,}549 \\
     \hline
   \end{tabular}
-  \caption[Walk-Forward-Kalibrierung der statistischen Prüfinstanz]{%
-    Walk-Forward-Kalibrierung der statistischen Prüfinstanz
-    (Quelle: \texttt{ml\_walkforward.csv}, Stand 22.07.2026).\quelleeigen}
-  \label{tab:anhang-walkforward}
 \end{table}
 
 \section{Ex-Ante-Transaktionskosten (Bankmessung)}
 \label{sec:anhang-kosten}
 
-Rohdaten der Kostenmessung gegen das Produktivsystem der Bank
-(\texttt{cost\_probe.py}, Ex-Ante-Kostenausweis der Ordervalidierung, Status
-201 = bankseitig validiert; Handelsplatz Live Trading/Direkthandel):
+\Cref{tab:anhang-kosten} enthält die Rohdaten der Kostenmessung gegen das
+Produktivsystem der Bank (\texttt{cost\_probe.py}, Ex-Ante-Kostenausweis der
+Ordervalidierung, Status 201 = bankseitig validiert; Handelsplatz Live
+Trading/Direkthandel).
 
 \begin{table}[htbp]
   \centering
+  \caption[Ex-Ante-Transaktionskosten der Bankmessung]{%
+    Ex-Ante-Transaktionskosten der Bankmessung
+    (Quelle: \texttt{kostentabelle.csv}, erhoben 19.07.2026).\quelleeigen}
+  \label{tab:anhang-kosten}
   \begin{tabular}{r r r r r r r}
     \hline
     Volumen & Stück & Provision & Produktkosten & Kauf gesamt & Round-Trip & RT-Quote \\
@@ -81,10 +85,6 @@ Rohdaten der Kostenmessung gegen das Produktivsystem der Bank
     990\,€ & 66 & 3{,}90\,€ & 0{,}95\,€ & 4{,}85\,€ & 7{,}80\,€ & 0{,}79\,\% \\
     \hline
   \end{tabular}
-  \caption[Ex-Ante-Transaktionskosten der Bankmessung]{%
-    Ex-Ante-Transaktionskosten der Bankmessung
-    (Quelle: \texttt{kostentabelle.csv}, erhoben 19.07.2026).\quelleeigen}
-  \label{tab:anhang-kosten}
 \end{table}
 
 \section{Herkunftsnachweis der Marktdatenbasis}
@@ -94,10 +94,14 @@ Herkunfts- und Integritätsnachweis der produktiven Marktdatenbank
 (\texttt{marketdata.sqlite}, collector-vm; Abfragen vom 23.07.2026). Die
 Rohtick-Tabelle enthält konstruktionsbedingt nur die jüngsten Handelstage, da
 ältere Rohticks nach zehn Tagen zu Bars verdichtet und beschnitten werden
-(vgl. \cref{sec:umsetzung-implementierung}).
+(vgl. \cref{sec:umsetzung-implementierung}). \Cref{tab:anhang-provenienz} weist
+Herkunft, Umfang und Integrität der Datenbasis aus.
 
 \begin{table}[htbp]
   \centering
+  \caption[Herkunftsnachweis der Marktdatenbasis]{Herkunftsnachweis der
+    Marktdatenbasis (collector-vm, Stand 23.07.2026).\quelleeigen}
+  \label{tab:anhang-provenienz}
   \begin{tabular}{l l}
     \hline
     Merkmal & Wert \\
@@ -108,17 +112,19 @@ Rohtick-Tabelle enthält konstruktionsbedingt nur die jüngsten Handelstage, da
     Replikation (Litestream) & \texttt{gs://fom-ki-marketdata-backup/marketdata/} \\
     \hline
   \end{tabular}
-  \caption[Herkunftsnachweis der Marktdatenbasis]{Herkunftsnachweis der
-    Marktdatenbasis (collector-vm, Stand 23.07.2026).\quelleeigen}
-  \label{tab:anhang-provenienz}
 \end{table}
 
-Die jüngsten Zeilen der Zweitquellenprüfung (\texttt{source\_crosscheck};
-Spalte \texttt{stooq\_close} enthält aus historischen Gründen den
-FRED-Schlusskurs) belegen die laufende Übereinstimmung der Datenquellen:
+\Cref{tab:anhang-crosscheck} belegt mit den jüngsten Zeilen der
+Zweitquellenprüfung (\texttt{source\_crosscheck}; Spalte \texttt{stooq\_close}
+enthält aus historischen Gründen den FRED-Schlusskurs) die laufende
+Übereinstimmung der Datenquellen.
 
 \begin{table}[htbp]
   \centering
+  \caption[Zweitquellenprüfung der Tagesschlusskurse]{Jüngste Zeilen der
+    Zweitquellenprüfung gegen \glsxtrshort{fred}
+    (Stand 23.07.2026).\quelleeigen}
+  \label{tab:anhang-crosscheck}
   \begin{tabular}{l r r r r}
     \hline
     Datum & Primärquelle & FRED & Divergenz & Suspekt \\
@@ -134,10 +140,6 @@ FRED-Schlusskurs) belegen die laufende Übereinstimmung der Datenquellen:
     09.07.2026 & 7.543{,}64 & 7.543{,}64 & 0{,}0\,\% & 0 \\
     \hline
   \end{tabular}
-  \caption[Zweitquellenprüfung der Tagesschlusskurse]{Jüngste Zeilen der
-    Zweitquellenprüfung gegen \glsxtrshort{fred}
-    (Stand 23.07.2026).\quelleeigen}
-  \label{tab:anhang-crosscheck}
 \end{table}
 
 \section{Kosten der Trailing-Distanz}
@@ -145,7 +147,7 @@ FRED-Schlusskurs) belegen die laufende Übereinstimmung der Datenquellen:
 
 Beleg zu der in \cref{sec:umsetzung-wuerdigung} genannten Wirkung der
 Stopdistanz. \Cref{tab:anhang-trailing-distanz} misst die Regimestrategie über
-die vollständige Indexhistorie (24.757 Tagesbars ab 30.12.1927) im
+die vollständige Indexhistorie (24.757 Tagesbars vom 30.12.1927 bis 24.07.2026) im
 approximierten 2x-Zertifikat -- zweifache Index-Tagesrendite abzüglich
 gemessener Haltekosten von 4{,}87\,\% jährlich, 20 Basispunkte Spread je
 Round-Trip, Ausführung mit einem Handelstag Verzögerung. Der Wiedereinstieg

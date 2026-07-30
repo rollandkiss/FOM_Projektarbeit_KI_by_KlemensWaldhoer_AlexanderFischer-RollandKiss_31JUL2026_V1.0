@@ -40,33 +40,30 @@ sind (\cref{sec:umsetzung-evaluation-design}).
 
 Damit lassen sich die in \cref{sec:zielsetzung} aufgestellten Hypothesen
 auflösen. \emph{H1} gilt für den Normalbetrieb, seit der Ausstiegs- und
-Absicherungspfad vollständig automatisiert ist; für die ersten Handelstage wurde der
+Absicherungspfad vollständig automatisiert ist. Für die ersten Handelstage wurde der
 Lebenszyklus der Schutzorders dokumentiert von Hand geführt. \emph{H2} bleibt offen --
 die Zahl der auswertbaren Handelstage ist für eine belastbare Aussage zur
 Diskretionsausübung des Gremiums zu klein. \emph{H3}
 wurde nicht verworfen: Trefferquote und Brier-Score der Walk-Forward-Prüfung über
 23.803 Handelstage bleiben im Rahmen der Basisrate beziehungsweise der
-Klimatologie. Der Negativbefund stützt die Architektur, statt sie zu schwächen --
-er ist der empirische Grund dafür, der Prognose keine Signalgewalt zu geben.
+Klimatologie. Der Negativbefund stützt die Architektur: Er ist der empirische Grund dafür, der Prognose keine Signalgewalt zu geben.
 
 In Kennzahlen verdichtet: Der Zehn-Jahres-Backtest stellt dem täglichen
 Round-Trip der Demonstrationsstrategie (rund $-29.700$\,€, davon etwa 98\,\%
 Transaktionskosten) das reine Regimefolgen (rund $+96\,\%$ vor Steuern) und das
 passive Halten (rund $+248\,\%$) gegenüber. Die Walk-Forward-Prüfung zeigt bei
-guter Kalibrierung keine Prognosekraft über die Basisrate; die im Kostenmodell
-angesetzten Fixkosten von 7,80\,€ je Round-Trip fallen im Betrieb nicht an, weil
-jede Order die Provisionsschwelle von 1.000\,€ überschreitet; die Voten des
+guter Kalibrierung keine Prognosekraft über die Basisrate. Die im Kostenmodell angesetzten Fixkosten von 7,80\,€ je Round-Trip fallen im Betrieb nicht an, weil jede Order die Provisionsschwelle von 1.000\,€ überschreitet. Die Voten des
 Modellgremiums liegen im eingeschwungenen Betrieb unter einer Sekunde
 (\cref{sec:umsetzung-evaluation-ergebnisse}). Ökonomisch fällt die Antwort damit
 eindeutig aus: Die täglich handelnde Demonstrationsstrategie ist nach realen
-Kosten strukturell defizitär; der Agent ist ein Erkenntnis-, kein
+Kosten strukturell defizitär. Der Agent ist ein Erkenntnis-, kein
 Renditeinstrument, und die Differenz zum reinen Regimefolgen beziffert den Preis
 der täglich demonstrierten Autonomie.
 
 \section{Diskussion}
 \label{sec:diskussion}
 
-Stärken und Schwächen der Lösung werden hier gebündelt, um die Zielerreichung ehrlich einzuordnen. Als
+Stärken und Schwächen der Lösung werden hier gebündelt, um die Zielerreichung einzuordnen. Als
 tragfähig erwiesen hat sich erstens das Prinzip der begrenzten Diskretion: Kein
 beobachteter Fehlerfall -- weder Schemaverletzungen einzelner Modelle noch
 Zeitüberschreitungen oder Datenlücken -- konnte eine unbeabsichtigte Order
@@ -75,7 +72,7 @@ Zweitens hat sich die Entscheidung ausgezahlt, die Evaluation auf gemessene stat
 angenommene Größen zu stützen: Reale Kostenausweise, die laufende
 Kursgegenprüfung und die Walk-Forward-Prüfung machen die Ergebnisse belastbar, und der ehrliche
 Negativbefund zur Prognosekraft trägt die zentrale Architekturentscheidung
-empirisch, statt sie zu beschädigen. Drittens schafft die durchgängige
+empirisch. Drittens schafft die durchgängige
 Journalisierung zusammen mit dem öffentlichen Dashboard eine Transparenz, die
 jede einzelne Entscheidung samt Modellvoten nachvollziehbar und den laufenden
 Betrieb öffentlich prüfbar macht.
@@ -83,7 +80,7 @@ Betrieb öffentlich prüfbar macht.
 Dem stehen Schwächen gegenüber. Der erhoffte Sicherheitsgewinn des
 Modellgremiums ist zu Betriebsbeginn empirisch unbelegt, und korrelierte
 Fehlurteile bleiben trotz Anbieterdiversität möglich, da alle Modelle denselben
-Entscheidungskontext erhalten; die Kalibrierung kann dies erst nach längerer
+Entscheidungskontext erhalten. Die Kalibrierung kann dies erst nach längerer
 Betriebsdauer klären. Die Autonomie bleibt an regulatorische und betriebliche Grenzen gebunden: die tägliche photoTAN-Freigabe, das Fenster zwischen zwei Zyklen, in dem ein Prozessabbruch zwischen Freigabe und Neusetzen der Schutzorder unentdeckt bliebe, und die Datenfrische von 60 bis 90 Sekunden am Entscheidungspunkt. 
 Schließlich stützt sich die Kursdatenerfassung auf eine inoffizielle Quelle 
 ohne Verfügbarkeitsgarantie, deren Ausfall der Betrieb zwar erkennen, 

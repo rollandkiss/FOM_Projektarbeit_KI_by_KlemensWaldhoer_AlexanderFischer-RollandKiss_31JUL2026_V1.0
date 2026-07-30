@@ -39,7 +39,9 @@ Zielarchitektur.
   \includesvg[width=\textwidth]{zielarchitektur}
   \caption[Zielarchitektur des autonomen Handelsagenten]{Zielarchitektur des
     autonomen Handelsagenten. Durchgezogene Elemente sind umgesetzt und in Betrieb,
-    gestrichelte Elemente geplant.\quelleeigenki{Anthropic Claude Fable~5 (Anthropic, 2026)}}
+    gestrichelte Elemente geplant.\quelleeigenki{Claude Fable~5 (Anthropic, 2026),
+    grafische Umsetzung der eigenen Architekturplanung. Prompt in
+    Anhang~\ref{sec:prompts-fable-abbildungen}}}
   \label{fig:zielarchitektur}
 \end{figure}
 
@@ -131,7 +133,9 @@ Durchschnittslinie:
   \label{eq:regime}
 \end{equation}
 Die Entscheidung für Tag $t{+}1$ nutzt ausschließlich Schlusskurse bis Tag $t$, ein
-Look-Ahead ist damit ausgeschlossen.
+Look-Ahead ist damit ausgeschlossen. Die Fensterlängen 50 und 200 folgen der in der
+Literatur zu Trendfolgestrategien üblichen
+Parametrisierung\footcites[vgl.][S.~1731--1764]{brock1992}[vgl.][S.~228--250]{moskowitzEtAl2012}.
 Eine zentrale Zuordnungsdatei bildet das Regime auf ein Faktor-Zertifikat mit zweifachem
 Hebel in Long- beziehungsweise Short-Richtung ab\footcite[vgl.][]{xmarkets2026}. Ein Katalog mit Eignungsregeln
 (Mindestkurs, maximaler Spread, Hebelobergrenze) begrenzt die Produktauswahl.
@@ -179,10 +183,15 @@ Indexstand gegen einen einzelnen langfristigen Durchschnitt:
   \end{cases}
   \label{eq:smatrend}
 \end{equation}
-und nur bei einem Regimewechsel handelt, ansonsten die Position hält. Beide
-Strategien folgen demselben Plugin-Kontrakt (Signalserie, deklarierter Datenbedarf,
-Mindesthistorie, Entscheidungsintervall), sodass der geplante A/B-Vergleich auf
-getrennten Depots ohne Eingriff in Auditor, Validator oder Broker möglich ist.
+und nur bei einem Regimewechsel handelt, ansonsten die Position hält. Die Fensterlänge 325
+ist nicht aus der Literatur übernommen, sondern stammt aus einer eigenen Parameterreihe über
+die Indexhistorie. Benachbarte Längen schneiden deutlich schlechter ab, ein Plateau liegt
+nicht vor. Die Variante ist insoweit überanpassungsgefährdet und wird ausschließlich als
+Vergleichsarm des Zweitdepots geführt, nicht als validierte Strategie
+(\cref{sec:umsetzung-evaluation-limitationen}).
+Beide Strategien folgen demselben Plugin-Kontrakt (Signalserie, deklarierter Datenbedarf,
+Mindesthistorie, Entscheidungsintervall), sodass der geplante A/B-Vergleich auf getrennten
+Depots ohne Eingriff in Auditor, Validator oder Broker möglich ist.
 
 \section{Implementierung}
 \label{sec:umsetzung-implementierung}

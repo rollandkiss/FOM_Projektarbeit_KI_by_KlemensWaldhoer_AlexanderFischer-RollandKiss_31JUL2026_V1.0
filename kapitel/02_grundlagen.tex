@@ -55,10 +55,7 @@ beschreibt\footcites[vgl.][S.~15]{bitkom2018}[vgl.][]{hammond2016}.
 Das Periodensystem umfasst achtundzwanzig KI-Elemente, die jeweils eine eigenständig
 etablierte Fähigkeit repräsentieren. Ihre Anordnung folgt dem typischen
 Verarbeitungsablauf einer KI-gestützten Anwendung, der sich in das Tripel aus
-Wahrnehmung, Schlussfolgerung und Reaktion gliedert. Die Gruppe \enquote{Assess} erfasst
-Daten und erkennt Muster, die Gruppe \enquote{Infer} bündelt Prognostizieren, Planen,
-Entscheiden und Erklären, und die Gruppe \enquote{Respond} entfaltet eine Wirkung in
-der Umwelt\footcite[vgl.][S.~15, 17\,f.]{bitkom2018}. Der Rahmen macht Anwendungen
+Wahrnehmung, Schlussfolgerung und Reaktion gliedert. Die Gruppe \textit{Assess} erfasst Daten und erkennt Muster. Die Gruppe \textit{Infer} bündelt Prognostizieren, Planen, Entscheiden und Erklären. Die Gruppe \textit{Respond} entfaltet eine Wirkung in der Umwelt\footcite[vgl.][S.~15, 17\,f.]{bitkom2018}. Der Rahmen macht Anwendungen
 damit vergleichbar und in ihrem Reifegrad
 einordenbar\footcite[vgl.][S.~16, 19\,f.]{bitkom2018}. Für diese Arbeit ist eine
 zweite Eigenschaft bedeutsam. Da der Rahmen alle Elemente ausweist, macht er den
@@ -114,7 +111,7 @@ ist\footcites[vgl.][]{ollama2026}[vgl.][]{openclawProviders2026}. Der Wechsel
 zwischen cloud-gehosteter und lokaler Inferenz ist damit zu konfigurieren, nicht zu
 programmieren. Offen verfügbare Modellgewichte machen den lokalen Betrieb praktisch
 erreichbar\footcites[vgl.][]{gemma3Report2025}[vgl.][]{qwen25Report2024}[vgl.][]{deepseekV3Report2024}.
-Damit ist zugleich das vierte Umgebungsmerkmal, die Schutzbedürftigkeit der verarbeiteten Daten, adressiert.
+Für das vierte Umgebungsmerkmal, die Schutzbedürftigkeit der verarbeiteten Daten, ist damit ein Weg angelegt, im Erprobungsbetrieb ist er noch nicht eingelöst (\cref{sec:umsetzung-architektur}).
 
 \section{Ableitung der Lösungsarchitektur}
 \label{sec:grundlagen-ableitung}
@@ -132,20 +129,14 @@ Als Agenten-Framework wird OpenClaw eingesetzt, ein quelloffenes System, das die
 Grundstruktur eines autonomen Agenten -- Werkzeuganbindung, Zeitsteuerung und ein
 Messaging-Gateway zur Rückbindung an den Menschen -- bereitstellt, ohne eine
 Lernschleife oder eine eigene Entscheidungslogik
-vorzugeben\footcites[vgl.][]{openclawRepo2026}[vgl.][]{openclawDocs2026}. Genau diese
-Offenheit trägt die Prinzipien: Die Entscheidungslogik verbleibt vollständig in
-eigenem, deterministischem Quelltext (erstes und drittes Prinzip), die Modellanbindung
-ist hinter einer einheitlichen Schnittstelle
-austauschbar\footcite[vgl.][]{openclawProviders2026}, und das Messaging-Gateway stellt
-den menschlichen Kontrollpunkt des vierten Prinzips
-bereit\footcites[vgl.][]{openclawGateway2026}[vgl.][]{openclawSignal2026}. Das in
+vorzugeben\footcites[vgl.][]{openclawRepo2026}[vgl.][]{openclawDocs2026}. Diese Offenheit trägt die Prinzipien. Die Entscheidungslogik verbleibt vollständig in eigenem, deterministischem Quelltext (erstes und drittes Prinzip). Die Modellanbindung ist hinter einer einheitlichen Schnittstelle austauschbar\footcite[vgl.][]{openclawProviders2026}. Das Messaging-Gateway stellt den menschlichen Kontrollpunkt des vierten Prinzips bereit\footcites[vgl.][]{openclawGateway2026}[vgl.][]{openclawSignal2026}. Das in
 \cref{sec:grundlagen-prinzipien} verworfene Framework mit fest verdrahteter
 Lernschleife scheiterte an eben diesen Anforderungen.
 
 Im Ordnungsrahmen des Periodensystems lässt sich der Agent damit vorab verorten. Er
-besetzt in der Gruppe \enquote{Assess} die Datenerfassung und die Mustererkennung und
-in der Gruppe \enquote{Infer} das Entscheiden und das Erklären. In der Gruppe
-\enquote{Respond} steht die prozesssteuernde Kontrolle im Zentrum, die der Rahmen
+besetzt in der Gruppe \textit{Assess} die Datenerfassung und die Mustererkennung und
+in der Gruppe \textit{Infer} das Entscheiden und das Erklären. In der Gruppe
+\textit{Respond} steht die prozesssteuernde Kontrolle im Zentrum, die der Rahmen
 ausdrücklich mit dem automatisierten Handel als Anwendung verbindet\footcite[vgl.][S.~18]{bitkom2018}. Zwei Elemente bleiben bewusst unbesetzt
 oder umgewidmet. Auf eine erfahrungsbasierte Fortschreibung des eigenen Wissens
 verzichtet der Agent vollständig und die Prognose künftiger Ereignisse wird in ihrer

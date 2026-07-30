@@ -6,6 +6,8 @@
 \chapter{Einleitung}
 \label{cha:einleitung}
 
+Dieses Kapitel begründet die Fragestellung, beschreibt die Merkmale der Zielumgebung, leitet daraus Zielsetzung und Hypothesen ab und legt das methodische Vorgehen fest.
+
 \section{Problemstellung und Motivation}
 \label{sec:problemstellung}
 
@@ -55,8 +57,7 @@ Viertens sind die verarbeiteten Daten schutzbedürftig, denn
 Depotbestände, eingesetztes Kapital und einzelne Transaktionen lassen auf die
 Vermögensverhältnisse des Anlegers schließen. Werden Entscheidungskontexte an
 cloudbasierte Modelldienste übergeben, verlassen diese Angaben die eigene
-Infrastruktur. Die Betriebsform der eingesetzten Modelle ist damit keine
-Nebenentscheidung, sondern eine Anforderung an die Lösungsarchitektur. Fünftens
+Infrastruktur. Wo die Modelle betrieben werden, entscheidet deshalb mit über die Lösungsarchitektur. Fünftens
 setzen fixe Ordergebühren und Geld-Brief-Spannen jeder Entscheidungsfrequenz enge
 ökonomische Grenzen, die ein autonomes System kennen und ausweisen
 muss\footcite[vgl.][S.~9]{comdirectPreise2026}. Sechstens
@@ -68,7 +69,7 @@ Folgenden entwickelte Lösungsarchitektur eines KI-Agenten messen lassen muss.
 \section{Zielsetzung und Relevanz der Arbeit}
 \label{sec:zielsetzung}
 
-Ziel dieser Projektarbeit ist der Aufbau und Betrieb eines Live-Trading-Agenten
+Ziel ist der Aufbau und Betrieb eines Live-Trading-Agenten
 mithilfe des Agenten-Frameworks OpenClaw\footcite[vgl.][]{openclawRepo2026} und lokal
 bzw. geschlossen betreibbarer \glsxtrshortpl{llm}. Der in \cref{sec:problemstellung}
 benannte Vorbehalt der Unvereinbarkeit soll dabei aufgelöst werden, indem den
@@ -77,8 +78,7 @@ Die Handelsentscheidungen entstammen dabei nicht dem
 Sprachmodell, sondern einer deterministisch implementierten Strategie
 auf Basis gleitender Durchschnitte (\textit{engl.} \glsxtrlong{sma}, \glsxtrshort{sma}),
 angewendet auf einen ausgewählten Index, die \cref{cha:umsetzung} formal fasst und in
-Quelltext umsetzt. Ein Gremium aus drei lokal betreibbaren
-Sprachmodellen übernimmt die Rolle unabhängiger Prüf"|instanzen: Jedes Modell
+Quelltext umsetzt. Ein Gremium aus drei Sprachmodellen übernimmt die Rolle unabhängiger Prüf"|instanzen: Jedes Modell
 prüft die regelbasiert vorbereitete Entscheidung eigenständig und erst ein
 Mehrheitsentscheid des Modellgremiums gibt die Orderausführung über die
 Bankschnittstelle frei. Ergänzt
@@ -101,7 +101,7 @@ Erstens, ob sich der vollständige Handelszyklus -- von der Datenerfassung über
 vertretbarem Aufwand autonom, nachvollziehbar und abgesichert betreiben lässt.
 Zweitens, ob das Sprachmodell-Gremium seine begrenzte Diskretion verlässlich ausübt -- im Regelfall beschränkt auf Verhindern und Verkleinern, im Fehlerfall durchgängig fail-safe und konsistent -- ohne Handelsentscheidungen jemals zu erzeugen oder umzukehren.
 
-Beide Leitfragen werden in prüfbare Hypothesen überführt: \emph{H1} prüft die Autonomie des Handelszyklus, \emph{H2} die Diskretionsausübung des Gremiums. \emph{H3} prüft ergänzend die Annahme, die der begrenzten Rolle des Prognosemodells zugrunde liegt. Alle drei werden in \cref{cha:umsetzung} an gemessenen Größen geprüft.
+Beide Leitfragen werden in prüfbare Hypothesen überführt: \emph{H1} prüft die Autonomie des Handelszyklus, \emph{H2} die Diskretionsausübung des Gremiums. \emph{H3} prüft ergänzend die Annahme, die der begrenzten Rolle des Prognosemodells zugrunde liegt. Die Messgrößen dafür liefert \cref{cha:umsetzung}, die Auflösung erfolgt in \cref{cha:schluss}.
 
 \begin{description}
   \item[H1] Der Agent durchläuft den täglichen Handelszyklus im Normalbetrieb ohne

@@ -49,15 +49,14 @@ Das produktive System verteilt sich auf zwei virtuelle Maschinen der Google Clou
 Platform\footcite[vgl.][]{gcpCompute2026}. Die \emph{collector-vm} sammelt rund um die Uhr
 Marktdaten des S\&P~500: Rohticks werden über einen WebSocket-Datenstrom sowie ein
 ergänzendes Polling für Futures-Randzeiten erfasst, durch einen Sanitätsfilter geprüft und
-zu Minuten- und Tagesbars verdichtet\footcite[vgl.][]{yfinance2026}. Der jeweils jüngste
-Tagesschluss wird gegen die offizielle Zweitquelle der Federal Reserve Bank of St.\ Louis
-(\glsxtrshort{fred}) abgeglichen\footcite[vgl.][]{fredSP500}. Divergenzen oberhalb einer
+zu Minuten- und Tagesbars verdichtet\footcite[vgl.][]{yfinance2026}. Der jeweils jüngste Tagesschluss wird gegen die offizielle Zweitquelle \glsxtrfull{fred}
+abgeglichen\footcite[vgl.][]{fredSP500}. Divergenzen oberhalb einer
 Schwelle lösen einen Alarm aus. Die \emph{agent-vm} erhält die Datenbasis als minütlich
 synchronisierte, atomar ersetzte Replik und beherbergt den eigentlichen Entscheidungs- und
 Orderpfad: die deterministische Strategieauswertung, den mehrstufigen Sprachmodell-Audit,
 die Orchestrierung der Orderausführung sowie die Anbindung an die Bankschnittstelle. Beide
 Maschinen sind wechselseitig überwacht; ein Totmannschalter auf der collector-vm alarmiert
-den Betreiber über den Messaging-Kanal (Signal Messenager), sobald der Lebenszeichen-Stempel
+den Betreiber über den Messaging-Kanal (Signal-Messenger), sobald der Lebenszeichen-Stempel
 der agent-vm veraltet.
 
 Für den Dauerbetrieb ist die Datensammlung gezielt gehärtet: Wächterprozesse erkennen stille
@@ -101,7 +100,7 @@ Konsistenzmaß verlöre seinen Maßstab. OpenClaw überlässt die Entscheidungsl
 eigenen Quelltext. Dass das Framework damit wenig Arbeit abnimmt, ist gewollt.
 
 Eine dritte, strikt entkoppelte Zone bildet das öffentliche Dashboard. Die collector-vm
-exportiert minütlich redigierte \glsxtrshort{json}-Feeds des Entscheidungsjournals --
+exportiert minütlich redigierte Feeds im Format der \glsxtrfull{json} des Entscheidungsjournals --
 Signale, Voten, Orders und Depotwertverlauf, jedoch keinerlei Konto- oder Zugangsdaten -- in
 einen privaten Cloud-Storage-Bucket. Ein zustandsloser Cloud-Run-Dienst rendert daraus die
 Weboberfläche\footcites[vgl.][]{gcpStorage2026}[vgl.][]{gcpRun2026}. Die handelnden
@@ -264,9 +263,8 @@ Absenden, gleicht eine Reconciliation den tatsächlichen Zustand über das Order
 ab. Jeder unklare Ausgang endet in einem alarmierten Handelsstopp statt in einem
 automatischen Wiederholungsversuch. Einzelorder- und Portfolio-Obergrenzen wirken als
 Circuit-Breaker und die Scharfschaltung auf reale Orders ist ausschließlich kontospezifisch
-möglich. Die Bankanbindung nutzt den \glsxtrshort{oauth}-Flow der comdirect-Schnittstelle
-mit einer täglich per photoTAN freigegebenen
-Session-\glsxtrshort{tan}\footcite[vgl.][Kap.~2]{comdirectSpec2020}.
+möglich. Die Bankanbindung nutzt den Anmeldefluss nach \glsxtrfull{oauth} mit einer täglich per
+photoTAN freigegebenen Sitzungs-\glsxtrfull{tan}\footcite[vgl.][Kap.~2]{comdirectSpec2020}.
 
 Die Banksitzung integriert die regulatorische Zwei-Faktor-Anforderung in den autonomen
 Ablauf: Der Anmeldevorgang fordert genau eine photoTAN-Freigabe an, die der Betreiber
@@ -315,8 +313,7 @@ Das vollständige Backtest-Protokoll ist in \cref{sec:anhang-evaluationsbelege} 
 Der Strategie werden drei Vergleichsmaßstäbe gegenübergestellt: der tägliche Round-Trip der
 Regel selbst (B0), das passive Halten des Index (B1) sowie eine Variante, die nur bei einem
 Regimewechsel handelt (B2). Das Kostenmodell setzt wie in \cref{sec:umsetzung-strategie}
-7,80\,€ je Round-Trip an. Berücksichtigt ist ferner die Kapitalertragsteuer unter
-Teilfreistellung. Ergänzend misst ein wöchentlicher Auswertungslauf das Abstimmungsverhalten
+7,80\,€ je Round-Trip an. Ergänzend misst ein wöchentlicher Auswertungslauf das Abstimmungsverhalten
 der Sprachmodelle im laufenden Betrieb: je Modell die Zustimmungsquote, die
 Schemafehlerrate, die Antwortlatenz sowie die Veto-Trefferquote gegen den Folgetags-Return,
 also den Anteil der Ablehnungen, die tatsächlich einen Verlusttag in Signalrichtung
@@ -358,7 +355,9 @@ In $C(S)$ gehen neben der Fixgebühr die volumenabhängigen Kosten des
 Geld-Brief-Spreads ein. Ohne diesen Anteil lägen die folgenden Schwellen deutlich
 niedriger. Für 1.000\,€ Einsatz liegt die Schwelle bei etwa 91\,\%, für 2.000\,€ bei
 etwa 75\,\% und selbst im Grenzfall sehr großer Einsätze setzt der Spread eine
-kapitalunabhängige Untergrenze von rund 58\,\%. Die Literatur zu technischen
+kapitalunabhängige Untergrenze von rund 58\,\%. Diese Schwellen setzen die Ex-Ante-Gebühr von 7,80\,€ an. Unter der in
+\cref{sec:umsetzung-evaluation-ergebnisse} gemessenen Provisionsfreiheit entfällt dieser
+Anteil, sodass für jeden Einsatz die Spread-Grenze von rund 58\,\% gilt. Die Literatur zu technischen
 Handelsregeln stellt solchen Anforderungen Trefferquoten nahe der Zufallsschwelle
 gegenüber\footcites[vgl.][S.~786--826]{park2007}[vgl.][Kap.~1]{zakamulin2017}[vgl.][S.~1705--1765]{lo2000}. Das
 Modell begründet damit vorab, weshalb die
@@ -371,9 +370,8 @@ verstehen ist.
 Das zentrale Backtest-Ergebnis fällt eindeutig aus: Der tägliche Round-Trip (B0) verliert
 über zehn Jahre 29.675,14\,€, wovon 28.940,15\,€ auf Transaktionskosten entfallen, bei einer
 Trefferquote von 31,7\,\%. Die nur bei Regimewechseln handelnde Variante (B2) erzielt mit
-neun Positionswechseln in zehn Jahren rund $+96\,\%$ vor beziehungsweise $+60\,\%$ nach
-Steuern bei lediglich 106\,€ Kosten; das passive Halten des Index (B1) rund $+248\,\%$ vor
-beziehungsweise $+203\,\%$ nach Steuern. Die tägliche Handelsfrequenz wird demnach von den
+neun Positionswechseln in zehn Jahren rund $+96\,\%$ vor Steuern bei lediglich 106\,€
+Kosten, das passive Halten des Index (B1) rund $+248\,\%$. Die tägliche Handelsfrequenz wird demnach von den
 Transaktionskosten aufgezehrt. Der Kostenblock des Backtests ist nur eine Obergrenze.
 Bereits der verbleibende Spread lässt bei einer Trefferquote von 31,7\,\% keinen positiven
 Erwartungswert zu (\cref{eq:breakeven}). Die Differenz zwischen B0 und B2 beziffert insofern
@@ -421,7 +419,12 @@ auf unter eine Sekunde je Votum.
 Die Aussagekraft der Ergebnisse unterliegt mehreren Einschränkungen. Die Bankschnittstelle
 bietet keine Sandbox, sodass die Ordervalidierung gegen das Produktivsystem erfolgt. Die
 Autonomie ist regulatorisch durch die tägliche photoTAN-Freigabe begrenzt. Die Datenfrische
-am Entscheidungspunkt beträgt 60 bis 90 Sekunden. Der Backtest approximiert das
+am Entscheidungspunkt beträgt 60 bis 90 Sekunden.
+Das Kostenmodell des Backtests bildet die Besteuerung nicht belastbar ab. Es rechnet
+einheitlich mit einer Teilfreistellung, die für ein Faktor-Zertifikat als
+Inhaberschuldverschreibung nicht gilt. Verluste werden zudem nicht gegen Gewinne verrechnet.
+Die Vergleichsmaßstäbe werden deshalb ausschließlich vor Steuern gegenübergestellt.
+Der Backtest approximiert das
 Faktor-Zertifikat über das zweifache Index-Tagessegment und modelliert weder
 Währungseffekte, den variablen Geld-Brief-Spread noch die Pfadabhängigkeit täglich
 zurückgesetzter Hebelprodukte

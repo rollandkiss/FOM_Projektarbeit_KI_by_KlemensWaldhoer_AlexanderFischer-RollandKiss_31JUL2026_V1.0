@@ -87,6 +87,42 @@ Trading/Direkthandel).
   \end{tabular}
 \end{table}
 
+\Cref{tab:anhang-kostenklippe} zeigt das kontrollierte Experiment an der
+Provisionsschwelle: beide Depots, dasselbe Papier, derselbe Ordertyp und derselbe
+Handelsplatz, variiert wurde ausschließlich die Stückzahl. Es wurde keine Order
+ausgelöst, gemessen wurde der Ex-Ante-Kostenausweis der Ordervalidierung.
+
+\begin{table}[htbp]
+  \centering
+  \caption[Ex-Ante-Kosten an der Provisionsschwelle]{%
+    Ex-Ante-Kosten an der Provisionsschwelle, kontrolliertes Experiment vom
+    27.07.2026 (\texttt{DE000SB295Z1}, Limit 33{,}58\,€, Handelsplatz Live
+    Trading).\quelleeigen}
+  \label{tab:anhang-kostenklippe}
+  \begin{tabular}{l r r r r r}
+    \toprule
+    Depot & Stück & Volumen & Orderprovision & Zahlung Dritter & Kauf gesamt \\
+    \midrule
+    haupt & 25 & 839{,}50\,€   & 3{,}90\,€ & --        & 4{,}38\,€  \\
+    haupt & 29 & 973{,}82\,€   & 3{,}90\,€ & --        & 4{,}46\,€  \\
+    haupt & 30 & 1.007{,}40\,€ & --        & 9{,}50\,€ & 10{,}08\,€ \\
+    haupt & 31 & 1.040{,}98\,€ & --        & 9{,}50\,€ & 10{,}10\,€ \\
+    \midrule
+    zweit & 25 & 839{,}50\,€   & 9{,}90\,€ & --        & 10{,}38\,€ \\
+    zweit & 29 & 973{,}82\,€   & 9{,}90\,€ & --        & 10{,}46\,€ \\
+    zweit & 30 & 1.007{,}40\,€ & --        & 9{,}50\,€ & 10{,}08\,€ \\
+    zweit & 31 & 1.040{,}98\,€ & --        & 9{,}50\,€ & 10{,}10\,€ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Die Orderprovision entfällt in beiden Depots ab einem Ordervolumen von 1.000\,€
+vollständig. An ihre Stelle tritt die Zuwendung des Emittenten an die Bank in Höhe von
+9{,}50\,€, die der Ex-Ante-Ausweis als \enquote{Zahlung von Dritten an die Bank}
+führt. Unterhalb der Schwelle unterscheiden sich die Depots (Trader Pro gegenüber
+Standardtarif), oberhalb nicht. Da die Mindestordergröße des Agenten bei 1.000\,€
+liegt, ist der Vergleich beider Depots kostengleich.
+
 \section{Herkunftsnachweis der Marktdatenbasis}
 \label{sec:anhang-provenienz}
 

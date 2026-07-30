@@ -824,12 +824,11 @@
 \renewcommand{\thesubsection}{\thesection.\Roman{subsection}}
 \renewcommand{\thesubsubsection}{\thesubsection.\Roman{subsubsection}}
 
-% ToC-Umbruch vor dem Anhang: Die Anhang-Eintraege (I, II, III) beginnen im
-% Inhaltsverzeichnis auf einer neuen Seite — das mildert den Bruch zwischen
-% Hauptteil und Anhang. ACHTUNG: Wenn der Hauptteil weiter waechst und der
-% erzwungene Umbruch zu einem unguenstigen Layout fuehrt (z. B. sehr leere
-% erste ToC-Seite), einfach die folgende EINE Zeile auskommentieren.
-\addtocontents{toc}{\protect\newpage}
+% ToC-Umbruch vor dem Anhang: deaktiviert. Der erzwungene Umbruch stammt aus
+% einem Stand mit kuerzerem Inhaltsverzeichnis; inzwischen fuehrt er zu einer
+% sehr leeren ersten ToC-Seite. Zum Reaktivieren die folgende Zeile
+% einkommentieren.
+%\addtocontents{toc}{\protect\newpage}
 
 \include{anhang/anhang}
 

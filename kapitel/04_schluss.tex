@@ -6,20 +6,22 @@
 \chapter{Schluss}
 \label{cha:schluss}
 
-Dieses Kapitel fasst die zentralen Erkenntnisse mit Blick auf die Zielsetzung zusammen, diskutiert Stärken und Schwächen der Lösung und gibt einen Ausblick auf weiterführende Arbeiten.
+Die zentralen Erkenntnisse werden mit Blick auf die Zielsetzung zusammengefasst.
+Anschließend werden Stärken und Schwächen der Lösung diskutiert und weiterführende Arbeiten
+benannt.
 
 \section{Fazit}
 \label{sec:fazit}
 
-Ziel dieser Arbeit war der Aufbau eines Live-Trading-Agenten auf Basis des
+Ziel war der Aufbau eines Live-Trading-Agenten auf Basis des
 Agenten-Frameworks OpenClaw, dessen deterministische \glsxtrshort{sma}-Strategie
 durch ein Gremium großer Sprachmodelle geprüft wird, bevor ein Mehrheitsentscheid
-die Orderausführung freigibt (\cref{sec:zielsetzung}). Dieses Ziel wurde erreicht:
-Der vollständige Handelszyklus -- von der kontinuierlichen, gegen eine
-Referenzreihe abgesicherten Marktdatenerfassung über die regelbasierte
-Regimeentscheidung und das Multi-Modell-Voting bis zur Orderaufgabe über die
-Schnittstelle einer regulierten Bank -- ist umgesetzt, im Trockenlauf erprobt, im
-Echtgeldbetrieb validiert und in \cref{cha:umsetzung} vollständig dokumentiert. Die theoretischen Grundlagen aus
+die Orderausführung freigibt (\cref{sec:zielsetzung}). Der vollständige Handelszyklus ist umgesetzt, im Trockenlauf erprobt, im Echtgeldbetrieb
+validiert und in \cref{cha:umsetzung} dokumentiert. Er reicht von der gegen eine
+Referenzreihe abgesicherten Marktdatenerfassung über die regelbasierte Regimeentscheidung
+und das Multi-Modell-Voting bis zur Orderaufgabe bei einer regulierten Bank. Nicht eingelöst
+ist die zweite Hälfte der Zielsetzung. Der Betrieb auf lokal gehaltenen Modellen ist
+vorbereitet, aber empirisch unbelegt. Die theoretischen Grundlagen aus
 \cref{cha:grundlagen} bildeten dafür den methodischen Rahmen: Das Periodensystem
 der Künstlichen Intelligenz erlaubte es, die bewusste Begrenzung des
 \glsxtrshort{ki}-Einsatzes nicht als Verzicht, sondern als gestalterische Aussage
@@ -49,28 +51,27 @@ wurde nicht verworfen: Trefferquote und Brier-Score der Walk-Forward-Prüfung ü
 Klimatologie. Der Negativbefund stützt die Architektur: Er ist der empirische Grund dafür, der Prognose keine Signalgewalt zu geben.
 
 In Kennzahlen verdichtet: Der Zehn-Jahres-Backtest stellt dem täglichen
-Round-Trip der Demonstrationsstrategie (rund $-29.700$\,€, davon etwa 98\,\%
+Round-Trip der Demonstrationsstrategie (rund $-29.700$\,€, davon gut 97\,\%
 Transaktionskosten) das reine Regimefolgen (rund $+96\,\%$ vor Steuern) und das
-passive Halten (rund $+248\,\%$) gegenüber. Die Walk-Forward-Prüfung zeigt bei
-guter Kalibrierung keine Prognosekraft über die Basisrate. Die im Kostenmodell angesetzten Fixkosten von 7,80\,€ je Round-Trip fallen im Betrieb nicht an, weil jede Order die Provisionsschwelle von 1.000\,€ überschreitet. Die Voten des
+passive Halten (rund $+248\,\%$) gegenüber. Die Walk-Forward-Prüfung zeigt keine
+Prognosekraft über die Basisrate. Die im Kostenmodell angesetzten Fixkosten von 7,80\,€ je Round-Trip fallen im Betrieb nicht an, weil jede Order die Provisionsschwelle von 1.000\,€ überschreitet. Die Voten des
 Modellgremiums liegen im eingeschwungenen Betrieb unter einer Sekunde
 (\cref{sec:umsetzung-evaluation-ergebnisse}). Ökonomisch fällt die Antwort damit
 eindeutig aus: Die täglich handelnde Demonstrationsstrategie ist nach realen
 Kosten strukturell defizitär. Der Agent ist ein Erkenntnis-, kein
-Renditeinstrument, und die Differenz zum reinen Regimefolgen beziffert den Preis
+Renditeinstrument und die Differenz zum reinen Regimefolgen beziffert den Preis
 der täglich demonstrierten Autonomie.
 
 \section{Diskussion}
 \label{sec:diskussion}
 
-Stärken und Schwächen der Lösung werden hier gebündelt, um die Zielerreichung einzuordnen. Als
-tragfähig erwiesen hat sich erstens das Prinzip der begrenzten Diskretion: Kein
-beobachteter Fehlerfall -- weder Schemaverletzungen einzelner Modelle noch
-Zeitüberschreitungen oder Datenlücken -- konnte eine unbeabsichtigte Order
-auslösen, weil jede Unklarheit konservativ als Veto oder Handelsstopp endet.
+Stärken und Schwächen der Lösung werden hier gebündelt, um die Zielerreichung einzuordnen. Konstruktiv trägt erstens das Prinzip der begrenzten Diskretion. Die Offline-Testsuiten
+belegen, dass Schemaverletzungen, Zeitüberschreitungen und Datenlücken in jedem geprüften
+Zweig als Veto oder Handelsstopp enden (\cref{tab:anhang-archiv-tests}). Im Betrieb ist
+bislang kein Fehlerfall aufgetreten, der eine unbeabsichtigte Order ausgelöst hätte.
 Zweitens hat sich die Entscheidung ausgezahlt, die Evaluation auf gemessene statt
 angenommene Größen zu stützen: Reale Kostenausweise, die laufende
-Kursgegenprüfung und die Walk-Forward-Prüfung machen die Ergebnisse belastbar, und der ehrliche
+Kursgegenprüfung und die Walk-Forward-Prüfung machen die Ergebnisse belastbar und der ehrliche
 Negativbefund zur Prognosekraft trägt die zentrale Architekturentscheidung
 empirisch. Drittens schafft die durchgängige
 Journalisierung zusammen mit dem öffentlichen Dashboard eine Transparenz, die
@@ -78,10 +79,13 @@ jede einzelne Entscheidung samt Modellvoten nachvollziehbar und den laufenden
 Betrieb öffentlich prüfbar macht.
 
 Dem stehen Schwächen gegenüber. Der erhoffte Sicherheitsgewinn des
-Modellgremiums ist zu Betriebsbeginn empirisch unbelegt, und korrelierte
+Modellgremiums ist zu Betriebsbeginn empirisch unbelegt und korrelierte
 Fehlurteile bleiben trotz Anbieterdiversität möglich, da alle Modelle denselben
 Entscheidungskontext erhalten. Die Kalibrierung kann dies erst nach längerer
-Betriebsdauer klären. Die Autonomie bleibt an regulatorische und betriebliche Grenzen gebunden: die tägliche photoTAN-Freigabe, das Fenster zwischen zwei Zyklen, in dem ein Prozessabbruch zwischen Freigabe und Neusetzen der Schutzorder unentdeckt bliebe, und die Datenfrische von 60 bis 90 Sekunden am Entscheidungspunkt. 
+Betriebsdauer klären. Die Autonomie bleibt an regulatorische und betriebliche Grenzen gebunden: die tägliche
+photoTAN-Freigabe, die Datenfrische von 60 bis 90 Sekunden am Entscheidungspunkt und das
+Fenster zwischen zwei Zyklen, in dem ein Prozessabbruch zwischen Freigabe und Neusetzen der
+Schutzorder unentdeckt bliebe.
 Schließlich stützt sich die Kursdatenerfassung auf eine inoffizielle Quelle 
 ohne Verfügbarkeitsgarantie, deren Ausfall der Betrieb zwar erkennen, 
 aber nicht kompensieren kann.
@@ -89,26 +93,19 @@ aber nicht kompensieren kann.
 \section{Ausblick}
 \label{sec:ausblick}
 
-Drei Fragen bleiben offen, die über den Rahmen dieser Arbeit
-hinausweisen. Die erste gilt dem Nutzen des Modellgremiums: Ob ein Mehrheitsvotum
-probabilistischer Sprachmodelle den Betrieb eines deterministischen Handelssystems
-messbar sicherer macht, ist zum Abgabezeitpunkt unbeantwortet. Die eingerichtete Kalibrierung erhebt die nötigen Daten fortlaufend, sodass sich die Frage bei hinreichender Betriebsdauer empirisch entscheiden lässt. Die zweite Frage schließt
-daran an: Da alle Modelle denselben Entscheidungskontext erhalten, bleiben
-korrelierte Fehlurteile möglich. Zu untersuchen wäre, ob komplementär
-zugeschnittene Prüfrollen -- etwa getrennt nach Marktlage, Ausführungsrisiko und
-Datenqualität -- die Urteile hinreichend entkoppeln, damit der erhoffte
-Sicherheitsgewinn überhaupt entstehen kann. Die dritte Frage betrifft die
-Reichweite der Architektur: Die in \cref{sec:umsetzung-wuerdigung} beschriebene
-Entkopplung von Strategie, Produktzuordnung, Modellgremium und Bankadapter
-beansprucht Übertragbarkeit auf andere Regelstrategien und auf lokal betriebene
-Modelle. Ob dieser Anspruch auch unter den engeren Zeitbudgets lokaler Inferenz und bei
-abweichenden Handelsfrequenzen trägt, lässt sich erst an weiteren Umsetzungen
-entscheiden.
+Zwei Fragen weisen über den Rahmen dieser Untersuchung hinaus. Die erste betrifft den
+Zuschnitt der Prüfrollen. Zu untersuchen wäre, ob getrennt nach Marktlage, Ausführungsrisiko
+und Datenqualität zugeschnittene Rollen die Urteile hinreichend entkoppeln, damit der
+erhoffte Sicherheitsgewinn überhaupt entstehen kann. Die zweite betrifft die Reichweite der
+Architektur. Die in \cref{sec:umsetzung-wuerdigung} beschriebene Entkopplung von Strategie,
+Produktzuordnung, Modellgremium und Bankadapter beansprucht Übertragbarkeit auf andere
+Regelstrategien und auf lokal betriebene Modelle. Ob dieser Anspruch unter den engeren
+Zeitbudgets lokaler Inferenz und bei abweichenden Handelsfrequenzen trägt, lässt sich erst
+an weiteren Umsetzungen entscheiden.
 
-Damit liegt mit dieser Arbeit eine nachvollziehbar dokumentierte
-Referenzarchitektur für sicherheitsorientiert begrenzten \glsxtrshort{ki}-Einsatz
-im autonomen Handel vor -- und mit ihr der laufende Betrieb, an dem sich die
-genannten Fragen empirisch bearbeiten lassen.
+Damit liegen zwei Ergebnisse vor. Erstens eine dokumentierte Referenzarchitektur für
+begrenzten \glsxtrshort{ki}-Einsatz im autonomen Handel. Zweitens ein laufender Betrieb, an
+dem sich die genannten Fragen empirisch bearbeiten lassen.
 
 %  =============================================================================
 %  Ende

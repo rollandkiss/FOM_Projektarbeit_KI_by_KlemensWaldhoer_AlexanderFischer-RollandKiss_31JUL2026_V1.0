@@ -203,10 +203,130 @@ Begrenzung des Übernachtrisikos eines gehebelten Produkts. Da nur
 Tagesschlusskurse vorliegen, ein realer Stop aber innertägig auslöst, ist die
 ausgewiesene Auslösefrequenz eine Untergrenze.
 
-% ---------------------------------------------------------------------------
-% PLATZHALTER (wird nach Go-live 27.07. befüllt):
-%
-% \section{Belegkette der ersten Echtgeld-Order}
-%   -> Tagesreport (redigiert), Journal-Auszug,
-%      Ordervalidierung Status 200/201 (BELEGKONZEPT, Abschnitt B3).
-% ---------------------------------------------------------------------------
+\section{Belegkette der Echtgeldwoche}
+\label{sec:anhang-echtgeldwoche}
+
+Dieser Abschnitt belegt den Echtgeldbetrieb vom 27.07.2026 bis zum 30.07.2026
+lückenlos. Quellen sind das Entscheidungsjournal beider Depots
+(\texttt{decisions.sqlite}, Tabellen \texttt{decisions} und
+\texttt{protection\_events}) sowie das Zyklusprotokoll der beiden Cron-Läufe auf
+der agent-vm. Je Handelstag läuft ein Zyklus für das Hauptdepot (Strategie
+\texttt{sma}) und einer für das Zweitdepot (Strategie \texttt{smatrend}), beide
+gestartet um 13:25~Uhr koordinierter Weltzeit. Über die vier Handelstage ergeben sich
+damit acht Zyklen.
+
+\Cref{tab:anhang-echtgeldwoche-voten} führt die Einzelvoten des Modellgremiums
+auf. Der Validator hat in allen acht Zyklen jedes eingegangene Votum als
+schemakonform angenommen; ein Veto wegen Schemaverletzung oder Zeitüberschreitung
+ist nicht aufgetreten.
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption[Einzelvoten des Modellgremiums in der Echtgeldwoche]{%
+    Einzelvoten des Modellgremiums in der Echtgeldwoche. Größenangaben in Euro,
+    Werte in Klammern: Antwortzeit in Sekunden (Quelle:
+    \texttt{decisions.sqlite}, Auszug vom 30.07.2026).\quelleeigen}
+  \label{tab:anhang-echtgeldwoche-voten}
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{l l l l l c l r}
+    \toprule
+    Zyklus & Depot & qwen3.5 & gemma4 & deepseek-v4-pro & Voten & Aggregat & $t$ \\
+    \midrule
+    27.07. & haupt & \multicolumn{3}{l}{nicht im Auszug enthalten} & 3/3 & TRADE 1.500 & 15{,}1 \\
+    27.07. & zweit & \multicolumn{3}{l}{nicht im Auszug enthalten} & 3/3 & TRADE 1.500 & 14{,}7 \\
+    \midrule
+    28.07. & haupt & TRADE 1.500 (3{,}9) & TRADE 2.000 (5{,}3) & TRADE 1.500 (2{,}4) & 3/3 & TRADE 1.500 & 11{,}6 \\
+    28.07. & zweit & TRADE 1.500 (3{,}4) & TRADE 2.000 (1{,}2) & TRADE 1.500 (1{,}6) & 3/3 & TRADE 1.500 &  6{,}2 \\
+    \midrule
+    29.07. & haupt & TRADE 1.500 (3{,}7) & TRADE 2.000 (1{,}5) & NO\_TRADE (6{,}3)   & 2/3 & TRADE 1.500 & 11{,}5 \\
+    29.07. & zweit & NO\_TRADE (3{,}6)   & TRADE 2.000 (1{,}2) & TRADE 1.500 (3{,}2) & 2/3 & TRADE 1.500 &  7{,}9 \\
+    \midrule
+    30.07. & haupt & TRADE 1.500 (6{,}7) & TRADE 2.000 (2{,}6) & NO\_TRADE (3{,}0)   & 2/3 & TRADE 1.500 & 12{,}2 \\
+    30.07. & zweit & NO\_TRADE (3{,}8)   & NO\_TRADE (5{,}2)   & Early-Stop          & 0/3 & NO\_TRADE   &  9{,}0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Das in \cref{sec:umsetzung-impl-gremium} beschriebene Aggregationsverhalten ist in
+jeder belegten Befragung nachweisbar. In allen fünf Befragungen mit
+Zustimmungsmehrheit hat jeweils ein Modell die vom Sizing vorgeschlagene
+Höchstgröße von 2.000\,€ befürwortet, die übrigen votierten für 1.500\,€.
+Übernommen wurde ausnahmslos der kleinere Wert.
+Im letzten Zyklus des 30.07. stand die ablehnende Mehrheit nach zwei Voten fest
+und das dritte Modell wurde nicht mehr befragt (\emph{Early-Stop}). Kein Votum hat
+eine Handelsrichtung oder eine Position vorgeschlagen, die die Strategie nicht
+bereits vorgegeben hatte.
+
+Die statistische Prüfinstanz war im Hauptdepot aktiv und lieferte je Zyklus eine
+Richtungswahrscheinlichkeit von 0{,}5348, 0{,}5292 beziehungsweise 0{,}5282 gegen
+eine Widerspruchsschwelle von 0{,}45 (Modellstand
+\texttt{logreg-2026-07-23-e7cb1825}). Das Warn-Flag wurde damit an keinem der Tage
+gesetzt. Im Zweitdepot ist die Komponente laut Zyklusprotokoll abgeschaltet
+(\texttt{ml\_probe[smatrend]: Modus 'off'}), sodass der DecisionRequest dort
+keinen \texttt{ml\_context} enthält.
+
+\Cref{tab:anhang-echtgeldwoche-orders} weist die Ausführungsseite derselben acht
+Zyklen aus. Handelsplatz war durchgehend der Direkthandel beim Emittenten
+(Société Générale), Instrument durchgehend \texttt{DE000SB295Z1}.
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption[Ausführungskette der Echtgeldwoche]{%
+    Ausführungskette der Echtgeldwoche (Quelle: Zyklusprotokoll der agent-vm,
+    27.07.--30.07.2026).\quelleeigen}
+  \label{tab:anhang-echtgeldwoche-orders}
+  \begin{tabular}{l l r r r l}
+    \toprule
+    Zyklus & Depot & Stück & Limit & Volumen & Ergebnis \\
+    \midrule
+    27.07. & haupt & 45 & 33{,}55\,€ & 1.494{,}45\,€ & HTTP 201, EXECUTED \\
+    27.07. & zweit & 45 & 33{,}55\,€ & 1.494{,}45\,€ & HTTP 201, EXECUTED \\
+    28.07. & haupt & 14 & 33{,}16\,€ &   459{,}62\,€ & HTTP 201, EXECUTED \\
+    28.07. & zweit & 14 & 33{,}16\,€ &   459{,}62\,€ & HTTP 201, EXECUTED \\
+    29.07. & haupt &  1 & 33{,}19\,€ &    32{,}86\,€ & \texttt{M17}, kein Kauf \\
+    29.07. & zweit & -- & --         & --            & keine Orderanlage \\
+    30.07. & haupt & 46 & 32{,}34\,€ & 1.472{,}46\,€ & HTTP 201, EXECUTED \\
+    30.07. & zweit & -- & --         & --            & Veto des Gremiums \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Der Zyklus des 29.07. im Hauptdepot belegt die Mindestordergröße als wirksame
+Schranke. Die verfügbare Deckung ließ nur ein Stück zu, das daraus errechnete
+Ordervolumen von 32{,}86\,€ unterschritt die konfigurierte Untergrenze von
+1.000\,€ und der Kauf unterblieb mit der Meldung \texttt{M17}. Der Zyklus des
+30.07. im Zweitdepot belegt den umgekehrten Fall. Hier verhinderte das Gremium
+den vom Signal getragenen Kauf.
+
+\Cref{tab:anhang-echtgeldwoche-schutz} dokumentiert den Lebenszyklus der
+Schutzorders im Hauptdepot. Sichtbar ist das in
+\cref{sec:umsetzung-wuerdigung} beschriebene zweistufige Verfahren: Vor einer
+Aufstockung wird die bestehende Schutzorder storniert, nach der Ausführung wird
+sie über den Gesamtbestand neu gesetzt.
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption[Lebenszyklus der Schutzorders im Hauptdepot]{%
+    Lebenszyklus der Schutzorders im Hauptdepot (Quelle: Tabelle
+    \texttt{protection\_events}, Auszug vom 30.07.2026).\quelleeigen}
+  \label{tab:anhang-echtgeldwoche-schutz}
+  \begin{tabular}{l l r r r l}
+    \toprule
+    Zeitpunkt & Ereignis & Stück & Trigger & Distanz & Order-ID \\
+    \midrule
+    28.07. 13:26 & released  & -- & 31{,}61\,€ & 1{,}66\,€ & (Stornierung) \\
+    28.07. 13:27 & protected & 59 & 31{,}61\,€ & 1{,}31\,€ & 919E633D\ldots \\
+    30.07. 13:26 & protected & 46 & 30{,}81\,€ & 1{,}28\,€ & AE283E80\ldots \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Die Distanz beträgt in beiden gesetzten Schutzorders 4{,}0\,\% des Kurses und die
+Gültigkeit ist auf 30 Kalendertage befristet. Beim Setzen am 30.07. griff eine
+zusätzliche Verlustbegrenzung. Da der Kurs mit
+32{,}01\,€ unter dem Kaufkurs von 32{,}09\,€ lag, wurde das Stopniveau vom
+Kaufkurs statt vom aktuellen Kurs abgeleitet und damit auf 30{,}81\,€ statt auf
+30{,}73\,€ gesetzt.

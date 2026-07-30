@@ -1,5 +1,5 @@
 %% ---------------------------------------------------------------------------
-%% GENERIERT durch build_quellcode_archiv.py am 27.07.2026 12:00 — NICHT von Hand
+%% GENERIERT durch build_quellcode_archiv.py am 31.07.2026 12:00 — NICHT von Hand
 %% pflegen; Aenderungen in archiv_manifest.csv vornehmen und Skript ausfuehren.
 %% ---------------------------------------------------------------------------
 \begin{longtable}{@{}p{0.28\textwidth}p{0.17\textwidth}p{0.45\textwidth}@{}}
@@ -22,8 +22,12 @@
   \texttt{kostentabelle.csv} & 19.07.2026 & Ex-Ante-Transaktionskosten der Bankmessung (Status 201, bankseitig validiert) \\
   \texttt{ml\_\allowbreak walkforward.csv} & 22.07.2026 & Walk-Forward-Kalibrierung der statistischen Prüfinstanz (23.803 bewertete Prognosetage) \\
   \texttt{gspc\_\allowbreak bars1d.csv} & 24.07.2026 & Tagesbars S\&P 500 (Export der Tabelle bars\_1d der Marktdatenbank, ab 30.12.1927) \\
-  \texttt{marketdata\_\allowbreak snapshot.sqlite} & \itshape folgt (Live-Woche ab 27.07.2026) & \itshape Snapshot der produktiven Marktdatenbank (collector-vm) zum Abschluss der Echtgeld-Woche \\
-  \texttt{journal\_\allowbreak echtgeld\_\allowbreak woche/} & \itshape folgt (Live-Woche ab 27.07.2026) & \itshape Redigierte Journal- und Berichtsauszüge der Echtgeld-Woche (Belegkette der Orders) \\
+  \texttt{marketdata\_\allowbreak snapshot.sqlite} & 30.07.2026 & Konsistenter Snapshot der produktiven Marktdatenbank der collector-vm zum Abschluss der Echtgeld-Woche (sqlite3 .backup + VACUUM): Tagesbars, Minutenbars, Rohticks, Sammelstatistik, Lückenprotokoll und Quellen-Gegenprüfung \\
+  \texttt{belege\_\allowbreak echtgeldwoche/\allowbreak cron\_\allowbreak echtgeldwoche.log} & 30.07.2026 & Protokoll der werktäglichen Zyklen der Echtgeld-Woche (27.–30.07.2026): Mengenbildung, Ordererteilung, Stornierungen und Schutzorderpflege im Wortlaut des Laufzeitprotokolls — Order-Kennungen pseudonymisiert \\
+  \texttt{belege\_\allowbreak echtgeldwoche/\allowbreak decisions\_\allowbreak haupt.csv} & 30.07.2026 & Entscheidungsjournal des Hauptdepots (Strategie sma): Anfrage an die Sprachmodelle, unveränderte Modellantworten, Mehrheitsentscheid und Validatorbefund je Handelstag \\
+  \texttt{belege\_\allowbreak echtgeldwoche/\allowbreak decisions\_\allowbreak zweit.csv} & 30.07.2026 & Entscheidungsjournal des Zweitdepots (Strategie smatrend), gleiche Struktur — enthält den Fall einer NO\_TRADE-Mehrheit mit Early-Stop des dritten Modells \\
+  \texttt{belege\_\allowbreak echtgeldwoche/\allowbreak protection\_\allowbreak haupt.csv} & 30.07.2026 & Ereignisprotokoll der Schutzorder (Auflösung vor dem Kauf, Neusetzung danach) mit Auslöseschwelle, Abstand und Stückzahl — Belegkette zu den Zyklen des Cron-Protokolls \\
+  \texttt{belege\_\allowbreak echtgeldwoche/\allowbreak schema\_\allowbreak decisions.txt} & 30.07.2026 & Tabellendefinition des Entscheidungsjournals — macht die Spalten der beiden Journalauszüge ohne Codelektüre nachvollziehbar \\
   \texttt{regime\_\allowbreak profit\_\allowbreak ergebnis.csv} & 24.07.2026 & Ergebnistabelle der Regime-Profitabilitätsanalyse (smatrend/sma über Kapitalstufen, Fenster und Kostenannahmen) — Grundlage der Aussagen zur Handelsgröße \\
   \texttt{veto\_\allowbreak overlay\_\allowbreak ergebnis.csv} & 24.07.2026 & Ergebnistabelle des ML-Veto-Overlays auf den Regime-Arm (Befund negativ) \\
   \texttt{backtest\_\allowbreak v6.csv} & 24.07.2026 & Walk-Forward-Backtest der ML-Prüfinstanz, Konventionsstand v6 \\
@@ -33,8 +37,10 @@
   \texttt{lab5\_\allowbreak tail.csv} & 24.07.2026 & Randverteilung des Laborlaufs 5 \\
   \texttt{lab6\_\allowbreak metriken.csv} & 24.07.2026 & Kennzahlen des Laborlaufs 6 \\
   \texttt{lab6\_\allowbreak tail.csv} & 24.07.2026 & Randverteilung des Laborlaufs 6 \\
+  \texttt{ml2\_\allowbreak probe\_\allowbreak ergebnis.json} & 27.07.2026 & Messergebnis der Zweitdepot-Prognoseuntersuchung inkl. Regimeverteilung, Kennzahlen je Horizont und der Positivkontrolle — Beleg für den Negativbefund \\
   \texttt{orderbuch\_\allowbreak smoketest\_\allowbreak 20260724.csv} & 24.07.2026 & Orderbuchauszug der Orderpfad-Erprobung (Anlage, Änderung, Storno) — Beleg für Statuswerte und Ordermerkmale der Bank \\
   \texttt{venue\_\allowbreak probe2\_\allowbreak protokoll\_\allowbreak 20260724.txt} & 24.07.2026 & Protokoll der Handelsplatz- und Ordertypprüfung inkl. abgelehnter Varianten (HTTP 422) — Beleg für die Grenzen der Bank-API \\
   \texttt{dimensions2\_\allowbreak DE000SB295Z1.json} & 24.07.2026 & Handelsplatz- und Ordertyp-Dimensionen der Bank für das Faktor-Zertifikat — maschineller Beleg zum Protokoll der Handelsplatzprüfung \\
   \texttt{trailing\_\allowbreak validation\_\allowbreak DE000SB295Z1.json} & 24.07.2026 & Validierungsantworten der Bank zu Trailing-/Stop-Varianten inkl. abgelehnter Kombinationen (HTTP 422) \\
+  \texttt{trailing\_\allowbreak distanz\_\allowbreak ergebnis.csv} & 28.07.2026 & Ergebnistabelle des Distanz-Backtests (drei Zeitfenster × zwei Wiedereinstiegsregeln × neun Distanzen) \\
 \end{longtable}

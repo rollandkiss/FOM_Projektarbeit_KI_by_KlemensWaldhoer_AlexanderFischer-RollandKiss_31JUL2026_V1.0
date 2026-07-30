@@ -1,5 +1,5 @@
 %% ---------------------------------------------------------------------------
-%% GENERIERT durch build_quellcode_archiv.py am 27.07.2026 12:00 — NICHT von Hand
+%% GENERIERT durch build_quellcode_archiv.py am 31.07.2026 12:00 — NICHT von Hand
 %% pflegen; Aenderungen in archiv_manifest.csv vornehmen und Skript ausfuehren.
 %% ---------------------------------------------------------------------------
 \begin{longtable}{@{}p{0.26\textwidth}p{0.26\textwidth}p{0.38\textwidth}@{}}
@@ -42,4 +42,11 @@
   \texttt{test\_\allowbreak mlforecast\_\allowbreak v2.py} & \texttt{mlforecast\_\allowbreak v2.py} & Tests der zweiten ML-Modellvariante \\
   \texttt{order\_\allowbreak path\_\allowbreak probe\_\allowbreak 20260724-0953.json} & \texttt{test\_\allowbreak brokersession.py} & Aufzeichnung des realen Orderpfads (Anlage → Statusabfrage → Änderung → Storno); dient test\_brokersession.py als Fixture und belegt, dass HTTP 201 'angenommen' und nicht 'ausgeführt' bedeutet \\
   \texttt{order\_\allowbreak path\_\allowbreak probe\_\allowbreak 20260724-0933.json} & \texttt{test\_\allowbreak brokersession.py} & Zweite Aufzeichnung desselben Orderpfad-Laufs (Vorlauf) \\
+  \texttt{test\_\allowbreak broker\_\allowbreak trailing.py} & \texttt{broker.py} & Schutzorder (Trailing-Stop): Distanz- und Niveauberechnung, Ratsche über Cancel-and-Replace, Break-even-Sicherung, Mengenbestimmung gegen Seed und Kauforder \\
+  \texttt{test\_\allowbreak protection\_\allowbreak release.py} & \texttt{orchestrate.py}, \texttt{broker.py} & Schutzorder-Kreislauf: Freigabe vor dem Handel, garantierter Abschluss im finally, Mengendeckung der Position, Schutzlücken-Wächter mit Selbstpause \\
+  \texttt{test\_\allowbreak richtungsumkehr.py} & \texttt{orchestrate.py} & Richtungsumkehr: Auflösung des Gegenbestands, Beleg am Depot statt am Rückgabewert der Order, Kopplungsregel kein Einstieg ohne Auflösung, Meldung der halben Umkehr \\
+  \texttt{test\_\allowbreak maintain\_\allowbreak shell.py} & \texttt{maintain\_\allowbreak protection.sh} & Pflegelauf der Schutzorder in der Sandbox: Kill-Switch, Handelskalender, Auswahl der abzusichernden Instrumente \\
+  \texttt{mut\_\allowbreak m23\_\allowbreak probe.py} & \texttt{broker.py}, \texttt{orchestrate.py} & Mutationstest des Schutzorder- und Umkehrpfads: gezielte Fehlerinjektion in Niveauberechnung, Mengenquelle, Freigabe und Wächter \\
+  \texttt{test\_\allowbreak broker\_\allowbreak cli.py} & \texttt{broker.py}, \texttt{maintain\_\allowbreak protection.sh} & Kommandozeilenpfad des Brokers: die vom Pflegelauf genutzten Schutzfunktionen ueber broker.main() (protect, maintain, cancel-protection, show-state) \\
+  \texttt{test\_\allowbreak archiv\_\allowbreak redaktion.py} & \texttt{build\_\allowbreak quellcode\_\allowbreak archiv.py} & Redaktionsregeln der Beilage: Rufnummern-, Depot- und Order-ID-Maskierung sowie die Gegenprobe gegen beschädigte Messwerte in Tabellendateien \\
 \end{longtable}

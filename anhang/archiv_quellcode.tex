@@ -1,5 +1,5 @@
 %% ---------------------------------------------------------------------------
-%% GENERIERT durch build_quellcode_archiv.py am 27.07.2026 12:00 — NICHT von Hand
+%% GENERIERT durch build_quellcode_archiv.py am 31.07.2026 12:00 — NICHT von Hand
 %% pflegen; Aenderungen in archiv_manifest.csv vornehmen und Skript ausfuehren.
 %% ---------------------------------------------------------------------------
 \begin{longtable}{@{}p{0.29\textwidth}p{0.155\textwidth}p{0.455\textwidth}@{}}
@@ -73,6 +73,7 @@
   \texttt{deploy.sh} & Shell & Deploy-Wrapper: lokaler Preflight, Soll/Ist-Abgleich der Prüfsummen, selektives Kopieren, Verifikation auf der VM, abschließender Health-Check \\
   \texttt{deploy\_\allowbreak manifest.txt} & Kon\-fi\-gu\-ra\-tion & Einzige Quelle darüber, welche Datei auf welche VM gehört (Grundlage von deploy.sh) \\
   \texttt{md5sync.py} & Python & Hält die Prüfsummenregister der Runbooks mit den Dateien im Einklang (prüfen und nachziehen) \\
+  \texttt{maintain\_\allowbreak protection.sh} & Shell & Täglicher Pflegelauf der Schutzorder außerhalb des Entscheidungszyklus: Break-even-Ratsche und Distanzstaffelung \\
   \addlinespace[6pt]
   \multicolumn{3}{@{}l}{\textbf{Auswertung}}\\*[2pt]
   \texttt{evaluate\_\allowbreak votes.py} & Python & Wöchentliche Voting-Kalibrierung und ML-Auswertung gegen den Folgetags-Return \\
@@ -108,5 +109,8 @@
   \texttt{veto\_\allowbreak overlay\_\allowbreak backtest.py} & Python & Backtest des ML-Veto-Overlays auf den Regime-Arm (Ergebnis negativ) \\
   \texttt{mlforecast\_\allowbreak backtest.py} & Python & Walk-Forward-Backtest der scikit-Prüfinstanz \\
   \texttt{mlforecast\_\allowbreak lab.py} & Python & Laborfassung der ML-Prüfinstanz (Horizont- und Cross-Index-Untersuchung) \\
+  \texttt{ml2\_\allowbreak probe.py} & Python & Offline-Messung, ob ein eigenes Prognosemodell für die Regimedefinition des Zweitdepots (Close über SMA 325) Prognosekraft hätte — Walk-Forward ohne Lookahead, Embargo zwischen Trainingsende und Prognosetag, kein Eingriff in den Produktivpfad \\
+  \texttt{ml2\_\allowbreak control.py} & Python & Positivkontrolle der Messapparatur von ml2\_probe.py: ein eingespeistes Leck-Merkmal muss deutliche Prognosekraft ergeben, gemischte Label müssen auf Zufallsniveau landen — ohne diese Kontrolle wäre der Negativbefund wertlos \\
   \texttt{mlforecast\_\allowbreak v2.py} & Python & Zweite Modellvariante der ML-Prüfinstanz \\
+  \texttt{trailing\_\allowbreak distanz\_\allowbreak backtest.py} & Python & Messung der Stopdistanz: Rendite, Maximalverlust und Auslösefrequenz je Trailing-Distanz und Wiedereinstiegsregel — Beleg der kritischen Evaluation zur Absicherung \\
 \end{longtable}

@@ -8,25 +8,11 @@
 \chapter{Fallstudie: OpenClaw als Trading Agent}
 \label{cha:umsetzung}
 
-Nachdem \cref{cha:grundlagen} den Ordnungsrahmen bereitgestellt und daraus die
-Lösungsarchitektur abgeleitet hat, überträgt dieses Kapitel beides auf den konkreten
-Gegenstand der Arbeit. Der untersuchte Agent verfolgt eine auf gleitenden
-Durchschnitten beruhende Handelsstrategie und löst die daraus abgeleiteten
-Entscheidungen eigenständig als Ordervorgänge über eine Bankschnittstelle aus. Damit
-schließt er den eingangs beschriebenen Kreis aus Wahrnehmung, Schlussfolgerung und
-Handlung vollständig.
-
-Auf der Ebene der Wahrnehmung erfasst er Marktdaten kontinuierlich und gegen eine
-unabhängige Zweitquelle geprüft. Auf der Ebene der Schlussfolgerung prüft ein Gremium
-aus drei großen Sprachmodellen die regelbasiert vorbereitete Entscheidung unabhängig
-und begründet. Auf der Ebene der Reaktion füllt er das Element der prozesssteuernden
-Kontrolle, das der zugrunde gelegte Rahmen ausdrücklich mit dem automatisierten Handel
-als Anwendung verbindet\footcite[vgl.][S.~18]{bitkom2018}. Ergänzend sichern eine
-Kommunikationskomponente die Rückbindung an den Menschen und ein öffentliches,
-redigiertes Dashboard die Transparenz der Entscheidungs- und Wertentwicklung. Die
-eigentliche gestalterische Aussage der Arbeit liegt in der sicherheitsorientierten
-Einschränkung des KI-Einsatzes, die \cref{sec:grundlagen-ableitung} begründet und
-deren Ausprägung im Folgenden dargelegt wird.
+Dieses Kapitel überträgt den Ordnungsrahmen und die daraus abgeleitete
+Lösungsarchitektur auf den konkreten Gegenstand der Arbeit. Der untersuchte Agent
+verfolgt eine auf gleitenden Durchschnitten beruhende Handelsstrategie und löst die
+daraus abgeleiteten Entscheidungen eigenständig als Ordervorgänge über eine
+Bankschnittstelle aus.
 
 Der Aufbau des Kapitels folgt dem Weg von der Struktur zur Bewertung. Zunächst wird die
 Systemarchitektur des Agenten mit ihren Komponenten und Datenflüssen beschrieben. Darauf
@@ -81,13 +67,47 @@ Fragestellung der Arbeit nicht nebensächlich: Ein Agent, der täglich
 unbeaufsichtigt Geld bewegen soll, ist nur so vertrauenswürdig wie die
 Infrastruktur, die seine Datenbasis und seine Erreichbarkeit garantiert.
 
-Die Sprachmodellinferenz ist bewusst hinter einer einheitlichen Schnittstelle
-(Ollama) gekapselt: Im gegenwärtigen Betrieb werden drei cloud-gehostete Modelle
-unterschiedlicher Anbieter befragt; die Migration auf lokal betriebene
-Modellvarianten eines Mac~mini bleibt ein reiner Konfigurationswechsel, da
-Modellbezeichner, Endpunkt und Zeitbudgets zentral konfiguriert sind. Das in
-\cref{sec:zielsetzung} formulierte Ziel der lokalen, weitgehend kostenfreien
-Betreibbarkeit bleibt damit strukturell gesichert.
+Das Agenten-Framework OpenClaw ist als Orchestrierungs- und Modelladapter angebunden
+und trägt damit die Betriebsschale des Agenten, nicht seinen
+Entscheidungspfad\footcite[vgl.][]{openclawDocs2026}. Aus dem Framework stammen die
+einheitliche Modellanbindung, die Werkzeuganbindung und das Messaging-Gateway zum
+Menschen\footcites[vgl.][]{openclawProviders2026}[vgl.][]{openclawGateway2026}. Die
+Strategieauswertung, der Validator, das Entscheidungsjournal und die Bankanbindung
+liegen dagegen vollständig in eigenem, deterministischem Quelltext. Diese Grenze ist
+keine Nebenfolge der Umsetzung, sondern Voraussetzung der begrenzten Diskretion. Jede
+Codezeile, die eine Order auslösen kann, bleibt damit im eigenen, testbaren Bestand.
+Der Chat-Kanal informiert und erlaubt den Not-Aus, löst jedoch selbst keine Order
+aus\footcite[vgl.][]{openclawSignal2026}.
+
+Die Sprachmodellinferenz ist hinter der einheitlichen Schnittstelle von Ollama
+gekapselt\footcite[vgl.][]{ollama2026}. Endpunkt, Modellbezeichner und das Zeitbudget
+je Aufruf stehen ausschließlich in der Betriebskonfiguration. 
+Im Erprobungsbetrieb zeigen die Bezeichner auf je ein Modell von Alibaba, Google und
+DeepSeek, aufsteigend nach gemessener Antwortzeit geordnet, damit der Early-Stop
+möglichst früh greift. Das Trio ist bewusst so gewählt, dass jedes
+Modell auch als lokal betreibbare Variante vorliegt, sodass der Umgebungswechsel auf
+den Mac~mini die Bezeichner tauscht und nicht den Quelltext
+ändert\footcite[vgl.][]{appleMacmini2026}. Ein Modell besitzt kein lokales Pendant und
+wird lokal durch eine offen verfügbare Variante ersetzt. Kostenfrei ist der Wechsel
+dennoch nicht. Cloud-gehostet antworten die Modelle nach der Warmlaufphase in ein bis
+zwei Sekunden, weshalb ein Zeitbudget von 90 Sekunden je Aufruf reichlich bemessen ist.
+Lokal ist auf Apple Silicon mit deutlich längeren Antwortzeiten und einem zusätzlichen
+Kaltstart beim Laden des Modells zu rechnen, sodass das Budget je Aufruf und mit ihm
+das Gesamtbudget des Zyklus anzuheben ist. Das in \cref{sec:zielsetzung} formulierte
+Ziel der lokalen, weitgehend kostenfreien Betreibbarkeit bleibt strukturell gesichert,
+sein empirischer Nachweis steht jedoch aus.
+
+An dieser Stelle wird der Unterschied zu dem ebenfalls geprüften Hermes-Framework
+greifbar. Hermes stellt eine fest verdrahtete Lernschleife bereit, die das Verhalten
+des Agenten aus seinen Erfahrungen
+fortschreibt\footcite[vgl.][]{hermesAgent2026}. Sie griffe genau dort ein, wo diese
+Arbeit Nachvollziehbarkeit verlangt. Zwei Läufe mit demselben Entscheidungsdokument
+müssten dann kein übereinstimmendes Votum mehr liefern, und das zu \emph{H2} erhobene
+Konsistenzmaß verlöre seinen Maßstab. OpenClaw liefert umgekehrt genau die beiden
+Bausteine, die der Aufbau benötigt und überlässt die Entscheidungslogik dem eigenen
+Quelltext. Der Preis dieser Wahl ist, dass das Framework wenig Arbeit abnimmt. Er ist
+gewollt, denn die tragenden Sicherungen sollen dort liegen, wo sie geprüft werden
+können.
 
 Eine dritte, strikt entkoppelte Zone bildet das öffentliche Dashboard. Die
 collector-vm exportiert minütlich redigierte \glsxtrshort{json}-Feeds des Entscheidungsjournals
@@ -196,17 +216,15 @@ zwischen legitimer Sitzungspause und echtem Verbindungsverlust machte das
 Qualitätskriterium betriebstauglich -- die Schwellwerte ließen sich nur gegen
 reale Betriebsdaten kalibrieren, nicht am Schreibtisch festlegen.
 
-Der tägliche Zyklus beginnt mit der Erzeugung eines strukturierten
-Entscheidungsdokuments (\emph{DecisionRequest}): Die Strategieauswertung liefert
-Regime, Indikatorwerte, Signalalter, Volatilitätskennzahlen, Datenqualitätsmetriken
-und einen deterministisch berechneten Kostenkontext (Round-Trip-Fixkosten und deren
-prozentuale Last je Größenstufe). Ergänzend setzt sie Prüfmarken
-(\emph{Audit-Flags}), von denen ein Teil als harte Ausschlusskriterien definiert ist
--- etwa veraltete Daten, jüngste Verbindungsverluste des Datenstroms oder ein
-fehlendes Handelsinstrument. Ein vorgeschaltetes Pre-Gate wertet diese harten
-Kriterien vor jedem Modellaufruf aus: Steht das Ergebnis deterministisch fest, wird
-die Ablehnung ohne Sprachmodellbeteiligung journalisiert. Die Modelle werden nur
-befragt, wenn ihre Bewertung das Ergebnis noch verändern kann.
+Der tägliche Zyklus beginnt mit einem strukturierten Entscheidungsdokument
+(\emph{DecisionRequest}). Die Strategieauswertung liefert Regime, Indikatorwerte,
+Signalalter, Volatilitäts- und Datenqualitätskennzahlen sowie einen deterministisch
+berechneten Kostenkontext. Ergänzend setzt sie Prüfmarken (\emph{Audit-Flags}), von
+denen ein Teil als hartes Ausschlusskriterium definiert ist, etwa veraltete Daten oder
+ein fehlendes Handelsinstrument. Ein vorgeschaltetes Pre-Gate wertet diese Kriterien vor
+jedem Modellaufruf aus und journalisiert eine deterministisch feststehende Ablehnung
+ohne Sprachmodellbeteiligung. Die Modelle werden nur befragt, wenn ihre Bewertung das
+Ergebnis noch verändern kann.
 
 Im Auditschritt erhält jedes der drei konfigurierten Sprachmodelle denselben
 DecisionRequest mit einem Systemauftrag als kritischer Risikoprüfer. Die Antwort ist
@@ -223,48 +241,40 @@ Zustimmungsmehrheit führt hingegen bewusst nicht zum Abbruch, da weitere Voten 
 Größe nur verkleinern können. Sämtliche Voten samt Begründungen und Antwortzeiten
 werden im Entscheidungsjournal persistiert.
 
-Ergänzend zum Sprachmodell-Gremium ist die im Kapiteleinstieg eingeführte
+Ergänzend zum Sprachmodell-Gremium ist die in \cref{sec:zielsetzung} eingeführte
 statistische Prüfinstanz implementiert. Ein logistisches Regressionsmodell
-(scikit-learn) schätzt aus den Tagesbar-Merkmalen -- den regimegerichteten Renditen
-der letzten fünf Handelstage, der 20-Tage-Volatilität, den Abständen des Kurses zu
-den Durchschnittslinien und dem Alter des Regimes -- die Wahrscheinlichkeit, dass
-der Folgetag in Signalrichtung schließt. Das Ergebnis wird dem DecisionRequest als
-zusätzliches Feld beigegeben; unterschreitet die Wahrscheinlichkeit eine
-konfigurierte Schwelle, wird ein weiches Warn-Flag gesetzt, das die Sprachmodelle
-wie die übrigen Risikokennzahlen in ihre Abwägung einbeziehen. Bewusst ist die
-Prognose weder ein hartes Ausschlusskriterium noch ein eigenes Votum im Gremium --
-andernfalls würde sie faktisch zur Signalquelle und verletzte die begrenzte
-Diskretion. Betrieblich kennt die Prüfinstanz einen Schattenmodus, in dem sie
-rechnet und journalisiert, ohne den Entscheidungspfad zu berühren, sowie einen
-Wirkmodus; die Umschaltung erfolgt je Strategie über den Messaging-Kanal, und ein
-Ausfall der Komponente blockiert den Zyklus nicht. Der Trainingsprozess ist
-vollständig dokumentiert und reproduzierbar: Ein wöchentlicher, zeitgesteuerter
-Trainingslauf lernt das Modell offline auf der vollständigen, gegen die
-Zweitquelle geprüften Tageshistorie neu. Jeder Modellstand trägt Trainingsdatum
-und Prüfsumme im Bezeichner und wird samt Merkmalsdefinition abgelegt, sodass
-jede Entscheidung im Journal einem eindeutigen, wiederherstellbaren Modellstand
-zuordenbar bleibt -- eine bewusste Abgrenzung zum fortlaufenden Lernen im
-Betrieb. Die Güte des jeweils aktiven Modellstands wird dabei nicht im
-Trainingslauf selbst, sondern ausschließlich in der zeitlich strikt getrennten
-Walk-Forward-Prüfung bewertet, deren Aufbau die Evaluation beschreibt.
+(scikit-learn) schätzt aus Tagesbar-Merkmalen wie den regimegerichteten Renditen der
+letzten Handelstage, der 20-Tage-Volatilität und dem Alter des Regimes die
+Wahrscheinlichkeit, dass der Folgetag in Signalrichtung schließt. Unterschreitet sie
+eine konfigurierte Schwelle, wird dem DecisionRequest ein weiches Warn-Flag beigegeben,
+das die Sprachmodelle wie die übrigen Risikokennzahlen in ihre Abwägung einbeziehen.
+Bewusst ist die Prognose weder ein hartes Ausschlusskriterium noch ein eigenes Votum,
+denn andernfalls würde sie zur Signalquelle und verletzte die begrenzte Diskretion.
+Betrieblich kennt die Prüfinstanz einen Schattenmodus, in dem sie rechnet und
+journalisiert, ohne den Entscheidungspfad zu berühren, sowie einen Wirkmodus. Ein
+Ausfall der Komponente blockiert den Zyklus nicht. Ein wöchentlicher Trainingslauf lernt
+das Modell offline auf der geprüften Tageshistorie neu. Jeder Modellstand trägt
+Trainingsdatum und Prüfsumme im Bezeichner, sodass jede Entscheidung im Journal einem
+wiederherstellbaren Modellstand zuordenbar bleibt. Ein fortlaufendes Lernen im Betrieb
+findet bewusst nicht statt. Die Güte des aktiven Modellstands wird ausschließlich in der
+zeitlich getrennten Walk-Forward-Prüfung bewertet.
 
-Die Orderausführung ist mehrstufig gegen die typischen Fehlerbilder verteilter
-Systeme abgesichert. Ein Frische-Gate verwirft Entscheide, die nicht vom aktuellen
-Handelstag stammen. Vor jeder realen Order wird eine \emph{Intent}-Zeile in das
-Orderjournal geschrieben, die als eindeutiger Ausführungsmarker dient: Derselbe
-Entscheid kann dadurch -- etwa nach einem manuellen Wiederholungslauf oder einer
-doppelten Zeitplanung -- kein zweites Mal ausgeführt werden und selbst ein
-Prozessabsturz zwischen Orderaufgabe und Journalisierung bleibt nachvollziehbar.
-Scheitert die Kommunikation mit der Bank nach dem Absenden, gleicht eine
-Reconciliation den tatsächlichen Zustand über das Orderbuch der Bank ab. Jeder
-unklare Ausgang endet in einem alarmierten Handelsstopp statt in einem automatischen
-Wiederholungsversuch. Einzelorder- und Portfolio-Obergrenzen wirken als
-Circuit-Breaker und die Scharfschaltung auf reale Orders ist ausschließlich
-kontospezifisch möglich. Die Bankanbindung selbst nutzt den \glsxtrshort{oauth}-Flow der
-comdirect-Schnittstelle mit einer täglich per photoTAN freigegebenen Session-\glsxtrshort{tan}.
-Der Mensch bleibt über einen Signal-Messenger-Kanal eingebunden, der Tagesreports
-liefert und einen jederzeit wirksamen Not-Aus (Pausieren, Fortsetzen, Statusabfrage,
-Glattstellen) bereitstellt.
+Die Orderausführung ist mehrstufig gegen die typischen Fehlerbilder verteilter Systeme
+abgesichert. Ein Frische-Gate verwirft Entscheide, die nicht vom aktuellen Handelstag
+stammen. Vor jeder realen Order wird eine \emph{Intent}-Zeile in das Orderjournal
+geschrieben, die als eindeutiger Ausführungsmarker dient. Derselbe Entscheid kann
+dadurch kein zweites Mal ausgeführt werden, etwa nach einem manuellen
+Wiederholungslauf oder einer doppelten Zeitplanung. Selbst ein Prozessabsturz zwischen
+Orderaufgabe und Journalisierung bleibt nachvollziehbar. Scheitert die Kommunikation
+mit der Bank nach dem Absenden, gleicht eine Reconciliation den tatsächlichen Zustand
+über das Orderbuch der Bank ab. Jeder unklare Ausgang endet in einem alarmierten
+Handelsstopp statt in einem automatischen Wiederholungsversuch. Einzelorder- und
+Portfolio-Obergrenzen wirken als Circuit-Breaker, und die Scharfschaltung auf reale
+Orders ist ausschließlich kontospezifisch möglich. Die Bankanbindung nutzt den
+\glsxtrshort{oauth}-Flow der comdirect-Schnittstelle mit einer täglich per photoTAN
+freigegebenen Session-\glsxtrshort{tan}. Der Mensch bleibt über den Signal-Kanal
+eingebunden, der Tagesreports liefert und einen jederzeit wirksamen Not-Aus
+bereitstellt.
 
 Die Banksitzung integriert die regulatorische Zwei-Faktor-Anforderung in den
 autonomen Ablauf: Der Anmeldevorgang fordert genau eine photoTAN-Freigabe an, die
@@ -285,17 +295,14 @@ aufklappbaren Einzelbegründungen der Modelle und dient damit als öffentlich
 prüfbarer Lauffähigkeitsnachweis des Agenten.
 
 Die Betriebsführung rundet die Implementierung ab. Ein Zeitplandienst startet den
-Entscheidungszyklus an Handelstagen kurz vor der US-Markteröffnung; ein
-Börsenkalender überspringt Feiertage, und eine Prozesssperre je Konto verhindert,
-dass sich zwei Läufe überlappen. Jeder Zyklus schließt mit einem Bericht an die
-private Messaging-Gruppe, der Entscheidung, Voten, Auffälligkeiten und den
-effektiven Modus je Konto ausweist; die Scharfschaltung auf reale Orders ist damit
-täglich sichtbar dokumentiert.
-
-Die Qualitätssicherung stützt sich auf zwölf Offline-Testsuiten, die von der
-Datensammlung über den Voting-Mechanismus bis zu den Schutzpfaden der
-Orderausführung jede sicherheitsrelevante Verzweigung mit gemockten Schnittstellen
-durchspielen. Die Volltexte der zentralen Module sind im Anhang dokumentiert.
+Entscheidungszyklus an Handelstagen kurz vor der US-Markteröffnung, ein Börsenkalender
+überspringt Feiertage, und eine Prozesssperre je Konto verhindert überlappende Läufe.
+Jeder Zyklus schließt mit einem Bericht an die private Messaging-Gruppe, der
+Entscheidung, Voten, Auffälligkeiten und den effektiven Modus je Konto ausweist und die
+Scharfschaltung damit täglich sichtbar dokumentiert. Die Qualitätssicherung stützt sich
+auf zwanzig Offline-Testsuiten, die jede sicherheitsrelevante Verzweigung von der
+Datensammlung bis zur Orderausführung mit gemockten Schnittstellen durchspielen. Die
+Volltexte der zentralen Module sind im Anhang dokumentiert.
 
 \section{Evaluation}
 \label{sec:umsetzung-evaluation}

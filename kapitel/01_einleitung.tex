@@ -20,29 +20,25 @@ inwieweit einem softwarebasierten Agenten Handlungen mit realer Wirkung --
 insbesondere mit finanziellen Konsequenzen -- überlassen werden dürfen. Der
 automatische bzw. algorithmische Handel wird hierbei im zugrunde gelegten
 Ordnungsrahmen als Anwendungsbeispiel der prozesssteuernden Kontrolle
-benannt\footcite[vgl.][S.~18, 86]{bitkom2018}. Er kennzeichnet damit ein Anwendungsgebiet, in
-welchem Autonomie und Sicherheit in besonderem Maße gegeneinander abzuwägen sind. Es
+benannt\footcite[vgl.][S.~18, 86]{bitkom2018} und kennzeichnet damit ein Anwendungsgebiet, in dem Autonomie und Sicherheit in besonderem Maße gegeneinander abzuwägen sind. Es
 besteht ein Spannungsfeld zwischen einem kontrollierten Handelssystem mit Anforderungen
 an die Reproduzierbarkeit und Auditierbarkeit und \glsxtrshortpl{llm}, deren Ausgaben
 plausibel, aber nicht zwangsläufig zutreffend und zudem nicht reproduzierbar
 sind\footcites[vgl.][S.~1]{huangHallucination2025}[vgl.][]{he2025nondeterminism}. Dies scheint auf den ersten Blick
 unvereinbar. Hinzu kommen weitere praktische Hürden, denn kommerzielle KI-Dienste und
 komplexe Handelsinfrastrukturen verursachen laufende Kosten und setzen die Preisgabe
-sensibler Daten an Dritte voraus. Genau an diesem Spannungsfeld setzt die
+sensibler Daten an Dritte voraus. An diesem Spannungsfeld setzt die
 vorliegende Projektarbeit an. Wie anspruchsvoll die gewählte Zielumgebung dabei ist,
 zeigt \cref{sec:umgebungsmerkmale}.
 
 \section{Merkmale der Umgebung}
 \label{sec:umgebungsmerkmale}
 
-Der Börsenhandel ist als Zielumgebung eines autonom handelnden KI-Agenten in
-besonderem Maße anspruchsvoll. Sechs Merkmale skizzieren die Schwierigkeiten und
+Sechs Merkmale skizzieren die Schwierigkeiten und
 prägen zugleich die Anforderungen an die Architektur. Erstens ist die Dynamik der Kursverläufe zu nennen:
 Ihre fehlende Stationarität entwertet beobachtete Zusammenhänge fortlaufend und eine
 Entscheidung altert bereits während ihrer Prüfung. Datenbeschaffung, Prüfung und
-Orderaufgabe müssen deshalb in ein knappes Zeitbudget passen, von dem jeder zusätzliche Prüfschritt einen Teil mitverbraucht und das den Entwurf entsprechend verkompliziert; die gewählte tägliche Taktung entschärft dieses Merkmal, hebt es aber nicht auf. Zweitens ist die Unumkehrbarkeit von Handlungen
-zu nennen. Getroffene Entscheidungen materialisieren sich unmittelbar und können zu
-realem Vermögensverlust führen. Drittens ist der Infrastrukturzugang für Privatanwender
+Orderaufgabe müssen deshalb in ein knappes Zeitbudget passen, von dem jeder zusätzliche Prüfschritt einen Teil mitverbraucht und das den Entwurf entsprechend verkompliziert; die gewählte tägliche Taktung entschärft dieses Merkmal, hebt es aber nicht auf. Zweitens sind Handlungen unumkehrbar: Getroffene Entscheidungen materialisieren sich unmittelbar und können zu realem Vermögensverlust führen. Drittens ist der Infrastrukturzugang für Privatanwender
 eingeschränkt. Kostenlose Kursdaten stehen in der benötigten Intraday-Auf"|lösung nur
 über inoffizielle und nicht stabile Schnittstellen bereit, was Robustheit und
 Skalierbarkeit des Lösungsdesigns beeinflusst. Auf der Ausführungsseite setzt eine
@@ -53,8 +49,7 @@ die den Steuerabzug unmittelbar vornimmt\footcite[vgl.][\S~44 Abs.~1]{estg44}. U
 den in Deutschland ansässigen Direktbanken erfüllt zum Erhebungszeitpunkt nach eigener Recherche allein
 comdirect beide Bedingungen\footcite[Eigene Recherche, Stand 19.07.2026. Bei nicht in
 Deutschland ansässigen Anbietern entfällt der Abzug, die Veranlagung obliegt dann dem
-Anleger, vgl.][\S~32d Abs.~3]{estg32d}. Schnittstellenbeschränkungen, eine regelmäßige
-Zwei-Faktor-Freigabe und das Fehlen einer bankseitigen Testumgebung sind ohne
+Anleger, vgl.][\S~32d Abs.~3]{estg32d}. Schnittstellenbeschränkungen, eine tägliche Zwei-Faktor-Freigabe und das Fehlen einer bankseitigen Testumgebung sind ohne
 Ausweichmöglichkeit hinzunehmen. Erhebungen zur Lauf"|fähigkeit erfolgen deshalb im
 Produktivsystem\FOMfootnote{Eigene Backtests und Trockenläufe sichern die
 Entscheidungslogik ab, nicht jedoch den Ausführungspfad.}.
@@ -81,7 +76,7 @@ bzw. geschlossen betreibbarer \glsxtrshortpl{llm}. Der in \cref{sec:problemstell
 benannte Vorbehalt der Unvereinbarkeit soll dabei aufgelöst werden, indem den
 Sprachmodellen eine bewusst begrenzte und überprüfbare Rolle zugewiesen wird. 
 Die Handelsentscheidungen entstammen dabei nicht dem
-Sprachmodell, sondern einer festgelegten, deterministisch implementierten Strategie
+Sprachmodell, sondern einer deterministisch implementierten Strategie
 auf Basis gleitender Durchschnitte (\textit{engl.} \glsxtrlong{sma}, \glsxtrshort{sma}),
 angewendet auf einen ausgewählten Index, die \cref{cha:umsetzung} formal fasst und in
 Quelltext umsetzt. Ein Gremium aus drei lokal betreibbaren
@@ -105,8 +100,7 @@ für sicherheitsorientiert begrenzten KI-Einsatz im autonomen Handel sowie in
 empirischen Befunden aus dem realen Betrieb, etwa zur Kostenstruktur der
 Orderausführung, zum Abstimmungsverhalten der beteiligten Modelle und zur
 Prognosegüte einfacher statistischer Modelle. Daraus leiten sich zwei Leitfragen ab, an denen sich die Arbeit messen lässt:
-Erstens, ob sich der vollständige Handelszyklus auf Basis des Agenten-Frameworks OpenClaw -- 
-von der Datenerfassung über die geprüfte Entscheidung bis zur Orderaufgabe bei einer regulierten Bank -- mit
+Erstens, ob sich der vollständige Handelszyklus -- von der Datenerfassung über die geprüfte Entscheidung bis zur Orderaufgabe bei einer regulierten Bank -- mit
 vertretbarem Aufwand autonom, nachvollziehbar und abgesichert betreiben lässt.
 Zweitens, ob das Sprachmodell-Gremium seine begrenzte Diskretion verlässlich ausübt -- im Regelfall beschränkt auf Verhindern und Verkleinern, im Fehlerfall durchgängig fail-safe und konsistent -- ohne Handelsentscheidungen jemals zu erzeugen oder umzukehren.
 

@@ -49,8 +49,6 @@ umgesetzten und den geplanten Bestandteilen.
 
 % Grafik: abbildungen/zielarchitektur.svg — Einbindung als Vektorgrafik via
 % \includesvg (svg-Paket, \svgpath{{abbildungen/}}, analog fom-logo).
-% Das SVG ist attributbasiert gestylt (kein <style>-Block), damit die
-% Inkscape-Konvertierung von Overleaf verlustfrei arbeitet.
 \begin{figure}[htbp]
   \centering
   \includesvg[width=\textwidth]{zielarchitektur}
@@ -383,60 +381,54 @@ Variante (B2) erzielt mit neun Positionswechseln in zehn Jahren rund $+96\,\%$
 vor beziehungsweise $+60\,\%$ nach Steuern bei lediglich 106\,€ Kosten; das
 passive Halten des Index (B1) rund $+248\,\%$ vor beziehungsweise $+203\,\%$
 nach Steuern. Die
-tägliche Handelsfrequenz wird demnach von den Transaktionskosten aufgezehrt. Der
-Kostenblock des Backtests folgt dem Ex-Ante-Kostenausweis und bildet damit eine
-Obergrenze; unter den im Betrieb gemessenen Konditionen fällt er kleiner aus, ohne
-die Aussage zu ändern, da bereits der verbleibende Spread bei der beobachteten
-Trefferquote von 31,7\,\% keinen positiven Erwartungswert zulässt
-(\cref{eq:breakeven}). Das Erkenntnisziel der Arbeit ist nicht eine positive
-Handelsrendite, sondern die autonome, abgesicherte
-Ausführung selbst sowie der messbare Beitrag des Sprachmodell-Gremiums; die
+tägliche Handelsfrequenz wird demnach von den Transaktionskosten aufgezehrt. Zwar
+bildet der Kostenblock des Backtests nach dem Ex-Ante-Kostenausweis nur eine
+Obergrenze; die Aussage bleibt jedoch bestehen, da bereits der verbleibende
+Spread bei der beobachteten Trefferquote von 31,7\,\% keinen positiven
+Erwartungswert zulässt (\cref{eq:breakeven}). Die
 Differenz zwischen B0 und B2 beziffert insofern den Preis der täglich demonstrierten
-Autonomie. Die Voting-Kalibrierung aus dem Live-Betrieb -- Trockenlauf seit dem
-21.07.2026, Echtgeldbetrieb ab dem 27.07.2026 -- ergänzt diese Betrachtung
-fortlaufend um die Frage, ob die Vetos der Modelle systematisch Verlusttage treffen
+Autonomie. Die Voting-Kalibrierung aus dem Live-Betrieb (Trockenlauf seit dem
+21.07.2026, Echtgeldbetrieb ab dem 27.07.2026) prüft
+fortlaufend, ob die Vetos der Modelle systematisch Verlusttage treffen
 oder lediglich Rauschen darstellen.
 
 Die Walk-Forward-Prüfung des Prognosemodells über 23.803 Handelstage der
-vollständigen Indexhistorie fällt ernüchternd und zugleich aufschlussreich aus:
+vollständigen Indexhistorie fällt eindeutig aus:
 Einer Basisrate von 52,1\,\% in Regimerichtung schließender Folgetage steht eine
 Trefferquote von 52,0\,\% gegenüber, und der Brier-Score von 0,2498 unterschreitet
 die Klimatologie (0,2496) nicht -- das Modell besitzt keine Prognosekraft über die
-Basisrate hinaus. Die Kalibrierung ist ordentlich, wird jedoch vom dominierenden
-Wahrscheinlichkeitsbereich getragen: 19.434 der 23.803 Prognosen und damit 81,6\,\%
+Basisrate hinaus. Die ordentliche Kalibrierung wird vom dominierenden
+Wahrscheinlichkeitsbereich getragen: 81,6\,\% der Prognosen (19.434)
 liegen im Bereich um 0,5, in dem prognostizierte (52,4\,\%) und beobachtete
 Häufigkeit (52,5\,\%) nahezu übereinstimmen. Auch der skeptischste besetzte Bereich
 weicht mit 50,4\,\% bei lediglich 127 Beobachtungen nicht verwertbar
 ab\footcite[zur Zerlegung des Brier-Scores in Kalibrierungs- und Auflösungsanteil
 vgl.][S.~595--600]{murphy1973}.
-Dieser ehrliche Negativbefund trägt die zentrale Architekturentscheidung empirisch:
-Die Tagesrichtung des Index ist auch mit einem sauber validierten Modell praktisch
-nicht prognostizierbar, weshalb die Prognose im System keine Signalgewalt erhält
-und die Prüfinstanz bis zu einem gegenteiligen Kalibrierungsnachweis aus dem
-laufenden Betrieb im Schattenmodus verbleibt.
+Dieser Negativbefund trägt die zentrale Architekturentscheidung empirisch:
+Die Tagesrichtung des Index ist auch mit sauber validiertem Modell praktisch
+nicht prognostizierbar; die Prüfinstanz bleibt daher bis zu einem gegenteiligen
+Kalibrierungsnachweis aus dem laufenden Betrieb im Schattenmodus.
 
 Die Kostenmessung gegen das Produktivsystem der Bank lieferte darüber hinaus
-eigenständige Befunde. Die Kaufprovision erwies sich zunächst über alle getesteten
-Ordergrößen als fixer Betrag von 3{,}90\,€. Ein kontrolliertes Experiment über beide
-Depots, beide Ordertypen und eine Volumenreihe zeigte jedoch, dass die Provision ab
+eigenständige Befunde. Ein kontrolliertes Experiment über beide
+Depots, beide Ordertypen und eine Volumenreihe zeigte, dass die Provision ab
 einem Ordervolumen von 1.000\,€ vollständig entfällt: Der Emittent vergütet die Bank
 im Rahmen der Premium-Partner-Konstruktion mit 9{,}50\,€, die im
-Ex-Ante-Kostenausweis als \enquote{Zahlung von Dritten an die Bank} erscheint. Es
-handelt sich um eine Stufe, nicht um eine Kurve. Da die Mindestordergröße des Agenten
+Ex-Ante-Kostenausweis als \enquote{Zahlung von Dritten an die Bank} erscheint --
+eine Stufe, keine Kurve. Da die Mindestordergröße des Agenten
 bei 1.000\,€ liegt, ist faktisch jede seiner Orders provisionsfrei; die zuvor
 angenommenen Round-Trip-Fixkosten von 7{,}80\,€ beschreiben einen Kostenblock, der im
 Betrieb nicht anfällt. Die Wahl des Direkthandels beim Emittenten statt eines
 Börsenplatzes senkt die Gesamtkosten je Round-Trip um weitere 5\,€, da die
-Handelsplatzentgelte entfallen. Zugleich zeigte sich ein versteckter Kostenfaktor:
-Der Geld-Brief-Spread des Direkthandels wird im Ex-Ante-Kostenausweis nicht
-ausgewiesen und muss im Betrieb empirisch gemessen werden. Auch der Betrieb der
-Sprachmodelle erbrachte belastbare Beobachtungen: Die Schema-Adhärenz kleinerer
-gehosteter Modelle musste schrittweise erzwungen werden -- von anfänglich
-verworfenen Antworten bis zur stabilen, schema-konformen Ausgabe --, für
+Handelsplatzentgelte entfallen; der Geld-Brief-Spread wird dagegen im
+Ex-Ante-Kostenausweis nicht ausgewiesen und musste im Betrieb empirisch gemessen
+werden. Auch der Betrieb der
+Sprachmodelle erbrachte belastbare Beobachtungen: Die Schema-Adhärenz musste
+schrittweise erzwungen werden, für
 Modelle mit aktivierter Reasoning-Ausgabe war deren Abschaltung erforderlich, weil
-der Denkmodus das erzwungene Antwortformat überstimmte, und ein zunächst
-vorgesehenes viertes Modell wurde nach Verifikationsläufen wegen langer
-Antwortzeiten und inhaltlichen Rauschens bewusst ausgeschlossen. Die
+der Denkmodus das erzwungene Antwortformat überstimmte, und ein viertes
+Modell wurde wegen langer
+Antwortzeiten und inhaltlichen Rauschens ausgeschlossen. Die
 Antwortlatenzen fielen nach der Warmlaufphase von knapp zehn Sekunden auf unter
 eine Sekunde je Votum.
 

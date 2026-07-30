@@ -38,10 +38,9 @@ zeigt \cref{sec:umgebungsmerkmale}.
 Der Börsenhandel ist als Zielumgebung eines autonom handelnden KI-Agenten in
 besonderem Maße anspruchsvoll. Sechs Merkmale skizzieren die Schwierigkeiten und
 prägen zugleich die Anforderungen an die Architektur. Erstens ist die Dynamik der Kursverläufe zu nennen:
-Ihre fehlende Stationarität entwertet beobachtete Zusammenhänge fortlaufend, und eine
+Ihre fehlende Stationarität entwertet beobachtete Zusammenhänge fortlaufend und eine
 Entscheidung altert bereits während ihrer Prüfung. Datenbeschaffung, Prüfung und
-Orderaufgabe müssen deshalb in ein knappes Zeitbudget passen, von dem jeder
-zusätzliche Prüfschritt einen Teil mitverbraucht und das den Entwurf entsprechend verkompliziert. Zweitens ist die Unumkehrbarkeit von Handlungen
+Orderaufgabe müssen deshalb in ein knappes Zeitbudget passen, von dem jeder zusätzliche Prüfschritt einen Teil mitverbraucht und das den Entwurf entsprechend verkompliziert; die gewählte tägliche Taktung entschärft dieses Merkmal, hebt es aber nicht auf. Zweitens ist die Unumkehrbarkeit von Handlungen
 zu nennen. Getroffene Entscheidungen materialisieren sich unmittelbar und können zu
 realem Vermögensverlust führen. Drittens ist der Infrastrukturzugang für Privatanwender
 eingeschränkt. Kostenlose Kursdaten stehen in der benötigten Intraday-Auf"|lösung nur
@@ -51,13 +50,13 @@ automatisierte Anbindung eine programmierbare
 \glsxtrshort{rest}-\glsxtrshort{api} bei einer inländischen depotführenden Stelle
 voraus\footcites[vgl.][]{comdirectApi2026}[vgl.][Kap.~7, S.~38--47]{comdirectSpec2020},
 die den Steuerabzug unmittelbar vornimmt\footcite[vgl.][\S~44 Abs.~1]{estg44}. Unter
-den in Deutschland ansässigen Direktbanken erfüllt zum Erhebungszeitpunkt allein
+den in Deutschland ansässigen Direktbanken erfüllt zum Erhebungszeitpunkt nach eigener Recherche allein
 comdirect beide Bedingungen\footcite[Eigene Recherche, Stand 19.07.2026. Bei nicht in
 Deutschland ansässigen Anbietern entfällt der Abzug, die Veranlagung obliegt dann dem
-Anleger, vgl.][\S~32d Abs.~3]{estg32d}. Schnittstellenbeschränkungen, eine tägliche
+Anleger, vgl.][\S~32d Abs.~3]{estg32d}. Schnittstellenbeschränkungen, eine regelmäßige
 Zwei-Faktor-Freigabe und das Fehlen einer bankseitigen Testumgebung sind ohne
-Ausweichmöglichkeit hinzunehmen; Erhebungen zur Lauf"|fähigkeit erfolgen deshalb im
-Produktivsystem\footnote{Eigene Backtests und Trockenläufe sichern die
+Ausweichmöglichkeit hinzunehmen. Erhebungen zur Lauf"|fähigkeit erfolgen deshalb im
+Produktivsystem\FOMfootnote{Eigene Backtests und Trockenläufe sichern die
 Entscheidungslogik ab, nicht jedoch den Ausführungspfad.}.
 Viertens sind die verarbeiteten Daten schutzbedürftig, denn
 Depotbestände, eingesetztes Kapital und einzelne Transaktionen lassen auf die
@@ -80,13 +79,14 @@ Ziel dieser Projektarbeit ist der Aufbau und Betrieb eines Live-Trading-Agenten
 mithilfe des Agenten-Frameworks OpenClaw\footcite[vgl.][]{openclawRepo2026} und lokal
 bzw. geschlossen betreibbarer \glsxtrshortpl{llm}. Der in \cref{sec:problemstellung}
 benannte Vorbehalt der Unvereinbarkeit soll dabei aufgelöst werden, indem den
-Sprachmodellen eine bewusst begrenzte und überprüfbare Rolle zugewiesen wird. Die Handelsentscheidungen entstammen dabei nicht dem
+Sprachmodellen eine bewusst begrenzte und überprüfbare Rolle zugewiesen wird. 
+Die Handelsentscheidungen entstammen dabei nicht dem
 Sprachmodell, sondern einer festgelegten, deterministisch implementierten Strategie
 auf Basis gleitender Durchschnitte (\textit{engl.} \glsxtrlong{sma}, \glsxtrshort{sma}),
 angewendet auf einen ausgewählten Index, die \cref{cha:umsetzung} formal fasst und in
 Quelltext umsetzt. Ein Gremium aus drei lokal betreibbaren
 Sprachmodellen übernimmt die Rolle unabhängiger Prüf"|instanzen: Jedes Modell
-prüft die regelbasiert vorbereitete Entscheidung eigenständig, und erst ein
+prüft die regelbasiert vorbereitete Entscheidung eigenständig und erst ein
 Mehrheitsentscheid des Modellgremiums gibt die Orderausführung über die
 Bankschnittstelle frei. Ergänzt
 wird das Gremium um eine statistische Prüf"|instanz: Ein kleines, klassisches
@@ -99,9 +99,7 @@ gilt die kleinste genannte Größe.
 Sämtliche Prüf"|instanzen können Handelsvorschläge somit verhindern oder verkleinern,
 jedoch niemals erzeugen oder umkehren (Prinzip der begrenzten Diskretion). Die
 Betriebsform ist dabei selbst ein Ziel: Die Agentenstruktur ist modular aufgebaut und für den lokalen
-Privatgebrauch ausgelegt -- als Zielkonfiguration auf einem Mac~mini, sodass sie
-weitgehend kostenfrei betreibbar bleibt und sensible Daten die eigene Infrastruktur
-nicht verlassen müssen. Der Agent versteht sich dabei als Erkenntnis-, nicht als Renditeinstrument.
+Privatgebrauch ausgelegt -- als Zielkonfiguration auf einem Mac~mini, sodass sie weitgehend kostenfrei betreibbar bleibt und sensible Daten die eigene Infrastruktur nicht verlassen müssen; der Erprobungsbetrieb nutzt noch cloud-gehostete Inferenz (\cref{sec:umsetzung-architektur}). Der Agent versteht sich dabei als Erkenntnis-, nicht als Renditeinstrument.
 Der praktische Beitrag liegt in einer übertragbaren Referenzarchitektur
 für sicherheitsorientiert begrenzten KI-Einsatz im autonomen Handel sowie in
 empirischen Befunden aus dem realen Betrieb, etwa zur Kostenstruktur der
@@ -110,7 +108,7 @@ Prognosegüte einfacher statistischer Modelle. Daraus leiten sich zwei Leitfrage
 Erstens, ob sich der vollständige Handelszyklus auf Basis des Agenten-Frameworks OpenClaw -- 
 von der Datenerfassung über die geprüfte Entscheidung bis zur Orderaufgabe bei einer regulierten Bank -- mit
 vertretbarem Aufwand autonom, nachvollziehbar und abgesichert betreiben lässt.
-Zweitens, ob das Sprachmodell-Gremium seine begrenzte Diskretion verlässlich ausübt -- im Regelfall beschränkt auf Verhindern, Verkleinern und zeitliches Einordnen, im Fehlerfall durchgängig fail-safe -- ohne Handelsentscheidungen jemals zu erzeugen oder umzukehren.
+Zweitens, ob das Sprachmodell-Gremium seine begrenzte Diskretion verlässlich ausübt -- im Regelfall beschränkt auf Verhindern, Verkleinern und zeitliches Einordnen, im Fehlerfall durchgängig fail-safe und konsistent -- ohne Handelsentscheidungen jemals zu erzeugen oder umzukehren.
 
 Beide Leitfragen werden zu prüfbaren Hypothesen verdichtet: \emph{H1} prüft die Autonomie des Handelszyklus, \emph{H2} die Diskretionsausübung des Gremiums. \emph{H3} prüft ergänzend die Annahme, die der begrenzten Rolle des Prognosemodells zugrunde liegt. Alle drei werden in \cref{cha:umsetzung} an gemessenen Größen geprüft.
 
@@ -118,7 +116,7 @@ Beide Leitfragen werden zu prüfbaren Hypothesen verdichtet: \emph{H1} prüft di
   \item[H1] Der Agent durchläuft den täglichen Handelszyklus im Normalbetrieb ohne
     manuelle Eingriffe, die über die regulatorisch erforderliche tägliche Freigabe der
     Banksitzung hinausgehen.
-  \item[H2] Das Sprachmodell-Gremium übt seine begrenzte Diskretion nachweisbar aus: Im Regelfall treten voneinander abweichende Einzelvoten auf, und seine Eingriffe beschränken sich auf Verhindern, Verkleinern und zeitliches Einordnen der vorbereiteten Entscheidung.
+  \item[H2] Das Sprachmodell-Gremium übt seine begrenzte Diskretion nachweisbar aus: Seine Eingriffe beschränken sich auf Verhindern, Verkleinern und zeitliches Einordnen, Fehlerfälle enden fail-safe als Veto, und wiederholte Vorlage desselben Entscheidungsdokuments liefert übereinstimmende Voten.
   \item[H3] Das eingesetzte statistische Prognosemodell erreicht in einer Walk-Forward-Prüfung keine bessere Trennschärfe als die Basisrate, und sein Brier-Score unterschreitet den der Klimatologie nicht.
 \end{description}
 
@@ -129,7 +127,7 @@ Methodisch fußt die Arbeit auf einer zweistufigen Vorgehensweise. Die Wahl folg
 den Leitfragen und aus den in \cref{sec:umgebungsmerkmale} genannten Merkmalen. Die
 erste Leitfrage zielt auf die Betreibbarkeit eines Artefakts und ist nur konstruktiv zu
 beantworten, die zweite auf einen empirischen Beitrag, der sich allein im realen
-Betrieb messen lässt. Ein kontrolliertes Experiment scheidet aus, weil weder eine
+Betrieb messen lässt. Das Vorgehen folgt dem Paradigma der Design Science Research\footcite[vgl.][]{hevner2004}. Ein kontrolliertes Experiment scheidet aus, weil weder eine
 bankseitige Testumgebung noch ein wiederholbarer Marktverlauf zur Verfügung steht. In der ersten Stufe
 werden mittels literaturbasierter Recherche die begriff"|lichen Grundlagen autonomer
 KI-Agenten erarbeitet und mit dem Periodensystem der Künstlichen Intelligenz ein

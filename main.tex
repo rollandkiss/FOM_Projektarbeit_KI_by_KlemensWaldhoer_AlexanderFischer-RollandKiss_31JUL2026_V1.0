@@ -515,6 +515,12 @@
          \bibsentence\footnote{\bibsentence#1\addperiod}%
          \FOM@fnmark@prepare}%
 }
+% Wrapper fuer MANUELLE \footnote: Damit auch sie am Trennerverfahren
+% teilnimmt (Marker pruefen + Marker hinterlassen). Befund 29.07.2026:
+% In Kap. 2 folgt auf eine \footcites-Gruppe (Marke 42) eine manuelle
+% \footnote (Marke 43) -- ohne Wrapper stand dort weiterhin "42 43".
+\newcommand*{\FOMfootnote}[1]{%
+    \FOM@fnmark@check\footnote{#1}\FOM@fnmark@prepare}
 \makeatother
 
 % Filter: Eintraege mit Schluesselwort "ki" -> KI-Verzeichnis (Kap. 6.2.4),

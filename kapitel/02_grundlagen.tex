@@ -20,8 +20,7 @@ gewöhnlichen Programm unterscheiden. Er handelt autonom, reagiert auf seine Umg
 verfolgt eigene Ziele und ist
 interaktionsfähig\footcites[vgl.][S.~116]{wooldridgeJennings1995}[vgl.][S.~26\,f.]{wooldridge2009}.
 Hinzu tritt die zeitliche Dimension, denn ein autonomer Agent handelt fortlaufend und
-verfolgt dabei eine eigene Agenda\footcite[vgl.][S.~25]{franklinGraesser1997}. Ein
-\glsxtrshort{ki}-Agent wird in dieser Arbeit daher -- die in \cref{sec:problemstellung} skizzierte Definition präzisierend -- als softwarebasiertes System verstanden, das den geschlossenen Kreis aus Wahrnehmung, Schlussfolgerung und Handlung ohne kontinuierliche menschliche Steuerung
+verfolgt dabei eine eigene Agenda\footcite[vgl.][S.~25]{franklinGraesser1997}. Ein KI-Agent wird in dieser Arbeit daher als softwarebasiertes System verstanden, das den geschlossenen Kreis aus Wahrnehmung, Schlussfolgerung und Handlung ohne kontinuierliche menschliche Steuerung
 durchläuft\footcite[vgl.][S.~303]{gollnick2025}.
 
 Autonomie ist dabei keine Eigenschaft, die ein System besitzt oder nicht besitzt,
@@ -47,7 +46,7 @@ Struktur\footcite[vgl.][]{anthropicAgents2024}.
 Zur systematischen Beschreibung der Bausteine, aus denen sich KI-Anwendungen
 zusammensetzen, greift die Arbeit auf das Periodensystem der Künstlichen Intelligenz
 zurück\footcite[vgl.][S.~15\,f.]{bitkom2018}. Es überträgt die aus der Chemie
-vertraute Systematik auf die Künstliche Intelligenz, denn wie sich dort wenige
+vertraute Systematik, denn wie sich dort wenige
 Elemente zu einer Vielzahl von Molekülen verbinden, fügen sich abgegrenzte
 KI-Grundbausteine zu konkreten Anwendungen zusammen. Die zugrunde liegende Idee geht auf Hammond
 zurück, der Künstliche Intelligenz als Kombination gekapselter Teilfunktionen
@@ -68,7 +67,7 @@ bewussten Verzicht auf einzelne sichtbar und damit begründungspflichtig.
 \section{Gestaltungsprinzipien kontrollierter Autonomie}
 \label{sec:grundlagen-prinzipien}
 
-Aus dem in \cref{sec:problemstellung} benannten Spannungsfeld und den in \cref{sec:umgebungsmerkmale} benannten Merkmalen der Umgebung lassen sich vier Prinzipien ableiten. Erstens trägt ein deterministischer
+Aus dem Spannungsfeld (\cref{sec:problemstellung}) und den Umgebungsmerkmalen (\cref{sec:umgebungsmerkmale}) lassen sich vier Prinzipien ableiten. Erstens trägt ein deterministischer
 Kern die Entscheidung, während probabilistische Komponenten ausschließlich prüfen.
 Harte Ausschlusskriterien werden regelbasiert vor jedem Modellaufruf entschieden
 und eine nachgelagerte Prüfschicht kontrolliert jede Modellantwort, bevor ihr Wirkung
@@ -129,7 +128,7 @@ Sprachmodelle als Prüf"|instanz nachgeordnet ist. Ein Handel kommt nur bei
 Zustimmung der Mehrheit zustande, während jedes nicht erreichbare oder regelwidrig
 antwortende Modell konservativ als Veto zählt. Sämtliche Prüf"|instanzen können
 einen Handelsvorschlag verhindern oder verkleinern, ihn jedoch niemals erzeugen oder
-umkehren. Dieses in \cref{sec:zielsetzung} eingeführte Prinzip der begrenzten Diskretion ist die architektonische Antwort auf die Abwägung zwischen Flexibilität und Zuverlässigkeit. Ihr Sicherheitsgewinn bleibt eine
+umkehren. Diese begrenzte Diskretion (\cref{sec:zielsetzung}) ist die architektonische Antwort auf die Abwägung zwischen Flexibilität und Zuverlässigkeit. Ihr Sicherheitsgewinn bleibt eine
 empirische Frage und wird als \emph{H2} gemessen (\cref{sec:zielsetzung}).
 
 Als Agenten-Framework wird OpenClaw eingesetzt, ein quelloffenes System, das die
@@ -150,19 +149,17 @@ Im Ordnungsrahmen des Periodensystems lässt sich der Agent damit vorab verorten
 besetzt in der Gruppe \enquote{Assess} die Datenerfassung und die Mustererkennung und
 in der Gruppe \enquote{Infer} das Entscheiden und das Erklären. In der Gruppe
 \enquote{Respond} steht die prozesssteuernde Kontrolle im Zentrum, die der Rahmen
-ausdrücklich mit dem automatisierten Handel als Anwendung verbindet\footcites[vgl.][S.~18]{bitkom2018}[vgl.][S.~19]{waldhoerKI2025}. Zwei Elemente bleiben bewusst unbesetzt
+ausdrücklich mit dem automatisierten Handel als Anwendung verbindet\footcite[vgl.][S.~18]{bitkom2018}. Zwei Elemente bleiben bewusst unbesetzt
 oder umgewidmet. Auf eine erfahrungsbasierte Fortschreibung des eigenen Wissens
 verzichtet der Agent vollständig und die Prognose künftiger Ereignisse wird in ihrer
 Rolle umgekehrt. Ein kalibriertes statistisches Modell wirkt ausschließlich als
-zusätzlicher Risikohinweis. Beides ist eine eigene Entscheidung und keine technische
-Notwendigkeit, denn ein Handelsagent kann dem Sprachmodell die Entscheidung
+zusätzlicher Risikohinweis. Beides ist eine Entwurfsentscheidung, denn ein Handelsagent kann dem Sprachmodell die Entscheidung
 überlassen und Erfahrung in einer Gedächtnisschicht
 fortschreiben\footcite[vgl.][S.~595--597]{yuFinmem2024}. Die vorliegende Arbeit
 grenzt sich davon ab, weil eine Fortschreibung im Betrieb die lückenlose
 Aufzeichnung und Nachvollziehbarkeit
 erschwert\footcites[vgl.][Art.~12]{aiact2024}[vgl.][]{bafin2021}. Der Nachweis, dass
-der so begrenzte Agent den täglichen Zyklus ohne Eingriffe durchläuft, wird als \emph{H1} in \cref{cha:umsetzung} geprüft. Die Umsetzung dieser Ableitung in Architektur, Strategie und Quelltext
-beschreibt \cref{cha:umsetzung}.
+der so begrenzte Agent den täglichen Zyklus ohne Eingriffe durchläuft, steht als \emph{H1} aus. Die Umsetzung dieser Ableitung in Architektur, Strategie und Quelltext beschreibt \cref{cha:umsetzung}.
 
 %  =============================================================================
 %  Ende

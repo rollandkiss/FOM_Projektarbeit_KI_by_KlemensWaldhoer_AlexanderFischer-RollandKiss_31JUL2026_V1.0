@@ -43,7 +43,7 @@ auflösen. \emph{H1} gilt für den Normalbetrieb, seit der Ausstiegs- und
 Absicherungspfad vollständig automatisiert ist; für die ersten Handelstage wurde der
 Lebenszyklus der Schutzorders dokumentiert von Hand geführt. \emph{H2} bleibt offen --
 die Zahl der auswertbaren Handelstage ist für eine belastbare Aussage zur
-Diskretionsausübung des Gremiums zu klein; die Kalibrierung erhebt die nötigen Daten weiter. \emph{H3}
+Diskretionsausübung des Gremiums zu klein. \emph{H3}
 wurde nicht verworfen: Trefferquote und Brier-Score der Walk-Forward-Prüfung über
 23.803 Handelstage bleiben im Rahmen der Basisrate beziehungsweise der
 Klimatologie. Der Negativbefund stützt die Architektur, statt sie zu schwächen --
@@ -66,8 +66,7 @@ der täglich demonstrierten Autonomie.
 \section{Diskussion}
 \label{sec:diskussion}
 
-Den Stärken der gewählten Lösung stehen benennbare Schwächen gegenüber; beide
-werden hier bewusst gebündelt, um die Zielerreichung ehrlich einzuordnen. Als
+Stärken und Schwächen der Lösung werden hier gebündelt, um die Zielerreichung ehrlich einzuordnen. Als
 tragfähig erwiesen hat sich erstens das Prinzip der begrenzten Diskretion: Kein
 beobachteter Fehlerfall -- weder Schemaverletzungen einzelner Modelle noch
 Zeitüberschreitungen oder Datenlücken -- konnte eine unbeabsichtigte Order
@@ -85,12 +84,7 @@ Dem stehen Schwächen gegenüber. Der erhoffte Sicherheitsgewinn des
 Modellgremiums ist zu Betriebsbeginn empirisch unbelegt, und korrelierte
 Fehlurteile bleiben trotz Anbieterdiversität möglich, da alle Modelle denselben
 Entscheidungskontext erhalten; die Kalibrierung kann dies erst nach längerer
-Betriebsdauer klären. Die tägliche Handelsfrequenz ist nach Kosten strukturell
-defizitär und nur als Demonstrationsvehikel zu rechtfertigen. Die Autonomie
-bleibt an regulatorische und betriebliche Grenzen gebunden (photoTAN-Freigabe), 
-das Fenster zwischen zwei Zyklen, in dem ein Prozessabbruch
-zwischen Freigabe und Neusetzen der Schutzorder unentdeckt bliebe, und eine
-Datenfrische von 60 bis 90 Sekunden am Entscheidungspunkt. 
+Betriebsdauer klären. Die Autonomie bleibt an regulatorische und betriebliche Grenzen gebunden: die tägliche photoTAN-Freigabe, das Fenster zwischen zwei Zyklen, in dem ein Prozessabbruch zwischen Freigabe und Neusetzen der Schutzorder unentdeckt bliebe, und die Datenfrische von 60 bis 90 Sekunden am Entscheidungspunkt. 
 Schließlich stützt sich die Kursdatenerfassung auf eine inoffizielle Quelle 
 ohne Verfügbarkeitsgarantie, deren Ausfall der Betrieb zwar erkennen, 
 aber nicht kompensieren kann.
@@ -101,10 +95,7 @@ aber nicht kompensieren kann.
 Drei Fragen bleiben offen, die über den Rahmen dieser Arbeit
 hinausweisen. Die erste gilt dem Nutzen des Modellgremiums: Ob ein Mehrheitsvotum
 probabilistischer Sprachmodelle den Betrieb eines deterministischen Handelssystems
-messbar sicherer macht, ist zum Abgabezeitpunkt unbeantwortet. Die eingerichtete
-Kalibrierung erhebt die dafür nötigen Daten fortlaufend und gewinnt mit dem
-Übergang in den Echtgeldbetrieb an Aussagekraft, sodass sich die Frage bei
-hinreichender Betriebsdauer empirisch entscheiden lässt. Die zweite Frage schließt
+messbar sicherer macht, ist zum Abgabezeitpunkt unbeantwortet. Die eingerichtete Kalibrierung erhebt die nötigen Daten fortlaufend, sodass sich die Frage bei hinreichender Betriebsdauer empirisch entscheiden lässt. Die zweite Frage schließt
 daran an: Da alle Modelle denselben Entscheidungskontext erhalten, bleiben
 korrelierte Fehlurteile möglich. Zu untersuchen wäre, ob komplementär
 zugeschnittene Prüfrollen -- etwa getrennt nach Marktlage, Ausführungsrisiko und

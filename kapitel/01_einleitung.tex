@@ -16,16 +16,14 @@ Verkaufsentscheidungen abzuleiten\footcites[vgl.][S.~36]{russellNorvig2021}[vgl.
 Entscheidend ist dabei die Nachvollziehbarkeit der Handlungen und
 Entscheidungswege, denn sie trägt die Verlässlichkeit des Ergebnisses. Durch die breite Verfügbarkeit großer Sprachmodelle
 (\textit{engl.} \glsxtrlong{llm}, \glsxtrshort{llm}) rückt die Frage in den Mittelpunkt,
-inwieweit einem softwarebasierten Agenten Handlungen mit realer Wirkung --
-insbesondere mit finanziellen Konsequenzen -- überlassen werden dürfen. Der
+inwieweit einem softwarebasierten Agenten Handlungen mit realer, insbesondere finanzieller Wirkung überlassen werden dürfen. Der
 automatische bzw. algorithmische Handel wird hierbei im zugrunde gelegten
 Ordnungsrahmen als Anwendungsbeispiel der prozesssteuernden Kontrolle
 benannt\footcite[vgl.][S.~18, 86]{bitkom2018} und kennzeichnet damit ein Anwendungsgebiet, in dem Autonomie und Sicherheit in besonderem Maße gegeneinander abzuwägen sind. Es
 besteht ein Spannungsfeld zwischen einem kontrollierten Handelssystem mit Anforderungen
 an die Reproduzierbarkeit und Auditierbarkeit und \glsxtrshortpl{llm}, deren Ausgaben
 plausibel, aber nicht zwangsläufig zutreffend und zudem nicht reproduzierbar
-sind\footcites[vgl.][S.~1]{huangHallucination2025}[vgl.][]{he2025nondeterminism}. Dies scheint auf den ersten Blick
-unvereinbar. Hinzu kommen weitere praktische Hürden, denn kommerzielle KI-Dienste und
+sind\footcites[vgl.][S.~1]{huangHallucination2025}[vgl.][]{he2025nondeterminism}. Beide Anforderungen scheinen zunächst unvereinbar. Hinzu kommen weitere praktische Hürden, denn kommerzielle KI-Dienste und
 komplexe Handelsinfrastrukturen verursachen laufende Kosten und setzen die Preisgabe
 sensibler Daten an Dritte voraus. An diesem Spannungsfeld setzt die
 vorliegende Projektarbeit an. Wie anspruchsvoll die gewählte Zielumgebung dabei ist,
@@ -38,8 +36,8 @@ Sechs Merkmale skizzieren die Schwierigkeiten und
 prägen zugleich die Anforderungen an die Architektur. Erstens ist die Dynamik der Kursverläufe zu nennen:
 Ihre fehlende Stationarität entwertet beobachtete Zusammenhänge fortlaufend und eine
 Entscheidung altert bereits während ihrer Prüfung. Datenbeschaffung, Prüfung und
-Orderaufgabe müssen deshalb in ein knappes Zeitbudget passen, von dem jeder zusätzliche Prüfschritt einen Teil mitverbraucht und das den Entwurf entsprechend verkompliziert; die gewählte tägliche Taktung entschärft dieses Merkmal, hebt es aber nicht auf. Zweitens sind Handlungen unumkehrbar: Getroffene Entscheidungen materialisieren sich unmittelbar und können zu realem Vermögensverlust führen. Drittens ist der Infrastrukturzugang für Privatanwender
-eingeschränkt. Kostenlose Kursdaten stehen in der benötigten Intraday-Auf"|lösung nur
+Orderaufgabe müssen deshalb in ein knappes Zeitbudget passen, von dem jeder zusätzliche Prüfschritt einen Teil mitverbraucht und das den Entwurf entsprechend verkompliziert. Die gewählte tägliche Taktung entschärft dieses Merkmal, hebt es aber nicht auf. Zweitens sind Handlungen unumkehrbar: Getroffene Entscheidungen materialisieren sich unmittelbar und können zu realem Vermögensverlust führen. Drittens ist der Infrastrukturzugang für Privatanwender
+eingeschränkt. Kostenlose Kursdaten stehen in der benötigten Intraday-Auflösung nur
 über inoffizielle und nicht stabile Schnittstellen bereit, was Robustheit und
 Skalierbarkeit des Lösungsdesigns beeinflusst. Auf der Ausführungsseite setzt eine
 automatisierte Anbindung eine programmierbare
@@ -94,7 +92,7 @@ gilt die kleinste genannte Größe.
 Sämtliche Prüf"|instanzen können Handelsvorschläge somit verhindern oder verkleinern,
 jedoch niemals erzeugen oder umkehren (Prinzip der begrenzten Diskretion). Die
 Betriebsform ist dabei selbst ein Ziel: Die Agentenstruktur ist modular aufgebaut und für den lokalen
-Privatgebrauch ausgelegt -- als Zielkonfiguration auf einem Mac~mini\footcite[vgl.][]{appleMacmini2026}, sodass sie weitgehend kostenfrei betreibbar bleibt und sensible Daten die eigene Infrastruktur nicht verlassen müssen; der Erprobungsbetrieb nutzt noch cloud-gehostete Inferenz (\cref{sec:umsetzung-architektur}). Der Agent versteht sich dabei als Erkenntnis-, nicht als Renditeinstrument.
+Privatgebrauch ausgelegt -- als Zielkonfiguration auf einem Mac~mini\footcite[vgl.][]{appleMacmini2026}, sodass sie weitgehend kostenfrei betreibbar bleibt und sensible Daten die eigene Infrastruktur nicht verlassen müssen. Der Erprobungsbetrieb nutzt noch cloud-gehostete Inferenz (\cref{sec:umsetzung-architektur}). Der Agent versteht sich dabei als Erkenntnis-, nicht als Renditeinstrument.
 Der praktische Beitrag liegt in einer übertragbaren Referenzarchitektur
 für sicherheitsorientiert begrenzten KI-Einsatz im autonomen Handel sowie in
 empirischen Befunden aus dem realen Betrieb, etwa zur Kostenstruktur der

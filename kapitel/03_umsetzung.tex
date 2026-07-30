@@ -30,8 +30,7 @@ kommunizieren nicht durch direkte Aufrufe, sondern ausschließlich über gemeins
 persistierten Zustand in Form von SQLite-Datenbanken und synchronisierten Dateien.
 Diese lose Kopplung erlaubt es, jede Komponente isoliert zu testen, auszutauschen und
 im Fehlerfall neu zu starten, ohne dass sich Störungen über Prozessgrenzen hinweg
-fortpflanzen. \Cref{fig:zielarchitektur} zeigt die Zielarchitektur mit den bereits
-umgesetzten und den geplanten Bestandteilen.
+fortpflanzen. \Cref{fig:zielarchitektur} zeigt die Zielarchitektur.
 
 % Grafik: abbildungen/zielarchitektur.svg — Einbindung als Vektorgrafik via
 % \includesvg (svg-Paket, \svgpath{{abbildungen/}}, analog fom-logo).
@@ -62,10 +61,8 @@ Für den Dauerbetrieb ist die Datensammlung gezielt gehärtet: Wächterprozesse
 erkennen stille Verbindungsabbrüche und erzwingen Neuverbindungen, ein geordneter
 Shutdown verhindert halb geschriebene Datensätze. Integritätsprüfung,
 Plattenplatzüberwachung sowie die kontinuierliche Replikation in einen
-Cloud-Speicher ergänzen die Vorsorge. Diese Betriebsdetails sind für die
-Fragestellung der Arbeit nicht nebensächlich: Ein Agent, der täglich
-unbeaufsichtigt Geld bewegen soll, ist nur so vertrauenswürdig wie die
-Infrastruktur, die seine Datenbasis und seine Erreichbarkeit garantiert.
+Cloud-Speicher ergänzen die Vorsorge. Ein Agent, der täglich unbeaufsichtigt Geld bewegt, ist nur so vertrauenswürdig wie die
+Infrastruktur, die seine Datenbasis und Erreichbarkeit garantiert.
 
 Das Agenten-Framework OpenClaw ist als Orchestrierungs- und Modelladapter angebunden
 und trägt damit die Betriebsschale des Agenten, nicht seinen
@@ -134,10 +131,9 @@ Durchschnittslinie:
 \end{equation}
 Die Entscheidung für den Handelstag $t{+}1$ nutzt ausschließlich Schlusskurse bis
 einschließlich Tag $t$, sodass kein Blick in die Zukunft (Look-Ahead) möglich ist.
-Das Regime wird über eine zentrale Zuordnungsdatei auf konkrete Handelsprodukte
-abgebildet -- ein Faktor-Zertifikat mit zweifachem Hebel in Long- beziehungsweise
-Short-Richtung --, wobei ein Katalog mit Eignungsregeln (Mindestkurs, maximaler
-Spread, Hebelobergrenze) die Produktauswahl begrenzt.
+Eine zentrale Zuordnungsdatei bildet das Regime auf ein Faktor-Zertifikat mit zweifachem
+Hebel in Long- beziehungsweise Short-Richtung ab. Ein Katalog mit Eignungsregeln
+(Mindestkurs, maximaler Spread, Hebelobergrenze) begrenzt die Produktauswahl.
 
 Der Kapitaleinsatz je Handelstag wird volatilitätsabhängig skaliert:
 \begin{equation}
@@ -161,8 +157,7 @@ eine serverseitige Trailing-Stop-Order ab und stellt erst bei einem Regimewechse
 glatt. Diese Differenz ist gewollt und in
 \cref{sec:umsetzung-evaluation-limitationen} als Grenze der Vergleichbarkeit
 ausgewiesen. Dem Prüfgremium stehen drei diskrete Einstiegszeitpunkte zur Wahl. Diese Wahl wird
-journalisiert, wirkt gegenwärtig jedoch nicht auf die Ausführung
-(\cref{sec:umsetzung-evaluation-limitationen}). Sämtliche Orders werden ausschließlich
+journalisiert, wirkt gegenwärtig jedoch nicht auf die Ausführung. Sämtliche Orders werden ausschließlich
 limitiert aufgegeben, da die Datenfrische im verteilten Aufbau eine
 Slippage-Kontrolle über den Limitpreis erfordert.
 
@@ -301,24 +296,19 @@ der zentralen Module sind im Anhang dokumentiert.
 \section{Evaluation}
 \label{sec:umsetzung-evaluation}
 
-Die Bewertung des Agenten erfolgt auf vier Ebenen: einem historischen Backtest der
-Strategie, einer Analyse der realen Transaktionskosten, einer Walk-Forward-Prüfung
-des statistischen Prognosemodells sowie einer laufenden Kalibrierung des
-Sprachmodell-Votings im Betrieb.
+Die Bewertung erfolgt auf vier Ebenen: einem Backtest der Strategie, einer Analyse der
+realen Transaktionskosten, einer Walk-Forward-Prüfung des Prognosemodells sowie einer
+laufenden Kalibrierung des Sprachmodell-Votings.
 
 \subsection{Untersuchungsdesign und Datenbasis}
 \label{sec:umsetzung-evaluation-design}
 
 Datenbasis des Backtests sind zehn Jahre echter Tagesschlusskurse des S\&P~500
-(2.520 Handelstage, Datenstand 22.07.2026), die über die Datensammlung des
-Agenten bezogen und gegen die \glsxtrshort{fred}-Zweitquelle gegengeprüft
-wurden; das vollständige Backtest-Protokoll ist in
+(2.520 Handelstage, Datenstand 22.07.2026), gegen die
+\glsxtrshort{fred}-Zweitquelle gegengeprüft. Das vollständige Backtest-Protokoll ist in
 \cref{sec:anhang-evaluationsbelege} dokumentiert. Der Strategie werden drei Vergleichsmaßstäbe gegenübergestellt:
 der tägliche Round-Trip der Regel selbst (B0), das passive Halten des Index (B1)
-sowie eine Variante, die nur bei einem Regimewechsel handelt (B2). Das Kostenmodell
-stützt sich auf die Ex-Ante-Kostenausweise der Bank und setzt 7,80\,€ je Round-Trip
-an; die im Betrieb gemessene Kostenstruktur weicht davon ab und wird in
-\cref{sec:umsetzung-evaluation-ergebnisse} ausgewiesen. Berücksichtigt ist ferner die
+sowie eine Variante, die nur bei einem Regimewechsel handelt (B2). Das Kostenmodell setzt wie in \cref{sec:umsetzung-strategie} 7,80\,€ je Round-Trip an. Berücksichtigt ist ferner die
 Kapitalertragsteuer unter Teilfreistellung. Ergänzend misst ein wöchentlicher
 Auswertungslauf das Abstimmungsverhalten der Sprachmodelle im laufenden Betrieb: je
 Modell die Zustimmungsquote, die Schemafehlerrate, die Antwortlatenz sowie die
@@ -328,10 +318,8 @@ kontrafaktischen Gewinn- und Verlustbeitrags der Vetos. Zur Prüfung von \emph{H
 treten zwei Konsistenzmaße hinzu: der Anteil identischer Voten bei wiederholter
 Vorlage desselben Entscheidungsdokuments und der Anteil übereinstimmender
 Freigabeentscheidungen beider Depots an den Tagen, an denen beide Strategien dasselbe
-Regime tragen. Der Entscheidungskontext beider Depots ist dabei nicht identisch,
-sondern unterscheidet sich neben dem Feld der statistischen Prognose auch in
-Signalalter, Volatilitätskennzahlen und Handelsinstrument. Das Maß bleibt insoweit
-konfundiert und wird ausschließlich deskriptiv ausgewiesen.
+Regime tragen. Der Entscheidungskontext beider Depots ist dabei nicht identisch. Das zweite Maß bleibt
+insoweit konfundiert und wird ausschließlich deskriptiv ausgewiesen.
 
 Die statistische Prüfinstanz wird gesondert einer Walk-Forward-Prüfung ohne Blick
 in die Zukunft unterzogen: Die Vorhersage für einen Handelstag nutzt ausschließlich
@@ -344,9 +332,8 @@ Prognosen vgl.][S.~359--378]{gneitingRaftery2007}
   B \;=\; \frac{1}{N}\sum_{t=1}^{N}\bigl(p_t - o_t\bigr)^{2},
   \label{eq:brier}
 \end{equation}
-der die mittlere quadratische Abweichung der prognostizierten Wahrscheinlichkeit
-$p_t$ vom eingetretenen Ergebnis $o_t \in \{0,1\}$ über die $N$ bewerteten
-Prognosetage misst; verglichen wird gegen die Klimatologie, also die konstante
+der die mittlere quadratische Abweichung der prognostizierten Wahrscheinlichkeit vom
+eingetretenen Ergebnis misst. Verglichen wird gegen die Klimatologie, also die konstante
 Prognose der Basisrate.
 
 Zur Einordnung der Handelsfrequenz dient zusätzlich ein einfaches
@@ -382,11 +369,9 @@ Variante (B2) erzielt mit neun Positionswechseln in zehn Jahren rund $+96\,\%$
 vor beziehungsweise $+60\,\%$ nach Steuern bei lediglich 106\,€ Kosten; das
 passive Halten des Index (B1) rund $+248\,\%$ vor beziehungsweise $+203\,\%$
 nach Steuern. 
-Die tägliche Handelsfrequenz wird demnach von den Transaktionskosten aufgezehrt. Zwar
-bildet der Kostenblock des Backtests nach dem Ex-Ante-Kostenausweis nur eine
-Obergrenze; die Aussage bleibt jedoch bestehen, da bereits der verbleibende
-Spread bei der beobachteten Trefferquote von 31,7\,\% keinen positiven
-Erwartungswert zulässt (\cref{eq:breakeven}). Die
+Die tägliche Handelsfrequenz wird demnach von den Transaktionskosten aufgezehrt. Der Kostenblock des Backtests ist nur eine Obergrenze. Bereits der verbleibende Spread
+lässt bei einer Trefferquote von 31,7\,\% keinen positiven Erwartungswert zu
+(\cref{eq:breakeven}). Die
 Differenz zwischen B0 und B2 beziffert insofern den Preis der täglich demonstrierten
 Autonomie. Die Voting-Kalibrierung aus dem Live-Betrieb (Trockenlauf seit dem
 21.07.2026, Echtgeldbetrieb ab dem 27.07.2026) prüft
@@ -398,13 +383,10 @@ vollständigen Indexhistorie fällt eindeutig aus:
 Einer Basisrate von 52,1\,\% in Regimerichtung schließender Folgetage steht eine
 Trefferquote von 52,0\,\% gegenüber und der Brier-Score von 0,2498 unterschreitet
 die Klimatologie (0,2496) nicht -- das Modell besitzt keine Prognosekraft über die
-Basisrate hinaus. Die ordentliche Kalibrierung wird vom dominierenden
-Wahrscheinlichkeitsbereich getragen: 81,6\,\% der Prognosen (19.434)
-liegen im Bereich um 0,5, in dem prognostizierte (52,4\,\%) und beobachtete
-Häufigkeit (52,5\,\%) nahezu übereinstimmen. Auch der skeptischste besetzte Bereich
-weicht mit 50,4\,\% bei lediglich 127 Beobachtungen nicht verwertbar
-ab\footcite[zur Zerlegung des Brier-Scores in Kalibrierungs- und Auflösungsanteil
-vgl.][S.~595--600]{murphy1973}.
+Basisrate hinaus. Prognostizierte und beobachtete Häufigkeit stimmen dabei in jedem besetzten
+Wahrscheinlichkeitsbereich nahezu überein
+(\cref{tab:anhang-walkforward})\footcite[zur Zerlegung des Brier-Scores in
+Kalibrierungs- und Auflösungsanteil vgl.][S.~595--600]{murphy1973}.
 Dieser Negativbefund trägt die zentrale Architekturentscheidung empirisch:
 Die Tagesrichtung des Index ist auch mit sauber validiertem Modell praktisch
 nicht prognostizierbar. Die Prüfinstanz bleibt daher bis zu einem gegenteiligen
@@ -434,11 +416,8 @@ eine Sekunde je Votum.
 
 Die Aussagekraft der Ergebnisse unterliegt mehreren Einschränkungen. Die
 Bankschnittstelle bietet keine Sandbox, sodass die Ordervalidierung gegen das
-Produktivsystem erfolgt. Die Autonomie ist regulatorisch durch die
-täglich erforderliche photoTAN-Freigabe der Banksitzung begrenzt. Im verteilten
-Aufbau beträgt die Datenfrische am Entscheidungspunkt 60 bis 90 Sekunden, weshalb
-ausschließlich Limit-Orders verwendet werden. Die vom Prüfgremium gewählte
-Einstiegsoption wird journalisiert, ist im Ausführungspfad jedoch noch nicht wirksam.
+Produktivsystem erfolgt. Die Autonomie ist regulatorisch durch die tägliche photoTAN-Freigabe begrenzt. Die
+Datenfrische am Entscheidungspunkt beträgt 60 bis 90 Sekunden.
 Der Backtest approximiert das
 Faktor-Zertifikat über das zweifache Index-Tagessegment und modelliert weder
 Währungseffekte noch den variablen Geld-Brief-Spread exakt; die inoffizielle
@@ -448,10 +427,8 @@ Sprachmodelle bestehen und die Stichprobe der Voting-Kalibrierung ist zu Beginn
 des Betriebs klein, weshalb die Auswertung bewusst deskriptiv bleibt und keine
 automatische Modellabschaltung auslöst. Gleiches gilt für die statistische
 Prüfinstanz, die zu Betriebsbeginn im Schattenmodus läuft und deren Beitrag daher
-zunächst nur beobachtend gemessen werden kann. Schließlich kappt der Backtest
-Positionen bei drei Prozent Verlust, während der Livebetrieb mit vier Prozent
-Trailing-Distanz absichert. Simulation und Betrieb messen insoweit nicht denselben
-Mechanismus.
+zunächst nur beobachtend gemessen werden kann. Schließlich messen Simulation und Betrieb nicht denselben Mechanismus: drei Prozent
+Verluststopp gegen vier Prozent Trailing-Distanz.
 
 \section{Kritische Würdigung}
 \label{sec:umsetzung-wuerdigung}
@@ -461,11 +438,7 @@ Marktrisiko des gehebelten Instruments, das Betriebsrisiko eines unbeaufsichtigt
 laufenden Systems und das spezifische Risiko probabilistischer Modellkomponenten.
 Die Architektur begegnet dem mit einer gestaffelten Sicherungskette
 (\cref{sec:umsetzung-architektur}, \cref{sec:umsetzung-implementierung}), deren
-tragendes Prinzip die begrenzte Diskretion ist: Das Sprachmodell-Gremium kann
-Handelsvorschläge verhindern oder verkleinern, niemals aber
-erzeugen oder in ihrer Richtung umkehren, deterministische Ausschlusskriterien
-werden vor jedem Modellaufruf entschieden und die Prognoseinstanz wirkt
-ausschließlich als zusätzlicher Risikohinweis. Jeder unklare Zustand mündet in
+tragendes Prinzip die begrenzte Diskretion ist. Jeder unklare Zustand mündet in
 einem alarmierten Handelsstopp und der Mensch bleibt über photoTAN-Freigabe,
 Not-Aus und Totmannschalter eingebunden.
 
@@ -475,9 +448,8 @@ Restposition selbständig. Anschließend sichert er jede gehaltene Position mit 
 serverseitigen Trailing-Stop-Order ab, die er vor dem nächsten Zyklus freigibt und
 danach neu setzt. Zuletzt löst er bei einem Richtungswechsel den gegenläufigen
 Bestand auf und steigt in die Gegenrichtung ein. Tragend ist dabei eine Belegpflicht:
-Gekauft wird erst, wenn die Auflösung am Depot nachgewiesen ist, nicht wenn die
-Verkaufsorder angenommen wurde -- der Rückgabewert der Bank bedeutet Annahme, nicht
-Ausführung. Eine Schlusskontrolle vergleicht am Ende jedes Laufs, was entsichert und
+Gekauft wird erst, wenn die Auflösung am Depot nachgewiesen ist. Der Rückgabewert der
+Bank bedeutet Annahme, nicht Ausführung. Eine Schlusskontrolle vergleicht am Ende jedes Laufs, was entsichert und
 was wieder abgesichert wurde. Bei einer Differenz pausiert sie das Konto.
 
 Die Absicherung ist zugleich das Beispiel für eine Maßnahme, deren Preis erst die
@@ -499,9 +471,8 @@ Modelle bleiben trotz Anbieterdiversität möglich, da alle Modelle denselben
 Entscheidungskontext erhalten. Wirtschaftlich ist festzuhalten, dass die täglich
 handelnde Demonstrationsstrategie nach Kosten strukturell defizitär ist und der
 Agent insofern ein Erkenntnis-, kein Renditeinstrument darstellt. Von einer
-Anlageberatung grenzt sich die Arbeit ausdrücklich ab: Der Agent handelt
-ausschließlich für das eigene Experimentalkonto des Betreibers und weder die
-Strategie noch die Systemarchitektur stellen eine Empfehlung an Dritte dar.
+Anlageberatung grenzt sich die Arbeit ausdrücklich ab: Der Agent handelt ausschließlich für das eigene Experimentalkonto und stellt keine
+Empfehlung an Dritte dar.
 Schließlich zeigte die Umsetzung einen strukturellen Befund des Marktumfelds: Die
 kostengünstigsten Ausführungswege für Privatanleger sind systematisch nicht über
 offene Schnittstellen zugänglich, sodass autonome Agenten einen faktischen
@@ -511,8 +482,7 @@ Infrastruktur- und Inferenzkosten eliminiert.
 
 Über den konkreten Anwendungsfall hinaus beansprucht die Architektur
 Übertragbarkeit. Strategie, Produktzuordnung, Modellgremium und Bankadapter sind
-über definierte Kontrakte entkoppelt, sodass sich einzelne Bausteine austauschen
-lassen, ohne die Sicherungskette zu berühren: Eine andere Regelstrategie ist ein
+über definierte Kontrakte entkoppelt: Eine andere Regelstrategie ist ein
 weiteres Plugin, ein anderes Sprachmodell eine Konfigurationszeile, ein anderer
 Broker ein neuer Adapter hinter derselben Orderabstraktion. Für die geplante
 Migration auf einen Mac~mini verbleiben als offene Arbeiten im Kern die Anpassung

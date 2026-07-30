@@ -196,8 +196,8 @@ als \texttt{trailing\_distanz\_ergebnis.csv} im Quellcodearchiv.
 \input{anhang/trailing_distanz}
 
 Der Befund ist über alle drei Zeitfenster hinweg stabil: Die im Betrieb
-gewählten vier bis fünf Prozent liegen im ungünstigsten Bereich der Skala,
-und der Maximalverlust fällt nicht niedriger aus als ohne Absicherung. Die
+gewählten vier bis fünf Prozent liegen im ungünstigsten Bereich der Skala.
+Der Maximalverlust fällt zudem nicht niedriger aus als ohne Absicherung. Die
 Rechtfertigung des Stops liegt daher nicht in der Rendite, sondern in der
 Begrenzung des Übernachtrisikos eines gehebelten Produkts. Da nur
 Tagesschlusskurse vorliegen, ein realer Stop aber innertägig auslöst, ist die
@@ -292,6 +292,12 @@ Zyklen aus. Handelsplatz war durchgehend der Direkthandel beim Emittenten
     \bottomrule
   \end{tabular}
 \end{table}
+
+Die beiden Aufstockungsorders vom 28.07. unterschreiten mit 459{,}62\,€ die
+konfigurierte Mindestordergröße von 1.000\,€. Ursache war ein Programmfehler, der
+die Prüfung in diesem Pfad übersprang. Er wurde noch am selben Abend behoben. Die
+beiden Orders sind damit die einzige Abweichung der Echtgeldwoche von der
+konfigurierten Untergrenze.
 
 Der Zyklus des 29.07. im Hauptdepot belegt die Mindestordergröße als wirksame
 Schranke. Die verfügbare Deckung ließ nur ein Stück zu, das daraus errechnete

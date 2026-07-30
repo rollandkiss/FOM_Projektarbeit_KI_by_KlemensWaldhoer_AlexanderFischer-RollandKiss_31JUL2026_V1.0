@@ -391,8 +391,9 @@ Kalibrierungs- und Auflösungsanteil vgl.][S.~595--600]{murphy1973}[zur Bewertun
 kalibrierter Wahrscheinlichkeiten vgl.][S.~625--632]{niculescuMizil2005}. Dieser
 Negativbefund trägt die zentrale Architekturentscheidung empirisch: Die Tagesrichtung des
 Index ist auch mit sauber validiertem Modell praktisch nicht prognostizierbar. Die
-Prüfinstanz bleibt daher bis zu einem gegenteiligen Kalibrierungsnachweis aus dem laufenden
-Betrieb im Schattenmodus.
+Prüfinstanz wirkt daher nur über ein weiches Warn-Flag im Hauptdepot und bleibt im
+Zweitdepot abgeschaltet. Ihre Prognose lag in der Echtgeldwoche durchgehend über der
+Widerspruchsschwelle.
 
 Die Kostenmessung gegen das Produktivsystem der Bank lieferte darüber hinaus eigenständige
 Befunde. Ein kontrolliertes Experiment über beide Depots, beide Ordertypen und eine
@@ -410,8 +411,16 @@ Auch der Betrieb der Sprachmodelle erbrachte belastbare Beobachtungen: Die Schem
 musste schrittweise erzwungen werden, für Modelle mit aktivierter Reasoning-Ausgabe war
 deren Abschaltung erforderlich, weil der Denkmodus das erzwungene Antwortformat überstimmte.
 Ein viertes Modell wurde wegen langer Antwortzeiten und inhaltlichen Rauschens
-ausgeschlossen. Die Antwortlatenzen fielen nach der Warmlaufphase von knapp zehn Sekunden
-auf unter eine Sekunde je Votum.
+ausgeschlossen. Die Antwortlatenzen liegen zwischen 1,2 und 6,7 Sekunden je Votum. Eine
+vollständige Befragung dauerte 6,2 bis 15,1 Sekunden
+(\cref{tab:anhang-echtgeldwoche-voten}).
+
+Der Echtgeldbetrieb umfasst zum Abgabezeitpunkt acht Zyklen über vier Handelstage
+(\cref{sec:anhang-echtgeldwoche}). Ein Eingriff über die tägliche photoTAN-Freigabe hinaus
+war nicht erforderlich. Fünf Zyklen mündeten in eine ausgeführte Order. Von den drei
+übrigen scheiterte einer an der Mindestordergröße und einer an der ablehnenden Mehrheit des
+Gremiums. Kein Votum hat eine Position eröffnet, die die Strategie nicht vorgeschlagen
+hatte. Die Voten haben die Größe nur verkleinert oder den Handel verhindert.
 
 \subsection{Limitationen}
 \label{sec:umsetzung-evaluation-limitationen}
@@ -433,8 +442,8 @@ inoffizielle Kursdatenquelle bietet keine Verfügbarkeitsgarantie. Trotz Tempera
 erzwungenem Antwortschema bleibt ein Restmaß an Nichtdeterminismus der Sprachmodelle
 bestehen und die Stichprobe der Voting-Kalibrierung ist zu Beginn des Betriebs klein,
 weshalb die Auswertung bewusst deskriptiv bleibt und keine automatische Modellabschaltung
-auslöst. Gleiches gilt für die statistische Prüfinstanz, die zu Betriebsbeginn im
-Schattenmodus läuft und deren Beitrag daher zunächst nur beobachtend gemessen werden kann.
+auslöst. Gleiches gilt für die statistische Prüfinstanz, deren Warn-Flag in der
+Echtgeldwoche kein einziges Mal ausgelöst wurde.
 Schließlich messen Simulation und Betrieb nicht denselben Mechanismus: drei Prozent
 Verluststopp gegen vier Prozent Trailing-Distanz.
 

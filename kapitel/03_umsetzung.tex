@@ -2,7 +2,7 @@
 %  -> Abschnitt "kapitel/03_umsetzung.tex"
 %
 %  Gliederung an der KI-Fallstudie ausgerichtet:
-%  Architektur -> Strategie -> Implementierung -> Evaluation -> Wuerdigung.
+%  Architektur -> Strategie -> Implementierung -> Evaluation -> Würdigung.
 %  =============================================================================
 
 \chapter{Fallstudie: OpenClaw als Trading Agent}
@@ -63,14 +63,14 @@ Platform. Die \emph{collector-vm} sammelt rund um die Uhr Marktdaten des S\&P~50
 Rohticks werden über einen WebSocket-Datenstrom sowie ein ergänzendes Polling für
 Futures-Randzeiten erfasst, durch einen Sanitätsfilter geprüft und zu Minuten- und
 Tagesbars verdichtet. Der jeweils jüngste Tagesschluss wird gegen die offizielle
-Zweitquelle der Federal Reserve Bank of St.\ Louis (\glsxtrshort{fred}) abgeglichen; Divergenzen
-oberhalb einer Schwelle lösen einen Alarm aus. Die \emph{agent-vm} erhält die
+Zweitquelle der Federal Reserve Bank of St.\ Louis (\glsxtrshort{fred}) abgeglichen. 
+Divergenzen oberhalb einer Schwelle lösen einen Alarm aus. Die \emph{agent-vm} erhält die
 Datenbasis als minütlich synchronisierte, atomar ersetzte Replik und beherbergt den
 eigentlichen Entscheidungs- und Orderpfad: die deterministische Strategieauswertung,
 den mehrstufigen Sprachmodell-Audit, die Orchestrierung der Orderausführung sowie die
 Anbindung an die Bankschnittstelle. Beide Maschinen sind wechselseitig überwacht;
 ein Totmannschalter auf der collector-vm alarmiert den Betreiber über den
-Messaging-Kanal, sobald der Lebenszeichen-Stempel der agent-vm veraltet.
+Messaging-Kanal (Signal Messenager), sobald der Lebenszeichen-Stempel der agent-vm veraltet.
 
 Für den Dauerbetrieb ist die Datensammlung gezielt gehärtet: Wächterprozesse
 erkennen stille Verbindungsabbrüche und erzwingen Neuverbindungen, ein geordneter
@@ -92,7 +92,7 @@ Betreibbarkeit bleibt damit strukturell gesichert.
 Eine dritte, strikt entkoppelte Zone bildet das öffentliche Dashboard. Die
 collector-vm exportiert minütlich redigierte \glsxtrshort{json}-Feeds des Entscheidungsjournals
 -- Signale, Voten, Orders und Depotwertverlauf, jedoch keinerlei Konto- oder
-Zugangsdaten -- in einen privaten Cloud-Storage-Bucket; ein zustandsloser
+Zugangsdaten -- in einen privaten Cloud-Storage-Bucket. Ein zustandsloser
 Cloud-Run-Dienst rendert daraus die Weboberfläche. Die handelnden Maschinen selbst
 bleiben ohne offenen eingehenden Port. Im Ordnungsrahmen des Periodensystems der
 Künstlichen Intelligenz verbindet die Architektur damit Elemente der Wahrnehmung
@@ -205,20 +205,20 @@ prozentuale Last je Größenstufe). Ergänzend setzt sie Prüfmarken
 -- etwa veraltete Daten, jüngste Verbindungsverluste des Datenstroms oder ein
 fehlendes Handelsinstrument. Ein vorgeschaltetes Pre-Gate wertet diese harten
 Kriterien vor jedem Modellaufruf aus: Steht das Ergebnis deterministisch fest, wird
-die Ablehnung ohne Sprachmodellbeteiligung journalisiert; die Modelle werden nur
+die Ablehnung ohne Sprachmodellbeteiligung journalisiert. Die Modelle werden nur
 befragt, wenn ihre Bewertung das Ergebnis noch verändern kann.
 
 Im Auditschritt erhält jedes der drei konfigurierten Sprachmodelle denselben
 DecisionRequest mit einem Systemauftrag als kritischer Risikoprüfer. Die Antwort ist
-über ein erzwungenes \glsxtrshort{json}-Schema strukturiert und wird bei Temperatur null erzeugt;
-jedes Modell muss neben der Zustimmung oder Ablehnung eine eigene, unabhängige
+über ein erzwungenes \glsxtrshort{json}-Schema strukturiert und wird bei Temperatur null erzeugt.
+Jedes Modell muss neben der Zustimmung oder Ablehnung eine eigene, unabhängige
 Regimeeinschätzung abgeben. Ein fail-safe ausgelegter Validator prüft jede Antwort:
 Schemaverletzungen, Zeitüberschreitungen, Widersprüche zwischen eigener Einschätzung
 und Strategiesignal sowie Größenüberschreitungen führen zum Veto des betreffenden
 Votums; ein nicht erreichbares Modell zählt konservativ als Ablehnung. Die
 Einzelvoten werden nach strikter Mehrheit aggregiert, wobei bei Zustimmung die
 konservativste (kleinste) Positionsgröße gilt. Steht eine ablehnende Mehrheit
-vorzeitig fest, bricht die Befragung ab (\emph{Early-Stop}); eine bereits erreichte
+vorzeitig fest, bricht die Befragung ab (\emph{Early-Stop}). Eine bereits erreichte
 Zustimmungsmehrheit führt hingegen bewusst nicht zum Abbruch, da weitere Voten die
 Größe nur verkleinern können. Sämtliche Voten samt Begründungen und Antwortzeiten
 werden im Entscheidungsjournal persistiert.
@@ -240,7 +240,7 @@ Wirkmodus; die Umschaltung erfolgt je Strategie über den Messaging-Kanal, und e
 Ausfall der Komponente blockiert den Zyklus nicht. Der Trainingsprozess ist
 vollständig dokumentiert und reproduzierbar: Ein wöchentlicher, zeitgesteuerter
 Trainingslauf lernt das Modell offline auf der vollständigen, gegen die
-Zweitquelle geprüften Tageshistorie neu; jeder Modellstand trägt Trainingsdatum
+Zweitquelle geprüften Tageshistorie neu. Jeder Modellstand trägt Trainingsdatum
 und Prüfsumme im Bezeichner und wird samt Merkmalsdefinition abgelegt, sodass
 jede Entscheidung im Journal einem eindeutigen, wiederherstellbaren Modellstand
 zuordenbar bleibt -- eine bewusste Abgrenzung zum fortlaufenden Lernen im
@@ -253,22 +253,22 @@ Systeme abgesichert. Ein Frische-Gate verwirft Entscheide, die nicht vom aktuell
 Handelstag stammen. Vor jeder realen Order wird eine \emph{Intent}-Zeile in das
 Orderjournal geschrieben, die als eindeutiger Ausführungsmarker dient: Derselbe
 Entscheid kann dadurch -- etwa nach einem manuellen Wiederholungslauf oder einer
-doppelten Zeitplanung -- kein zweites Mal ausgeführt werden, und selbst ein
+doppelten Zeitplanung -- kein zweites Mal ausgeführt werden und selbst ein
 Prozessabsturz zwischen Orderaufgabe und Journalisierung bleibt nachvollziehbar.
 Scheitert die Kommunikation mit der Bank nach dem Absenden, gleicht eine
-Reconciliation den tatsächlichen Zustand über das Orderbuch der Bank ab; jeder
+Reconciliation den tatsächlichen Zustand über das Orderbuch der Bank ab. Jeder
 unklare Ausgang endet in einem alarmierten Handelsstopp statt in einem automatischen
 Wiederholungsversuch. Einzelorder- und Portfolio-Obergrenzen wirken als
-Circuit-Breaker, und die Scharfschaltung auf reale Orders ist ausschließlich
+Circuit-Breaker und die Scharfschaltung auf reale Orders ist ausschließlich
 kontospezifisch möglich. Die Bankanbindung selbst nutzt den \glsxtrshort{oauth}-Flow der
-comdirect-Schnittstelle mit einer täglich per photoTAN freigegebenen Session-\glsxtrshort{tan};
-der Mensch bleibt über einen Signal-Messenger-Kanal eingebunden, der Tagesreports
+comdirect-Schnittstelle mit einer täglich per photoTAN freigegebenen Session-\glsxtrshort{tan}.
+Der Mensch bleibt über einen Signal-Messenger-Kanal eingebunden, der Tagesreports
 liefert und einen jederzeit wirksamen Not-Aus (Pausieren, Fortsetzen, Statusabfrage,
 Glattstellen) bereitstellt.
 
 Die Banksitzung integriert die regulatorische Zwei-Faktor-Anforderung in den
 autonomen Ablauf: Der Anmeldevorgang fordert genau eine photoTAN-Freigabe an, die
-der Betreiber fernbedient über den Messaging-Kanal bestätigt; anschließend hält
+der Betreiber fernbedient über den Messaging-Kanal bestätigt. Anschließend hält
 ein Erneuerungsdienst die Sitzung, sodass Orders ohne weitere Einzelfreigaben,
 aber stets innerhalb der freigegebenen Sitzung erfolgen. Die Broker-Schicht ist
 kontofähig ausgelegt -- Zugangsdaten, Sitzungen, Journale und Ausführungsmodus
@@ -279,7 +279,7 @@ Sprachmodelle.
 
 Das öffentliche Dashboard schließlich redigiert das Entscheidungsjournal auf
 veröffentlichungsfähige Inhalte und trennt so den öffentlichen Lesezugriff
-vollständig vom Handelspfad; es zeigt den Indexverlauf mit den Durchschnittslinien
+vollständig vom Handelspfad. Es zeigt den Indexverlauf mit den Durchschnittslinien
 und Regimewechseln sowie je Entscheidung das aggregierte Votum mit den
 aufklappbaren Einzelbegründungen der Modelle und dient damit als öffentlich
 prüfbarer Lauffähigkeitsnachweis des Agenten.
@@ -295,7 +295,7 @@ täglich sichtbar dokumentiert.
 Die Qualitätssicherung stützt sich auf zwölf Offline-Testsuiten, die von der
 Datensammlung über den Voting-Mechanismus bis zu den Schutzpfaden der
 Orderausführung jede sicherheitsrelevante Verzweigung mit gemockten Schnittstellen
-durchspielen; die Volltexte der zentralen Module sind im Anhang dokumentiert.
+durchspielen. Die Volltexte der zentralen Module sind im Anhang dokumentiert.
 
 \section{Evaluation}
 \label{sec:umsetzung-evaluation}

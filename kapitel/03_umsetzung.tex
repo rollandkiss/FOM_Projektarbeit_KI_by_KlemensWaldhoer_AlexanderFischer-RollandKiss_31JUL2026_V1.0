@@ -206,6 +206,9 @@ getrennten Depots ohne Eingriff in Auditor, Validator oder Broker möglich ist.
 \section{Implementierung}
 \label{sec:umsetzung-implementierung}
 
+\subsection{Datenerfassung und Datenqualität}
+\label{sec:umsetzung-impl-daten}
+
 Grundlage jeder Entscheidung ist die Datenschicht, die einem strikten Prinzip folgt:
 Gespeichert werden Rohticks, aus denen Bars abgeleitet werden -- nie umgekehrt.
 Damit bleibt jede Verdichtung reproduzierbar, und Auffälligkeiten lassen sich bis
@@ -215,6 +218,9 @@ Datenstrom werden nach ihrer Ursache klassifiziert: Erst die Unterscheidung
 zwischen legitimer Sitzungspause und echtem Verbindungsverlust machte das
 Qualitätskriterium betriebstauglich -- die Schwellwerte ließen sich nur gegen
 reale Betriebsdaten kalibrieren, nicht am Schreibtisch festlegen.
+
+\subsection{Entscheidungsdokument und Sprachmodell-Gremium}
+\label{sec:umsetzung-impl-gremium}
 
 Der tägliche Zyklus beginnt mit einem strukturierten Entscheidungsdokument
 (\emph{DecisionRequest}). Die Strategieauswertung liefert Regime, Indikatorwerte,
@@ -241,7 +247,10 @@ Zustimmungsmehrheit führt hingegen bewusst nicht zum Abbruch, da weitere Voten 
 Größe nur verkleinern können. Sämtliche Voten samt Begründungen und Antwortzeiten
 werden im Entscheidungsjournal persistiert.
 
-Ergänzend zum Sprachmodell-Gremium ist die in \cref{sec:zielsetzung} eingeführte
+\subsection{Statistische Prüfinstanz}
+\label{sec:umsetzung-impl-prognose}
+
+Neben dem Sprachmodell-Gremium ist die in \cref{sec:zielsetzung} eingeführte
 statistische Prüfinstanz implementiert. Ein logistisches Regressionsmodell
 (scikit-learn) schätzt aus Tagesbar-Merkmalen wie den regimegerichteten Renditen der
 letzten Handelstage, der 20-Tage-Volatilität und dem Alter des Regimes die
@@ -259,6 +268,9 @@ wiederherstellbaren Modellstand zuordenbar bleibt. Ein fortlaufendes Lernen im B
 findet bewusst nicht statt. Die Güte des aktiven Modellstands wird ausschließlich in der
 zeitlich getrennten Walk-Forward-Prüfung bewertet.
 
+\subsection{Orderausführung und Bankanbindung}
+\label{sec:umsetzung-impl-order}
+
 Die Orderausführung ist mehrstufig gegen die typischen Fehlerbilder verteilter Systeme
 abgesichert. Ein Frische-Gate verwirft Entscheide, die nicht vom aktuellen Handelstag
 stammen. Vor jeder realen Order wird eine \emph{Intent}-Zeile in das Orderjournal
@@ -272,9 +284,7 @@ Handelsstopp statt in einem automatischen Wiederholungsversuch. Einzelorder- und
 Portfolio-Obergrenzen wirken als Circuit-Breaker, und die Scharfschaltung auf reale
 Orders ist ausschließlich kontospezifisch möglich. Die Bankanbindung nutzt den
 \glsxtrshort{oauth}-Flow der comdirect-Schnittstelle mit einer täglich per photoTAN
-freigegebenen Session-\glsxtrshort{tan}. Der Mensch bleibt über den Signal-Kanal
-eingebunden, der Tagesreports liefert und einen jederzeit wirksamen Not-Aus
-(Pausieren, Fortsetzen, Statusabfrage, Glattstellen) bereitstellt.
+freigegebenen Session-\glsxtrshort{tan}.
 
 Die Banksitzung integriert die regulatorische Zwei-Faktor-Anforderung in den
 autonomen Ablauf: Der Anmeldevorgang fordert genau eine photoTAN-Freigabe an, die
@@ -282,12 +292,21 @@ der Betreiber fernbedient über den Messaging-Kanal bestätigt. Anschließend h�
 ein Erneuerungsdienst die Sitzung, sodass Orders ohne weitere Einzelfreigaben,
 aber stets innerhalb der freigegebenen Sitzung erfolgen. Die Broker-Schicht ist
 kontofähig ausgelegt -- Zugangsdaten, Sitzungen, Journale und Ausführungsmodus
-sind je Konto getrennt, sodass der geplante Parallelbetrieb zweier Depots keine
+sind je Konto getrennt, sodass der Parallelbetrieb zweier Depots keine
 strukturelle Änderung erfordert. Zugangsdaten liegen verschlüsselt in einem
 dedizierten Geheimnisspeicher und erscheinen zu keinem Zeitpunkt im Kontext der
 Sprachmodelle.
 
-Das öffentliche Dashboard schließlich redigiert das Entscheidungsjournal auf
+\subsection{Kommunikation, Betrieb und Qualitätssicherung}
+\label{sec:umsetzung-impl-betrieb}
+
+Der Mensch bleibt über den Signal-Kanal eingebunden, der Tagesreports liefert und
+einen jederzeit wirksamen Not-Aus (Pausieren, Fortsetzen, Statusabfrage,
+Glattstellen) bereitstellt. Jeder Zyklus schließt mit einem Bericht an die private
+Messaging-Gruppe, der Entscheidung, Voten, Auffälligkeiten und den effektiven Modus
+je Konto ausweist und die Scharfschaltung damit täglich sichtbar dokumentiert.
+
+Das öffentliche Dashboard redigiert das Entscheidungsjournal auf
 veröffentlichungsfähige Inhalte und trennt so den öffentlichen Lesezugriff
 vollständig vom Handelspfad. Es zeigt den Indexverlauf mit den Durchschnittslinien
 und Regimewechseln sowie je Entscheidung das aggregierte Votum mit den
@@ -297,14 +316,12 @@ prüfbarer Lauffähigkeitsnachweis des Agenten.
 Die Betriebsführung rundet die Implementierung ab. Ein Zeitplandienst startet den
 Entscheidungszyklus an Handelstagen kurz vor der US-Markteröffnung, ein Börsenkalender
 überspringt Feiertage und eine Prozesssperre je Konto verhindert überlappende Läufe.
-Jeder Zyklus schließt mit einem Bericht an die private Messaging-Gruppe, der
-Entscheidung, Voten, Auffälligkeiten und den effektiven Modus je Konto ausweist und die
-Scharfschaltung damit täglich sichtbar dokumentiert. Die Qualitätssicherung stützt sich
+Die Qualitätssicherung stützt sich
 auf achtzehn Offline-Testsuiten, die jede sicherheitsrelevante Verzweigung von der
 Datensammlung bis zur Orderausführung mit gemockten Schnittstellen durchspielen
-(\cref{tab:anhang-archiv-tests}). Zwei Mutationsproben messen ergänzend, 
-wie zuverlässig diese Suiten eingebaute Fehler erkennen. 
-Die Volltexte der zentralen Module sind im Anhang dokumentiert. 
+(\cref{tab:anhang-archiv-tests}). Zwei Mutationsproben messen ergänzend,
+wie zuverlässig diese Suiten eingebaute Fehler erkennen.
+Die Volltexte der zentralen Module sind im Anhang dokumentiert.
 
 \section{Evaluation}
 \label{sec:umsetzung-evaluation}

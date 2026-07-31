@@ -43,7 +43,8 @@ eingeschränkt. Kostenlose Kursdaten stehen in der benötigten Intraday-Auflösu
 über inoffizielle und nicht stabile Schnittstellen bereit, was Robustheit und
 Skalierbarkeit des Lösungsdesigns beeinflusst. Auf der Ausführungsseite setzt eine
 automatisierte Anbindung eine programmierbare
-\glsxtrshort{rest}-\glsxtrshort{api} bei einer inländischen depotführenden Stelle
+\glsxtrshort{rest}-\glsxtrshort{api}\footnote{\glsxtrfull{rest} beziehungsweise
+\glsxtrfull{api}.} bei einer inländischen depotführenden Stelle
 voraus\footcites[vgl.][]{comdirectApi2026}[vgl.][Kap.~7, S.~38--47]{comdirectSpec2020},
 die den Steuerabzug unmittelbar vornimmt\footcite[vgl.][\S~44 Abs.~1]{estg44}. Unter
 den in Deutschland ansässigen Direktbanken erfüllt zum Erhebungszeitpunkt nach eigener Recherche allein
@@ -126,7 +127,7 @@ Ordnungsrahmen eingeführt, der die eingesetzten Funktionalitäten systematisch
 verortet\footcite[vgl.][S.~15, 18]{bitkom2018}\footcite[Ursprungsbeitrag der zugrunde liegenden Idee, vgl.][]{hammond2016}.
 In der zweiten Stufe erfolgt die konstruktive Umsetzung als Fallstudie: Der Agent wird
 iterativ implementiert, durch Backtests, eine Walk-Forward-Prüfung des statistischen
-Prognosemodells ohne Blick in die Zukunft\footcite[vgl.][]{pardo2008} und einen
+Prognosemodells ohne Blick in die Zukunft\footcite[vgl.][Kap.~11]{pardo2008} und einen
 mehrtägigen Trockenlauf abgesichert
 erprobt und anschließend im Live-Betrieb gegen die produktive Bankschnittstelle
 validiert. Die Arbeit gliedert sich wie folgt: \cref{cha:grundlagen} führt den

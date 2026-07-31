@@ -203,7 +203,7 @@ Im Auditschritt erhält jedes der drei konfigurierten Sprachmodelle denselben De
 mit einem Systemauftrag als kritischer
 Risikoprüfer\footcite[vgl.][S.~46595--46623]{zheng2023judge}. Die Antwort ist über ein erzwungenes
 \glsxtrshort{json}-Schema strukturiert\footcite[vgl.][S.~10932--10952]{gengGcd2023} und wird bei Temperatur null erzeugt. Jedes Modell
-muss neben der Stimmgabe eine eigene, unabhängige Regimeeinschätzung
+muss neben der Stimmabgabe eine eigene, unabhängige Regimeeinschätzung
 abgeben. Ein fail-safe ausgelegter Validator prüft jede Antwort: Schemaverletzungen,
 Zeitüberschreitungen und Widersprüche zum Strategiesignal führen zum Veto des betreffenden
 Votums. Ein nicht erreichbares Modell zählt konservativ als
@@ -242,7 +242,7 @@ abgesichert. Ein Frische-Gate verwirft Entscheide früherer Handelstage. Vor jed
 Order wird eine \emph{Intent}-Zeile journalisiert, die als eindeutiger Ausführungsmarker
 Doppelausführungen ausschließt und auch einen Prozessabsturz zwischen Orderaufgabe und
 Journalisierung nachvollziehbar hält. Scheitert die Kommunikation mit der Bank nach dem
-Absenden, gleicht eine Reconciliation den Zustand über deren Orderbuch ab; jeder unklare
+Absenden, gleicht eine Reconciliation den Zustand über deren Orderbuch ab. Jeder unklare
 Ausgang endet in einem alarmierten Handelsstopp statt in einem Wiederholungsversuch.
 Einzelorder- und Portfolio-Obergrenzen wirken als Circuit-Breaker, die Scharfschaltung auf
 reale Orders ist ausschließlich kontospezifisch möglich. Die Bankanbindung nutzt
@@ -464,7 +464,7 @@ Modell-Gremiums ist zu Betriebsbeginn empirisch noch unbelegt und wird erst durc
 laufende Kalibrierung überprüfbar. Korrelierte Fehlurteile der Modelle bleiben trotz
 Anbieterdiversität möglich, da alle Modelle denselben Entscheidungskontext
 erhalten\footcites[vgl.][S.~617\,f.]{ladha1992}[vgl.][Kap.~8]{kuncheva2014}.
-Die täglich handelnde Demonstrationsstrategie bleibt nach Kosten strukturell defizitär ist\footcite[vgl.][S.~773--806]{barberOdean2000}. Von einer
+Die täglich handelnde Demonstrationsstrategie bleibt nach Kosten strukturell defizitär\footcite[vgl.][S.~773--806]{barberOdean2000}. Von einer
 Anlageberatung grenzt sich die Arbeit ab: Der Agent handelt ausschließlich für
 das eigene Experimentalkonto und stellt keine Empfehlung an Dritte dar. Schließlich zeigte
 die Umsetzung einen strukturellen Befund des Marktumfelds: Die kostengünstigsten

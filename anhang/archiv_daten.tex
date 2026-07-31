@@ -3,7 +3,7 @@
 %% pflegen; Aenderungen in archiv_manifest.csv vornehmen und Skript ausfuehren.
 %% ---------------------------------------------------------------------------
 \begin{longtable}{@{}p{0.28\textwidth}p{0.17\textwidth}p{0.45\textwidth}@{}}
-  \caption[Datenst\"ande des Archivs]{Ordner \texttt{Daten/} des Archivs: Daten- und Evaluationsst\"ande mit Snapshot-Datum; kursiv gesetzte Eintr\"age folgen mit der n\"achsten Archivversion nach Abschluss der Echtgeld-Woche.\quelleeigen}\label{tab:anhang-archiv-daten}\\
+  \caption[Datenst\"ande des Archivs]{Ordner \texttt{Daten/} des Archivs: Daten- und Evaluationsst\"ande mit Snapshot-Datum.\quelleeigen}\label{tab:anhang-archiv-daten}\\
   \toprule
   Datei & Datenstand & Inhalt \\
   \midrule
@@ -23,11 +23,11 @@
   \texttt{ml\_\allowbreak walkforward.csv} & 22.07.2026 & Walk-Forward-Kalibrierung der statistischen Prüfinstanz (23.803 bewertete Prognosetage) \\
   \texttt{gspc\_\allowbreak bars1d.csv} & 24.07.2026 & Tagesbars S\&P 500 (Export der Tabelle bars\_1d der Marktdatenbank, ab 30.12.1927) \\
   \texttt{marketdata\_\allowbreak snapshot.sqlite} & 30.07.2026 & Konsistenter Snapshot der produktiven Marktdatenbank der collector-vm zum Abschluss der Echtgeld-Woche (sqlite3 .backup + VACUUM): Tagesbars, Minutenbars, Rohticks, Sammelstatistik, Lückenprotokoll und Quellen-Gegenprüfung \\
-  \texttt{belege\_\allowbreak echtgeldwoche/\allowbreak cron\_\allowbreak echtgeldwoche.log} & 30.07.2026 & Protokoll der werktäglichen Zyklen der Echtgeld-Woche (27.–30.07.2026): Mengenbildung, Ordererteilung, Stornierungen und Schutzorderpflege im Wortlaut des Laufzeitprotokolls — Order-Kennungen pseudonymisiert \\
-  \texttt{belege\_\allowbreak echtgeldwoche/\allowbreak decisions\_\allowbreak haupt.csv} & 30.07.2026 & Entscheidungsjournal des Hauptdepots (Strategie sma): Anfrage an die Sprachmodelle, unveränderte Modellantworten, Mehrheitsentscheid und Validatorbefund je Handelstag \\
-  \texttt{belege\_\allowbreak echtgeldwoche/\allowbreak decisions\_\allowbreak zweit.csv} & 30.07.2026 & Entscheidungsjournal des Zweitdepots (Strategie smatrend), gleiche Struktur — enthält den Fall einer NO\_TRADE-Mehrheit mit Early-Stop des dritten Modells \\
-  \texttt{belege\_\allowbreak echtgeldwoche/\allowbreak protection\_\allowbreak haupt.csv} & 30.07.2026 & Ereignisprotokoll der Schutzorder (Auflösung vor dem Kauf, Neusetzung danach) mit Auslöseschwelle, Abstand und Stückzahl — Belegkette zu den Zyklen des Cron-Protokolls \\
-  \texttt{belege\_\allowbreak echtgeldwoche/\allowbreak schema\_\allowbreak decisions.txt} & 30.07.2026 & Tabellendefinition des Entscheidungsjournals — macht die Spalten der beiden Journalauszüge ohne Codelektüre nachvollziehbar \\
+  \texttt{journal\_\allowbreak echtgeld\_\allowbreak woche/\allowbreak cron\_\allowbreak echtgeldwoche.log} & 30.07.2026 & Protokoll der werktäglichen Zyklen der Echtgeld-Woche (27.–30.07.2026): Mengenbildung, Ordererteilung, Stornierungen und Schutzorderpflege im Wortlaut des Laufzeitprotokolls — Order-Kennungen pseudonymisiert \\
+  \texttt{journal\_\allowbreak echtgeld\_\allowbreak woche/\allowbreak decisions\_\allowbreak haupt.csv} & 30.07.2026 & Entscheidungsjournal des Hauptdepots (Strategie sma): Anfrage an die Sprachmodelle, unveränderte Modellantworten, Mehrheitsentscheid und Validatorbefund je Handelstag \\
+  \texttt{journal\_\allowbreak echtgeld\_\allowbreak woche/\allowbreak decisions\_\allowbreak zweit.csv} & 30.07.2026 & Entscheidungsjournal des Zweitdepots (Strategie smatrend), gleiche Struktur — enthält den Fall einer NO\_TRADE-Mehrheit mit Early-Stop des dritten Modells \\
+  \texttt{journal\_\allowbreak echtgeld\_\allowbreak woche/\allowbreak protection\_\allowbreak haupt.csv} & 30.07.2026 & Ereignisprotokoll der Schutzorder (Auflösung vor dem Kauf, Neusetzung danach) mit Auslöseschwelle, Abstand und Stückzahl — Belegkette zu den Zyklen des Cron-Protokolls \\
+  \texttt{journal\_\allowbreak echtgeld\_\allowbreak woche/\allowbreak schema\_\allowbreak decisions.txt} & 30.07.2026 & Tabellendefinition des Entscheidungsjournals — macht die Spalten der beiden Journalauszüge ohne Codelektüre nachvollziehbar \\
   \texttt{regime\_\allowbreak profit\_\allowbreak ergebnis.csv} & 24.07.2026 & Ergebnistabelle der Regime-Profitabilitätsanalyse (smatrend/sma über Kapitalstufen, Fenster und Kostenannahmen) — Grundlage der Aussagen zur Handelsgröße \\
   \texttt{veto\_\allowbreak overlay\_\allowbreak ergebnis.csv} & 24.07.2026 & Ergebnistabelle des ML-Veto-Overlays auf den Regime-Arm (Befund negativ) \\
   \texttt{backtest\_\allowbreak v6.csv} & 24.07.2026 & Walk-Forward-Backtest der ML-Prüfinstanz, Konventionsstand v6 \\

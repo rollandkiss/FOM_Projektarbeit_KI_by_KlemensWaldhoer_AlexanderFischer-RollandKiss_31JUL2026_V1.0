@@ -170,7 +170,10 @@ Bei einem Einsatz von 2.000\,€ muss sich der Index unter diesem Ansatz um etwa
 Regimerichtung bewegen, bevor ein Handelstag den Break-even erreicht. Die Messung im Betrieb
 korrigiert den Ansatz nach unten (\cref{sec:umsetzung-evaluation-ergebnisse}), die Schwellen
 sind daher obere Schranken. Die Mindestgröße von 1.000\,€ folgt umgekehrt aus derselben
-Gebührenstruktur, denn genau an dieser Schwelle entfällt die Provision.
+Gebührenstruktur, denn genau an dieser Schwelle entfällt die
+Provision.\footnote{Das kontrollierte Experiment an der Schwelle führt
+\cref{tab:anhang-kostenklippe} auf, die tatsächlich abgerechneten Kosten der
+Echtgeld-Woche \cref{tab:anhang-abrechnung}.}
 
 Die zweite Regelstrategie \emph{smatrend} stellt statt eines Kreuzungssignals den
 Indexstand gegen einen einzelnen langfristigen Durchschnitt:
@@ -198,10 +201,13 @@ Depots ohne Eingriff in Auditor, Validator oder Broker möglich ist.
 \subsection{Datenerfassung und Datenqualität}
 \label{sec:umsetzung-impl-daten}
 
-Die Datenschicht speichert Rohticks, aus denen Bars abgeleitet werden, nie umgekehrt. Jede
+Die Datenschicht speichert Rohticks, aus denen Bars abgeleitet werden, nie
+umgekehrt\footcite[vgl.][Kap.~2]{lopezdeprado2018}. Jede
 Verdichtung bleibt damit reproduzierbar und bis zum einzelnen Tick zurückverfolgbar. Ein
 Sanitätsfilter verwirft unplausible Werte nicht, sondern markiert sie, sodass die Provenienz
-erhalten bleibt. Lücken im Datenstrom werden nach ihrer Ursache klassifiziert: Erst die
+erhalten bleibt\footnote{Die Herkunft jeder ausgewerteten Datenreihe weist
+\cref{tab:anhang-provenienz} nach, die laufende Zweitquellenprüfung
+\cref{tab:anhang-crosscheck}.}. Lücken im Datenstrom werden nach ihrer Ursache klassifiziert: Erst die
 Unterscheidung zwischen legitimer Sitzungspause und echtem Verbindungsverlust machte das
 Qualitätskriterium betriebstauglich -- die Schwellwerte ließen sich nur gegen reale
 Betriebsdaten kalibrieren, nicht am Schreibtisch festlegen.
@@ -219,13 +225,16 @@ feststehende Ablehnung ohne Sprachmodellbeteiligung. Die Modelle werden nur befr
 ihre Bewertung das Ergebnis noch verändern kann.
 
 Im Auditschritt erhält jedes der drei konfigurierten Sprachmodelle denselben DecisionRequest
-mit einem Systemauftrag als kritischer Risikoprüfer. Die Antwort ist über ein erzwungenes
-\glsxtrshort{json}-Schema strukturiert und wird bei Temperatur null erzeugt. Jedes Modell
+mit einem Systemauftrag als kritischer
+Risikoprüfer\footcite[vgl.][S.~46595--46623]{zheng2023judge}. Die Antwort ist über ein erzwungenes
+\glsxtrshort{json}-Schema strukturiert\footcite[vgl.][S.~10932--10952]{gengGcd2023} und wird bei Temperatur null erzeugt. Jedes Modell
 muss neben der Zustimmung oder Ablehnung eine eigene, unabhängige Regimeeinschätzung
 abgeben. Ein fail-safe ausgelegter Validator prüft jede Antwort: Schemaverletzungen,
 Zeitüberschreitungen und Widersprüche zum Strategiesignal führen zum Veto des betreffenden
-Votums; ein nicht erreichbares Modell zählt konservativ als Ablehnung. Die Einzelvoten
-werden nach strikter Mehrheit aggregiert, wobei bei Zustimmung die konservativste (kleinste)
+Votums; ein nicht erreichbares Modell zählt konservativ als
+Ablehnung\footcite[vgl.][S.~431--445]{rebedeaNemo2023}. Die Einzelvoten
+werden nach strikter Mehrheit
+aggregiert\footcites[vgl.][S.~617\,f.]{ladha1992}[vgl.][S.~261--278]{grofman1983}, wobei bei Zustimmung die konservativste (kleinste)
 Positionsgröße gilt. Steht eine ablehnende Mehrheit vorzeitig fest, bricht die Befragung ab
 (\emph{Early-Stop}). Eine bereits erreichte Zustimmungsmehrheit führt hingegen bewusst nicht
 zum Abbruch, da weitere Voten die Größe nur verkleinern können. Sämtliche Voten samt
@@ -290,10 +299,10 @@ prüfbarer Lauffähigkeitsnachweis.
 Ein Zeitplandienst startet den Entscheidungszyklus an Handelstagen kurz vor der
 US-Markteröffnung, ein Börsenkalender überspringt
 Feiertage\footcite[vgl.][]{pandasMarketCalendars2026} und eine Prozesssperre je Konto
-verhindert überlappende Läufe. Die Qualitätssicherung stützt sich auf neunzehn
-Offline-Testsuiten, von denen der Testtreiber achtzehn automatisiert ausführt. Sie spielen
+verhindert überlappende Läufe. Die Qualitätssicherung stützt sich auf fünfundzwanzig
+Offline-Testsuiten, von denen der Testtreiber vierundzwanzig automatisiert ausführt. Sie spielen
 jede sicherheitsrelevante Verzweigung mit gemockten Schnittstellen durch
-(\cref{tab:anhang-archiv-tests}). Zwei Mutationsproben messen ergänzend, wie zuverlässig
+(\cref{tab:anhang-archiv-tests}). Drei Mutationsproben messen ergänzend, wie zuverlässig
 diese Suiten eingebaute Fehler erkennen. Die zentralen Module sind im beigelegten
 Quellcodearchiv vollständig dokumentiert.
 
@@ -445,7 +454,7 @@ zurückgesetzter Hebelprodukte
 exakt\footcites[vgl.][S.~586--603]{avellaneda2010}[vgl.][S.~43--62]{cheng2009}; die
 inoffizielle Kursdatenquelle bietet keine Verfügbarkeitsgarantie. Trotz Temperatur null und
 erzwungenem Antwortschema bleibt ein Restmaß an Nichtdeterminismus der Sprachmodelle
-bestehen und die Stichprobe der Voting-Kalibrierung ist zu Beginn des Betriebs klein,
+bestehen\footcite[vgl.][]{he2025nondeterminism} und die Stichprobe der Voting-Kalibrierung ist zu Beginn des Betriebs klein,
 weshalb die Auswertung bewusst deskriptiv bleibt und keine automatische Modellabschaltung
 auslöst. Gleiches gilt für die statistische Prüfinstanz, deren Warn-Flag in der
 Echtgeldwoche kein einziges Mal ausgelöst wurde.
@@ -477,7 +486,8 @@ Die Absicherung ist zugleich das Beispiel für eine Maßnahme, deren Preis erst 
 sichtbar macht. Ein Rückblick über die vollständige Indexhistorie zeigt, dass Stopdistanzen
 zwischen drei und fünf Prozent -- also genau der im Betrieb gewählte Bereich -- die Rendite
 der Regimestrategie in jedem geprüften Zeitfenster um mehrere Prozentpunkte jährlich
-mindern, ohne den Maximalverlust zu senken: Da der Agent nach einem Stop-Out am Folgetag
+mindern, ohne den Maximalverlust zu senken\footnote{Die Messreihe über die geprüften
+Stopdistanzen weist \cref{tab:anhang-trailing-distanz} aus.}: Da der Agent nach einem Stop-Out am Folgetag
 zurückkauft, summieren sich die Rückkäufe im Abwärtsmarkt. Der Stop rechtfertigt sich damit
 nicht über die Rendite, sondern als Schutz gegen die Kurslücke über Nacht auf einem zweifach
 gehebelten Produkt -- ein Risiko, gegen das weder der Trendfilter noch ein einmal täglich
@@ -488,7 +498,8 @@ Zyklen: Ein Prozessabbruch zwischen Freigabe und Neusetzen oder eine über Nacht
 Verkaufsorder lässt die Position bis zum Folgetag ohne Stop. Die Wirksamkeit des
 Modell-Gremiums ist zu Betriebsbeginn empirisch noch unbelegt und wird erst durch die
 laufende Kalibrierung überprüfbar. Korrelierte Fehlurteile der Modelle bleiben trotz
-Anbieterdiversität möglich, da alle Modelle denselben Entscheidungskontext erhalten.
+Anbieterdiversität möglich, da alle Modelle denselben Entscheidungskontext
+erhalten\footcites[vgl.][S.~617\,f.]{ladha1992}[vgl.][Kap.~8]{kuncheva2014}.
 Wirtschaftlich ist festzuhalten, dass die täglich handelnde Demonstrationsstrategie nach
 Kosten strukturell defizitär ist und der Agent insofern ein Erkenntnis-, kein
 Renditeinstrument darstellt\footcite[vgl.][S.~773--806]{barberOdean2000}. Von einer

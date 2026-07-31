@@ -17,16 +17,23 @@
 %       unveraendert -- mit EINER Ausnahme: der auskommentierte Abschnitt
 %       "Aenderungen der Beilage" am Dateiende ist dann zu aktivieren.
 %
-%  STAND DIESER DATEI: Archiv V3 (27.07.2026, 112 Dateien). Die Zahlenangaben
-%  im Fliesstext (Zeilenumfang, Testbilanz) sind am 27.07.2026 gegen die
-%  entpackte Beilage gemessen; nach dem V4-Bau erneut erheben.
-%    * Zeilenumfang gemessen: 13.842 Zeilen Quellcode/ + 5.897 Zeilen Tests/
-%      = 19.739. Im Text bewusst als "mehr als 15.000 Zeilen Quelltext"
+%  STAND DIESER DATEI: Archiv V4 (31.07.2026, 131 Dateien). Die Zahlenangaben
+%  im Fliesstext (Zeilenumfang, Testbilanz) sind am 31.07.2026 gegen die
+%  entpackte Beilage V4 gemessen.
+%    * Zeilenumfang gemessen: 18.250 Zeilen Quellcode/ + 11.661 Zeilen Tests/
+%      = 29.911. Im Text bewusst als "mehr als 15.000 Zeilen Quelltext"
 %      formuliert -- untere Schranke statt Punktwert, damit die Aussage auch
 %      bei kleineren Aenderungen der Beilage tragfaehig bleibt und nicht bei
-%      jedem Bau nachgezogen werden muss (Entscheid Kiss, 27.07.2026).
-%    * Testbilanz gemessen: run_tests.sh = 18 bestanden / 0 fehlgeschlagen /
-%      0 uebersprungen.
+%      jedem Bau nachgezogen werden muss (Entscheid Kiss, 27.07.2026). Die
+%      Schranke traegt fuer V4 unveraendert.
+%    * Suitenzahl gemessen: 25 Dateien 'test_*' im Ordner Tests/ (davon zwei
+%      unter Tests/webfeed/), von denen run_tests.sh 24 aufruft; test_shell.sh
+%      ruft er nicht auf.
+%    * Testbilanz gemessen: run_tests.sh = 24 bestanden / 0 fehlgeschlagen /
+%      0 uebersprungen. ACHTUNG: Der Uebersprungen-Zaehler haengt an den auf
+%      der Pruefmaschine installierten Drittpaketen (scikit-learn, Flask); auf
+%      einer Maschine ohne sie meldet derselbe Lauf 21 bestanden / 3
+%      uebersprungen. Der Fliesstext nennt deshalb die Umgebung mit.
 %  =============================================================================
 
 \chapter{Anhang: Projektstruktur und Quellcodearchiv}
@@ -123,25 +130,30 @@ ausgewiesenem Snapshot-Datum.
 \section{Tests}
 \label{sec:anhang-archiv-tests}
 
-Das Archiv enthält neunzehn Offline-Testsuiten. Sie lagen in der
+Das Archiv enthält fünfundzwanzig Offline-Testsuiten. Sie lagen in der
 Produktivumgebung neben den geprüften Modulen und sind im Archiv in den Ordner
 \texttt{Tests/} ausgegliedert. Der Testtreiber
-\texttt{run\_tests.sh} stellt den Modulpfad her und führt die achtzehn Suiten
+\texttt{run\_tests.sh} stellt den Modulpfad her und führt vierundzwanzig Suiten
 des Kernsystems, des Sitzungserhalts und des Dashboards offline aus
 (\texttt{bash Tests/run\_tests.sh}); Suiten mit fehlenden Drittabhängigkeiten
 werden dabei als übersprungen ausgewiesen. Ein Kontrolllauf der Beilage am
-27.07.2026 ergab achtzehn bestandene Suiten ohne fehlgeschlagene und ohne
-übersprungene Prüfung.
+31.07.2026 ergab auf einer Maschine mit allen Drittabhängigkeiten
+vierundzwanzig bestandene Suiten ohne fehlgeschlagene und ohne übersprungene
+Prüfung; fehlen scikit-learn und Flask, weist derselbe Lauf einundzwanzig
+bestandene und drei übersprungene Suiten aus.
 
 Drei Artefakte des Ordners ruft der Treiber bewusst nicht auf: Der Testharness
 der Betriebsskripte (\texttt{test\_shell.sh}) und die beiden Mutationsproben
+des Kernsystems (\texttt{mutation\_probe.py} und \texttt{mut\_m23\_probe.py})
 erwarten die geprüften Skripte und Module im eigenen Verzeichnis und sind
 deshalb im Projektordner zu starten, in dem Quelltexte und Prüfmittel
 nebeneinanderliegen; in der Ordnertrennung des Archivs finden sie ihre
 Prüfgegenstände nicht.\footnote{Die Trennung ist Absicht: Sie hält den Ordner
 \texttt{Quellcode/} auf dem Stand der Produktivumgebung. Für den Mutationstest
 ist sie folgenlos, weil er ohnehin gegen den Arbeitsstand und nicht gegen die
-Beilage geführt wird.} Zwei aufgezeichnete Orderpfad-Protokolle liegen als
+Beilage geführt wird.} Die dritte Mutationsprobe, die des Dashboards, ist von
+dieser Trennung nicht betroffen und erreichte aus der Beilage heraus alle
+vierunddreißig Mutationen. Zwei aufgezeichnete Orderpfad-Protokolle liegen als
 Prüfdaten im selben Ordner und dienen der Broker-Suite als Vorlage.
 
 \input{anhang/archiv_tests}
@@ -152,25 +164,17 @@ Prüfdaten im selben Ordner und dienen der Broker-Suite als Vorlage.
 Die Datenstände belegen die in \cref{sec:umsetzung-evaluation} berichteten
 Kennzahlen. \Cref{tab:anhang-archiv-daten} führt sie mit ihrem jeweiligen
 Snapshot-Datum auf. Der Snapshot der
-produktiven Marktdatenbank sowie die redigierte Belegkette der
-Echtgeld-Orders werden nach Abschluss der Echtgeld-Woche mit der nächsten
-Archivversion ergänzt (kursive Einträge).
+produktiven Marktdatenbank und die redigierte Belegkette der
+Echtgeld-Orders sind seit der Archivversion~V4 enthalten.
 
 \input{anhang/archiv_daten}
 
 %  ---------------------------------------------------------------------------
-%  VORBEREITET, NOCH NICHT AKTIV: Abschnitt "Aenderungen der Beilage V3 -> V4".
-%
-%  AKTIVIERUNG (erst NACH dem Bau von V4, also nach der Echtgeld-Woche):
-%    1. Voraussetzung 1: Der flock-Fix in keepalive.sh ist angewandt UND auf
-%       der agent-vm deployt (Entscheid 27.07.: erst nach der Live-Woche,
-%       gemeinsam mit der deploy.sh-Haertung). Danach test_keepalive.sh VON
-%       HAND gegenpruefen -- die Suite laeuft in keiner automatischen Kette
-%       mit. Erwartetes Ergebnis: 22 von 22 Pruefungen, mit UND ohne flock.
-%    2. Voraussetzung 2: Die beiden Datenzeilen des Manifests stehen auf
-%       'aktiv' (siehe Pflegehinweis am Dateikopf).
-%    3. Dann die folgenden Zeilen entkommentieren (fuehrendes "% " je Zeile
-%       entfernen) und das Datum von V4 einsetzen.
+%  AKTIVIERT am 31.07.2026. Beide Voraussetzungen sind erfuellt: der flock-Fix
+%  in keepalive.sh ist angewandt und auf der agent-vm deployt, und die beiden
+%  Datenzeilen des Manifests stehen auf 'aktiv'. test_keepalive.sh wurde am
+%  31.07.2026 von Hand gegen die entpackte Beilage V4 gegengeprueft: 22 von 22
+%  Pruefungen bestanden.
 %
 %  HERKUNFT: Der Erstentwurf dieses Abschnitts entstand im allgemeinen
 %  Codereview mit Moonshot AI Kimi K3 (Anhang III.IV). Er wurde eigenstaendig
@@ -181,38 +185,38 @@ Archivversion ergänzt (kursive Einträge).
 %  spalten 'quelle' und 'archivpfad' beruhte und den Bau der Beilage
 %  abgebrochen haette.
 %  ---------------------------------------------------------------------------
-% \section{Änderungen der Beilage von V3 (27.07.2026) zu V4 (TT.07.2026)}
-% \label{sec:anhang-archiv-changelog}
-%
-% \begin{itemize}
-%   \item \textbf{Robustheit des Sitzungserhalts (\texttt{keepalive.sh}).}
-%     Der Selbstschutz gegen überlappende Läufe prüft nun die Verfügbarkeit des
-%     Sperrwerkzeugs, bevor er die Sperre setzt. Zuvor wurde ein fehlendes
-%     Werkzeug (Rückgabewert~127, \emph{command not found}) von der
-%     Abfrage wie eine belegte Sperre behandelt: Das Skript meldete
-%     "`läuft bereits"' und endete erfolgreich, ohne die Sitzung erneuert zu
-%     haben. Der Ausfall war damit nicht stumm, aber irreführend beschriftet
-%     -- und auf Systemen ohne das Werkzeug dauerhaft. Jetzt gilt: Ist das
-%     Werkzeug vorhanden (Produktivumgebung), bleibt das Verhalten
-%     unverändert; fehlt es, etwa im Offline-Testlauf eines Prüfers, wird eine
-%     Warnung ausgegeben und ohne Selbstschutz weitergearbeitet. Die Suite
-%     \texttt{test\_keepalive.sh} (22 Prüfungen) besteht damit auch außerhalb
-%     der Produktivumgebung vollständig; zuvor schlugen dort zehn Prüfungen
-%     fehl.
-%   \item \textbf{Nachgelieferte Datenstände der Echtgeld-Woche.}
-%     Zwei in V3 ausstehende Nachweise wurden nach Abschluss der
-%     Echtgeld-Woche aufgenommen: \texttt{Daten/marketdata\_snapshot.sqlite}
-%     als Snapshot der produktiven Marktdatenbank sowie die redigierten
-%     Journal- und Berichtsauszüge der Echtgeld-Woche als Belegkette der
-%     Orders. \Cref{tab:anhang-archiv-daten} führt beide Einträge nun mit
-%     ihrem Datenstand statt der kursiven Platzhalter.
-% \end{itemize}
-%
-% \noindent
-% Prüfsumme, Dateianzahl und Größe der Beilage~V4 sind in
-% \cref{tab:anhang-archiv-identitaet} verzeichnet; die Integrität der
-% Vorgängerversion~V3 bleibt über die dort zuvor dokumentierte
-% SHA-256-Prüfsumme nachprüfbar.
+\section{Änderungen der Beilage von V3 (27.07.2026) zu V4 (31.07.2026)}
+\label{sec:anhang-archiv-changelog}
+
+\begin{itemize}
+  \item \textbf{Robustheit des Sitzungserhalts (\texttt{keepalive.sh}).}
+    Der Selbstschutz gegen überlappende Läufe prüft nun die Verfügbarkeit des
+    Sperrwerkzeugs, bevor er die Sperre setzt. Zuvor wurde ein fehlendes
+    Werkzeug (Rückgabewert~127, \emph{command not found}) von der
+    Abfrage wie eine belegte Sperre behandelt: Das Skript meldete
+    "`läuft bereits"' und endete erfolgreich, ohne die Sitzung erneuert zu
+    haben. Der Ausfall war damit nicht stumm, aber irreführend beschriftet
+    -- und auf Systemen ohne das Werkzeug dauerhaft. Jetzt gilt: Ist das
+    Werkzeug vorhanden (Produktivumgebung), bleibt das Verhalten
+    unverändert; fehlt es, etwa im Offline-Testlauf eines Prüfers, wird eine
+    Warnung ausgegeben und ohne Selbstschutz weitergearbeitet. Die Suite
+    \texttt{test\_keepalive.sh} (22 Prüfungen) besteht damit auch außerhalb
+    der Produktivumgebung vollständig; zuvor schlugen dort zehn Prüfungen
+    fehl.
+  \item \textbf{Nachgelieferte Datenstände der Echtgeld-Woche.}
+    Zwei in V3 ausstehende Nachweise wurden nach Abschluss der
+    Echtgeld-Woche aufgenommen: \texttt{Daten/marketdata\_snapshot.sqlite}
+    als Snapshot der produktiven Marktdatenbank sowie die redigierten
+    Journal- und Berichtsauszüge der Echtgeld-Woche als Belegkette der
+    Orders. \Cref{tab:anhang-archiv-daten} führt beide Einträge nun mit
+    ihrem Datenstand statt der kursiven Platzhalter.
+\end{itemize}
+
+\noindent
+Prüfsumme, Dateianzahl und Größe der Beilage~V4 sind in
+\cref{tab:anhang-archiv-identitaet} verzeichnet; die Integrität der
+Vorgängerversion~V3 bleibt über die dort zuvor dokumentierte
+SHA-256-Prüfsumme nachprüfbar.
 
 %  =============================================================================
 %  Ende

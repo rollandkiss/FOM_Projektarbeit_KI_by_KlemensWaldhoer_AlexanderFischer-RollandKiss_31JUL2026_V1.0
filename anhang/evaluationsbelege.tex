@@ -123,6 +123,60 @@ führt. Unterhalb der Schwelle unterscheiden sich die Depots (Trader Pro gegenü
 Standardtarif), oberhalb nicht. Da die Mindestordergröße des Agenten bei 1.000\,€
 liegt, ist der Vergleich beider Depots kostengleich.
 
+\section{Ex-Post-Abrechnung der Echtgeld-Woche}
+\label{sec:anhang-abrechnung}
+
+Die vorstehenden Messungen stammen aus dem Ex-Ante-Kostenausweis der
+Ordervalidierung, also aus einer Vorschau der Bank. \Cref{tab:anhang-abrechnung}
+stellt ihr die tatsächlich abgerechneten Kosten gegenüber. Grundlage sind die acht
+Wertpapierabrechnungen der Echtgeld-Woche; die Provision ist der von der Bank unter
+\enquote{Eigene Entgelte} ausgewiesene Betrag und entspricht der Differenz zwischen
+belastetem Betrag und Kurswert. Die Abrechnungen selbst sind nicht abgedruckt und
+nicht Bestandteil des Quellcodearchivs, da sie personenbezogene Konto- und
+Depotangaben enthalten.
+
+\begin{table}[htbp]
+  \centering
+  \caption[Abgerechnete Ordernebenkosten der Echtgeld-Woche]{%
+    Tatsächlich abgerechnete Ordernebenkosten der Echtgeld-Woche
+    (\texttt{DE000SB295Z1}, Handelsplatz Live Trading; Zeiten in
+    mitteleuropäischer Sommerzeit nach Angabe der Abrechnung).\quelleeigen}
+  \label{tab:anhang-abrechnung}
+  \begin{tabular}{l l l r r r r}
+    \toprule
+    Tag, Zeit & Depot & Art & Stück & Kurswert & Provision & Quote \\
+    \midrule
+    27.07. 08:43 & zweit & Kauf    &  1 &     33{,}21\,€ & 9{,}90\,€ & 29{,}8\,\% \\
+    27.07. 15:26 & haupt & Kauf    & 45 &  1.497{,}15\,€ & --        & --         \\
+    27.07. 15:27 & zweit & Kauf    & 45 &  1.498{,}05\,€ & --        & --         \\
+    28.07. 15:27 & haupt & Kauf    & 14 &    459{,}90\,€ & 3{,}90\,€ & 0{,}8\,\%  \\
+    28.07. 15:28 & zweit & Kauf    & 14 &    459{,}20\,€ & 9{,}90\,€ & 2{,}2\,\%  \\
+    29.07. 21:52 & haupt & Verkauf & 59 &  1.872{,}66\,€ & --        & --         \\
+    29.07. 21:52 & zweit & Verkauf & 59 &  1.872{,}66\,€ & --        & --         \\
+    30.07. 15:26 & haupt & Kauf    & 46 &  1.476{,}14\,€ & --        & --         \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Die Abrechnung bestätigt die Vorschau in drei Punkten. Erstens fällt oberhalb von
+1.000\,€ in fünf von fünf Fällen keine Provision an: Belasteter beziehungsweise
+gutgeschriebener Betrag und Kurswert sind auf den Cent identisch. Die in
+\cref{tab:anhang-kostenklippe} ausgewiesene Zuwendung von 9{,}50\,€ trägt der
+Emittent an die Bank, sie erscheint in keiner Abrechnung als Belastung des Kontos.
+Zweitens bestätigen die beiden Käufe vom 28.07.2026 die Tarifdifferenz unterhalb
+der Schwelle mit 3{,}90\,€ gegenüber 9{,}90\,€ bei nahezu gleichem Volumen.
+Drittens beziffert der Kauf eines einzelnen Stücks am 27.07.2026 die Kostenquote,
+gegen die die Mindestordergröße gerichtet ist: 9{,}90\,€ Provision auf 33{,}21\,€
+Kurswert entsprechen 29{,}8\,\% des Ordervolumens.
+
+Fünf der acht Geschäfte sind dem journalisierten Entscheidungszyklus zuzuordnen
+(27.07. und 28.07. je beide Depots, 30.07. das Hauptdepot); die Einstückorder vom
+27.07.2026 und die beiden Verkäufe vom 29.07.2026 liegen außerhalb des
+Zyklusfensters und sind im Protokoll der Echtgeld-Woche nicht verzeichnet. Die
+gemessene Kostenlage stützt damit auch die Aussage in
+\cref{sec:umsetzung-evaluation-limitationen}, dass die im Backtest angesetzten
+7{,}80\,€ je Round-Trip für den Livebetrieb eine obere Schranke bilden.
+
 \section{Herkunftsnachweis der Marktdatenbasis}
 \label{sec:anhang-provenienz}
 

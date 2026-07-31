@@ -85,12 +85,7 @@ eine offen verfügbare Variante ersetzt. Auf Apple Silicon kommen längere Antwo
 \cref{sec:zielsetzung} formulierte Ziel der lokalen, weitgehend kostenfreien Betreibbarkeit
 bleibt damit strukturell gesichert.
 
-Hier wird der Unterschied zum ebenfalls geprüften Hermes-Framework greifbar. Hermes schreibt
-das Verhalten des Agenten über eine fest verdrahtete Lernschleife
-fort\footcite[vgl.][]{hermesAgent2026}. Zwei Läufe mit demselben Entscheidungsdokument
-müssten dann kein übereinstimmendes Votum mehr liefern und das zu \emph{H2} erhobene
-Konsistenzmaß verlöre seinen Maßstab. OpenClaw überlässt die Entscheidungslogik dagegen dem
-eigenen Quelltext.
+Das ebenfalls geprüfte Hermes-Framework schreibt das Agentenverhalten über eine fest verdrahtete Lernschleife fort\footcite[vgl.][]{hermesAgent2026}. Zwei Läufe mit demselben Entscheidungsdokument müssten dann kein übereinstimmendes Votum mehr liefern, das zu \emph{H2} erhobene Konsistenzmaß verlöre seinen Maßstab.
 
 Eine dritte, strikt entkoppelte Zone bildet das öffentliche Dashboard. Die collector-vm
 exportiert minütlich redigierte Feeds im Format der \glsxtrfull{json} des Entscheidungsjournals --
@@ -294,7 +289,7 @@ Ein Zeitplandienst startet den Entscheidungszyklus an Handelstagen kurz vor der
 US-Markteröffnung, ein Börsenkalender überspringt
 Feiertage\footcite[vgl.][]{pandasMarketCalendars2026} und eine Prozesssperre je Konto
 verhindert überlappende Läufe. Die Qualitätssicherung stützt sich auf fünfundzwanzig
-Offline-Testsuiten, von denen der Testtreiber vierundzwanzig automatisiert ausführt. Sie spielen
+Offline-Testsuiten. Sie spielen
 jede sicherheitsrelevante Verzweigung mit gemockten Schnittstellen durch
 (\cref{tab:anhang-archiv-tests}). Drei Mutationsproben messen ergänzend, wie zuverlässig
 diese Suiten eingebaute Fehler erkennen. Die zentralen Module sind im beigelegten
@@ -318,9 +313,7 @@ Regel selbst (B0), das passive Halten des Index (B1) sowie eine Variante, die nu
 Regimewechsel handelt (B2). Das Kostenmodell setzt wie in \cref{sec:umsetzung-strategie}
 7,80\,€ je Round-Trip an. Ergänzend misst ein wöchentlicher Auswertungslauf das Abstimmungsverhalten
 der Sprachmodelle im laufenden Betrieb: je Modell die Zustimmungsquote, die
-Schemafehlerrate, die Antwortlatenz sowie die Veto-Trefferquote gegen den Folgetags-Return,
-also den Anteil der Ablehnungen, die tatsächlich einen Verlusttag in Signalrichtung
-vermieden hätten, einschließlich des kontrafaktischen Gewinn- und Verlustbeitrags der Vetos.
+Schemafehlerrate, die Antwortlatenz sowie die Veto-Trefferquote gegen den Folgetags-Return, einschließlich des kontrafaktischen Gewinn- und Verlustbeitrags der Vetos.
 Zur Prüfung von \emph{H2} treten zwei Konsistenzmaße hinzu: der Anteil identischer Voten bei
 wiederholter Vorlage desselben Entscheidungsdokuments und der Anteil übereinstimmender
 Freigabeentscheidungen beider Depots an den Tagen, an denen beide Strategien dasselbe Regime
@@ -433,15 +426,13 @@ hatte. Die Voten haben die Größe nur verkleinert oder den Handel verhindert.
 \subsection{Limitationen}
 \label{sec:umsetzung-evaluation-limitationen}
 
-Die Aussagekraft der Ergebnisse unterliegt mehreren Einschränkungen. Die Bankschnittstelle
-bietet keine Sandbox, sodass die Ordervalidierung gegen das Produktivsystem erfolgt. Die
-Autonomie ist regulatorisch durch die tägliche photoTAN-Freigabe begrenzt. Die Datenfrische
+Die Bankschnittstelle bietet keine Sandbox, die Ordervalidierung erfolgt daher gegen das
+Produktivsystem. Die Autonomie ist regulatorisch durch die tägliche photoTAN-Freigabe begrenzt. Die Datenfrische
 am Entscheidungspunkt beträgt 60 bis 90 Sekunden.
 Das Kostenmodell des Backtests bildet weder die Besteuerung noch die Haltekosten des
 Zertifikats belastbar ab. Es rechnet
 einheitlich mit einer Teilfreistellung, die für ein Faktor-Zertifikat als
-Inhaberschuldverschreibung nicht gilt. Verluste werden zudem nicht gegen Gewinne verrechnet.
-Die Vergleichsmaßstäbe werden deshalb ausschließlich vor Steuern gegenübergestellt.
+Inhaberschuldverschreibung nicht gilt. 
 Der Backtest approximiert das
 Faktor-Zertifikat über das zweifache Index-Tagessegment und modelliert weder
 Währungseffekte, den variablen Geld-Brief-Spread noch die Pfadabhängigkeit täglich
@@ -453,8 +444,6 @@ bestehen\footcite[vgl.][]{he2025nondeterminism} und die Stichprobe der Voting-Ka
 weshalb die Auswertung bewusst deskriptiv bleibt und keine automatische Modellabschaltung
 auslöst. Gleiches gilt für die statistische Prüfinstanz, deren Warn-Flag in der
 Echtgeldwoche kein einziges Mal ausgelöst wurde.
-Schließlich messen Simulation und Betrieb nicht denselben Mechanismus: drei Prozent
-Verluststopp gegen vier Prozent Trailing-Distanz.
 
 \section{Kritische Würdigung}
 \label{sec:umsetzung-wuerdigung}

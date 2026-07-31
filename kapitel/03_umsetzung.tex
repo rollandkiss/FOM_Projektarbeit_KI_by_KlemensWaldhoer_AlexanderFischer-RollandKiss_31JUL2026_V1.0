@@ -13,13 +13,9 @@ auf den konkreten Gegenstand der Arbeit. Der untersuchte Agent verfolgt eine auf
 Durchschnitten beruhende Handelsstrategie und löst die daraus abgeleiteten Entscheidungen
 eigenständig als Ordervorgänge über eine Bankschnittstelle aus.
 
-Der Aufbau des Kapitels folgt dem Weg von der Struktur zur Bewertung. Zunächst wird die
-Systemarchitektur des Agenten mit ihren Komponenten und Datenflüssen beschrieben. Darauf
-aufbauend wird die Handelsstrategie formal gefasst und ihre Umsetzung in Quelltext
-dargestellt. Die anschließende Evaluation ordnet die Ergebnisse anhand geeigneter Kennzahlen
-ein und benennt die methodischen Grenzen der Untersuchung. Eine kritische Würdigung der mit
-dem autonomen Handel verbundenen Risiken und der vorgesehenen Absicherungsmechanismen
-beschließt das Kapitel.
+Das Kapitel beschreibt zunächst die Systemarchitektur, fasst dann die Handelsstrategie
+formal und stellt ihre Umsetzung dar. Die Evaluation ordnet die Ergebnisse ein und benennt
+die methodischen Grenzen, eine kritische Würdigung beschließt das Kapitel.
 
 \section{Systemarchitektur des Agenten}
 \label{sec:umsetzung-architektur}
@@ -124,8 +120,7 @@ Look-Ahead ist damit ausgeschlossen. Die Fensterlängen 50 und 200 in \cref{eq:s
 Literatur zu Trendfolgestrategien üblichen
 Parametrisierung\footcites[vgl.][S.~1731--1764]{brock1992}[vgl.][S.~228--250]{moskowitzEtAl2012}.
 Eine zentrale Zuordnungsdatei bildet das Regime auf ein Faktor-Zertifikat mit zweifachem
-Hebel in Long- beziehungsweise Short-Richtung ab\footcite[vgl.][]{xmarkets2026}. Ein Katalog mit Eignungsregeln
-(Mindestkurs, maximaler Spread, Hebelobergrenze) begrenzt die Produktauswahl.
+Hebel in Long- beziehungsweise Short-Richtung ab\footcite[vgl.][]{xmarkets2026}. Ein Katalog mit Eignungsregeln begrenzt die Produktauswahl.
 
 Der Kapitaleinsatz je Handelstag wird volatilitätsabhängig skaliert:
 \begin{equation}
@@ -136,9 +131,7 @@ Der Kapitaleinsatz je Handelstag wird volatilitätsabhängig skaliert:
 mit dem Basiskapital $K = 2.000\,€$, der realisierten
 20-Tage-Volatilität $\sigma_{20}$ der Index-Tagesrenditen, der Zielvolatilität
 $\sigma^{*} = 1{,}0\,\%$ pro Tag und der Mindestgröße $S_{\min} = 1.000\,€$. Die
-Obergrenze $K$ in \cref{eq:sizing} ist als harter, weder über die Konfiguration noch durch die
-Sprachmodelle veränderbarer Deckel
-implementiert\footcite[zur Volatilitätssteuerung des Kapitaleinsatzes vgl.][S.~1611--1644]{moreiraMuir2017}.
+Obergrenze $K$ in \cref{eq:sizing} ist als harter, auch durch die Sprachmodelle nicht veränderbarer Deckel implementiert\footcite[zur Volatilitätssteuerung des Kapitaleinsatzes vgl.][S.~1611--1644]{moreiraMuir2017}.
 
 Die Ausführungsregeln unterscheiden sich zwischen Simulation und Betrieb. Der Backtest
 modelliert einen täglichen Round-Trip: Einstieg im Fenster der US-Kassasitzung, Ausstieg
@@ -154,11 +147,7 @@ Die ökonomische Hürde dieser Taktung lässt sich vorab beziffern. Der Ex-Ante-
 der Bank nennt für Ordervolumina unterhalb von 1.000\,€ eine Kaufprovision von
 3{,}90\,€\footcites[vgl.][Abschnitt~7.1.6]{comdirectSpec2020}[vgl.][Art.~24
 Abs.~4]{mifid2014}. Das Kostenmodell des Backtests setzt daraus 7{,}80\,€ je Round-Trip an.
-Bei einem Einsatz von 2.000\,€ muss sich der Index unter diesem Ansatz um etwa 0{,}3\,\% in
-Regimerichtung bewegen, bevor ein Handelstag den Break-even erreicht. Die Messung im Betrieb
-korrigiert den Ansatz nach unten (\cref{sec:umsetzung-evaluation-ergebnisse}), die Schwellen
-sind daher obere Schranken. Die Mindestgröße von 1.000\,€ folgt umgekehrt aus derselben
-Gebührenstruktur, denn genau an dieser Schwelle entfällt die
+Die Mindestgröße von 1.000\,€ folgt umgekehrt aus derselben Gebührenstruktur, denn genau an dieser Schwelle entfällt die
 Provision.\footnote{Das kontrollierte Experiment an der Schwelle führt
 \cref{tab:anhang-kostenklippe} auf, die tatsächlich abgerechneten Kosten der
 Echtgeld-Woche \cref{tab:anhang-abrechnung}.}
@@ -198,8 +187,7 @@ erhalten bleibt\footnote{Die Herkunft jeder ausgewerteten Datenreihe weist
 \cref{tab:anhang-provenienz} nach, die laufende Zweitquellenprüfung
 \cref{tab:anhang-crosscheck}.}. Lücken im Datenstrom werden nach ihrer Ursache klassifiziert: Erst die
 Unterscheidung zwischen legitimer Sitzungspause und echtem Verbindungsverlust machte das
-Qualitätskriterium betriebstauglich -- die Schwellwerte ließen sich nur gegen reale
-Betriebsdaten kalibrieren, nicht am Schreibtisch festlegen.
+Qualitätskriterium betriebstauglich.
 
 \subsection{Entscheidungsdokument und Sprachmodell-Gremium}
 \label{sec:umsetzung-impl-gremium}
@@ -292,8 +280,7 @@ verhindert überlappende Läufe. Die Qualitätssicherung stützt sich auf fünfu
 Offline-Testsuiten. Sie spielen
 jede sicherheitsrelevante Verzweigung mit gemockten Schnittstellen durch
 (\cref{tab:anhang-archiv-tests}). Drei Mutationsproben messen ergänzend, wie zuverlässig
-diese Suiten eingebaute Fehler erkennen. Die zentralen Module sind im beigelegten
-Quellcodearchiv vollständig dokumentiert.
+diese Suiten eingebaute Fehler erkennen.
 
 \section{Evaluation}
 \label{sec:umsetzung-evaluation}
@@ -382,20 +369,16 @@ Prognosekraft über die Basisrate hinaus. In den beiden besetzungsstarken Bins, 
 überein (\cref{tab:anhang-walkforward}). Die Randbins sind mit zusammen 227 Fällen zu dünn
 besetzt, um interpretierbar zu sein\footcites[zur Zerlegung des Brier-Scores in
 Kalibrierungs- und Auflösungsanteil vgl.][S.~595--600]{murphy1973}[zur Bewertung
-kalibrierter Wahrscheinlichkeiten vgl.][S.~625--632]{niculescuMizil2005}. Dieser
-Negativbefund trägt die zentrale Architekturentscheidung empirisch: Die Tagesrichtung des
-Index ist auch mit sauber validiertem Modell praktisch nicht prognostizierbar. Die
+kalibrierter Wahrscheinlichkeiten vgl.][S.~625--632]{niculescuMizil2005}. Die Tagesrichtung des Index ist damit auch mit sauber validiertem Modell praktisch nicht prognostizierbar. Die
 Prüfinstanz wirkt daher nur über ein weiches Warn-Flag im Hauptdepot und bleibt im
-Zweitdepot abgeschaltet. Ihre Prognose lag in der Echtgeldwoche durchgehend über der
-Widerspruchsschwelle.
+Zweitdepot abgeschaltet.
 
 Die Kostenmessung gegen das Produktivsystem der Bank lieferte darüber hinaus eigenständige
 Befunde. Ein kontrolliertes Experiment über beide Depots, beide Ordertypen und eine
 Volumenreihe zeigte, dass die Provision ab einem Ordervolumen von 1.000\,€ vollständig
 entfällt: Der Emittent vergütet die Bank im Rahmen der Premium-Partner-Konstruktion mit
 9{,}50\,€, die im Ex-Ante-Kostenausweis als \enquote{Zahlung von Dritten an die Bank}
-erscheint\footcites[vgl.][Art.~24 Abs.~9]{mifid2014}[vgl.][Art.~50]{delvo2017} -- eine
-Stufe, keine Kurve. Da die Mindestordergröße des Agenten bei 1.000\,€ liegt, ist faktisch
+erscheint\footcites[vgl.][Art.~24 Abs.~9]{mifid2014}[vgl.][Art.~50]{delvo2017}. Da die Mindestordergröße des Agenten bei 1.000\,€ liegt, ist faktisch
 jede seiner Orders provisionsfrei\footnote{Eine Ausnahme bilden die beiden
 Aufstockungsorders vom 28.07.2026. Ein Programmfehler setzte die Prüfung der
 Mindestordergröße in diesem Pfad außer Kraft, sodass in beiden Depots je 459{,}62\,€

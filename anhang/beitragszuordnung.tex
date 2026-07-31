@@ -1,0 +1,65 @@
+%  =============================================================================
+%  Datei-Hinweise & Konfiguration: siehe config.md
+%  -> Abschnitt "anhang/beitragszuordnung.tex"
+%
+%  Zuordnung der Implementierungsleistungen zu den beiden Verfassern
+%  (ergaenzt 31.07.2026). Gliederung folgt den Funktionsbereichen der
+%  Implementierung (Abschnitt 3.3) und der Struktur der Quellcodebeilage.
+%  =============================================================================
+
+\chapter{Anhang: Beitragszuordnung der Verfasser}
+\label{cha:anhang-beitraege}
+
+Diese Projektarbeit wurde von zwei Verfassern gemeinsam erstellt.
+\Cref{tab:anhang-beitraege} ordnet die Implementierungsleistungen des in
+\cref{sec:umsetzung-implementierung} beschriebenen Systems den Verfassern zu;
+die Gliederung folgt den Funktionsbereichen der Implementierung
+(\cref{sec:umsetzung-impl-daten} bis \cref{sec:umsetzung-impl-betrieb}) und der
+Struktur der Quellcodebeilage (\cref{cha:anhang-archiv}). Alle Bestandteile
+entstanden in gemeinsamer Abstimmung; die Verantwortung für Entwurf,
+Implementierung und Test des jeweiligen Arbeitspakets lag bei dem genannten
+Verfasser. Die dabei in Anspruch genommene KI-Unterstützung ist werkzeugbezogen
+in \cref{cha:anhang-prompts} dokumentiert.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption[Beitragszuordnung der Verfasser]{Zuordnung der
+    Implementierungsleistungen zu den Verfassern.\quelleeigen}
+  \label{tab:anhang-beitraege}
+  \begin{tabular}{p{8.6cm} l}
+    \toprule
+    Arbeitspaket (Bezug) & Verfasser \\
+    \midrule
+    Systemarchitektur, Cloud-Umgebung und Datenreplikation
+    (\cref{sec:umsetzung-architektur}) & R.\,Kiss \\
+    Recherche zu SMA-Strategien und deren Parametrisierung
+    (\cref{sec:umsetzung-strategie}) & A.\,Fischer \\
+    Handelsstrategien, Plugin-System und Backtest
+    (\cref{sec:umsetzung-strategie}) & R.\,Kiss \\
+    Datenerfassung und Datenqualität (\cref{sec:umsetzung-impl-daten}) & R.\,Kiss \\
+    Entscheidungsdokument, Sprachmodell-Gremium und Validator
+    (\cref{sec:umsetzung-impl-gremium}) & R.\,Kiss \\
+    Statistische Prüfinstanz und Prognosemodul mit scikit-learn
+    (\cref{sec:umsetzung-impl-prognose}) & A.\,Fischer \\
+    Orderausführung, Schutzorders und Bankanbindung
+    (\cref{sec:umsetzung-impl-order}) & R.\,Kiss \\
+    Signal- und Kommunikations-Dispatcher
+    (\cref{sec:umsetzung-impl-betrieb}) & A.\,Fischer \\
+    Test-Suites einschließlich Testtreiber
+    (\cref{sec:umsetzung-impl-betrieb}, \cref{sec:anhang-archiv-tests}) & A.\,Fischer \\
+    Betrieb, Überwachung, Deployment und Not-Aus-Pfad
+    (\cref{sec:umsetzung-impl-betrieb}) & R.\,Kiss \\
+    Öffentliches Dashboard (\cref{sec:umsetzung-impl-betrieb}) & R.\,Kiss \\
+    Evaluations- und Archivwerkzeuge, Aufbau der Quellcodebeilage
+    (\cref{cha:anhang-archiv}) & R.\,Kiss \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Sämtliche nicht gesondert aufgeführten Bestandteile der Implementierung wurden
+vollständig von R.\,Kiss erbracht.
+
+%  =============================================================================
+%  Ende
+%  =============================================================================

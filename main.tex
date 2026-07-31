@@ -302,6 +302,17 @@
 \captionsetup[figure]{position=below}           % Kap. 2.3 / 5.7
 \captionsetup[table]{position=above}            % Kap. 2.4 / 5.6
 
+% Float-Platzierung (31.07.2026): Grosse Abbildungen (v. a. Abbildung 3.1,
+% ~71 %% der Texthoehe) landeten mit den LaTeX-Defaults (\topfraction=0.7,
+% \floatpagefraction=0.5) auf einer isolierten Gleitseite ohne Fliesstext.
+% Die angehobenen Grenzen erlauben die Platzierung am Seitenkopf MIT Text
+% darunter und verlangen fuer eine reine Gleitseite mindestens 80 %% Fuellung;
+% die Lesbarkeit bleibt unveraendert, da die Grafikgroesse nicht reduziert wird.
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.6}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.8}
+
 % Einheitliches Makro fuer Quellenangaben unter Abbildungen, das die
 % Zweizeiligkeit (Bildunterschrift + Quellenangabe) typografisch stabil und
 % projektweit konsistent abbildet (FOM-Leitfaden Kap. 5.7).

@@ -5,7 +5,7 @@
        Konvertierung von Overleaf. -->
 
   <text x="30" y="34" font-size="19" font-weight="bold" fill="#1a2027">fom-ki-project/ — Projektstruktur (ein Codestand für beide virtuellen Maschinen)</text>
-  <text x="30" y="54" fill="#5c6773" font-size="11px">Stand 28.07.2026 · Zuordnung: C = collector-vm · A = agent-vm · fett gesetzt: Kernmodule des Entscheidungs-, Order- und Betriebspfads</text>
+  <text x="30" y="54" fill="#5c6773" font-size="11px">Stand 31.07.2026 · Zuordnung: C = collector-vm · A = agent-vm · fett gesetzt: Kernmodule des Entscheidungs-, Order- und Betriebspfads</text>
 
   <!-- Konfiguration -->
   <rect x="30" y="72" width="940" height="150" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
@@ -41,7 +41,7 @@
   <!-- Orderausfuehrung -->
   <rect x="30" y="622" width="940" height="128" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
   <text x="46" y="644" fill="#334155" font-size="13px" font-weight="bold">Orderausführung und Bankanbindung</text>
-  <text x="60" y="666" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace" font-weight="bold">orchestrate.py</tspan> <tspan fill="#5c6773">— abgesicherte Ausführung: Frische-/Kursfrische-/Orderbuch-Gate, Intent-Journal, Reconciliation (A)</tspan></text>
+  <text x="60" y="666" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace" font-weight="bold">orchestrate.py</tspan> <tspan fill="#5c6773">— abgesicherte Ausführung: Frische-/Kursfrische-/Orderbuch-Gate, Intent-Journal, Reconciliation, Sizing-Meldepflicht (A)</tspan></text>
   <text x="60" y="686" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace" font-weight="bold">broker.py</tspan> <tspan fill="#5c6773">— comdirect-Adapter: OAuth2, Session-TAN, Depot/Orderbuch, tagesgültige Limit-Orders (A)</tspan></text>
   <text x="60" y="706" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace" font-weight="bold">credstore.py</tspan> <tspan fill="#5c6773">— verschlüsselte Ablage der Zugangsdaten, getrennt je Konto (A)</tspan></text>
   <text x="60" y="726" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace" font-weight="bold">config.py</tspan> <tspan fill="#5c6773">— Lader der Umgebungskonfiguration (agent.env) (A)</tspan></text>
@@ -49,7 +49,7 @@
   <!-- Betrieb und Steuerung -->
   <rect x="30" y="764" width="940" height="172" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.2"/>
   <text x="46" y="786" fill="#334155" font-size="13px" font-weight="bold">Betrieb und Steuerung</text>
-  <text x="60" y="808" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace" font-weight="bold">run_cycle.sh</tspan> <tspan fill="#5c6773">— täglicher Entscheidungszyklus: Preflight, Strategie → Audit → Ausführung, Report (A; Cron)</tspan></text>
+  <text x="60" y="808" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace" font-weight="bold">run_cycle.sh</tspan> <tspan fill="#5c6773">— täglicher Entscheidungszyklus: Preflight, gehärtete Kalender-Weiche, Strategie → Audit → Ausführung, Report (A; Cron)</tspan></text>
   <text x="60" y="828" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace" font-weight="bold">signal_dispatcher.py</tspan> <tspan fill="#5c6773">— Empfangsschleife des Messaging-Kanals, startet die Befehlsbehandlung (A; systemd)</tspan></text>
   <text x="60" y="848" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace" font-weight="bold">control.py</tspan> <tspan fill="#5c6773">— Befehlsprotokoll: Not-Aus P/R/S/F, Broker-Login L/K, ML-Umschaltung ml/mlNy/mlNn, Status (A)</tspan></text>
   <text x="60" y="868" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace" font-weight="bold">notify.py</tspan> <tspan fill="#5c6773">— Berichts- und Alarmversand mit Stale-Guard (A)</tspan></text>
@@ -67,7 +67,7 @@
   <text x="46" y="1082" fill="#334155" font-size="13px" font-weight="bold">Öffentliches Dashboard (webfeed/) und Qualitätssicherung — im Archiv unter Quellcode/webfeed/ bzw. Tests/</text>
   <text x="60" y="1104" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace">webfeed/export_journal.py</tspan> <tspan fill="#5c6773">— redigierter Feed-Export ohne Konto-/Zugangsdaten (C; minütlich bei Änderung)</tspan></text>
   <text x="60" y="1124" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace">webfeed/app/</tspan> <tspan fill="#5c6773">— zustandslose Weboberfläche: main.py (Flask), templates/index.html, static/ (Cloud Run)</tspan></text>
-  <text x="60" y="1144" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace">test_*.py</tspan> <tspan fill="#5c6773">— fünfundzwanzig Offline-Testsuiten mit gemockten Schnittstellen, von der Datensammlung über Voting und</tspan></text>
-  <text x="60" y="1162" font-size="12px" fill="#5c6773">Steuerkanal bis zu den Schutzpfaden (u. a. auditor, brokersession, orchestrate, strategy, regime_exit, protection_release, richtungsumkehr)</text>
+  <text x="60" y="1144" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace">test_*.py</tspan> <tspan fill="#5c6773">— vierundzwanzig Offline-Testsuiten mit gemockten Schnittstellen, von der Datensammlung über Voting und</tspan></text>
+  <text x="60" y="1162" font-size="12px" fill="#5c6773">Steuerkanal bis zu den Schutzpfaden der Orderausführung (u. a. auditor, brokersession, orchestrate, strategy, regime_exit, protection_release, richtungsumkehr)</text>
   <text x="60" y="1182" font-size="12px" fill="#1a2027"><tspan font-family="Inconsolata,DejaVu Sans Mono,monospace">mutation_probe.py, mut_m23_probe.py, webfeed/mutation_probe_webfeed.py</tspan> <tspan fill="#5c6773">— Mutationsproben: messen die Fehlererkennung der Suiten (A)</tspan></text>
 </svg>

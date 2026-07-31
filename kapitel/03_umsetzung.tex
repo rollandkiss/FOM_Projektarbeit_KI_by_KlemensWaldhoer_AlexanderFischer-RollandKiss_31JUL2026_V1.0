@@ -81,8 +81,6 @@ eine offen verfügbare Variante ersetzt. Auf Apple Silicon kommen längere Antwo
 \cref{sec:zielsetzung} formulierte Ziel der lokalen, weitgehend kostenfreien Betreibbarkeit
 bleibt damit strukturell gesichert.
 
-Das ebenfalls geprüfte Hermes-Framework schreibt das Agentenverhalten über eine fest verdrahtete Lernschleife fort\footcite[vgl.][]{hermesAgent2026}. Zwei Läufe mit demselben Entscheidungsdokument müssten dann kein übereinstimmendes Votum mehr liefern, das zu \emph{H2} erhobene Konsistenzmaß verlöre seinen Maßstab.
-
 Eine dritte, strikt entkoppelte Zone bildet das öffentliche Dashboard. Die collector-vm
 exportiert minütlich redigierte Feeds im Format der \glsxtrfull{json} des Entscheidungsjournals --
 Signale, Voten, Orders und Depotwertverlauf, jedoch keinerlei Konto- oder Zugangsdaten -- in
@@ -205,7 +203,7 @@ Im Auditschritt erhält jedes der drei konfigurierten Sprachmodelle denselben De
 mit einem Systemauftrag als kritischer
 Risikoprüfer\footcite[vgl.][S.~46595--46623]{zheng2023judge}. Die Antwort ist über ein erzwungenes
 \glsxtrshort{json}-Schema strukturiert\footcite[vgl.][S.~10932--10952]{gengGcd2023} und wird bei Temperatur null erzeugt. Jedes Modell
-muss neben der Zustimmung oder Ablehnung eine eigene, unabhängige Regimeeinschätzung
+muss neben der Stimmgabe eine eigene, unabhängige Regimeeinschätzung
 abgeben. Ein fail-safe ausgelegter Validator prüft jede Antwort: Schemaverletzungen,
 Zeitüberschreitungen und Widersprüche zum Strategiesignal führen zum Veto des betreffenden
 Votums. Ein nicht erreichbares Modell zählt konservativ als
@@ -239,18 +237,17 @@ zeitlich getrennten Walk-Forward-Prüfung bewertet.
 \subsection{Orderausführung und Bankanbindung}
 \label{sec:umsetzung-impl-order}
 
-Die Orderausführung ist mehrstufig gegen die typischen Fehlerbilder verteilter Systeme
-abgesichert. Ein Frische-Gate verwirft Entscheide, die nicht vom aktuellen Handelstag
-stammen. Vor jeder realen Order wird eine \emph{Intent}-Zeile in das Orderjournal
-geschrieben, die als eindeutiger Ausführungsmarker dient. Derselbe Entscheid kann dadurch
-kein zweites Mal ausgeführt werden. Selbst ein Prozessabsturz zwischen Orderaufgabe und
-Journalisierung bleibt nachvollziehbar. Scheitert die Kommunikation mit der Bank nach dem
-Absenden, gleicht eine Reconciliation den tatsächlichen Zustand über das Orderbuch der Bank
-ab. Jeder unklare Ausgang endet in einem alarmierten Handelsstopp statt in einem
-automatischen Wiederholungsversuch. Einzelorder- und Portfolio-Obergrenzen wirken als
-Circuit-Breaker und die Scharfschaltung auf reale Orders ist ausschließlich kontospezifisch
-möglich. Die Bankanbindung nutzt den Anmeldefluss nach \glsxtrfull{oauth} mit einer täglich per
-photoTAN freigegebenen Sitzungs-\glsxtrfull{tan}\footcite[vgl.][Kap.~2]{comdirectSpec2020}.
+Die Orderausführung ist mehrstufig gegen typische Fehlerbilder verteilter Systeme
+abgesichert. Ein Frische-Gate verwirft Entscheide früherer Handelstage. Vor jeder realen
+Order wird eine \emph{Intent}-Zeile journalisiert, die als eindeutiger Ausführungsmarker
+Doppelausführungen ausschließt und auch einen Prozessabsturz zwischen Orderaufgabe und
+Journalisierung nachvollziehbar hält. Scheitert die Kommunikation mit der Bank nach dem
+Absenden, gleicht eine Reconciliation den Zustand über deren Orderbuch ab; jeder unklare
+Ausgang endet in einem alarmierten Handelsstopp statt in einem Wiederholungsversuch.
+Einzelorder- und Portfolio-Obergrenzen wirken als Circuit-Breaker, die Scharfschaltung auf
+reale Orders ist ausschließlich kontospezifisch möglich. Die Bankanbindung nutzt
+\glsxtrfull{oauth} mit einer täglich per photoTAN freigegebenen
+Sitzungs-\glsxtrfull{tan}\footcite[vgl.][Kap.~2]{comdirectSpec2020}.
 
 Die Banksitzung integriert die regulatorische Zwei-Faktor-Anforderung in den autonomen
 Ablauf: Der Anmeldevorgang fordert genau eine photoTAN-Freigabe an, die der Betreiber
@@ -268,7 +265,7 @@ Der Mensch bleibt über den Signal-Kanal\footcite[vgl.][]{signalcli2026} eingebu
 Tagesreports liefert und einen jederzeit wirksamen Not-Aus (Pausieren, Fortsetzen,
 Statusabfrage, Glattstellen) bereitstellt. Jeder Zyklus schließt mit einem Bericht an die
 private Messaging-Gruppe, der Entscheidung, Voten, Auffälligkeiten und den effektiven Modus
-je Konto ausweist und die Scharfschaltung damit täglich sichtbar dokumentiert. Das
+je Konto ausweist. Das
 öffentliche Dashboard\footcite[vgl.][]{chartjs2026} zeigt Indexverlauf, Regimewechsel und je
 Entscheidung das aggregierte Votum mit den Einzelbegründungen und dient damit als öffentlich
 prüfbarer Lauffähigkeitsnachweis.
@@ -300,7 +297,7 @@ Regel selbst (B0), das passive Halten des Index (B1) sowie eine Variante, die nu
 Regimewechsel handelt (B2). Das Kostenmodell setzt wie in \cref{sec:umsetzung-strategie}
 7,80\,€ je Round-Trip an. Ergänzend misst ein wöchentlicher Auswertungslauf das Abstimmungsverhalten
 der Sprachmodelle im laufenden Betrieb: je Modell die Zustimmungsquote, die
-Schemafehlerrate, die Antwortlatenz sowie die Veto-Trefferquote gegen den Folgetags-Return, einschließlich des kontrafaktischen Gewinn- und Verlustbeitrags der Vetos.
+Schemafehlerrate, die Antwortlatenz sowie die Veto-Trefferquote gegen den Folgetags-Return.
 Zur Prüfung von \emph{H2} treten zwei Konsistenzmaße hinzu: der Anteil identischer Voten bei
 wiederholter Vorlage desselben Entscheidungsdokuments und der Anteil übereinstimmender
 Freigabeentscheidungen beider Depots an den Tagen, an denen beide Strategien dasselbe Regime

@@ -32,8 +32,7 @@ isoliert zu testen, auszutauschen und im Fehlerfall neu zu starten, ohne dass si
 über Prozessgrenzen hinweg fortpflanzen. \Cref{fig:zielarchitektur} zeigt die
 Zielarchitektur.
 
-% Grafik: abbildungen/zielarchitektur.svg — Einbindung als Vektorgrafik via
-% \includesvg (svg-Paket, \svgpath{{abbildungen/}}, analog fom-logo).
+% Grafik: abbildungen/zielarchitektur.svg — Einbindung als Vektorgrafik
 \begin{figure}[!tb]
   \centering
   \includesvg[width=\textwidth]{zielarchitektur}
@@ -378,7 +377,7 @@ verstehen ist.
 \label{sec:umsetzung-evaluation-ergebnisse}
 
 Das zentrale Backtest-Ergebnis fällt eindeutig aus: Der tägliche Round-Trip (B0) verliert
-über zehn Jahre 29.675,14\,€, wovon 28.940,15\,€ auf Transaktionskosten entfallen; nur
+über zehn Jahre 29.675,14\,€, wovon 28.940,15\,€ auf Transaktionskosten entfallen, nur
 31,7\,\% der Round-Trips schließen nach Kosten positiv. Die nur bei Regimewechseln handelnde Variante (B2) erzielt mit
 neun Positionswechseln in zehn Jahren rund $+96\,\%$ vor Steuern bei lediglich 106\,€
 Kosten, das passive Halten des Index (B1) rund $+248\,\%$. Der Kostenblock des Backtests ist nur eine Obergrenze: Auch
@@ -415,10 +414,10 @@ Aufstockungsorders vom 28.07.2026. Ein Programmfehler setzte die Prüfung der
 Mindestordergröße in diesem Pfad außer Kraft, sodass in beiden Depots je 459{,}62\,€
 ausgeführt wurden. Der Fehler wurde noch am selben Abend behoben. Am Folgetag wies die
 Prüfung eine Order über 32{,}86\,€ korrekt zurück
-(\cref{sec:anhang-echtgeldwoche}).}; die zuvor angenommenen Round-Trip-Fixkosten von 7{,}80\,€
+(\cref{sec:anhang-echtgeldwoche}).}, die zuvor angenommenen Round-Trip-Fixkosten von 7{,}80\,€
 beschreiben einen Kostenblock, der im Betrieb nicht anfällt. Die Wahl des Direkthandels beim
 Emittenten statt eines Börsenplatzes senkt die Gesamtkosten je Round-Trip um weitere 5\,€,
-da die Handelsplatzentgelte entfallen; der Geld-Brief-Spread wird dagegen im
+da die Handelsplatzentgelte entfallen. Der Geld-Brief-Spread wird dagegen im
 Ex-Ante-Kostenausweis nicht ausgewiesen und musste im Betrieb empirisch gemessen werden.
 Auch der Betrieb der Sprachmodelle erbrachte belastbare Beobachtungen: Die Schema-Adhärenz
 musste schrittweise erzwungen werden, für Modelle mit aktivierter Reasoning-Ausgabe war

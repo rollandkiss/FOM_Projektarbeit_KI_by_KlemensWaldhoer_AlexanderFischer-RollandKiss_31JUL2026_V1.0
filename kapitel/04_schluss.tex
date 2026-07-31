@@ -25,8 +25,7 @@ vorbereitet, aber empirisch unbelegt. Die theoretischen Grundlagen aus
 \cref{cha:grundlagen} bildeten dafür den methodischen Rahmen: Das Periodensystem
 der Künstlichen Intelligenz erlaubte es, die bewusste Begrenzung des
 \glsxtrshort{ki}-Einsatzes nicht als Verzicht, sondern als gestalterische Aussage
-zu formulieren -- die Elemente der Kursprognose und der selbstlernenden
-Fortschreibung bleiben unbesetzt, das Element der prozesssteuernden Kontrolle
+zu formulieren -- das Element der Kursprognose ist zur Prüfinstanz umgewidmet, die selbstlernende Fortschreibung bleibt unbesetzt, das Element der prozesssteuernden Kontrolle
 bildet das Zentrum.
 
 Mit Blick auf die erste Leitfrage zeigt die Fallstudie, dass der autonome, nachvollziehbare Betrieb mit vertretbarem Aufwand möglich ist. Der wesentliche Aufwand liegt nicht im Handelsweg, sondern in seiner Absicherung: im
@@ -41,9 +40,9 @@ sind (\cref{sec:umsetzung-evaluation-design}).
 Damit lassen sich die in \cref{sec:zielsetzung} aufgestellten Hypothesen
 auflösen. \emph{H1} gilt für den Normalbetrieb, seit der Ausstiegs- und Absicherungspfad vollständig
 automatisiert ist. In den ersten Handelstagen wurde der Lebenszyklus der Schutzorders noch
-von Hand geführt und dabei dokumentiert. \emph{H2} bleibt offen --
+von Hand geführt und dokumentiert. \emph{H2} bleibt offen --
 die Zahl der auswertbaren Handelstage ist für eine belastbare Aussage zur
-Diskretionsausübung des Gremiums zu klein. \emph{H3}
+Diskretionsausübung des Gremiums zu klein. \emph{H1} ist als Funktionsbehauptung bereits an wenigen störungsfreien Zyklen prüfbar, \emph{H2} als statistische Behauptung braucht die längere Reihe. \emph{H3}
 wurde nicht verworfen: Trefferquote und Brier-Score der Walk-Forward-Prüfung über
 23.803 Handelstage bleiben im Rahmen der Basisrate beziehungsweise der
 Klimatologie. Der Negativbefund stützt die Architektur: Er ist der empirische Grund dafür, der Prognose keine Signalgewalt zu geben.
@@ -51,9 +50,7 @@ Klimatologie. Der Negativbefund stützt die Architektur: Er ist der empirische G
 In Kennzahlen verdichtet: Der Zehn-Jahres-Backtest stellt dem täglichen
 Round-Trip der Demonstrationsstrategie (rund $-29.700$\,€, davon gut 97\,\%
 Transaktionskosten) das reine Regimefolgen (rund $+96\,\%$ vor Steuern) und das
-passive Halten (rund $+248\,\%$) gegenüber. Die Walk-Forward-Prüfung zeigt keine
-Prognosekraft über die Basisrate. Die im Kostenmodell angesetzten Fixkosten von 7,80\,€ je Round-Trip fallen im Betrieb nicht an, weil jede Order die Provisionsschwelle von 1.000\,€ überschreitet.\footnote{Zur einmaligen
-Ausnahme vom 28.07.2026 vgl. \cref{sec:umsetzung-evaluation-ergebnisse}.} Ein vollständiger
+passive Halten (rund $+248\,\%$) gegenüber. Die im Kostenmodell angesetzten Fixkosten von 7,80\,€ je Round-Trip fallen im Betrieb nicht an, weil jede Order die Provisionsschwelle von 1.000\,€ überschreitet.\footnote{Zur Ausnahme vom 28.07.2026 vgl. \cref{sec:umsetzung-evaluation-ergebnisse}.} Ein vollständiger
 Gremiumsdurchlauf dauert im Betrieb 6 bis 15 Sekunden
 (\cref{sec:umsetzung-evaluation-ergebnisse}). Die täglich handelnde Demonstrationsstrategie ist nach realen
 Kosten strukturell defizitär. Der Agent ist ein Erkenntnis-, kein
@@ -63,19 +60,17 @@ der täglich demonstrierten Autonomie.
 \section{Diskussion}
 \label{sec:diskussion}
 
-Stärken und Schwächen der Lösung werden hier gebündelt, um die Zielerreichung einzuordnen. Konstruktiv trägt erstens das Prinzip der begrenzten Diskretion. Die Offline-Testsuiten
+Konstruktiv trägt erstens das Prinzip der begrenzten Diskretion. Die Offline-Testsuiten
 belegen, dass Schemaverletzungen, Zeitüberschreitungen und Datenlücken in jedem geprüften
 Zweig als Veto oder Handelsstopp enden (\cref{tab:anhang-archiv-tests}). Im Betrieb ist
-bislang kein Fehlerfall aufgetreten, der eine unbeabsichtigte Order ausgelöst hätte.
+bislang kein Fehlerfall aufgetreten, der eine von der Strategie nicht getragene Order ausgelöst hätte.
 Zweitens stützt sich die Evaluation auf gemessene statt angenommene Größen: Reale Kostenausweise, die laufende
-Kursgegenprüfung und die Walk-Forward-Prüfung machen die Ergebnisse belastbar und der ehrliche
-Negativbefund zur Prognosekraft trägt die zentrale Architekturentscheidung
-empirisch. Drittens schafft die durchgängige
+Kursgegenprüfung und die Walk-Forward-Prüfung machen die Ergebnisse belastbar. Drittens schafft die durchgängige
 Journalisierung zusammen mit dem öffentlichen Dashboard eine Transparenz, die
 jede einzelne Entscheidung samt Modellvoten nachvollziehbar und den laufenden
 Betrieb öffentlich prüfbar macht.
 
-Dem stehen Schwächen gegenüber. Der erhoffte Sicherheitsgewinn des
+Der erhoffte Sicherheitsgewinn des
 Modellgremiums ist zu Betriebsbeginn empirisch unbelegt und korrelierte
 Fehlurteile bleiben trotz Anbieterdiversität möglich, da alle Modelle denselben
 Entscheidungskontext erhalten. Die Kalibrierung kann dies erst nach längerer

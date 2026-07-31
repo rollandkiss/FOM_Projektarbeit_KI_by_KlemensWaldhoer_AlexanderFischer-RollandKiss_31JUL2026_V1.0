@@ -6,7 +6,7 @@
 \chapter{Grundlagen und Gestaltungsprinzipien kontrollierter KI-Autonomie}
 \label{cha:grundlagen}
 
-Das Kapitel klärt zunächst den Agentenbegriff und den Autonomiegrad. Es führt
+Das Kapitel klärt den Agentenbegriff und den Autonomiegrad. Es führt
 anschließend das Periodensystem der Künstlichen Intelligenz als Ordnungsrahmen ein und leitet aus Problemstellung und Umgebungsmerkmalen vier Gestaltungsprinzipien ab. Der letzte Abschnitt fügt beides zur
 Lösungsarchitektur zusammen und führt zu \cref{cha:umsetzung} über.
 
@@ -20,10 +20,10 @@ gewöhnlichen Programm unterscheiden. Er handelt autonom, reagiert auf seine Umg
 verfolgt eigene Ziele und ist
 interaktionsfähig\footcites[vgl.][S.~116]{wooldridgeJennings1995}[vgl.][S.~26\,f.]{wooldridge2009}.
 Hinzu tritt die zeitliche Dimension, denn ein autonomer Agent handelt fortlaufend und
-verfolgt dabei eine eigene Agenda\footcite[vgl.][S.~25]{franklinGraesser1997}. Ein KI-Agent wird in dieser Arbeit daher als softwarebasiertes System verstanden, das den geschlossenen Kreis aus Wahrnehmung, Schlussfolgerung und Handlung ohne kontinuierliche menschliche Steuerung
+verfolgt eine eigene Agenda\footcite[vgl.][S.~25]{franklinGraesser1997}. Ein KI-Agent wird in dieser Arbeit daher als softwarebasiertes System verstanden, das den geschlossenen Kreis aus Wahrnehmung, Schlussfolgerung und Handlung ohne kontinuierliche menschliche Steuerung
 durchläuft\footcite[vgl.][S.~303]{gollnick2025}.
 
-Autonomie ist dabei keine Eigenschaft, die ein System besitzt oder nicht besitzt,
+Autonomie ist keine Eigenschaft, die ein System besitzt oder nicht besitzt,
 sondern eine Gestaltungsgröße auf einem Kontinuum. Mit wachsender Autonomie steigt
 die Flexibilität eines Agenten, während seine Zuverlässigkeit tendenziell
 abnimmt\footcite[vgl.][S.~303\,f.]{gollnick2025}. Große Sprachmodelle verschärfen
@@ -36,7 +36,7 @@ sachlich falsche
 Aussagen\footcites[vgl.][S.~59]{gollnick2025}[vgl.][S.~1--38]{ji2023}[vgl.][S.~1]{huangHallucination2025}.
 Formatvorgaben befolgen sie nur dann verlässlich, wenn diese technisch erzwungen
 werden\footcite[vgl.][S.~10932--10952]{gengGcd2023}. Für den
-Einsatz als Prüf"|instanz folgt daraus, dass Modellantworten als unzuverlässige
+Einsatz als Prüfinstanz folgt daraus, dass Modellantworten als unzuverlässige
 Eingaben zu behandeln sind. Empfohlen wird deshalb die einfachste tragfähige
 Struktur\footcite[vgl.][]{anthropicAgents2024}.
 
@@ -118,9 +118,9 @@ Für das vierte Umgebungsmerkmal, die Schutzbedürftigkeit der verarbeiteten Dat
 
 Aus den vier Prinzipien folgt ein hybrider Ansatz. Den Kern bildet eine
 deterministisch implementierte Regelstrategie, der ein Gremium mehrerer
-Sprachmodelle als Prüf"|instanz nachgeordnet ist. Ein Handel kommt nur bei
+Sprachmodelle als Prüfinstanz nachgeordnet ist. Ein Handel kommt nur bei
 Zustimmung der Mehrheit zustande, während jedes nicht erreichbare oder regelwidrig
-antwortende Modell konservativ als Veto zählt. Sämtliche Prüf"|instanzen können
+antwortende Modell konservativ als Veto zählt. Sämtliche Prüfinstanzen können
 einen Handelsvorschlag verhindern oder verkleinern, ihn jedoch niemals erzeugen oder
 umkehren. Diese begrenzte Diskretion (\cref{sec:zielsetzung}) ist die architektonische Antwort auf die Abwägung zwischen Flexibilität und Zuverlässigkeit. Ihr Sicherheitsgewinn bleibt eine
 empirische Frage und wird als \emph{H2} gemessen (\cref{sec:zielsetzung}).
@@ -129,9 +129,7 @@ Als Agenten-Framework wird OpenClaw eingesetzt, ein quelloffenes System, das die
 Grundstruktur eines autonomen Agenten -- Werkzeuganbindung, Zeitsteuerung und ein
 Messaging-Gateway zur Rückbindung an den Menschen -- bereitstellt, ohne eine
 Lernschleife oder eine eigene Entscheidungslogik
-vorzugeben\footcites[vgl.][]{openclawRepo2026}[vgl.][]{openclawDocs2026}. Diese Offenheit trägt die Prinzipien. Die Entscheidungslogik verbleibt vollständig in eigenem, deterministischem Quelltext (erstes und drittes Prinzip). Die Modellanbindung ist hinter einer einheitlichen Schnittstelle austauschbar\footcite[vgl.][]{openclawProviders2026}. Das Messaging-Gateway stellt den menschlichen Kontrollpunkt des vierten Prinzips bereit\footcites[vgl.][]{openclawGateway2026}[vgl.][]{openclawSignal2026}. Das in
-\cref{sec:grundlagen-prinzipien} verworfene Framework mit fest verdrahteter
-Lernschleife scheiterte an eben diesen Anforderungen.
+vorzugeben\footcites[vgl.][]{openclawRepo2026}[vgl.][]{openclawDocs2026}. Diese Offenheit trägt die Prinzipien. Die Entscheidungslogik verbleibt vollständig in eigenem, deterministischem Quelltext (erstes und drittes Prinzip). Die Modellanbindung ist hinter einer einheitlichen Schnittstelle austauschbar\footcite[vgl.][]{openclawProviders2026}. Das Messaging-Gateway stellt den menschlichen Kontrollpunkt des vierten Prinzips bereit\footcites[vgl.][]{openclawGateway2026}[vgl.][]{openclawSignal2026}.
 
 Im Ordnungsrahmen des Periodensystems lässt sich der Agent damit vorab verorten. Er
 besetzt in der Gruppe \textit{Assess} die Datenerfassung und die Mustererkennung und

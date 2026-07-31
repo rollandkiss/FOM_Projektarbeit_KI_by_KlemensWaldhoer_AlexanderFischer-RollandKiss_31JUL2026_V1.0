@@ -54,16 +54,14 @@ Schwelle lösen einen Alarm aus. Die \emph{agent-vm} erhält die Datenbasis als 
 synchronisierte, atomar ersetzte Replik und beherbergt den eigentlichen Entscheidungs- und
 Orderpfad: die deterministische Strategieauswertung, den mehrstufigen Sprachmodell-Audit,
 die Orchestrierung der Orderausführung sowie die Anbindung an die Bankschnittstelle. Beide
-Maschinen sind wechselseitig überwacht; ein Totmannschalter auf der collector-vm alarmiert
+Maschinen sind wechselseitig überwacht. Ein Totmannschalter auf der collector-vm alarmiert
 den Betreiber über den Messaging-Kanal (Signal-Messenger), sobald der Lebenszeichen-Stempel
 der agent-vm veraltet.
 
 Für den Dauerbetrieb ist die Datensammlung gezielt gehärtet: Wächterprozesse erkennen stille
 Verbindungsabbrüche und erzwingen Neuverbindungen, ein geordneter Shutdown verhindert halb
 geschriebene Datensätze. Integritätsprüfung, Plattenplatzüberwachung sowie die
-kontinuierliche Replikation in einen Cloud-Speicher ergänzen die Vorsorge. Ein Agent, der
-täglich unbeaufsichtigt Geld bewegt, ist nur so vertrauenswürdig wie die Infrastruktur, die
-seine Datenbasis und Erreichbarkeit garantiert.
+kontinuierliche Replikation in einen Cloud-Speicher ergänzen die Vorsorge.
 
 Das Agenten-Framework OpenClaw ist als Orchestrierungs- und Modelladapter angebunden und
 trägt damit die Betriebsschale des Agenten, nicht seinen
@@ -71,8 +69,7 @@ Entscheidungspfad\footcite[vgl.][]{openclawDocs2026}. Aus dem Framework stammen 
 einheitliche Modellanbindung, die Werkzeuganbindung und das Messaging-Gateway zum
 Menschen\footcites[vgl.][]{openclawProviders2026}[vgl.][]{openclawGateway2026}. Die
 Strategieauswertung, der Validator, das Entscheidungsjournal und die Bankanbindung liegen
-dagegen vollständig in eigenem, deterministischem Quelltext. Diese Grenze ist keine
-Nebenfolge der Umsetzung, sondern Voraussetzung der begrenzten Diskretion. Jede Codezeile,
+dagegen vollständig in eigenem, deterministischem Quelltext. Jede Codezeile,
 die eine Order auslösen kann, bleibt damit im eigenen, testbaren Bestand. Der Chat-Kanal
 informiert und erlaubt den Not-Aus, löst jedoch selbst keine Order
 aus\footcite[vgl.][]{openclawSignal2026}.
@@ -83,11 +80,8 @@ stehen ausschließlich in der Betriebskonfiguration. Im Erprobungsbetrieb zeigen
 Bezeichner auf je ein Modell von Alibaba, Google und DeepSeek, aufsteigend nach der bei
 Inbetriebnahme gemessenen Antwortzeit geordnet, damit der Early-Stop früh greift. Das Trio ist bewusst so gewählt,
 dass der Umgebungswechsel auf den Mac~mini die Bezeichner tauscht und nicht den Quelltext
-ändert\footcite[vgl.][]{appleMacmini2026}. Ein Modell ohne lokales Pendant wird dabei durch
-eine offen verfügbare Variante ersetzt. Kostenfrei ist der Wechsel dennoch nicht.
-Cloud-gehostet antworten die Modelle in wenigen Sekunden,
-wogegen auf Apple Silicon deutlich längere Antwortzeiten und ein Kaltstart hinzukommen. Die
-Zeitbudgets je Aufruf und je Zyklus sind lokal daher anzuheben. Das in
+ändert\footcite[vgl.][]{appleMacmini2026}. Ein Modell ohne lokales Pendant wird durch
+eine offen verfügbare Variante ersetzt. Auf Apple Silicon kommen längere Antwortzeiten und ein Kaltstart hinzu, die Zeitbudgets je Aufruf und je Zyklus sind lokal daher anzuheben. Das in
 \cref{sec:zielsetzung} formulierte Ziel der lokalen, weitgehend kostenfreien Betreibbarkeit
 bleibt damit strukturell gesichert.
 
@@ -96,13 +90,13 @@ das Verhalten des Agenten über eine fest verdrahtete Lernschleife
 fort\footcite[vgl.][]{hermesAgent2026}. Zwei Läufe mit demselben Entscheidungsdokument
 müssten dann kein übereinstimmendes Votum mehr liefern und das zu \emph{H2} erhobene
 Konsistenzmaß verlöre seinen Maßstab. OpenClaw überlässt die Entscheidungslogik dagegen dem
-eigenen Quelltext. Dass das Framework damit wenig Arbeit abnimmt, ist gewollt.
+eigenen Quelltext.
 
 Eine dritte, strikt entkoppelte Zone bildet das öffentliche Dashboard. Die collector-vm
 exportiert minütlich redigierte Feeds im Format der \glsxtrfull{json} des Entscheidungsjournals --
 Signale, Voten, Orders und Depotwertverlauf, jedoch keinerlei Konto- oder Zugangsdaten -- in
-einen privaten Cloud-Storage-Bucket. Ein zustandsloser Cloud-Run-Dienst rendert daraus die
-Weboberfläche\footcites[vgl.][]{gcpStorage2026}[vgl.][]{gcpRun2026}. Die handelnden
+einen privaten Cloud-Storage-Bucket\footcite[vgl.][]{gcpStorage2026}. Ein zustandsloser Cloud-Run-Dienst rendert daraus die
+Weboberfläche\footcite[vgl.][]{gcpRun2026}. Die handelnden
 Maschinen selbst bleiben ohne offenen eingehenden Port. Im Ordnungsrahmen des
 Periodensystems der Künstlichen Intelligenz verbindet die Architektur damit Elemente der
 Wahrnehmung (Daten- und Mustererfassung), der Schlussfolgerung (Entscheiden und Erklären)
@@ -164,7 +158,7 @@ Datenfrische im verteilten Aufbau eine Slippage-Kontrolle über den Limitpreis e
 Die ökonomische Hürde dieser Taktung lässt sich vorab beziffern. Der Ex-Ante-Kostenausweis
 der Bank nennt für Ordervolumina unterhalb von 1.000\,€ eine Kaufprovision von
 3{,}90\,€\footcites[vgl.][Abschnitt~7.1.6]{comdirectSpec2020}[vgl.][Art.~24
-Abs.~4]{mifid2014}; das Kostenmodell des Backtests setzt daraus 7{,}80\,€ je Round-Trip an.
+Abs.~4]{mifid2014}. Das Kostenmodell des Backtests setzt daraus 7{,}80\,€ je Round-Trip an.
 Bei einem Einsatz von 2.000\,€ muss sich der Index unter diesem Ansatz um etwa 0{,}3\,\% in
 Regimerichtung bewegen, bevor ein Handelstag den Break-even erreicht. Die Messung im Betrieb
 korrigiert den Ansatz nach unten (\cref{sec:umsetzung-evaluation-ergebnisse}), die Schwellen
@@ -231,7 +225,7 @@ Risikoprüfer\footcite[vgl.][S.~46595--46623]{zheng2023judge}. Die Antwort ist �
 muss neben der Zustimmung oder Ablehnung eine eigene, unabhängige Regimeeinschätzung
 abgeben. Ein fail-safe ausgelegter Validator prüft jede Antwort: Schemaverletzungen,
 Zeitüberschreitungen und Widersprüche zum Strategiesignal führen zum Veto des betreffenden
-Votums; ein nicht erreichbares Modell zählt konservativ als
+Votums. Ein nicht erreichbares Modell zählt konservativ als
 Ablehnung\footcite[vgl.][S.~431--445]{rebedeaNemo2023}. Die Einzelvoten
 werden nach strikter Mehrheit
 aggregiert\footcites[vgl.][S.~617\,f.]{ladha1992}[vgl.][S.~261--278]{grofman1983}, wobei bei Zustimmung die konservativste (kleinste)
@@ -330,7 +324,7 @@ vermieden hätten, einschließlich des kontrafaktischen Gewinn- und Verlustbeitr
 Zur Prüfung von \emph{H2} treten zwei Konsistenzmaße hinzu: der Anteil identischer Voten bei
 wiederholter Vorlage desselben Entscheidungsdokuments und der Anteil übereinstimmender
 Freigabeentscheidungen beider Depots an den Tagen, an denen beide Strategien dasselbe Regime
-tragen. Der Entscheidungskontext beider Depots ist dabei nicht identisch. Das zweite Maß
+tragen. Der Entscheidungskontext beider Depots ist nicht identisch. Das zweite Maß
 bleibt insoweit konfundiert und wird ausschließlich deskriptiv ausgewiesen.
 
 Die statistische Prüfinstanz wird gesondert einer Walk-Forward-Prüfung ohne Blick
@@ -429,11 +423,11 @@ vollständige Befragung dauerte 6,2 bis 15,1 Sekunden
 (\cref{tab:anhang-echtgeldwoche-voten}).
 
 Der Echtgeldbetrieb umfasst zum Abgabezeitpunkt acht Zyklen über vier Handelstage
-(Messgröße zu \emph{H1}; \cref{sec:anhang-echtgeldwoche}). Ein Eingriff über die
+(Messgröße zu \emph{H1}, \cref{sec:anhang-echtgeldwoche}). Ein Eingriff über die
 photoTAN-Freigabe und das anfängliche Setzen der Schutzorders hinaus war nicht erforderlich. Fünf Zyklen mündeten in eine ausgeführte Order. Von den drei
 übrigen scheiterte einer an der Mindestordergröße und einer an der ablehnenden Mehrheit des
 Gremiums. Der achte Zyklus (29.07., Zweitdepot) endete ohne Orderanlage: Die Position war
-aufgebaut, ein Regimewechsel lag nicht vor; das zustimmende Votum blieb folgenlos. Kein Votum hat eine Position eröffnet, die die Strategie nicht vorgeschlagen
+aufgebaut, ein Regimewechsel lag nicht vor. Das zustimmende Votum blieb folgenlos. Kein Votum hat eine Position eröffnet, die die Strategie nicht vorgeschlagen
 hatte. Die Voten haben die Größe nur verkleinert oder den Handel verhindert.
 
 \subsection{Limitationen}
@@ -452,7 +446,7 @@ Der Backtest approximiert das
 Faktor-Zertifikat über das zweifache Index-Tagessegment und modelliert weder
 Währungseffekte, den variablen Geld-Brief-Spread noch die Pfadabhängigkeit täglich
 zurückgesetzter Hebelprodukte
-exakt\footcites[vgl.][S.~586--603]{avellaneda2010}[vgl.][S.~43--62]{cheng2009}; die
+exakt\footcites[vgl.][S.~586--603]{avellaneda2010}[vgl.][S.~43--62]{cheng2009}. Die
 inoffizielle Kursdatenquelle bietet keine Verfügbarkeitsgarantie. Trotz Temperatur null und
 erzwungenem Antwortschema bleibt ein Restmaß an Nichtdeterminismus der Sprachmodelle
 bestehen\footcite[vgl.][]{he2025nondeterminism} und die Stichprobe der Voting-Kalibrierung ist zu Beginn des Betriebs klein,
@@ -478,7 +472,7 @@ verkauft der Agent bei einem Regimewechsel den Bestand oberhalb einer Restpositi
 selbständig. Anschließend sichert er jede gehaltene Position mit einer serverseitigen
 Trailing-Stop-Order ab, die er vor dem nächsten Zyklus freigibt und danach neu setzt.
 Zuletzt löst er bei einem Richtungswechsel den gegenläufigen Bestand auf und steigt in die
-Gegenrichtung ein. Tragend ist dabei eine Belegpflicht: Gekauft wird erst, wenn die
+Gegenrichtung ein. Tragend ist eine Belegpflicht: Gekauft wird erst, wenn die
 Auflösung am Depot nachgewiesen ist. Der Rückgabewert der Bank bedeutet Annahme, nicht
 Ausführung. Eine Schlusskontrolle vergleicht am Ende jedes Laufs, was entsichert und was
 wieder abgesichert wurde. Bei einer Differenz pausiert sie das Konto.
@@ -501,17 +495,15 @@ Modell-Gremiums ist zu Betriebsbeginn empirisch noch unbelegt und wird erst durc
 laufende Kalibrierung überprüfbar. Korrelierte Fehlurteile der Modelle bleiben trotz
 Anbieterdiversität möglich, da alle Modelle denselben Entscheidungskontext
 erhalten\footcites[vgl.][S.~617\,f.]{ladha1992}[vgl.][Kap.~8]{kuncheva2014}.
-Wirtschaftlich ist festzuhalten, dass die täglich handelnde Demonstrationsstrategie nach
-Kosten strukturell defizitär ist\footcite[vgl.][S.~773--806]{barberOdean2000}. Von einer
-Anlageberatung grenzt sich die Arbeit ausdrücklich ab: Der Agent handelt ausschließlich für
+Die täglich handelnde Demonstrationsstrategie bleibt nach Kosten strukturell defizitär ist\footcite[vgl.][S.~773--806]{barberOdean2000}. Von einer
+Anlageberatung grenzt sich die Arbeit ab: Der Agent handelt ausschließlich für
 das eigene Experimentalkonto und stellt keine Empfehlung an Dritte dar. Schließlich zeigte
 die Umsetzung einen strukturellen Befund des Marktumfelds: Die kostengünstigsten
 Ausführungswege für Privatanleger sind systematisch nicht über offene Schnittstellen
 zugänglich, sodass autonome Agenten einen faktischen \enquote{\glsxtrshort{api}-Aufpreis}
-tragen -- ein Umstand, der die angestrebte, weitgehend kostenfreie lokale Betreibbarkeit
-umso relevanter macht, da sie zumindest die Infrastruktur- und Inferenzkosten eliminiert.
+tragen -- was die angestrebte kostenfreie lokale Betreibbarkeit umso relevanter macht.
 
-Über den konkreten Anwendungsfall hinaus beansprucht die Architektur Übertragbarkeit.
+Über den Anwendungsfall hinaus beansprucht die Architektur Übertragbarkeit.
 Strategie, Produktzuordnung, Modellgremium und Bankadapter sind über definierte Kontrakte
 entkoppelt: Eine andere Regelstrategie ist ein weiteres Plugin, ein anderes Sprachmodell
 eine Konfigurationszeile, ein anderer Broker ein neuer Adapter hinter derselben

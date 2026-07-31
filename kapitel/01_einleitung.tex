@@ -15,30 +15,30 @@ Ein Agent der Künstlichen Intelligenz (\glsxtrshort{ki}) ist ein System, das se
 Umgebung wahrnimmt, beurteilt und daraus Schlüsse zieht, um eigenständig zu handeln,
 wie auch Investoren Aktienkursverläufe beobachten und bewerten, um daraus Kauf- oder
 Verkaufsentscheidungen abzuleiten\footcites[vgl.][S.~36]{russellNorvig2021}[vgl.][S.~303]{gollnick2025}[In Anlehnung an das KI-Element-Tripel Assess--Infer--Respond,][S.~15]{bitkom2018}.
-Entscheidend ist dabei die Nachvollziehbarkeit der Handlungen und
+Entscheidend ist die Nachvollziehbarkeit der Handlungen und
 Entscheidungswege, denn sie trägt die Verlässlichkeit des Ergebnisses. Durch die breite Verfügbarkeit großer Sprachmodelle
 (\textit{engl.} \glsxtrlong{llm}, \glsxtrshort{llm}) rückt die Frage in den Mittelpunkt,
 inwieweit einem softwarebasierten Agenten Handlungen mit realer, insbesondere finanzieller Wirkung überlassen werden dürfen. Der
-automatische bzw. algorithmische Handel wird hierbei im zugrunde gelegten
+automatische bzw. algorithmische Handel wird im zugrunde gelegten
 Ordnungsrahmen als Anwendungsbeispiel der prozesssteuernden Kontrolle
 benannt\footcite[vgl.][S.~18, 86]{bitkom2018} und kennzeichnet damit ein Anwendungsgebiet, in dem Autonomie und Sicherheit in besonderem Maße gegeneinander abzuwägen sind. Es
 besteht ein Spannungsfeld zwischen einem kontrollierten Handelssystem mit Anforderungen
 an die Reproduzierbarkeit und Auditierbarkeit und \glsxtrshortpl{llm}, deren Ausgaben
-plausibel, aber nicht zwangsläufig zutreffend und zudem nicht reproduzierbar
-sind\footcites[vgl.][S.~1]{huangHallucination2025}[vgl.][]{he2025nondeterminism}. Beide Anforderungen scheinen zunächst unvereinbar. Hinzu kommen weitere praktische Hürden, denn kommerzielle KI-Dienste und
+plausibel, aber nicht zwangsläufig zutreffend und nicht reproduzierbar
+sind\footcites[vgl.][S.~1]{huangHallucination2025}[vgl.][]{he2025nondeterminism}. Beide Anforderungen scheinen zunächst unvereinbar. Hinzu kommen praktische Hürden, denn kommerzielle KI-Dienste und
 komplexe Handelsinfrastrukturen verursachen laufende Kosten und setzen die Preisgabe
 sensibler Daten an Dritte voraus. An diesem Spannungsfeld setzt die
-vorliegende Projektarbeit an. Wie anspruchsvoll die gewählte Zielumgebung dabei ist,
+vorliegende Projektarbeit an. Wie anspruchsvoll die gewählte Zielumgebung ist,
 zeigt \cref{sec:umgebungsmerkmale}.
 
 \section{Merkmale der Umgebung}
 \label{sec:umgebungsmerkmale}
 
 Sechs Merkmale skizzieren die Schwierigkeiten und
-prägen zugleich die Anforderungen an die Architektur. Erstens ist die Dynamik der Kursverläufe zu nennen:
+prägen die Anforderungen an die Architektur. Erstens ist die Dynamik der Kursverläufe zu nennen:
 Ihre fehlende Stationarität entwertet beobachtete Zusammenhänge fortlaufend und eine
 Entscheidung altert bereits während ihrer Prüfung. Datenbeschaffung, Prüfung und
-Orderaufgabe müssen deshalb in ein knappes Zeitbudget passen, von dem jeder zusätzliche Prüfschritt einen Teil mitverbraucht und das den Entwurf entsprechend verkompliziert. Die gewählte tägliche Taktung entschärft dieses Merkmal, hebt es aber nicht auf. Zweitens sind Handlungen unumkehrbar: Getroffene Entscheidungen materialisieren sich unmittelbar und können zu realem Vermögensverlust führen. Drittens ist der Infrastrukturzugang für Privatanwender
+Orderaufgabe müssen deshalb in ein knappes Zeitbudget passen, von dem jeder zusätzliche Prüfschritt einen Teil mitverbraucht und das den Entwurf verkompliziert. Die gewählte tägliche Taktung entschärft dieses Merkmal, hebt es aber nicht auf. Zweitens sind Handlungen unumkehrbar: Getroffene Entscheidungen materialisieren sich unmittelbar und können zu realem Vermögensverlust führen. Drittens ist der Infrastrukturzugang für Privatanwender
 eingeschränkt. Kostenlose Kursdaten stehen in der benötigten Intraday-Auflösung nur
 über inoffizielle und nicht stabile Schnittstellen bereit, was Robustheit und
 Skalierbarkeit des Lösungsdesigns beeinflusst. Auf der Ausführungsseite setzt eine
@@ -65,7 +65,7 @@ muss\footcite[vgl.][S.~9]{comdirectPreise2026}. Sechstens
 schließlich trifft die probabilistische Natur der Sprachmodelle auf ein
 Anwendungsgebiet, welches Reproduzierbarkeit und lückenlose Nachvollziehbarkeit
 verlangt. Diese Umgebungsmerkmale bilden das Prüfraster, an dem sich die im
-Folgenden entwickelte Lösungsarchitektur eines KI-Agenten messen lassen muss.
+Folgenden entwickelte Lösungsarchitektur messen lassen muss.
 
 \section{Zielsetzung und Relevanz der Arbeit}
 \label{sec:zielsetzung}
@@ -73,26 +73,25 @@ Folgenden entwickelte Lösungsarchitektur eines KI-Agenten messen lassen muss.
 Ziel ist der Aufbau und Betrieb eines Live-Trading-Agenten
 mithilfe des Agenten-Frameworks OpenClaw\footcite[vgl.][]{openclawRepo2026} und lokal
 bzw. geschlossen betreibbarer \glsxtrshortpl{llm}. Der in \cref{sec:problemstellung}
-benannte Vorbehalt der Unvereinbarkeit soll dabei aufgelöst werden, indem den
+benannte Vorbehalt der Unvereinbarkeit soll aufgelöst werden, indem den
 Sprachmodellen eine bewusst begrenzte und überprüfbare Rolle zugewiesen wird. 
-Die Handelsentscheidungen entstammen dabei nicht dem
+Die Handelsentscheidungen entstammen nicht dem
 Sprachmodell, sondern einer deterministisch implementierten Strategie
 auf Basis gleitender Durchschnitte (\textit{engl.} \glsxtrlong{sma}, \glsxtrshort{sma}),
 angewendet auf einen ausgewählten Index, die \cref{cha:umsetzung} formal fasst und in
-Quelltext umsetzt. Ein Gremium aus drei Sprachmodellen übernimmt die Rolle unabhängiger Prüf"|instanzen: Jedes Modell
+Quelltext umsetzt. Ein Gremium aus drei Sprachmodellen übernimmt die Rolle unabhängiger Prüfinstanzen: Jedes Modell
 prüft die regelbasiert vorbereitete Entscheidung eigenständig und erst ein
 Mehrheitsentscheid des Modellgremiums gibt die Orderausführung über die
 Bankschnittstelle frei. Ergänzt
-wird das Gremium um eine statistische Prüf"|instanz: Ein kleines, klassisches
+wird das Gremium um eine statistische Prüfinstanz: Ein kleines, klassisches
 Prognosemodell schätzt die Wahrscheinlichkeit einer Folgetagsbewegung in
-Signalrichtung und soll damit ausschließlich den Entscheidungskontext der
+Signalrichtung und soll ausschließlich den Entscheidungskontext der
 Sprachmodelle anreichern. In untergeordneten Parametern bleibt den Modellen ein eng
 gefasster Spielraum: Sie wählen die Ordergröße innerhalb einer vorgegebenen Spanne,
 dürfen den vorgeschlagenen Wert aber nur unterschreiten, und bei mehreren Zustimmungen
 gilt die kleinste genannte Größe.
-Sämtliche Prüf"|instanzen können Handelsvorschläge somit verhindern oder verkleinern,
-jedoch niemals erzeugen oder umkehren (Prinzip der begrenzten Diskretion). Ein weiteres Ziel betrifft die Betriebsform: Die Agentenstruktur ist modular aufgebaut und für den lokalen
-Privatgebrauch ausgelegt -- als Zielkonfiguration auf einem Mac~mini\footcite[vgl.][]{appleMacmini2026}, sodass sie weitgehend kostenfrei betreibbar bleibt und sensible Daten die eigene Infrastruktur nicht verlassen müssen. Der Erprobungsbetrieb nutzt noch cloud-gehostete Inferenz (\cref{sec:umsetzung-architektur}). Der Agent versteht sich dabei als Erkenntnis-, nicht als Renditeinstrument.
+Sämtliche Prüfinstanzen können Handelsvorschläge somit nur verhindern oder verkleinern (Prinzip der begrenzten Diskretion). Ein weiteres Ziel betrifft die Betriebsform: Die Agentenstruktur ist modular aufgebaut und für den lokalen
+Privatgebrauch ausgelegt -- als Zielkonfiguration auf einem Mac~mini\footcite[vgl.][]{appleMacmini2026}, sodass sie weitgehend kostenfrei betreibbar bleibt und sensible Daten die eigene Infrastruktur nicht verlassen müssen. Der Erprobungsbetrieb nutzt noch cloud-gehostete Inferenz (\cref{sec:umsetzung-architektur}). Der Agent versteht sich als Erkenntnis-, nicht als Renditeinstrument.
 Der praktische Beitrag liegt in einer übertragbaren Referenzarchitektur
 für sicherheitsorientiert begrenzten KI-Einsatz im autonomen Handel sowie in
 empirischen Befunden aus dem realen Betrieb, etwa zur Kostenstruktur der
@@ -115,8 +114,7 @@ Beide Leitfragen werden in prüfbare Hypothesen überführt: \emph{H1} prüft di
 \section{Vorgehen und Methodik}
 \label{sec:methodik}
 
-Methodisch fußt die Arbeit auf einer zweistufigen Vorgehensweise. Die Wahl folgt aus
-den Leitfragen und aus den in \cref{sec:umgebungsmerkmale} genannten Merkmalen. Die
+Methodisch fußt die Arbeit auf einer zweistufigen Vorgehensweise, die aus den Leitfragen und den Merkmalen aus \cref{sec:umgebungsmerkmale} folgt. Die
 erste Leitfrage zielt auf die Betreibbarkeit eines Artefakts und ist nur konstruktiv zu
 beantworten, die zweite auf einen empirischen Beitrag, der sich allein im realen
 Betrieb messen lässt. Das Vorgehen folgt dem Paradigma der Design Science Research\footcite[vgl.][S.~75--105]{hevner2004}. Ein kontrolliertes Experiment scheidet aus, weil weder eine

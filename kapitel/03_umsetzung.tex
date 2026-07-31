@@ -131,8 +131,8 @@ Durchschnittslinie:
   \end{cases}
   \label{eq:regime}
 \end{equation}
-Die Entscheidung für Tag $t{+}1$ nutzt ausschließlich Schlusskurse bis Tag $t$, ein
-Look-Ahead ist damit ausgeschlossen. Die Fensterlängen 50 und 200 folgen der in der
+Die Entscheidung für Tag $t{+}1$ nach \cref{eq:regime} nutzt ausschließlich Schlusskurse bis Tag $t$, ein
+Look-Ahead ist damit ausgeschlossen. Die Fensterlängen 50 und 200 in \cref{eq:sma} folgen der in der
 Literatur zu Trendfolgestrategien üblichen
 Parametrisierung\footcites[vgl.][S.~1731--1764]{brock1992}[vgl.][S.~228--250]{moskowitzEtAl2012}.
 Eine zentrale Zuordnungsdatei bildet das Regime auf ein Faktor-Zertifikat mit zweifachem
@@ -148,7 +148,7 @@ Der Kapitaleinsatz je Handelstag wird volatilitätsabhängig skaliert:
 mit dem Basiskapital $K = 2.000\,€$, der realisierten
 20-Tage-Volatilität $\sigma_{20}$ der Index-Tagesrenditen, der Zielvolatilität
 $\sigma^{*} = 1{,}0\,\%$ pro Tag und der Mindestgröße $S_{\min} = 1.000\,€$. Die
-Obergrenze $K$ ist als harter, weder über die Konfiguration noch durch die
+Obergrenze $K$ in \cref{eq:sizing} ist als harter, weder über die Konfiguration noch durch die
 Sprachmodelle veränderbarer Deckel
 implementiert\footcite[zur Volatilitätssteuerung des Kapitaleinsatzes vgl.][S.~1611--1644]{moreiraMuir2017}.
 
@@ -185,7 +185,7 @@ Indexstand gegen einen einzelnen langfristigen Durchschnitt:
   \end{cases}
   \label{eq:smatrend}
 \end{equation}
-und nur bei einem Regimewechsel handelt, ansonsten die Position hält. Die Fensterlänge 325
+und nur bei einem Regimewechsel handelt, ansonsten die Position hält. Die Fensterlänge 325 in \cref{eq:smatrend}
 ist nicht aus der Literatur übernommen, sondern stammt aus einer eigenen Parameterreihe über
 die Indexhistorie. Benachbarte Längen schneiden deutlich schlechter ab, ein Plateau liegt
 nicht vor. Die Variante ist insoweit überanpassungsgefährdet und wird ausschließlich als
@@ -345,7 +345,7 @@ Prognosen vgl.][S.~359--378]{gneitingRaftery2007}
   B \;=\; \frac{1}{N}\sum_{t=1}^{N}\bigl(p_t - o_t\bigr)^{2},
   \label{eq:brier}
 \end{equation}
-der die mittlere quadratische Abweichung der prognostizierten Wahrscheinlichkeit vom
+der in \cref{eq:brier} die mittlere quadratische Abweichung der prognostizierten Wahrscheinlichkeit vom
 eingetretenen Ergebnis misst. Verglichen wird gegen die Klimatologie, also die konstante
 Prognose der Basisrate.
 
@@ -379,13 +379,12 @@ verstehen ist.
 
 Das zentrale Backtest-Ergebnis fällt eindeutig aus: Der tägliche Round-Trip (B0) verliert
 über zehn Jahre 29.675,14\,€, wovon 28.940,15\,€ auf Transaktionskosten entfallen; nur
-31,7\,\% der Handelstage schließen nach Kosten positiv. Die nur bei Regimewechseln handelnde Variante (B2) erzielt mit
+31,7\,\% der Round-Trips schließen nach Kosten positiv. Die nur bei Regimewechseln handelnde Variante (B2) erzielt mit
 neun Positionswechseln in zehn Jahren rund $+96\,\%$ vor Steuern bei lediglich 106\,€
 Kosten, das passive Halten des Index (B1) rund $+248\,\%$. Die tägliche Handelsfrequenz wird demnach von den
 Transaktionskosten aufgezehrt. Der Kostenblock des Backtests ist nur eine Obergrenze: Auch
 ohne Fixgebühr verlangt bereits der verbleibende Spread nach \cref{eq:breakeven} eine
-Bruttotrefferquote von rund 58\,\%. Die Differenz zwischen B0 und B2 beziffert insofern
-den Preis der täglich demonstrierten Autonomie. Die Voting-Kalibrierung aus dem Live-Betrieb
+Bruttotrefferquote von rund 58\,\%. Die Voting-Kalibrierung aus dem Live-Betrieb
 (Trockenlauf seit dem 21.07.2026, Echtgeldbetrieb ab dem 27.07.2026) prüft fortlaufend, ob
 die Vetos der Modelle systematisch Verlusttage treffen oder lediglich Rauschen darstellen.
 
@@ -504,8 +503,7 @@ laufende Kalibrierung überprüfbar. Korrelierte Fehlurteile der Modelle bleiben
 Anbieterdiversität möglich, da alle Modelle denselben Entscheidungskontext
 erhalten\footcites[vgl.][S.~617\,f.]{ladha1992}[vgl.][Kap.~8]{kuncheva2014}.
 Wirtschaftlich ist festzuhalten, dass die täglich handelnde Demonstrationsstrategie nach
-Kosten strukturell defizitär ist und der Agent insofern ein Erkenntnis-, kein
-Renditeinstrument darstellt\footcite[vgl.][S.~773--806]{barberOdean2000}. Von einer
+Kosten strukturell defizitär ist\footcite[vgl.][S.~773--806]{barberOdean2000}. Von einer
 Anlageberatung grenzt sich die Arbeit ausdrücklich ab: Der Agent handelt ausschließlich für
 das eigene Experimentalkonto und stellt keine Empfehlung an Dritte dar. Schließlich zeigte
 die Umsetzung einen strukturellen Befund des Marktumfelds: Die kostengünstigsten

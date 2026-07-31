@@ -7,7 +7,7 @@
 %  anhang/quelltexte.tex (ASCII-Ersetzungstabelle, footnotesize).
 %  =============================================================================
 
-\chapter{Evaluationsbelege}
+\chapter{Anhang: Evaluationsbelege}
 \label{sec:anhang-evaluationsbelege}
 
 % Literate-Tabelle (bis V1_7 in anhang/quelltexte.tex gesetzt, seit dem
@@ -31,7 +31,11 @@ Herkunftsangaben referenziert, statt abgedruckt.
 Vollständige Ausgabe von \texttt{strategy.py backtest} für die Kapitaleinsätze
 2.000\,€ und 1.000\,€ (Datenstand 22.07.2026, 2.520 Handelstage; erzeugt am
 23.07.2026 auf der agent-vm). Die in \cref{sec:umsetzung-evaluation-ergebnisse}
-genannten Kennzahlen entstammen unverändert diesem Protokoll.
+genannten Kennzahlen entstammen unverändert diesem Protokoll. Das Protokollfeld
+\texttt{trefferquote\_pct} weist den Anteil der nach Kosten positiven Round-Trips
+aus; \texttt{kostendeckung\_pct} prüft dieselbe Bedingung und fällt deshalb mit ihm
+zusammen. Sämtliche Prozentangaben sind auf den konstanten Nominaleinsatz bezogen,
+nicht auf ein fortgeschriebenes Kontokapital.
 
 \lstinputlisting[basicstyle=\ttfamily\footnotesize,breaklines=true]{anhang/belege/backtest_protokoll_20260723.txt}
 
@@ -250,8 +254,8 @@ als \texttt{trailing\_distanz\_ergebnis.csv} im Quellcodearchiv.
 \input{anhang/trailing_distanz}
 
 Der Befund ist über alle drei Zeitfenster hinweg stabil: Die im Betrieb
-gewählten vier bis fünf Prozent liegen im ungünstigsten Bereich der Skala.
-Der Maximalverlust fällt zudem nicht niedriger aus als ohne Absicherung. Die
+gewählten vier Prozent liegen im ungünstigsten Bereich der Skala.
+Der Maximalverlust fällt dort zudem nicht niedriger aus als ohne Absicherung. Die
 Rechtfertigung des Stops liegt daher nicht in der Rendite, sondern in der
 Begrenzung des Übernachtrisikos eines gehebelten Produkts. Da nur
 Tagesschlusskurse vorliegen, ein realer Stop aber innertägig auslöst, ist die
@@ -260,13 +264,14 @@ ausgewiesene Auslösefrequenz eine Untergrenze.
 \section{Belegkette der Echtgeldwoche}
 \label{sec:anhang-echtgeldwoche}
 
-Dieser Abschnitt belegt den Echtgeldbetrieb vom 27.07.2026 bis zum 30.07.2026
-lückenlos. Quellen sind das Entscheidungsjournal beider Depots
+Dieser Abschnitt belegt den Echtgeldbetrieb vom 27.07.2026 bis zum 30.07.2026.
+Quellen sind das Entscheidungsjournal beider Depots
 (\texttt{decisions.sqlite}, Tabellen \texttt{decisions} und
 \texttt{protection\_events}) sowie das Zyklusprotokoll der beiden Cron-Läufe auf
 der agent-vm. Je Handelstag läuft ein Zyklus für das Hauptdepot (Strategie
-\texttt{sma}) und einer für das Zweitdepot (Strategie \texttt{smatrend}), beide
-gestartet um 13:25~Uhr koordinierter Weltzeit. Über die vier Handelstage ergeben sich
+\texttt{sma}) und einer für das Zweitdepot (Strategie \texttt{smatrend}). Der
+Zyklus des Hauptdepots startet um 13:25~Uhr koordinierter Weltzeit, der des
+Zweitdepots unmittelbar danach. Über die vier Handelstage ergeben sich
 damit acht Zyklen.
 
 \Cref{tab:anhang-echtgeldwoche-voten} führt die Einzelvoten des Modellgremiums
@@ -303,17 +308,17 @@ ist nicht aufgetreten.
 \end{table}
 
 Das in \cref{sec:umsetzung-impl-gremium} beschriebene Aggregationsverhalten ist in
-jeder belegten Befragung nachweisbar. In allen fünf Befragungen mit
-Zustimmungsmehrheit hat jeweils ein Modell die vom Sizing vorgeschlagene
-Höchstgröße von 2.000\,€ befürwortet, die übrigen votierten für 1.500\,€.
-Übernommen wurde ausnahmslos der kleinere Wert.
+jeder belegten Befragung nachweisbar. In allen fünf belegten Befragungen mit
+Zustimmungsmehrheit hat gemma4 die vom Sizing vorgeschlagene
+Höchstgröße von 2.000\,€ befürwortet. Die übrigen Modelle votierten für 1.500\,€
+oder lehnten ab. Übernommen wurde ausnahmslos der kleinste zustimmende Wert.
 Im letzten Zyklus des 30.07. stand die ablehnende Mehrheit nach zwei Voten fest
 und das dritte Modell wurde nicht mehr befragt (\emph{Early-Stop}). Kein Votum hat
 eine Handelsrichtung oder eine Position vorgeschlagen, die die Strategie nicht
 bereits vorgegeben hatte.
 
-Die statistische Prüfinstanz war im Hauptdepot aktiv und lieferte je Zyklus eine
-Richtungswahrscheinlichkeit von 0{,}5348, 0{,}5292 beziehungsweise 0{,}5282 gegen
+Die statistische Prüfinstanz war im Hauptdepot aktiv und lieferte in den drei
+belegten Zyklen Richtungswahrscheinlichkeiten von 0{,}5348, 0{,}5292 und 0{,}5282 gegen
 eine Widerspruchsschwelle von 0{,}45 (Modellstand
 \texttt{logreg-2026-07-23-e7cb1825}). Das Warn-Flag wurde damit an keinem der Tage
 gesetzt. Im Zweitdepot ist die Komponente laut Zyklusprotokoll abgeschaltet
@@ -329,7 +334,8 @@ Zyklen aus. Handelsplatz war durchgehend der Direkthandel beim Emittenten
   \footnotesize
   \caption[Ausführungskette der Echtgeldwoche]{%
     Ausführungskette der Echtgeldwoche (Quelle: Zyklusprotokoll der agent-vm,
-    27.07.--30.07.2026).\quelleeigen}
+    27.07.--30.07.2026; Volumen = Stück mal Kurs am Entscheidungspunkt, nicht mal
+    Limit).\quelleeigen}
   \label{tab:anhang-echtgeldwoche-orders}
   \begin{tabular}{l l r r r l}
     \toprule

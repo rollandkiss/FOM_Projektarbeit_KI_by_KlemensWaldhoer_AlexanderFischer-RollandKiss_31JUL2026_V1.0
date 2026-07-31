@@ -11,11 +11,21 @@
 %  verwendet und dort nicht selbst definiert werden (Leitfaden Kap. 5.1).
 % =============================================================================
 
+\newglossaryentry{auditflags}{%
+    name={Audit-Flags},%
+    description={Maschinell gesetzte Prüfmarken im DecisionRequest, die Auffälligkeiten der Daten- und Signallage kennzeichnen; ein definierter Teil wirkt als hartes Ausschlusskriterium des Pre-Gates.},%
+    sort={audit-flags}%
+}
 \newglossaryentry{backtest}{%
     name={Backtest},%
     description={Simulation einer Handelsstrategie auf historischen Kursdaten,
         um ihr Verhalten und Ergebnis vor dem Echtbetrieb zu bewerten.},%
     sort={backtest}%
+}
+\newglossaryentry{bar}{%
+    name={Bar},%
+    description={Zu einem Zeitintervall verdichtete Kursinformation (hier Minuten- und Tagesbars), abgeleitet aus Rohticks; Grundlage der Strategie- und Prognoserechnung.},%
+    sort={bar}%
 }
 \newglossaryentry{basisrate}{%
     name={Basisrate},%
@@ -125,8 +135,11 @@
         Verwendung abgeschlossener Tagesschlusskurse ausgeschlossen.},%
     sort={look-ahead-bias}%
 }
-% MLX-Eintrag entfernt (31.07.2026): Der Begriff kommt weder im Fliesstext noch
-% in Abbildungen oder Anhaengen vor; \glsaddall haette ihn dennoch gedruckt.
+\newglossaryentry{mutationsprobe}{%
+    name={Mutationsprobe},%
+    description={Prüfverfahren, das gezielt Fehler in den Produktivcode einspielt und misst, welchen Anteil die Testsuiten erkennen; bewertet damit die Aussagekraft der Tests selbst.},%
+    sort={mutationsprobe}%
+}
 \newglossaryentry{ollama}{%
     name={Ollama},%
     description={Laufzeitumgebung und einheitliche Schnittstelle für die
@@ -158,6 +171,16 @@
         Zwei-Faktor-Freigabe der Banksitzung.},%
     sort={phototan}%
 }
+\newglossaryentry{pluginkontrakt}{%
+    name={Plugin-Kontrakt},%
+    description={Feste Schnittstelle, über die eine Regelstrategie eingebunden wird (Signalserie, deklarierter Datenbedarf, Mindesthistorie, Entscheidungsintervall); erlaubt den A/B-Vergleich zweier Strategien ohne Eingriff in Auditor, Validator oder Broker.},%
+    sort={plugin-kontrakt}%
+}
+\newglossaryentry{pregate}{%
+    name={Pre-Gate},%
+    description={Vorgeschaltete deterministische Prüfung, die harte Ausschlusskriterien vor jedem Modellaufruf auswertet und Ablehnungen ohne Sprachmodellbeteiligung journalisiert.},%
+    sort={pre-gate}%
+}
 \newglossaryentry{regime}{%
     name={Regime},%
     description={Deterministisch aus dem Verhältnis der gleitenden
@@ -171,6 +194,18 @@
         Position, hier innerhalb eines Handelstags; Bezugsgröße der
         Kosten- und Rentabilitätsanalyse.},%
     sort={round-trip}%
+}
+\newglossaryentry{sp500}{%
+    name={S\&P~500},%
+    description={Aktienindex der 500 größten börsennotierten US-Unternehmen;
+        Basiswert der untersuchten Handelsstrategien und Grundlage der
+        erfassten Marktdaten.},%
+    sort={s and p 500}%
+}
+\newglossaryentry{sanitaetsfilter}{%
+    name={Sanitätsfilter},%
+    description={Eingangsprüfung der Marktdatenerfassung, die unplausible Werte markiert statt verwirft, sodass die Provenienz jeder Datenreihe erhalten bleibt.},%
+    sort={sanitaetsfilter}%
 }
 \newglossaryentry{schattenmodus}{%
     name={Schattenmodus (Sidecar)},%
@@ -188,6 +223,11 @@
         Sitzung.},%
     sort={session-tan}%
 }
+\newglossaryentry{sizing}{%
+    name={Sizing},%
+    description={Volatilitätsabhängige Bestimmung des Kapitaleinsatzes je Handelstag innerhalb fester Unter- und Obergrenzen; liefert die Vorschlagsgröße, die die Sprachmodelle nur unterschreiten dürfen.},%
+    sort={sizing}%
+}
 \newglossaryentry{slippage}{%
     name={Slippage},%
     description={Abweichung zwischen dem Kurs zum Entscheidungszeitpunkt und
@@ -195,19 +235,17 @@
         Aufbau durch die ausschließliche Verwendung von Limit-Orders begrenzt.},%
     sort={slippage}%
 }
-\newglossaryentry{sp500}{%
-    name={S\&P~500},%
-    description={Aktienindex der 500 größten börsennotierten US-Unternehmen;
-        Basiswert der untersuchten Handelsstrategien und Grundlage der
-        erfassten Marktdaten.},%
-    sort={s and p 500}%
-}
 \newglossaryentry{sqlite}{%
     name={SQLite},%
     description={Dateibasiertes relationales Datenbanksystem ohne
         Serverprozess; dient dem Agenten als persistenter, gemeinsamer
         Zustand für Marktdaten und Entscheidungsjournal.},%
     sort={sqlite}%
+}
+\newglossaryentry{stopout}{%
+    name={Stop-Out},%
+    description={Auslösung einer Stop-Order durch Erreichen des Auslöseniveaus, hier der serverseitigen Trailing-Stop-Order; führt zum Verkauf des abgesicherten Bestands.},%
+    sort={stop-out}%
 }
 \newglossaryentry{temperatur}{%
     name={Temperatur},%
@@ -223,6 +261,11 @@
         erwartetes Lebenszeichen ausbleibt; die collector-vm meldet so den
         Ausfall der agent-vm über den Messaging-Kanal.},%
     sort={totmannschalter}%
+}
+\newglossaryentry{trailingstop}{%
+    name={Trailing-Stop-Order},%
+    description={Serverseitige Verkaufsorder, deren Auslöseniveau dem steigenden Kurs in festem Abstand nachgeführt wird, bei fallendem Kurs aber stehen bleibt; sichert im Livebetrieb jede gehaltene Position ab.},%
+    sort={trailing-stop-order}%
 }
 \newglossaryentry{trockenlauf}{%
     name={Trockenlauf (Dry-Run)},%

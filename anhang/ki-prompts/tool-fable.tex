@@ -15,8 +15,9 @@ Eingesetzt zur Unterstützung bei der Implementierung: Python- und
 Shell-Skripte des Agenten, die Cloud-Run-Anwendung des öffentlichen
 Dashboards, der Totmann-Schalter über den Messaging-Kanal, die statistische
 Prüfinstanz samt Prognosemodul, die Gegenprüfung der zuvor erzeugten
-Testskripte sowie die beiden als KI-generiert gekennzeichneten Abbildungen
-dieser Arbeit (\cref{fig:zielarchitektur} und \cref{fig:projektstruktur}).
+Testskripte, die beiden als KI-generiert gekennzeichneten Abbildungen
+dieser Arbeit (\cref{fig:zielarchitektur} und \cref{fig:projektstruktur})
+sowie die Neufassung des Abkürzungsverzeichnisses und des Glossars.
 
 \subsection{Unterstützung bei Python- und Shell-Skripten}
 \label{sec:prompts-fable-skripte}
@@ -198,6 +199,31 @@ Architekturplanung; die Modellantwort lieferte die grafische Umsetzung.
             Ebenen-Header durch Fettsatz hervorhebt und je Datei die
             Herkunftsmaschine kennzeichnet: [\dots]}
             \par\hfill\textit{Kontext: \cref{fig:projektstruktur}}
+\end{enumerate}
+
+\subsection{Neufassung des Abkürzungsverzeichnisses und des Glossars}
+\label{sec:prompts-fable-verzeichnisse}
+
+Beide Verzeichnisse wurden vor der Abgabe neu aufgebaut; ein früherer
+Entwurf des Abkürzungsverzeichnisses aus Google Gemini wurde dabei
+vollständig ersetzt. Grundlage der Neufassung war der vollständige
+Quelltextbestand der Arbeit; jede vorgeschlagene Aufnahme wurde gegen die
+Fundstellen im Text geprüft.
+
+\begin{enumerate}
+    \item \enquote{Baue das Abkürzungsverzeichnis neu auf und identifiziere
+            alle potentiellen Abkürzungen der Arbeit einschließlich der
+            Abbildungen und Anhangtabellen; gib je Kurzform die Langform und
+            die Fundstellen an: [\dots]}
+            \par\hfill\textit{Kontext: gesamte Arbeit
+            (Abkürzungsverzeichnis)}
+
+    \item \enquote{Baue das Glossar neu auf, identifiziere alle
+            erklärungsbedürftigen Fachbegriffe des Haupttexts und formuliere
+            je Begriff eine Definition von höchstens zwei Sätzen im sachlichen
+            Stil; weise aus, welche vorhandenen Einträge im Text nicht mehr
+            vorkommen: [\dots]}
+            \par\hfill\textit{Kontext: gesamte Arbeit (Glossar)}
 \end{enumerate}
 
 %  =============================================================================

@@ -11,9 +11,12 @@
 % Eintrag im KI-Verzeichnis (Leitfaden Kap. 6.2.4) erzwingen mittels \nocite.
 \nocite{geminiFlash2026}
 
-Eingesetzt für die sprachliche Korrekturlesung, die Quellenrecherche, den
-Abgleich der automatischen Tests gegen die dokumentierten Anforderungen sowie
-für die Erstellung des Abkürzungsverzeichnisses.
+Eingesetzt für die sprachliche Korrekturlesung, die Quellenrecherche sowie
+den Abgleich der automatischen Tests gegen die dokumentierten Anforderungen.
+Ein früherer Entwurf des Abkürzungsverzeichnisses stammte aus diesem Werkzeug;
+er wurde vor der Abgabe durch die in \cref{sec:prompts-fable-verzeichnisse}
+dokumentierte Neufassung vollständig ersetzt und wird deshalb nicht mehr als
+Gemini-Beitrag geführt.
 
 \subsection{Rechtschreibprüfung und Interpunktion}
 \label{sec:prompts-gemini-sprache}
@@ -67,20 +70,6 @@ für die Erstellung des Abkürzungsverzeichnisses.
             unterscheide dabei bestandene von übersprungenen Prüfungen:
             [\dots]}
             \par\hfill\textit{Kontext: Anhang~\ref{sec:anhang-archiv-tests}}
-\end{enumerate}
-
-\subsection{Erstellung des Abkürzungsverzeichnisses}
-\label{sec:prompts-gemini-abkuerzungen}
-\begin{enumerate}
-    \item \enquote{Extrahiere alle Abkürzungen aus dem folgenden Text und
-            erstelle ein alphabetisch sortiertes Abkürzungsverzeichnis mit
-            jeweiliger Langform: [\dots]}
-            \par\hfill\textit{Kontext: gesamte Arbeit}
-
-    \item \enquote{Überprüfe das vorhandene Abkürzungsverzeichnis auf
-            Vollständigkeit und Konsistenz und ergänze fehlende Einträge:
-            [\dots]}
-            \par\hfill\textit{Kontext: gesamte Arbeit}
 \end{enumerate}
 
 %  =============================================================================
